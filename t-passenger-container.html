@@ -1,0 +1,216 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+<dom-module id="t-traveler-info">
+    <template>
+        <style>
+            #toolbarRoom {
+                background-color: #E8E8E8;
+                width: 100%;
+                margin-left: 10px;
+                margin-top: 20px;
+                height: 50px;
+            }
+
+            #productPassengers {
+                width: 67%;
+            }
+
+            #subTitle {
+                color: gray;
+                font-size: 14px;
+            }
+
+            #title {
+                font-size: 16px;
+            }
+
+            #policyList {
+                color: #4CB050;
+                margin-top: 20px;
+                font-family: roboto;
+            }
+
+            #checkIcon {
+                height: 20px;
+                width: 20px;
+            }            
+
+            .inputForm #PaxTitle,
+            #firstName,
+            #lastName {
+                float: left;
+            }
+
+            #emailAndLabel,
+            #countryCode,
+            #contactNo {
+                float: left;
+            }
+
+            #typeAndLabel {
+                width: 20%;
+                float: left;
+                margin-top: 4%;
+                margin-left: 10px;
+                width: 20%;
+            }
+
+            #typeLabel,
+            #typeSubLabel {
+                float: left;
+            }
+
+            #typeSubLabel {
+                font-size: smaller;
+                color: #BDBDBD;
+            }
+            #PaxTitle {
+                width: 23%;
+                margin-left: 10px;
+            }
+
+            #firstName {
+                width: 23%;
+                margin-left: 20px;
+            }
+
+            #lastName {
+                width: 23%;
+                margin-left: 20px;
+            }
+
+            #closeIcon {
+                margin-left: 10px;
+                margin-top: 4%;
+                color: #A8A8A8;
+            }
+            #inputForm2 {
+                margin-top: 15px;
+            }
+            #email {}
+
+            #emailAndLabel {
+                margin-left: 10px;
+                width: 44.5%;
+            }
+
+            #emailLabel {
+                font-size: smaller;
+                color: #BDBDBD;
+            }
+
+            #countryCode {
+                width: 23%;
+                margin-left: 20px;
+            }
+
+            #contactNo {
+                width: 23%;
+                margin-left: 20px;
+            }
+        </style>
+        <div id="productPassengers">
+            <app-toolbar id="toolbarRoom">
+                <div id="title">{{title}}</div>
+                <div> - </div>
+                <div id="subTitle">{{subTitle}}</div>
+            </app-toolbar>
+
+            <div id="policyList">
+                <iron-icon icon="check" id="checkIcon"></iron-icon>
+                {{policyList}}
+            </div>
+
+            <div class="inputForm">
+                <div id="typeAndLabel">
+                    <label id="typeLabel">{{type}}</label>
+                    <div id="typeSubLabel"> ({{maxChildAge}}+ Years)</div>
+                </div>
+                <div>
+                    <paper-dropdown-menu label="Title" id="PaxTitle">
+                        <paper-listbox slot="dropdown-content" selected="0">
+                            <paper-item>Mr.</paper-item>
+                            <paper-item>Mrs.</paper-item>
+                            <paper-item>Miss.</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>  
+                </div>
+                <div>
+                    <paper-input label="First name" id="firstName"></paper-input>
+                </div>
+                <div>
+                    <paper-input label="Last name" id="lastName"></paper-input>
+                </div>
+                <div>
+                    <iron-icon icon="close" id="closeIcon"></iron-icon>
+                </div>
+            </div>
+            <div id="inputForm2">
+                <div id="emailAndLabel">
+                    <paper-input label="Email" id="email"></paper-input>
+                    <div id="emailLabel">We'll send your confirmation voucher at this email ID.</div>
+                </div>
+                <div>
+                    <paper-dropdown-menu label="Country code" id="countryCode">
+                        <paper-listbox slot="dropdown-content" selected="0">
+                            <paper-item>Mr.</paper-item>
+                            <paper-item>Mrs.</paper-item>
+                            <paper-item>Miss.</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                </div>
+                <div>
+                    <paper-input label="Contact number" id="contactNo"></paper-input>
+                </div>
+            </div>
+        </div>
+
+
+    </template>
+
+    <script>
+        /**
+     * `t-traveler-info`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+        class TTravelerInfo extends Polymer.Element {
+            static get is() { return 't-traveler-info'; }
+            static get properties() {
+                return {
+                    type: {
+                        type: String,
+                        value: 'Adult 1'
+                    },
+                    title: {
+                        type: String,
+                        value: 'Room 1'
+                    },
+                    subTitle: {
+                        type: String,
+                        value: 'Stripe view, 1 King Bed | 2 adult 2 children'
+                    },
+                    policyList: {
+                        type: String,
+                        value: 'FREE cancellation before 11:59PM on April 25, 2017'
+                    },
+                    maxChildAge: {
+                        type: Number,
+                        value: 12
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(TTravelerInfo.is, TTravelerInfo);
+    </script>
+</dom-module>

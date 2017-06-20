@@ -1,0 +1,58 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="t-passenger-container.html">
+<dom-module id="t-guest-info">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: white;
+      }
+      #toolbar1{
+        background-color: transparent;
+        border: 1px solid lightgray;
+        margin: 10px;
+        color: #478BD7;
+        height: 60px;
+      }
+      #signInLink{
+        color: #478BD7;
+        text-decoration: none;
+        font-size: 20px;
+      }
+     
+    </style>
+   
+    <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
+    
+    <t-traveler-info></t-traveler-info>
+
+
+
+
+  </template>
+
+  <script>
+    /**
+     * `t-guest-info`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class TGuestInfo extends Polymer.Element {
+      static get is() { return 't-guest-info'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 't-guest-info'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(TGuestInfo.is, TGuestInfo);
+  </script>
+</dom-module>
