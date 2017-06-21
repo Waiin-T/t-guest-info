@@ -193,7 +193,10 @@
                     },
                     title: {
                         type: String,
-                        value: 'Room 1'
+                        value: function () {
+                            // var title = this.dataHost.dataHost.domHost.domHost.adult;
+                            // return labelAdult;
+                            }
                     },
                     subTitle: {
                         type: String,
@@ -206,7 +209,7 @@
                     maxChildAge: {
                         type: Number,
                         value: 12
-                    }
+                    },
                 };
             }
         }

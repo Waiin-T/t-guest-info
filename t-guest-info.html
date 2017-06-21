@@ -1,31 +1,32 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="t-passenger-container.html">
+<link rel="import" href="t-traveler-info.html">
 <dom-module id="t-guest-info">
   <template>
     <style>
-      :host {
+       :host {
         display: block;
         background-color: white;
       }
-      #toolbar1{
+
+      #toolbar1 {
         background-color: transparent;
         border: 1px solid lightgray;
         margin: 10px;
         color: #478BD7;
         height: 60px;
       }
-      #signInLink{
+
+      #signInLink {
         color: #478BD7;
         text-decoration: none;
         font-size: 20px;
       }
-     
     </style>
-   
+    <!--<label>{{option.pax}}</label>-->
     <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
-    
-    <t-traveler-info></t-traveler-info>
+    <!--<label>{{option.pax}}</label>-->
+    <t-traveler-info ></t-traveler-info>
 
 
 
@@ -45,12 +46,602 @@
       static get is() { return 't-guest-info'; }
       static get properties() {
         return {
-          prop1: {
+
+          option: {
+            type: Object,
+            value: {
+              "requiredField": [],
+              "requiredFieldForLeadPax": []
+            }
+          },
+          resources: {
+            type: Object,
+            value: {
+              "icons": {},
+              "labels": {
+                adult: {},
+                child: {}
+              },
+              "fields": {
+                "title": {},
+                "firstName": {},
+                "lastName": {},
+                "email": {},
+                "countryCode": {
+                  values: []
+                },
+                "contactNumber": {}
+              }
+            }
+          },
+          paxList: {
+            type: Object,
+            value: {
+              "membership": {}
+            }
+          },
+          product: {
+            type: Object,
+            value: {
+              "rooms": []
+            }
+          },
+          allowContactNumber: {
+            type: Boolean,
+            value: false
+          },
+          allowContactNumberForLeadPax: {
+            type: Boolean,
+            value: false
+          },
+          allowEmail: {
+            type: Boolean,
+            value: false
+          },
+          allowEmailForLeadPax: {
+            type: Boolean,
+            value: false
+          },
+          requiredField: {
+            type: Array,
+            value: [
+              "firstname",
+              "lastname"
+            ]
+          },
+          requiredFieldForLeadPax: {
+            type: Array,
+            value: [
+              "contactNumber",
+              "title",
+              "email"
+            ]
+          },
+          terms: {
             type: String,
-            value: 't-guest-info'
-          }
+            value: 'terms-ico'
+          },
+          adultTitle: {
+            type: String,
+            value: 'Adult {count}'
+          },
+          adultInfo: {
+            type: String,
+            value: '(12+ years)'
+          },
+          childTitle: {
+            type: String,
+            value: 'Child {count}'
+          },
+          childInfo: {
+            type: String,
+            value: '(upto 7 years)'
+          },
+          titleValues: {
+            type: Array,
+            value: [{
+              "key": "Mr"
+            },
+            {
+              "key": "Ms"
+            }
+            ]
+          },
+          titleSelected: {
+            type: String,
+            value: 'Mr'
+          },
+          titleLabel: {
+            type: String,
+            value: 'Title'
+          },
+          titleError: {
+            type: String,
+            value: 'Please select a title'
+          },
+          firstNameValue: {
+            type: String,
+            value: ''
+          },
+          firstnameTitle: {
+            type: String,
+            value: 'First name'
+          },
+          firstNameError: {
+            type: String,
+            value: 'Firstname is required'
+          },
+          lastNameValue: {
+            type: String,
+            value: ''
+          },
+          lastnameTitle: {
+            type: String,
+            value: 'Last name'
+          },
+          lastNameError: {
+            type: String,
+            value: 'Lastname is required'
+          },
+          emailValue: {
+            type: String,
+            value: ''
+          },
+          emailTitle: {
+            type: String,
+            value: 'Email address'
+          },
+          emailInfo: {
+            type: String,
+            value: 'We will send you email confirmation on this address'
+          },
+          emailError: {
+            type: String,
+            value: 'Please enter a valid email address'
+          },
+          countryCodeValues: {
+            type: Array,
+            value: [{
+              "key": "India +91",
+              "value": "91"
+            },
+            {
+              "key": "USA +1",
+              "value": "1"
+            }
+            ]
+          },
+          countryCodeTitle: {
+            type: String,
+            value: 'Country code'
+          },
+          countryCodeError: {
+            type: String,
+            value: 'Countrycode is required'
+          },
+          contactNumberValue: {
+            type: Number,
+            value: ''
+          },
+          contactNumberTitle: {
+            type: String,
+            value: 'Contact number'
+          },
+          contactNumberInfo: {
+            type: String,
+            value: 'In case of any notifications our agent will reach you on this number'
+          },
+          contactNumberError: {
+            type: String,
+            value: 'Contact number is required'
+          },
+          paxListType: {
+            type: String,
+            value: 'Adult'
+          },
+          paxListTitle: {
+            type: String,
+            value: 'Mr'
+          },
+          paxListFirstName: {
+            type: String,
+            value: 'John'
+          },
+          paxListLastName: {
+            type: String,
+            value: 'Doe'
+          },
+          paxListEmail: {
+            type: String,
+            value: 'john@example.com'
+          },
+          paxListContact: {
+            type: Number,
+            value: 343453453
+          },
+          paxListcountryCode: {
+            type: String,
+            value: '+91'
+          },
+          paxListMemberShip: {
+            type: Array,
+            value: [{
+              "programName": "",
+              "programCode": "",
+              "number": ""
+            }]
+          },
+          productID: {
+            type: String,
+            value: '123123'
+          },
+          productName: {
+            type: String,
+            value: 'El Cortez Hotel &; Casino'
+          },
+          productAllowLoyalty: {
+            type: Boolean,
+            value: true,
+          },
         };
+      } //End of Properties.
+
+      _defaultOptionValue() {
+        if (this.option === undefined) {
+          this.allowContactNumber;
+          this.allowContactNumberForLeadPax;
+          this.allowEmail;
+          this.allowEmailForLeadPax;
+          this.requiredField;
+          this.requiredFieldForLeadPax;
+        }
+        else {
+          if (this.option.allowContactNumber === undefined) {
+            this.allowContactNumber;
+          }
+          else {
+            this.allowContactNumber = this.option.allowContactNumber;
+          }
+          if (this.option.allowContactNumberForLeadPax === undefined) {
+            this.allowContactNumberForLeadPax;
+          }
+          else {
+            this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
+          }
+          if (this.option.allowEmail === undefined) {
+            this.allowEmail;
+          }
+          else {
+            this.allowEmailt = this.option.allowEmail;
+          }
+          if (this.option.allowEmailForLeadPax === undefined) {
+            this.allowEmailForLeadPax;
+          }
+          else {
+            this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
+          }
+          if (this.option.requiredField === undefined) {
+            this.requiredField;
+          }
+          else {
+            this.requiredField = this.option.requiredField;
+          }
+          if (this.option.requiredFieldForLeadPax === undefined) {
+            this.requiredFieldForLeadPax;
+          }
+          else {
+            this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
+          }
+        }
       }
+      _defaultResourcesValue() {
+        if (this.resources.icons.terms === undefined) {
+          this.terms;
+        }
+        else {
+          this.terms = this.resources.icons.terms;
+        }
+        if (this.resources.labels.adult === undefined) {
+          this.adultTitle;
+          this.adultInfo;
+        }
+        else {
+          if (this.resources.labels.adult.title === undefined) {
+            this.adultTitle;
+          }
+          else {
+            this.adultTitle = this.resources.labels.adult.title;
+          }
+          if (this.resources.labels.adult.info === undefined) {
+            this.adultInfo;
+          }
+          else {
+            this.adultInfo = this.resources.labels.adult.info;
+          }
+        }
+        if (this.resources.labels.child === undefined) {
+          this.childTitle;
+          this.childInfo;
+        }
+        else {
+          if (this.resources.labels.child.title === undefined) {
+            this.childTitle;
+          }
+          else {
+            this.childTitle = this.resources.labels.child.title;
+          }
+          if (this.resources.labels.child.info === undefined) {
+            this.childInfo;
+          }
+          else {
+            this.childInfo = this.resources.labels.child.info;
+          }
+        }
+        if (this.resources.fields.title === undefined) {
+          this.titleValues;
+          this.titleSelected;
+          this.titleLabel;
+          this.titleError;
+        }
+        else {
+          if (this.resources.fields.title.values === undefined) {
+            this.titleValues;
+          }
+          else {
+            this.titleValues = this.resources.fields.title.values;
+          }
+          if (this.resources.fields.title.selected === undefined) {
+            this.titleSelected;
+          }
+          else {
+            this.titleSelected = this.resources.fields.title.selected;
+          }
+          if (this.resources.fields.title.title === undefined) {
+            this.titleLabel;
+          }
+          else {
+            this.titleLabel = this.resources.fields.title.title;
+          }
+          if (this.resources.fields.title.errors === undefined) {
+            this.titleError;
+          }
+          else {
+            this.titleError = this.resources.fields.title.errors;
+          }
+        }
+        if (this.resources.fields.firstName === undefined) {
+          this.firstNameValue;
+          this.firstnameTitle;
+          this.firstNameError;
+        }
+        else {
+          if (this.resources.fields.firstName.value === undefined) {
+            this.firstNameValue;
+          }
+          else {
+            this.firstNameValue = this.resources.fields.firstName.value;
+          }
+          if (this.resources.fields.firstName.title === undefined) {
+            this.firstnameTitle;
+          }
+          else {
+            this.firstnameTitle = this.resources.fields.firstName.title;
+          }
+          if (this.resources.fields.firstName.errors === undefined) {
+            this.firstNameError;
+          }
+          else {
+            this.firstNameError = this.resources.fields.firstName.errors;
+          }
+        }
+        if (this.resources.fields.lastName === undefined) {
+          this.lastNameValue;
+          this.lastnameTitle;
+          this.lastNameError;
+        }
+        else {
+          if (this.resources.fields.lastName.value === undefined) {
+            this.lastNameValue;
+          }
+          else {
+            this.lastNameValue = this.resources.fields.lastName.value;
+          }
+          if (this.resources.fields.lastName.title === undefined) {
+            this.lastnameTitle;
+          }
+          else {
+            this.lastnameTitle = this.resources.fields.lastName.title;
+          }
+          if (this.resources.fields.lastName.errors === undefined) {
+            this.lastNameError;
+          }
+          else {
+            this.lastNameError = this.resources.fields.lastName.errors;
+          }
+        }
+        if (this.resources.fields.email === undefined) {
+          this.emailValue;
+          this.emailTitle;
+          this.emailInfo;
+          this.emailError;
+        }
+        else {
+          if (this.resources.fields.email.value === undefined) {
+            this.emailValue;
+          }
+          else {
+            this.emailValue = this.resources.fields.email.value;
+          }
+          if (this.resources.fields.email.title === undefined) {
+            this.emailTitle;
+          }
+          else {
+            this.emailTitle = this.resources.fields.email.title;
+          }
+          if (this.resources.fields.email.errors === undefined) {
+            this.emailInfo ;
+          }
+          else {
+            this.emailInfo  = this.resources.fields.email.errors;
+          }
+          if (this.resources.fields.email.errors === undefined) {
+            this.emailError;
+          }
+          else {
+            this.emailError = this.resources.fields.email.errors;
+          }
+        }
+        if (this.resources.fields.countryCode === undefined) {
+          this.countryCodeValues;
+          this.countryCodeTitle;
+          this.countryCodeError;
+        }
+        else {
+          if (this.resources.fields.countryCode.values === undefined) {
+            this.countryCodeValues;
+          }
+          else {
+            this.countryCodeValues = this.resources.fields.countryCode.values;
+          }
+          if (this.resources.fields.countryCode.title === undefined) {
+            this.countryCodeTitle;
+          }
+          else {
+            this.countryCodeTitle = this.resources.fields.countryCode.title;
+          }
+          if (this.resources.fields.countryCode.errors === undefined) {
+            this.countryCodeError ;
+          }
+          else {
+            this.countryCodeError  = this.resources.fields.countryCode.errors;
+          }
+        }
+        if (this.resources.fields.contactNumber === undefined) {
+          this.contactNumberValue;
+          this.contactNumberTitle;
+          this.contactNumberInfo;
+          this.contactNumberError;
+        }
+        else {
+          if (this.resources.fields.contactNumber.value === undefined) {
+            this.contactNumberValue;
+          }
+          else {
+            this.contactNumberValue = this.resources.fields.contactNumber.value;
+          }
+          if (this.resources.fields.contactNumber.title === undefined) {
+            this.contactNumberTitle;
+          }
+          else {
+            this.contactNumberTitle = this.resources.fields.contactNumber.title;
+          }
+          if (this.resources.fields.contactNumber.errors === undefined) {
+            this.contactNumberInfo ;
+          }
+          else {
+            this.contactNumberInfo  = this.resources.fields.contactNumber.errors;
+          }
+          if (this.resources.fields.contactNumber.errors === undefined) {
+            this.contactNumberError;
+          }
+          else {
+            this.contactNumberError = this.resources.fields.contactNumber.errors;
+          }
+        }
+      }
+      _defaultpaxListValue(){
+        if(this.paxList === undefined){
+          this.paxListType;
+          this.paxListTitle;
+          this.paxListFirstName;
+          this.paxListLastName;
+          this.paxListEmail;
+          this.paxListContact;
+          this.paxListcountryCode;
+          this.paxListMemberShip;
+        }
+        else{
+          if(this.paxList.type === undefined){
+            this.paxListType;
+          }
+          else{
+            this.paxListType = this.paxList.type;
+          }
+          if(this.paxList.title === undefined){
+            this.paxListTitle;
+          }
+          else{
+            this.paxListTitle = this.paxList.title;
+          }
+          if(this.paxList.firstName === undefined){
+            this.paxListFirstName;
+          }
+          else{
+            this.paxListFirstName = this.paxList.firstName;
+          }
+          if(this.paxList.lastName === undefined){
+            this.paxListLastName;
+          }
+          else{
+            this.paxListLastName = this.paxList.lastName;
+          }
+          if(this.paxList.email === undefined){
+            this.paxListEmail;
+          }
+          else{
+            this.paxListEmail = this.paxList.email;
+          }
+          if(this.paxList.contact === undefined){
+            this.paxListContact;
+          }
+          else{
+            this.paxListContact = this.paxList.contact;
+          }
+          if(this.paxList.countryCode === undefined){
+            this.paxListcountryCode;
+          }
+          else{
+            this.paxListcountryCode = this.paxList.countryCode;
+          }
+          if(this.paxList.membership === undeined){
+            this.paxListMemberShip;
+          }
+          else{
+            this.paxListMemberShip = this.paxList.membership;
+          }
+        }
+      }
+      _defaultProductValue(){
+        if(this.product === undefined){
+          this.productID;
+          this.productName;
+          this.productAllowLoyalty;          
+        }
+        else{
+          if(this.product.id === undefined){
+            this.productID;
+          }
+          else{
+            this.productID = this.product.id;
+          }
+          if(this.product.name === undefined){
+            this.productName;
+          }
+          else{
+            this.productName = this.product.name;
+          }
+          if(this.product.allowLoyalty === undefined){
+            this.productAllowLoyalty;
+          }
+          else{
+            this.productAllowLoyalty = this.product.allowLoyalty;
+          }
+        }
+      }
+      // ready() {
+      //   this._defaultOptionValue();
+      //   this._defaultResourcesValue();
+      // }
     }
 
     window.customElements.define(TGuestInfo.is, TGuestInfo);
