@@ -73,13 +73,13 @@
             </div>
             <template is="dom-repeat" items="{{adultPaxCountArray}}">
                 <div id="paxInfoTemp">
-                    <pax-info id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}"></pax-info>
+                    <pax-info id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}"></pax-info>
                 </div>
                 <iron-icon icon="close" id="closeIcon" on-tap="_closePaxInfo"></iron-icon>
             </template>
             <template is="dom-repeat" items="{{childPaxCountArray}}">
                 <div id="paxInfoTemp">
-                    <pax-info-child id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}"></pax-info-child>
+                    <pax-info-child id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}"></pax-info-child>
                 </div>
                 <iron-icon icon="close" id="closeIcon" on-tap="_closePaxInfo"></iron-icon>
             </template>
@@ -149,6 +149,10 @@
             _closePaxInfo() {
                 this.splice('rooms', e.model.index, 1);
             }
+            _increaseIndex(index) {
+                var calIndex = index + 1;
+                return calIndex;
+            }
             ready() {
                 super.ready();
                 var adultPax = this.adultPaxCount;
@@ -159,7 +163,7 @@
                     adultPaxCount1.push(i);
                 }
                 this.adultPaxCountArray = adultPaxCount1;
-                 var childPaxCount1 = [];
+                var childPaxCount1 = [];
                 for (var i = 0; i < childPax; i++) {
                     childPaxCount1.push(i);
                 }

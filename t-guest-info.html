@@ -29,15 +29,12 @@
         font-size: 20px;
       }
     </style>
-    <label>{{option.requiredField}}</label><br><br>
-    <label>{{resources.icons.terms}}</label><br><br>
-    <label>{{paxlist.email}}</label><br><br>
-    <label>{{product.rooms.policies}}</label><br><br>
+ 
 
     <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
     <template is="dom-repeat" items="{{product}}">
       <template is="dom-repeat" items="{{item.rooms}}">
-        <t-traveler-info title="{{title}} {{index}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child" policy-List="{{item.policies}}" pax-list="{{paxlist}}"
+        <t-traveler-info title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child" policy-List="{{item.policies}}" pax-list="{{paxlist}}"
           option="[[option]]" resource="{{resources}}" adult-pax-count="{{item.criteria.traveler.adult}}" child-pax-count="{{item.criteria.traveler.child}}">
         </t-traveler-info>
       </template>
@@ -635,7 +632,10 @@
           }
         }
       }
-      
+      _increaseIndex(index){
+         var calIndex = index + 1;
+         return calIndex;
+      }
       ready() {
         super.ready();
         this._defaultOptionValue();
