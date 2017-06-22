@@ -8,7 +8,7 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-button/paper-button.html">-->
 
-<dom-module id="pax-info">
+<dom-module id="pax-info-child">
     <template>
         <style>
              :host {
@@ -91,8 +91,8 @@
         <form is="iron-form" id="form" method="post" action="/form/handler">
             <div class="inputForm">
                 <div id="typeAndLabel">
-                    <label id="typeLabel">{{resource.labels.adult.title}}</label>
-                    <div id="typeSubLabel"> {{resource.labels.adult.info}}</div>
+                    <label id="typeLabel">{{resource.labels.child.title}}</label>
+                    <div id="typeSubLabel"> {{resource.labels.child.info}}</div>
                 </div>
                 <div>
                     <paper-dropdown-menu label="{{resource.fields.title.title}}" id="PaxTitle">
@@ -145,8 +145,8 @@
      * @polymer
      * @demo demo/index.html
      */
-        class PaxInfo extends Polymer.Element {
-            static get is() { return 'pax-info'; }
+        class PaxInfoChild extends Polymer.Element {
+            static get is() { return 'pax-info-child'; }
             static get properties() {
                 return {
                     maxChildAge: {
@@ -188,11 +188,7 @@
                 }
             }
 
-            _doneRoomCard() {
-                // alert("hi");
-                // alert(this.adultTitle);
-                this.showTitle = !this.showTitle;
-            }
+          
             _closePaxInfo() {
 
             }
@@ -204,6 +200,6 @@
 
         }
 
-        window.customElements.define(PaxInfo.is, PaxInfo);
+        window.customElements.define(PaxInfoChild.is, PaxInfoChild);
     </script>
 </dom-module>

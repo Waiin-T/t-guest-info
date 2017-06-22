@@ -1,6 +1,11 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="t-traveler-info.html">
 <dom-module id="t-guest-info">
   <template>
@@ -24,19 +29,19 @@
         font-size: 20px;
       }
     </style>
+    <label>{{option.requiredField}}</label><br><br>
+    <label>{{resources.icons.terms}}</label><br><br>
+    <label>{{paxlist.email}}</label><br><br>
+    <label>{{product.rooms.policies}}</label><br><br>
+
     <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
-    <t-traveler-info 
-             title="{{title}}" 
-             sub-title="{{subTitle}}" 
-             policy-List="[[policyList]]" 
-             pax-list = "{{paxList}}"
-             option = "[[option]]"
-             resource = "{{resources}}"
-             adult-pax-count = "2"        
-             child-pax-count = "1">
-    </t-traveler-info>
-    <!--<div>{{product.name}}</div>-->
-        <div>{{resources.labels.adult.title}}</div>
+    <template is="dom-repeat" items="{{product}}">
+      <template is="dom-repeat" items="{{item.rooms}}">
+        <t-traveler-info title="{{title}} {{index}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child" policy-List="{{item.policies}}" pax-list="{{paxlist}}"
+          option="[[option]]" resource="{{resources}}" adult-pax-count="{{item.criteria.traveler.adult}}" child-pax-count="{{item.criteria.traveler.child}}">
+        </t-traveler-info>
+      </template>
+    </template>
 
 
   </template>
@@ -51,26 +56,38 @@
      * @demo demo/index.html
      */
     class TGuestInfo extends Polymer.Element {
+
       static get is() { return 't-guest-info'; }
       static get properties() {
         return {
+          hotelProducts: {
+            type: Array,
+            value: [1, 2]
+          },
+          hotelRooms: {
+            type:Array,
+            
+          },
           title: {
             type: String,
-            value: 'Room 1'                            
+            value: 'Room'
           },
           subTitle: {
-            type: String,
-            value : function(){
-              var sTitle = this.product.name;
-              return sTitle;
-            }
+            type: String,            
+          },
+          adultPaxCount: {
+            type: Number
+          },
+          childPaxCount: {
+            type: Number
+          },
+          paxlist: {
+            type: Object
           },
           policyList: {
-            type: Array,
-            value: [
-              "FREE cancellation before 11:59PM on April 25, 2017"
-            ]
+            type: Array
           },
+
           option: {
             type: Object,
             value: {
@@ -78,8 +95,10 @@
               "requiredFieldForLeadPax": []
             }
           },
-        
-          paxList: {
+          resources: {
+            type: Object
+          },
+          paxList1: {
             type: Object,
             value: {
               "membership": {}
@@ -294,7 +313,7 @@
       _defaultOptionValue() {
         if (this.option === undefined) {
           this.allowContactNumber;
-          this.allowContactNumberForLeadPax ;
+          this.allowContactNumberForLeadPax;
           this.allowEmail;
           this.allowEmailForLeadPax;
           this.requiredField;
@@ -484,10 +503,10 @@
             this.emailTitle = this.resources.fields.email.title;
           }
           if (this.resources.fields.email.errors === undefined) {
-            this.emailInfo ;
+            this.emailInfo;
           }
           else {
-            this.emailInfo  = this.resources.fields.email.errors;
+            this.emailInfo = this.resources.fields.email.errors;
           }
           if (this.resources.fields.email.errors === undefined) {
             this.emailError;
@@ -515,10 +534,10 @@
             this.countryCodeTitle = this.resources.fields.countryCode.title;
           }
           if (this.resources.fields.countryCode.errors === undefined) {
-            this.countryCodeError ;
+            this.countryCodeError;
           }
           else {
-            this.countryCodeError  = this.resources.fields.countryCode.errors;
+            this.countryCodeError = this.resources.fields.countryCode.errors;
           }
         }
         if (this.resources.fields.contactNumber === undefined) {
@@ -541,10 +560,10 @@
             this.contactNumberTitle = this.resources.fields.contactNumber.title;
           }
           if (this.resources.fields.contactNumber.errors === undefined) {
-            this.contactNumberInfo ;
+            this.contactNumberInfo;
           }
           else {
-            this.contactNumberInfo  = this.resources.fields.contactNumber.errors;
+            this.contactNumberInfo = this.resources.fields.contactNumber.errors;
           }
           if (this.resources.fields.contactNumber.errors === undefined) {
             this.contactNumberError;
@@ -554,8 +573,8 @@
           }
         }
       }
-      _defaultpaxListValue(){
-        if(this.paxList === undefined){
+      _defaultpaxListValue() {
+        if (this.paxList === undefined) {
           this.paxListType;
           this.paxListTitle;
           this.paxListFirstName;
@@ -565,63 +584,63 @@
           this.paxListcountryCode;
           this.paxListMemberShip;
         }
-        else{
-          if(this.paxList.type === undefined){
+        else {
+          if (this.paxList.type === undefined) {
             this.paxListType;
           }
-          else{
+          else {
             this.paxListType = this.paxList.type;
           }
-          if(this.paxList.title === undefined){
+          if (this.paxList.title === undefined) {
             this.paxListTitle;
           }
-          else{
+          else {
             this.paxListTitle = this.paxList.title;
           }
-          if(this.paxList.firstName === undefined){
+          if (this.paxList.firstName === undefined) {
             this.paxListFirstName;
           }
-          else{
+          else {
             this.paxListFirstName = this.paxList.firstName;
           }
-          if(this.paxList.lastName === undefined){
+          if (this.paxList.lastName === undefined) {
             this.paxListLastName;
           }
-          else{
+          else {
             this.paxListLastName = this.paxList.lastName;
           }
-          if(this.paxList.email === undefined){
+          if (this.paxList.email === undefined) {
             this.paxListEmail;
           }
-          else{
+          else {
             this.paxListEmail = this.paxList.email;
           }
-          if(this.paxList.contact === undefined){
+          if (this.paxList.contact === undefined) {
             this.paxListContact;
           }
-          else{
+          else {
             this.paxListContact = this.paxList.contact;
           }
-          if(this.paxList.countryCode === undefined){
+          if (this.paxList.countryCode === undefined) {
             this.paxListcountryCode;
           }
-          else{
+          else {
             this.paxListcountryCode = this.paxList.countryCode;
           }
-          if(this.paxList.membership === undefined){
+          if (this.paxList.membership === undefined) {
             this.paxListMemberShip;
           }
-          else{
+          else {
             this.paxListMemberShip = this.paxList.membership;
           }
         }
       }
-     
+      
       ready() {
         super.ready();
-         this._defaultOptionValue();
-         this._defaultResourcesValue();
-         this._defaultpaxListValue();
+        this._defaultOptionValue();
+        this._defaultResourcesValue();
+        this._defaultpaxListValue();
       }
     }
 

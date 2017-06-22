@@ -1,13 +1,14 @@
-<link rel="import" href="../polymer/polymer.html">
+<!--<link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-input/paper-input.html">-->
 <link rel="import" href="pax-info.html">
-<link rel="import" href="t-guest-info.html">
+<link rel="import" href="pax-info-child.html">
+<!--<link rel="import" href="t-guest-info.html">-->
 
 <dom-module id="t-traveler-info">
     <template>
@@ -43,12 +44,23 @@
                 height: 20px;
                 width: 20px;
             }
+            /*#paxInfo, #closeIcon{
+                float: left;
+            }*/
 
-            #paxInfoId{
+            #closeIcon {
                 /*margin-left: 10px;*/
+                margin-top: 4%;
+                color: #A8A8A8;
+            }
+
+            #paxInfoTemp {
+                float: left;
+                width: 96%;
             }
         </style>
         <div id="productPassengers">
+            <!--<label>{{product.rooms.policies}}</label><br><br>-->
             <app-toolbar id="toolbarRoom">
                 <div id="title">{{title}}</div>
                 <div> - </div>
@@ -59,10 +71,19 @@
                 <iron-icon icon="check" id="checkIcon"></iron-icon>
                 {{policyList}}
             </div>
-            <pax-info pax-list="{{paxList}}" option="[[option]]" resource="{{resources}}"></pax-info>
-            <!--<template is="dom-repeat" items="{{otherPaxCount}}">-->
-                <!--<pax-info pax-list="{{paxList}}" id="paxInfoId" option="[[option]]" resource="{{resources}}"></pax-info>-->
-            <!--</template>-->
+            <template is="dom-repeat" items="{{adultPaxCountArray}}">
+                <div id="paxInfoTemp">
+                    <pax-info id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}"></pax-info>
+                </div>
+                <iron-icon icon="close" id="closeIcon" on-tap="_closePaxInfo"></iron-icon>
+            </template>
+            <template is="dom-repeat" items="{{childPaxCountArray}}">
+                <div id="paxInfoTemp">
+                    <pax-info-child id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}"></pax-info-child>
+                </div>
+                <iron-icon icon="close" id="closeIcon" on-tap="_closePaxInfo"></iron-icon>
+            </template>
+
         </div>
 
 
@@ -88,7 +109,22 @@
                             "requiredFieldForLeadPax": []
                         }
                     },
-                   
+                    adultPaxCount: {
+                        type: Array,
+                    },
+                    adultPaxCountArray: {
+                        type: Array,
+                    },
+                    childPaxCount: {
+                        type: Array,
+                    },
+                    childPaxCountArray: {
+                        type: Array,
+                    },
+                    totalPaxCount: {
+                        type: Array,
+
+                    },
                     paxList: {
                         type: Object,
                         value: {
@@ -101,13 +137,33 @@
                             "rooms": []
                         }
                     },
-                    otherPaxCount: {
+                    policies: {
                         type: Array,
-                        value: [
-                        1,2,3
-                        ]
+                        value: 'abc'
                     },
+                    resource: {
+                        type: Object
+                    }
                 };
+            }
+            _closePaxInfo() {
+                this.splice('rooms', e.model.index, 1);
+            }
+            ready() {
+                super.ready();
+                var adultPax = this.adultPaxCount;
+                var childPax = this.childPaxCount;
+                //var totalPax = +adultPax + +childPax;
+                var adultPaxCount1 = [];
+                for (var i = 0; i < adultPax; i++) {
+                    adultPaxCount1.push(i);
+                }
+                this.adultPaxCountArray = adultPaxCount1;
+                 var childPaxCount1 = [];
+                for (var i = 0; i < childPax; i++) {
+                    childPaxCount1.push(i);
+                }
+                this.childPaxCountArray = childPaxCount1;
             }
         }
 
