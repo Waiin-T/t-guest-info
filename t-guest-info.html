@@ -1,3 +1,4 @@
+<link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="t-traveler-info.html">
@@ -23,12 +24,19 @@
         font-size: 20px;
       }
     </style>
-    <!--<label>{{option.pax}}</label>-->
     <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
-    <!--<label>{{option.pax}}</label>-->
-    <t-traveler-info ></t-traveler-info>
-
-
+    <t-traveler-info 
+             title="{{title}}" 
+             sub-title="{{subTitle}}" 
+             policy-List="[[policyList]]" 
+             pax-list = "{{paxList}}"
+             option = "[[option]]"
+             resource = "{{resources}}"
+             adult-pax-count = "2"        
+             child-pax-count = "1">
+    </t-traveler-info>
+    <!--<div>{{product.name}}</div>-->
+        <div>{{resources.labels.adult.title}}</div>
 
 
   </template>
@@ -46,7 +54,23 @@
       static get is() { return 't-guest-info'; }
       static get properties() {
         return {
-
+          title: {
+            type: String,
+            value: 'Room 1'                            
+          },
+          subTitle: {
+            type: String,
+            value : function(){
+              var sTitle = this.product.name;
+              return sTitle;
+            }
+          },
+          policyList: {
+            type: Array,
+            value: [
+              "FREE cancellation before 11:59PM on April 25, 2017"
+            ]
+          },
           option: {
             type: Object,
             value: {
@@ -54,26 +78,7 @@
               "requiredFieldForLeadPax": []
             }
           },
-          resources: {
-            type: Object,
-            value: {
-              "icons": {},
-              "labels": {
-                adult: {},
-                child: {}
-              },
-              "fields": {
-                "title": {},
-                "firstName": {},
-                "lastName": {},
-                "email": {},
-                "countryCode": {
-                  values: []
-                },
-                "contactNumber": {}
-              }
-            }
-          },
+        
           paxList: {
             type: Object,
             value: {
@@ -289,7 +294,7 @@
       _defaultOptionValue() {
         if (this.option === undefined) {
           this.allowContactNumber;
-          this.allowContactNumberForLeadPax;
+          this.allowContactNumberForLeadPax ;
           this.allowEmail;
           this.allowEmailForLeadPax;
           this.requiredField;
@@ -603,7 +608,7 @@
           else{
             this.paxListcountryCode = this.paxList.countryCode;
           }
-          if(this.paxList.membership === undeined){
+          if(this.paxList.membership === undefined){
             this.paxListMemberShip;
           }
           else{
@@ -611,37 +616,13 @@
           }
         }
       }
-      _defaultProductValue(){
-        if(this.product === undefined){
-          this.productID;
-          this.productName;
-          this.productAllowLoyalty;          
-        }
-        else{
-          if(this.product.id === undefined){
-            this.productID;
-          }
-          else{
-            this.productID = this.product.id;
-          }
-          if(this.product.name === undefined){
-            this.productName;
-          }
-          else{
-            this.productName = this.product.name;
-          }
-          if(this.product.allowLoyalty === undefined){
-            this.productAllowLoyalty;
-          }
-          else{
-            this.productAllowLoyalty = this.product.allowLoyalty;
-          }
-        }
+     
+      ready() {
+        super.ready();
+         this._defaultOptionValue();
+         this._defaultResourcesValue();
+         this._defaultpaxListValue();
       }
-      // ready() {
-      //   this._defaultOptionValue();
-      //   this._defaultResourcesValue();
-      // }
     }
 
     window.customElements.define(TGuestInfo.is, TGuestInfo);

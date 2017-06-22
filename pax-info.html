@@ -1,0 +1,209 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="pax-info">
+    <template>
+        <style>
+             :host {
+                display: block;
+            }
+
+            .inputForm #PaxTitle,
+            #firstName,
+            #lastName {
+                float: left;
+            }
+
+            #emailAndLabel,
+            #countryCode,
+            #contactNo {
+                float: left;
+            }
+
+            #typeAndLabel {
+                width: 20%;
+                float: left;
+                margin-top: 4%;
+                margin-left: 10px;
+                width: 20%;
+            }
+
+            #typeLabel,
+            #typeSubLabel {
+                float: left;
+            }
+
+            #typeSubLabel {
+                font-size: smaller;
+                color: #BDBDBD;
+            }
+
+            #PaxTitle {
+                width: 23%;
+                margin-left: 10px;
+            }
+
+            #firstName {
+                width: 23%;
+                margin-left: 20px;
+            }
+
+            #lastName {
+                width: 23%;
+                margin-left: 20px;
+            }
+
+            #closeIcon {
+                margin-left: 10px;
+                margin-top: 4%;
+                color: #A8A8A8;
+            }
+
+            #inputForm2 {
+                margin-top: 15px;
+            }
+
+            #email {}
+
+            #emailAndLabel {
+                margin-left: 10px;
+                width: 44.5%;
+            }
+
+            #emailLabel {
+                font-size: smaller;
+                color: #BDBDBD;
+            }
+
+            #countryCode {
+                width: 23%;
+                margin-left: 20px;
+            }
+
+            #contactNo {
+                width: 23%;
+                margin-left: 20px;
+            }
+        </style>
+
+
+        <div class="inputForm">
+            <div id="typeAndLabel">
+                <label id="typeLabel">{{adultTitle}}</label>
+                <div id="typeSubLabel"> ({{maxChildAge}}+ Years)</div>
+            </div>
+            <div hidden$="{{showTitle}}">
+                <paper-dropdown-menu label="Title" id="PaxTitle" >
+                    <paper-listbox slot="dropdown-content" selected="0">
+                        <paper-item>Mr.</paper-item>
+                        <paper-item>Ms.</paper-item>                        
+                    </paper-listbox>
+                </paper-dropdown-menu>
+            </div>
+            
+            <div>
+                <paper-input label="First name" id="firstName"></paper-input>
+            </div>
+            <div>
+                <paper-input label="Last name" id="lastName"></paper-input>
+            </div>
+            <div>
+                <iron-icon icon="close" id="closeIcon"></iron-icon>
+            </div>
+        </div>
+        <div id="inputForm2">
+            <div id="emailAndLabel">
+                <paper-input label="Email" id="email"></paper-input>
+                <div id="emailLabel">We'll send your confirmation voucher at this email ID.</div>
+            </div>
+            <div>
+                <paper-dropdown-menu label="Country code" id="countryCode">
+                    <paper-listbox slot="dropdown-content" selected="0">
+                        <paper-item>Mr.</paper-item>
+                        <paper-item>Ms.</paper-item>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+            </div>
+            <div>
+                <paper-input label="Contact number" id="contactNo"></paper-input>
+            </div>
+        </div>
+         
+        
+         <paper-button toggles id="buttons" on-tap='_doneRoomCard'>Done</paper-button>
+    </template>
+
+    <script>
+        /**
+     * `pax-info`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+        class PaxInfo extends Polymer.Element {
+            static get is() { return 'pax-info'; }
+            static get properties() {
+                return {
+                    maxChildAge: {
+                        type: Number,
+                        value: 12
+                    },
+                     type: {
+                        type: String,
+                        value: 'Adult 1'
+                    },
+                    option: {
+                        type: Object,
+                        value: {
+                            "requiredField": [],
+                            "requiredFieldForLeadPax": []
+                        }
+                    },
+                   
+                                       paxList: {
+                        type: Object,
+                        value: {
+                            "membership": {}
+                        }
+                    },
+                    product: {
+                        type: Object,
+                        value: {
+                            "rooms": []
+                        }
+                    },
+                    adultTitle:{
+                        type: String,
+                        value: ''
+                    },
+                    showTitle: {
+                        type: Boolean,
+                        value: true
+                    }
+                }
+            }
+
+            _doneRoomCard() {
+                // alert("hi");
+                // alert(this.adultTitle);
+                this.showTitle = !this.showTitle;
+            }
+            ready(){
+                super.ready();
+
+            }
+
+        }
+
+        window.customElements.define(PaxInfo.is, PaxInfo);
+    </script>
+</dom-module>
