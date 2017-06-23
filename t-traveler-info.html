@@ -1,14 +1,5 @@
-<!--<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../paper-listbox/paper-listbox.html">
-<link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="../paper-input/paper-input.html">-->
 <link rel="import" href="pax-info.html">
 <link rel="import" href="pax-info-child.html">
-<!--<link rel="import" href="t-guest-info.html">-->
 
 <dom-module id="t-traveler-info">
     <template>
@@ -28,10 +19,12 @@
             #subTitle {
                 color: gray;
                 font-size: 14px;
+                padding: 5px;
             }
 
             #title {
                 font-size: 16px;
+                padding: 5px;
             }
 
             #policyList {
@@ -49,8 +42,8 @@
             }*/
 
             #closeIcon {
-                /*margin-left: 10px;*/
                 margin-top: 4%;
+                margin-left: -10px;
                 color: #A8A8A8;
             }
 
@@ -60,28 +53,30 @@
             }
         </style>
         <div id="productPassengers">
-            <!--<label>{{product.rooms.policies}}</label><br><br>-->
             <app-toolbar id="toolbarRoom">
                 <div id="title">{{title}}</div>
-                <div> - </div>
+                <div id="titleDash"> - </div>
                 <div id="subTitle">{{subTitle}}</div>
             </app-toolbar>
 
             <div id="policyList">
+                <template is="dom-repeat" items={{policyList}}>
+                    <br>
                 <iron-icon icon="check" id="checkIcon"></iron-icon>
-                {{policyList}}
+                {{item}}
+                </template>
             </div>
             <template is="dom-repeat" items="{{adultPaxCountArray}}">
                 <div id="paxInfoTemp">
                     <pax-info id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}"></pax-info>
+                    <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
                 </div>
-                <iron-icon icon="close" id="closeIcon" on-tap="_closePaxInfo"></iron-icon>
             </template>
             <template is="dom-repeat" items="{{childPaxCountArray}}">
                 <div id="paxInfoTemp">
                     <pax-info-child id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}"></pax-info-child>
+                    <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxChildInfo"></paper-icon-button>
                 </div>
-                <iron-icon icon="close" id="closeIcon" on-tap="_closePaxInfo"></iron-icon>
             </template>
 
         </div>
@@ -137,17 +132,19 @@
                             "rooms": []
                         }
                     },
-                    policies: {
+                    policyList: {
                         type: Array,
-                        value: 'abc'
                     },
                     resource: {
                         type: Object
                     }
                 };
             }
-            _closePaxInfo() {
-                this.splice('rooms', e.model.index, 1);
+            _closePaxAdultInfo(e) {
+                this.splice('adultPaxCountArray', e.model.index, 1);
+            }
+            _closePaxChildInfo(e) {
+                this.splice('childPaxCountArray', e.model.index, 1);
             }
             _increaseIndex(index) {
                 var calIndex = index + 1;

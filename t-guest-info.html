@@ -6,6 +6,7 @@
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="t-traveler-info.html">
 <dom-module id="t-guest-info">
   <template>
@@ -13,6 +14,10 @@
        :host {
         display: block;
         background-color: white;
+      }
+
+      #travelerInfo{
+        margin-top: 40px;
       }
 
       #toolbar1 {
@@ -32,11 +37,13 @@
  
 
     <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
+    
     <template is="dom-repeat" items="{{product}}">
       <template is="dom-repeat" items="{{item.rooms}}">
-        <t-traveler-info title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child" policy-List="{{item.policies}}" pax-list="{{paxlist}}"
+        <t-traveler-info id="travelerInfo" title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child" policy-List="{{item.policies}}" pax-list="{{paxlist}}"
           option="[[option]]" resource="{{resources}}" adult-pax-count="{{item.criteria.traveler.adult}}" child-pax-count="{{item.criteria.traveler.child}}">
         </t-traveler-info>
+        <br>
       </template>
     </template>
 
