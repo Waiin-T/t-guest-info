@@ -5,6 +5,18 @@
                 display: block;
             }
 
+            paper-dropdown-menu {
+                --paper-input-container-underline-focus: #4CB050;
+                --paper-input-container-focus-color: #4CB050;
+                --paper-input-container-label-focus: lightgray;
+            }
+
+            paper-input {
+                --paper-input-container-underline-focus: #4CB050;
+                --paper-input-container-focus-color: #4CB050;
+                --paper-input-container-label-focus: lightgray;
+            }
+
             .inputForm #PaxTitle,
             #firstName,
             #lastName {
@@ -49,7 +61,7 @@
             #lastName {
                 width: 23%;
                 margin-left: 20px;
-            }            
+            }
 
             #inputForm2 {
                 margin-top: 15px;
@@ -100,14 +112,14 @@
                 <div>
                     <paper-input label="{{resource.fields.lastName.title}}" id="lastName"></paper-input>
                 </div>
-                
+
             </div>
             <div id="inputForm2">
                 <div id="emailAndLabel">
-                    <paper-input label="{{resource.fields.email.title}}" id="email"></paper-input>
+                    <paper-input label="{{resource.fields.email.title}}" id="email" hidden$="{{showEmailAddress}}"></paper-input>
                     <div id="emailLabel">{{resource.fields.email.info}}</div>
                 </div>
-                <div>
+                <div hidden$="{{showContactNumber}}">
                     <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="countryCode">
                         <paper-listbox slot="dropdown-content">
                             <template is="dom-repeat" items={{resource.fields.countryCode.values}}>
@@ -117,7 +129,7 @@
                     </paper-dropdown-menu>
                 </div>
                 <div>
-                    <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo"></paper-input>
+                    <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo" hidden$="{{showContactNumber}}"></paper-input>
                 </div>
             </div>
         </form>
@@ -126,15 +138,17 @@
 
     <script>
         /**
-     * `pax-info`
-     * 
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
+         * `pax-info`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
         class PaxInfo extends Polymer.Element {
-            static get is() { return 'pax-info'; }
+            static get is() {
+                return 'pax-info';
+            }
             static get properties() {
                 return {
                     maxChildAge: {
@@ -172,22 +186,46 @@
                     showTitle: {
                         type: Boolean,
                         value: true
-                    }
+                    },
+                    showContactNumber: {
+                        type: Boolean,
+                        value: true
+                    },
+                    showEmailAddress: {
+                        type: Boolean,
+                        value: true
+                    },
                 }
             }
 
-            _doneRoomCard() {
-                // alert("hi");
-                // alert(this.adultTitle);
-                this.showTitle = !this.showTitle;
-            }
-            _closePaxInfo() {
+            _showAllowFieldsForLeadPax() {
+                if (this.index === 1) {
+                    var checkLeadPax = this.option.allowContactNumberForLeadPax;
+                    if (checkLeadPax === true) {
+                        this.showContactNumber = false;
+                    }
+                    var checkLeadPax = this.option.allowEmailForLeadPax;
+                    if (checkLeadPax === true) {
+                        this.showEmailAddress = false;
+                    }
+                }
 
+            }
+            _showAllowFields() {
+                var check = this.option.allowContactNumber;
+                if (check === true && this.index != 1) {
+                    this.showContactNumber = false;
+                }
+                var check = this.option.allowEmail;
+                if (check === true && this.index != 1) {
+                    this.showEmailAddress = false;
+                }
             }
             ready() {
                 super.ready();
+                this._showAllowFieldsForLeadPax();
+                this._showAllowFields();
                 
-
             }
 
         }

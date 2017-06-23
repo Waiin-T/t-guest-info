@@ -8,6 +8,7 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="t-traveler-info.html">
+<link rel="import" href="t-loyalty-program.html">
 <dom-module id="t-guest-info">
   <template>
     <style>
@@ -16,7 +17,7 @@
         background-color: white;
       }
 
-      #travelerInfo{
+      #travelerInfo {
         margin-top: 40px;
       }
 
@@ -33,21 +34,35 @@
         text-decoration: none;
         font-size: 20px;
       }
+      #loyaltyDiv{
+        width: 67%;
+      }
+      #toolbarLotalty {
+        background-color: #E8E8E8;
+        width: 100%;
+        margin-left: 10px;
+        margin-top: 20px;
+        height: 50px;
+      }
     </style>
- 
+
 
     <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
-    
+
     <template is="dom-repeat" items="{{product}}">
       <template is="dom-repeat" items="{{item.rooms}}">
-        <t-traveler-info id="travelerInfo" title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child" policy-List="{{item.policies}}" pax-list="{{paxlist}}"
-          option="[[option]]" resource="{{resources}}" adult-pax-count="{{item.criteria.traveler.adult}}" child-pax-count="{{item.criteria.traveler.child}}">
+        <t-traveler-info id="travelerInfo" title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child"
+          policy-List="{{item.policies}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resources}}" adult-pax-count="{{item.criteria.traveler.adult}}"
+          child-pax-count="{{item.criteria.traveler.child}}">
         </t-traveler-info>
         <br>
       </template>
     </template>
 
-
+    <div id="loyaltyDiv">
+      <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
+      <t-loyalty-program></t-loyalty-program>
+    </div>
   </template>
 
   <script>
@@ -61,7 +76,9 @@
      */
     class TGuestInfo extends Polymer.Element {
 
-      static get is() { return 't-guest-info'; }
+      static get is() {
+        return 't-guest-info';
+      }
       static get properties() {
         return {
           hotelProducts: {
@@ -69,15 +86,15 @@
             value: [1, 2]
           },
           hotelRooms: {
-            type:Array,
-            
+            type: Array,
+
           },
           title: {
             type: String,
             value: 'Room'
           },
           subTitle: {
-            type: String,            
+            type: String,
           },
           adultPaxCount: {
             type: Number
@@ -168,11 +185,11 @@
           titleValues: {
             type: Array,
             value: [{
-              "key": "Mr"
-            },
-            {
-              "key": "Ms"
-            }
+                "key": "Mr"
+              },
+              {
+                "key": "Ms"
+              }
             ]
           },
           titleSelected: {
@@ -230,13 +247,13 @@
           countryCodeValues: {
             type: Array,
             value: [{
-              "key": "India +91",
-              "value": "91"
-            },
-            {
-              "key": "USA +1",
-              "value": "1"
-            }
+                "key": "India +91",
+                "value": "91"
+              },
+              {
+                "key": "USA +1",
+                "value": "1"
+              }
             ]
           },
           countryCodeTitle: {
@@ -322,42 +339,35 @@
           this.allowEmailForLeadPax;
           this.requiredField;
           this.requiredFieldForLeadPax;
-        }
-        else {
+        } else {
           if (this.option.allowContactNumber === undefined) {
             this.allowContactNumber;
-          }
-          else {
+          } else {
             this.allowContactNumber = this.option.allowContactNumber;
           }
           if (this.option.allowContactNumberForLeadPax === undefined) {
             this.allowContactNumberForLeadPax;
-          }
-          else {
+          } else {
             this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
           }
           if (this.option.allowEmail === undefined) {
             this.allowEmail;
-          }
-          else {
+          } else {
             this.allowEmailt = this.option.allowEmail;
           }
           if (this.option.allowEmailForLeadPax === undefined) {
             this.allowEmailForLeadPax;
-          }
-          else {
+          } else {
             this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
           }
           if (this.option.requiredField === undefined) {
             this.requiredField;
-          }
-          else {
+          } else {
             this.requiredField = this.option.requiredField;
           }
           if (this.option.requiredFieldForLeadPax === undefined) {
             this.requiredFieldForLeadPax;
-          }
-          else {
+          } else {
             this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
           }
         }
@@ -365,43 +375,36 @@
       _defaultResourcesValue() {
         if (this.resources.icons.terms === undefined) {
           this.terms;
-        }
-        else {
+        } else {
           this.terms = this.resources.icons.terms;
         }
         if (this.resources.labels.adult === undefined) {
           this.adultTitle;
           this.adultInfo;
-        }
-        else {
+        } else {
           if (this.resources.labels.adult.title === undefined) {
             this.adultTitle;
-          }
-          else {
+          } else {
             this.adultTitle = this.resources.labels.adult.title;
           }
           if (this.resources.labels.adult.info === undefined) {
             this.adultInfo;
-          }
-          else {
+          } else {
             this.adultInfo = this.resources.labels.adult.info;
           }
         }
         if (this.resources.labels.child === undefined) {
           this.childTitle;
           this.childInfo;
-        }
-        else {
+        } else {
           if (this.resources.labels.child.title === undefined) {
             this.childTitle;
-          }
-          else {
+          } else {
             this.childTitle = this.resources.labels.child.title;
           }
           if (this.resources.labels.child.info === undefined) {
             this.childInfo;
-          }
-          else {
+          } else {
             this.childInfo = this.resources.labels.child.info;
           }
         }
@@ -410,30 +413,25 @@
           this.titleSelected;
           this.titleLabel;
           this.titleError;
-        }
-        else {
+        } else {
           if (this.resources.fields.title.values === undefined) {
             this.titleValues;
-          }
-          else {
+          } else {
             this.titleValues = this.resources.fields.title.values;
           }
           if (this.resources.fields.title.selected === undefined) {
             this.titleSelected;
-          }
-          else {
+          } else {
             this.titleSelected = this.resources.fields.title.selected;
           }
           if (this.resources.fields.title.title === undefined) {
             this.titleLabel;
-          }
-          else {
+          } else {
             this.titleLabel = this.resources.fields.title.title;
           }
           if (this.resources.fields.title.errors === undefined) {
             this.titleError;
-          }
-          else {
+          } else {
             this.titleError = this.resources.fields.title.errors;
           }
         }
@@ -441,24 +439,20 @@
           this.firstNameValue;
           this.firstnameTitle;
           this.firstNameError;
-        }
-        else {
+        } else {
           if (this.resources.fields.firstName.value === undefined) {
             this.firstNameValue;
-          }
-          else {
+          } else {
             this.firstNameValue = this.resources.fields.firstName.value;
           }
           if (this.resources.fields.firstName.title === undefined) {
             this.firstnameTitle;
-          }
-          else {
+          } else {
             this.firstnameTitle = this.resources.fields.firstName.title;
           }
           if (this.resources.fields.firstName.errors === undefined) {
             this.firstNameError;
-          }
-          else {
+          } else {
             this.firstNameError = this.resources.fields.firstName.errors;
           }
         }
@@ -466,24 +460,20 @@
           this.lastNameValue;
           this.lastnameTitle;
           this.lastNameError;
-        }
-        else {
+        } else {
           if (this.resources.fields.lastName.value === undefined) {
             this.lastNameValue;
-          }
-          else {
+          } else {
             this.lastNameValue = this.resources.fields.lastName.value;
           }
           if (this.resources.fields.lastName.title === undefined) {
             this.lastnameTitle;
-          }
-          else {
+          } else {
             this.lastnameTitle = this.resources.fields.lastName.title;
           }
           if (this.resources.fields.lastName.errors === undefined) {
             this.lastNameError;
-          }
-          else {
+          } else {
             this.lastNameError = this.resources.fields.lastName.errors;
           }
         }
@@ -492,30 +482,25 @@
           this.emailTitle;
           this.emailInfo;
           this.emailError;
-        }
-        else {
+        } else {
           if (this.resources.fields.email.value === undefined) {
             this.emailValue;
-          }
-          else {
+          } else {
             this.emailValue = this.resources.fields.email.value;
           }
           if (this.resources.fields.email.title === undefined) {
             this.emailTitle;
-          }
-          else {
+          } else {
             this.emailTitle = this.resources.fields.email.title;
           }
           if (this.resources.fields.email.errors === undefined) {
             this.emailInfo;
-          }
-          else {
+          } else {
             this.emailInfo = this.resources.fields.email.errors;
           }
           if (this.resources.fields.email.errors === undefined) {
             this.emailError;
-          }
-          else {
+          } else {
             this.emailError = this.resources.fields.email.errors;
           }
         }
@@ -523,24 +508,20 @@
           this.countryCodeValues;
           this.countryCodeTitle;
           this.countryCodeError;
-        }
-        else {
+        } else {
           if (this.resources.fields.countryCode.values === undefined) {
             this.countryCodeValues;
-          }
-          else {
+          } else {
             this.countryCodeValues = this.resources.fields.countryCode.values;
           }
           if (this.resources.fields.countryCode.title === undefined) {
             this.countryCodeTitle;
-          }
-          else {
+          } else {
             this.countryCodeTitle = this.resources.fields.countryCode.title;
           }
           if (this.resources.fields.countryCode.errors === undefined) {
             this.countryCodeError;
-          }
-          else {
+          } else {
             this.countryCodeError = this.resources.fields.countryCode.errors;
           }
         }
@@ -549,30 +530,25 @@
           this.contactNumberTitle;
           this.contactNumberInfo;
           this.contactNumberError;
-        }
-        else {
+        } else {
           if (this.resources.fields.contactNumber.value === undefined) {
             this.contactNumberValue;
-          }
-          else {
+          } else {
             this.contactNumberValue = this.resources.fields.contactNumber.value;
           }
           if (this.resources.fields.contactNumber.title === undefined) {
             this.contactNumberTitle;
-          }
-          else {
+          } else {
             this.contactNumberTitle = this.resources.fields.contactNumber.title;
           }
           if (this.resources.fields.contactNumber.errors === undefined) {
             this.contactNumberInfo;
-          }
-          else {
+          } else {
             this.contactNumberInfo = this.resources.fields.contactNumber.errors;
           }
           if (this.resources.fields.contactNumber.errors === undefined) {
             this.contactNumberError;
-          }
-          else {
+          } else {
             this.contactNumberError = this.resources.fields.contactNumber.errors;
           }
         }
@@ -587,61 +563,52 @@
           this.paxListContact;
           this.paxListcountryCode;
           this.paxListMemberShip;
-        }
-        else {
+        } else {
           if (this.paxList.type === undefined) {
             this.paxListType;
-          }
-          else {
+          } else {
             this.paxListType = this.paxList.type;
           }
           if (this.paxList.title === undefined) {
             this.paxListTitle;
-          }
-          else {
+          } else {
             this.paxListTitle = this.paxList.title;
           }
           if (this.paxList.firstName === undefined) {
             this.paxListFirstName;
-          }
-          else {
+          } else {
             this.paxListFirstName = this.paxList.firstName;
           }
           if (this.paxList.lastName === undefined) {
             this.paxListLastName;
-          }
-          else {
+          } else {
             this.paxListLastName = this.paxList.lastName;
           }
           if (this.paxList.email === undefined) {
             this.paxListEmail;
-          }
-          else {
+          } else {
             this.paxListEmail = this.paxList.email;
           }
           if (this.paxList.contact === undefined) {
             this.paxListContact;
-          }
-          else {
+          } else {
             this.paxListContact = this.paxList.contact;
           }
           if (this.paxList.countryCode === undefined) {
             this.paxListcountryCode;
-          }
-          else {
+          } else {
             this.paxListcountryCode = this.paxList.countryCode;
           }
           if (this.paxList.membership === undefined) {
             this.paxListMemberShip;
-          }
-          else {
+          } else {
             this.paxListMemberShip = this.paxList.membership;
           }
         }
       }
-      _increaseIndex(index){
-         var calIndex = index + 1;
-         return calIndex;
+      _increaseIndex(index) {
+        var calIndex = index + 1;
+        return calIndex;
       }
       ready() {
         super.ready();

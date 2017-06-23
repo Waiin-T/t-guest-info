@@ -49,7 +49,7 @@
             #lastName {
                 width: 23%;
                 margin-left: 20px;
-            }            
+            }
 
             #inputForm2 {
                 margin-top: 15px;
@@ -100,15 +100,15 @@
                 <div>
                     <paper-input label="{{resource.fields.lastName.title}}" id="lastName"></paper-input>
                 </div>
-                
+
             </div>
             <div id="inputForm2">
                 <div id="emailAndLabel">
-                    <paper-input label="{{resource.fields.email.title}}" id="email"></paper-input>
+                    <paper-input label="{{resource.fields.email.title}}" id="email" hidden$={{showEmailAddress}}></paper-input>
                     <div id="emailLabel">{{resource.fields.email.info}}</div>
                     <!--<div id="emailLabel">We'll send your confirmation voucher at this email ID.</div>-->
                 </div>
-                <div>
+                <div hidden$={{showContactNumber}}>
                     <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="countryCode">
                         <paper-listbox slot="dropdown-content">
                             <template is="dom-repeat" items={{resource.fields.countryCode.values}}>
@@ -118,7 +118,7 @@
                     </paper-dropdown-menu>
                 </div>
                 <div>
-                    <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo"></paper-input>
+                    <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo" hidden$={{showContactNumber}}></paper-input>
                 </div>
             </div>
         </form>
@@ -128,15 +128,17 @@
 
     <script>
         /**
-     * `pax-info`
-     * 
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
+         * `pax-info`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
         class PaxInfoChild extends Polymer.Element {
-            static get is() { return 'pax-info-child'; }
+            static get is() {
+                return 'pax-info-child';
+            }
             static get properties() {
                 return {
                     maxChildAge: {
@@ -174,18 +176,30 @@
                     showTitle: {
                         type: Boolean,
                         value: true
+                    },
+                    showContactNumber: {
+                        type: Boolean,
+                        value: false
+                    },
+                    showEmailAddress: {
+                        type: Boolean,
+                        value: false
                     }
                 }
             }
-
-          
-            _closePaxInfo() {
-
+            _showAllowFields() {
+                var check = this.option.allowContactNumber;
+                if (check === false) {
+                    this.showContactNumber = true;
+                }
+                var check = this.option.allowEmail;
+                if (check === false) {
+                    this.showEmailAddress = true;
+                }
             }
             ready() {
                 super.ready();
-                
-
+                this._showAllowFields(); 
             }
 
         }

@@ -1,0 +1,93 @@
+<dom-module id="t-loyalty-program">
+  <template>
+    <style>
+       :host {
+        display: block;
+      }
+
+      #guestName {
+        width: 23%;
+        margin-left: 10px;
+      }
+
+      #programName {
+        width: 23%;
+        margin-left: 25px;
+      }
+
+      #programNumber {
+        width: 23%;
+        margin-left: 25px;
+      }
+      /*#buttonRemoveDiv{
+        width: 23%;
+        margin-left: 25px;
+      }*/
+      #buttonRemove {
+        margin-top: 4%;
+        margin-left: 25px;
+        width: 60px;
+        color: #478BD7;
+        font-weight: 450;
+      } 
+
+      #guestName,
+      #programName,
+      #programNumber,#buttonRemove {
+        float: left;
+      }
+    </style>
+    <div>
+      <div>
+        <paper-dropdown-menu label="Guest name" id="guestName">
+          <paper-listbox slot="dropdown-content">
+            <!--<template is="dom-repeat" items={{resource.fields.title.values}}>-->
+            <paper-item>abc</paper-item>
+            <paper-item>xyz</paper-item>
+            <!--</template>-->
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </div>
+      <div>
+        <paper-dropdown-menu label="Program name" id="programName">
+          <paper-listbox slot="dropdown-content">
+            <!--<template is="dom-repeat" items={{resource.fields.title.values}}>-->
+            <paper-item>abc</paper-item>
+            <!--</template>-->
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </div>
+      <div>
+        <paper-input label="Program number" id="programNumber"></paper-input>
+      </div>
+      <div id="buttonRemoveDiv">
+        <paper-button id="buttonRemove">Remove</paper-button>
+      </div>
+
+    </div>
+  </template>
+
+
+  <script>
+    /**
+     * `t-loyalty-program`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class TLoyaltyProgram extends Polymer.Element {
+      static get is() {
+        return 't-loyalty-program';
+      }
+      static get properties() {
+        return {
+
+        };
+      }
+    }
+
+    window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);
+  </script>
+</dom-module>
