@@ -105,7 +105,7 @@
             <div id="inputForm2">
                 <div id="emailAndLabel">
                     <paper-input label="{{resource.fields.email.title}}" id="email" hidden$={{showEmailAddress}}></paper-input>
-                    <div id="emailLabel">{{resource.fields.email.info}}</div>
+                    <div id="emailLabel" hidden$="{{showEmailAddress}}">{{resource.fields.email.info}}</div>
                     <!--<div id="emailLabel">We'll send your confirmation voucher at this email ID.</div>-->
                 </div>
                 <div hidden$={{showContactNumber}}>

@@ -92,7 +92,7 @@
 
         <form is="iron-form" id="form" method="post" action="/form/handler">
             <div class="inputForm">
-                <div id="typeAndLabel">
+                <div id="typeAndLabel" hidden$="{{showTypeLabel}}">
                     <label id="typeLabel">{{resource.labels.adult.title}} {{index}}</label>
                     <div id="typeSubLabel"> {{resource.labels.adult.info}}</div>
                 </div>
@@ -117,7 +117,7 @@
             <div id="inputForm2">
                 <div id="emailAndLabel">
                     <paper-input label="{{resource.fields.email.title}}" id="email" hidden$="{{showEmailAddress}}"></paper-input>
-                    <div id="emailLabel">{{resource.fields.email.info}}</div>
+                    <div id="emailLabel" hidden$="{{showEmailAddress}}">{{resource.fields.email.info}}</div>
                 </div>
                 <div hidden$="{{showContactNumber}}">
                     <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="countryCode">
@@ -151,9 +151,8 @@
             }
             static get properties() {
                 return {
-                    maxChildAge: {
+                     adultPaxCount: {
                         type: Number,
-                        value: 12
                     },
                     type: {
                         type: String,
@@ -195,6 +194,17 @@
                         type: Boolean,
                         value: true
                     },
+                    showTypeLabel: {
+                        type: Boolean,
+                        value: false
+                    },
+                }
+            }
+
+            _typeLabelIfAdultIsOnlyOne() {
+                var adultCount = this.adultPaxCount;
+                if(adultCount === 1){
+                    this.showTypeLabel = true;
                 }
             }
 
@@ -225,7 +235,7 @@
                 super.ready();
                 this._showAllowFieldsForLeadPax();
                 this._showAllowFields();
-                
+                this._typeLabelIfAdultIsOnlyOne();
             }
 
         }

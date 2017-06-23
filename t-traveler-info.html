@@ -35,8 +35,7 @@
             }
 
             #checkIcon {
-                height: 20px;
-                width: 20px;
+                margin-left: 10px;
             }
             /*#paxInfo, #closeIcon{
                 float: left;
@@ -63,14 +62,17 @@
             <div id="policyList">
                 <template is="dom-repeat" items={{policyList}}>
                     <br>
-                <iron-icon icon="check" id="checkIcon"></iron-icon>
+                <!--<iron-icon icon="check" id="checkIcon"></iron-icon>-->
+                <img id="checkIcon" src="checkImage.svg" height="10" width="10">
                 {{item}}
                 </template>
             </div>
             <template is="dom-repeat" items="{{adultPaxCountArray}}">
                 <div id="paxInfoTemp">
-                    <pax-info id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}"></pax-info>
+                    <pax-info id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}" adult-pax-count="{{adultPaxCount}}"></pax-info>
+                    <div hidden$={{showCloseButton}}>
                     <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
+                    </div>
                 </div>
             </template>
             <template is="dom-repeat" items="{{childPaxCountArray}}">
@@ -106,13 +108,13 @@
                         }
                     },
                     adultPaxCount: {
-                        type: Array,
+                        type: Number,
                     },
                     adultPaxCountArray: {
                         type: Array,
                     },
                     childPaxCount: {
-                        type: Array,
+                        type: Number,
                     },
                     childPaxCountArray: {
                         type: Array,
@@ -138,8 +140,18 @@
                     },
                     resource: {
                         type: Object
+                    },
+                    showCloseButton: {
+                        type: Boolean,
+                        value: false 
                     }
                 };
+            }
+            _closeIconIfAdultIsOnlyOne(){
+                var adultCount = this.adultPaxCount;
+                if(adultCount === 1){
+                    this.showCloseButton = true;
+                }
             }
             _closePaxAdultInfo(e) {
                 this.splice('adultPaxCountArray', e.model.index, 1);
@@ -153,9 +165,10 @@
             }
             ready() {
                 super.ready();
+                this._closeIconIfAdultIsOnlyOne();
                 var adultPax = this.adultPaxCount;
                 var childPax = this.childPaxCount;
-                //var totalPax = +adultPax + +childPax;
+                var totalPax = +adultPax + +childPax;
                 var adultPaxCount1 = [];
                 for (var i = 0; i < adultPax; i++) {
                     adultPaxCount1.push(i);
