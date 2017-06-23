@@ -23,17 +23,19 @@
         width: 23%;
         margin-left: 25px;
       }*/
+
       #buttonRemove {
         margin-top: 4%;
         margin-left: 25px;
         width: 60px;
         color: #478BD7;
         font-weight: 450;
-      } 
+      }
 
       #guestName,
       #programName,
-      #programNumber,#buttonRemove {
+      #programNumber,
+      #buttonRemove {
         float: left;
       }
     </style>
@@ -60,7 +62,7 @@
       <div>
         <paper-input label="Program number" id="programNumber"></paper-input>
       </div>
-      <div id="buttonRemoveDiv">
+      <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
         <paper-button id="buttonRemove">Remove</paper-button>
       </div>
 
@@ -84,8 +86,16 @@
       static get properties() {
         return {
 
+          _isRemoveButtonHidden: {
+            type: Boolean,
+            value: false
+            // computed: '_lte(adultPaxCountArray.length , 1)'
+          },
         };
       }
+      // _lte(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
+      //   return adultPaxCountArrayLength <= hiddenButtonAdultNumber;
+      // }
     }
 
     window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);

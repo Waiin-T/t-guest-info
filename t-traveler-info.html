@@ -70,7 +70,7 @@
             <template is="dom-repeat" items="{{adultPaxCountArray}}">
                 <div id="paxInfoTemp">
                     <pax-info id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}" adult-pax-count="{{adultPaxCount}}"></pax-info>
-                    <div hidden$={{showCloseButton}}>
+                    <div hidden$=[[_isCloseButtonHidden]]>
                     <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
                     </div>
                 </div>
@@ -144,8 +144,15 @@
                     showCloseButton: {
                         type: Boolean,
                         value: false 
-                    }
+                    },
+                    _isCloseButtonHidden: {
+                    type: Boolean,
+                    computed: '_lte(adultPaxCountArray.length , 1)'
+                },
                 };
+            }
+             _lte(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
+                return adultPaxCountArrayLength <= hiddenButtonAdultNumber;
             }
             _closeIconIfAdultIsOnlyOne(){
                 var adultCount = this.adultPaxCount;
