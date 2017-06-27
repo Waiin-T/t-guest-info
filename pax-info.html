@@ -17,15 +17,15 @@
                 --paper-input-container-label-focus: lightgray;
             }
 
-            .inputForm #PaxTitle,
-            #firstName,
-            #lastName {
+            .inputForm #adultPaxTitle,
+            #adultFirstName,
+            #adultLastName {
                 float: left;
             }
 
-            #emailAndLabel,
-            #countryCode,
-            #contactNo {
+            #adultEmailAndLabel,
+            #adultCountryCode,
+            #adultContactNo {
                 float: left;
             }
 
@@ -47,17 +47,17 @@
                 color: #BDBDBD;
             }
 
-            #PaxTitle {
+            #adultPaxTitle {
                 width: 21%;
                 margin-left: 10px;
             }
 
-            #firstName {
+            #adultFirstName {
                 width: 21%;
                 margin-left: 20px;
             }
 
-            #lastName {
+            #adultLastName {
                 width: 21%;
                 margin-left: 20px;
             }
@@ -66,24 +66,24 @@
                 margin-top: 15px;
             }
 
-            #email {}
+            #adultEmail {}
 
-            #emailAndLabel {
+            #adultEmailAndLabel {
                 margin-left: 10px;
                 width: 44.5%;
             }
 
-            #emailLabel {
+            #adultEmailLabel {
                 font-size: smaller;
                 color: #BDBDBD;
             }
 
-            #countryCode {
+            #adultCountryCode {
                 width: 21%;
                 margin-left: 20px;
             }
 
-            #contactNo {
+            #adultContactNo {
                 width: 21%;
                 margin-left: 20px;
             }
@@ -96,43 +96,47 @@
                     <div id="typeSubLabel"> {{resource.labels.adult.info}}</div>
                 </div>
                 <div>
-                    <paper-dropdown-menu label="{{resource.fields.title.title}}" id="PaxTitle">
-                        <paper-listbox slot="dropdown-content" selected="{{resource.fields.title.selected}}">
+                    <paper-dropdown-menu label="{{resource.fields.title.title}}" id="adultPaxTitle" required auto-validate error-message="{{resource.fields.title.errors}}">
+                        <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
                             <template is="dom-repeat" items={{resource.fields.title.values}}>
                                 <paper-item>{{item.key}}</paper-item>
                             </template>
                         </paper-listbox>
                     </paper-dropdown-menu>
+                    <input is="iron-input" type="hidden" bind-value="[[titleValue]]">
                 </div>
 
                 <div>
-                    <paper-input label="{{resource.fields.firstName.title}}" id="firstName"></paper-input>
+                    <paper-input label="{{resource.fields.firstName.title}}" class="inputAdultCount" id="adultFirstName" required auto-validate error-message="{{resource.fields.firstName.errors}}"></paper-input>
                 </div>
                 <div>
-                    <paper-input label="{{resource.fields.lastName.title}}" id="lastName"></paper-input>
+                    <paper-input label="{{resource.fields.lastName.title}}" id="adultLastName" required auto-validate error-message="{{resource.fields.lastName.errors}}"></paper-input>
                 </div>
 
             </div>
             <div id="inputForm2">
-                <div id="emailAndLabel">
-                    <paper-input label="{{resource.fields.email.title}}" id="email" hidden$="{{showEmailAddress}}"></paper-input>
-                    <div id="emailLabel" hidden$="{{showEmailAddress}}">{{resource.fields.email.info}}</div>
+                <div id="adultEmailAndLabel">
+                    <paper-input label="{{resource.fields.email.title}}" id="adultEmail" hidden$="{{showEmailAddress}}" required auto-validate
+                        error-message="{{resource.fields.email.errors}}"></paper-input>
+                    <div id="adultEmailLabel" hidden$="{{showEmailAddress}}">{{resource.fields.email.info}}</div>
                 </div>
                 <div hidden$="{{showContactNumber}}">
-                    <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="countryCode">
-                        <paper-listbox slot="dropdown-content">
+                    <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="adultCountryCode" required auto-validate error-message="{{resource.fields.countryCode.errors}}">
+                        <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
                             <template is="dom-repeat" items={{resource.fields.countryCode.values}}>
-                                <paper-item>{{item.key}}</paper-item>
+                                <paper-item value="{{item.value}}">{{item.key}}</paper-item>
                             </template>
                         </paper-listbox>
                     </paper-dropdown-menu>
+                    <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
                 </div>
                 <div>
-                    <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo" hidden$="{{showContactNumber}}"></paper-input>
+                    <paper-input label="{{resource.fields.contactNumber.title}}" id="adultContactNo" hidden$="{{showContactNumber}}" required
+                        auto-validate error-message="{{resource.fields.contactNumber.errors}}"></paper-input>
                 </div>
             </div>
         </form>
-
+        <!--<paper-button raised on-tap="_submit">save</paper-button>-->
     </template>
 
     <script>
@@ -150,7 +154,7 @@
             }
             static get properties() {
                 return {
-                     adultPaxCount: {
+                    adultPaxCount: {
                         type: Number,
                     },
                     type: {
@@ -177,6 +181,14 @@
                             "rooms": []
                         }
                     },
+                    countryCodeValue: {
+                        type: String,
+                        value: '0'
+                    },
+                    titleValue: {
+                        type: String,
+                        value: '0'
+                    },
                     adultTitle: {
                         type: String,
                         value: ''
@@ -199,10 +211,41 @@
                     },
                 }
             }
-
+            isValidPaxInfo() {
+                var adultFirstNameValidation = this.$.adultFirstName;
+                var adultLastNameValiadtion = this.$.adultLastName;
+                var adultTitleValidation = this.$.adultPaxTitle;
+                var adultEmailValidation = this.$.adultEmail;
+                var adultCountryCodeValidation = this.$.adultCountryCode;
+                var adultContactNumberValidation = this.$.adultContactNo;
+                if (adultFirstNameValidation.value === undefined) {
+                    adultFirstNameValidation.invalid = true;
+                }
+                if (adultLastNameValiadtion.value === undefined) {
+                    adultLastNameValiadtion.invalid = true;
+                }
+                if (adultEmailValidation.value === undefined) {
+                    adultEmailValidation.invalid = true;
+                }
+                if (adultContactNumberValidation.value === undefined) {
+                    adultContactNumberValidation.invalid = true;
+                }
+                if (this.index === 1) {
+                    if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid ||                        
+                        adultContactNumberValidation.invalid || adultEmailValidation.invalid) {
+                        return true;
+                    }
+                }
+                else {
+                    if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid )
+                    {
+                        return true;
+                    }
+                }
+            }
             _typeLabelIfAdultIsOnlyOne() {
                 var adultCount = this.adultPaxCount;
-                if(adultCount === 1){
+                if (adultCount === 1) {
                     this.showTypeLabel = true;
                 }
             }
@@ -235,6 +278,8 @@
                 this._showAllowFieldsForLeadPax();
                 this._showAllowFields();
                 this._typeLabelIfAdultIsOnlyOne();
+                // this.isValidAdultPax();
+                var a = this.$.adultFirstName;
             }
 
         }

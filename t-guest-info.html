@@ -7,6 +7,7 @@
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="t-traveler-info.html">
 <link rel="import" href="t-loyalty-program.html">
 <dom-module id="t-guest-info">
@@ -34,15 +35,27 @@
         text-decoration: none;
         font-size: 20px;
       }
-      #loyaltyDiv{
+
+      #loyaltyDiv {
         width: 67%;
       }
+
       #toolbarLotalty {
         background-color: #E8E8E8;
         width: 100%;
         margin-left: 10px;
         margin-top: 20px;
         height: 50px;
+      }
+
+      #tLoyaltyDatabase{
+        margin-top: 2%;
+      }
+      #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: 50px;
+        float: left;
+        margin-top: 3%;
       }
     </style>
 
@@ -60,12 +73,17 @@
     </template>
 
     <div id="loyaltyDiv">
-      <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
-      <t-loyalty-program></t-loyalty-program>
+      <div>
+        <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
+        <t-loyalty-program id="tLoyaltyDatabase"></t-loyalty-program>
+      </div>
+      <div>
+        <paper-button id=addProgramForOtherGuestButton>Add program for other guest</paper-button>
+      </div>
     </div>
     <br>
     <br>
-    
+
   </template>
 
   <script>
@@ -612,6 +630,10 @@
       _increaseIndex(index) {
         var calIndex = index + 1;
         return calIndex;
+      }
+      isValidGuest() {
+       var data =  Polymer.dom(this.root).querySelector("#travelerInfo").isValid();
+       return data;
       }
       ready() {
         super.ready();

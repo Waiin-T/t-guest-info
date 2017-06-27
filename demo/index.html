@@ -1,29 +1,37 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>t-guest-info demo</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <title>t-guest-info demo</title>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../t-guest-info.html">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
-    <custom-style>
-      <style is="custom-style" include="demo-pages-shared-styles">
-        body{
-          background-color: white;            
-        }
-      </style>
-    </custom-style>
-  </head>
-  <body>
-   
-    <t-guest-info id="guestInfo"
-         option='{
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../t-guest-info.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      body {
+        background-color: white;
+      }
+
+      t-guest-info {
+        --toolbar-background-color: #E8E8E8;
+        --color-for-subTitle: #gray;
+        --color-for-policies: #4CB050;
+        --color-for-button-labels: #478BD7;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+
+  <t-guest-info id="guestInfo" option='{
                   "allowContactNumber" : false,
                   "allowContactNumberForLeadPax" : true,
                   "allowEmail" : false,
@@ -38,8 +46,7 @@
                       "title",
                       "email"
                       ]
-                }'
-         resources='{
+                }' resources='{
                   "icons": {
                     "terms": "terms-ico"
                     },
@@ -102,20 +109,7 @@
                       "errors": "Contact number is required"
                       }
                    }
-                  }'
-                  traveler = '{ "type": "Adult",
-                        "title": "Mr",
-                        "firstName": "John",
-                        "lastName": "Doe",
-                        "email": "john@example.com",
-                        "contact": "343453453",
-                        "countrycode": "+91",
-                        "membership": {
-                          "programName": "",
-                          "programCode": "",
-                          "number": ""
-                        }}'
-                  paxlist='{
+                  }' paxlist='{
                         "type": "Adult",
                         "title": "Mr",
                         "firstName": "John",
@@ -128,8 +122,7 @@
                           "programCode": "",
                           "number": ""
                         }
-                      }'
-                  product=' [{
+                      }' product=' [{
                       "id": "123123",
                       "name": "El Cortez Hotel &; Casino",
                       "allowLoyalty": true,
@@ -142,7 +135,7 @@
                           "checkout": "05/28/2017",
                           "stayDuration": 2,
                           "traveler": {
-                            "adult": 1,
+                            "adult": 4,
                             "child": 1
                           }
                         },
@@ -159,8 +152,8 @@
                           "checkout": "06/18/2017",
                           "stayDuration": 5,
                           "traveler": {
-                            "adult": 3,
-                            "child": 2
+                            "adult": 1,
+                            "child": 0
                           }
                         },
                         "policies": [
@@ -168,8 +161,18 @@
                           
                         ]
                       }]
-                    }]'
-    ></t-guest-info>
-      
-  </body>
+                    }]'></t-guest-info>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+  <button id="demoButton" style="color:darkblue;background-color:darkgrey" onclick="fireIsValidMethod()">Test Button</button>
+
+
+  <script>
+    function fireIsValidMethod() {
+      alert("hi");
+      var valid = document.getElementById("guestInfo").isValidGuest();
+      alert(valid);
+    }
+  </script>
+</body>
+
 </html>

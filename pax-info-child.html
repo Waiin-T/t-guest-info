@@ -5,6 +5,18 @@
                 display: block;
             }
 
+             paper-dropdown-menu {
+                --paper-input-container-underline-focus: #4CB050;
+                --paper-input-container-focus-color: #4CB050;
+                --paper-input-container-label-focus: lightgray;
+            }
+
+            paper-input {
+                --paper-input-container-underline-focus: #4CB050;
+                --paper-input-container-focus-color: #4CB050;
+                --paper-input-container-label-focus: lightgray;
+            }
+
             .inputForm #PaxTitle,
             #firstName,
             #lastName {
@@ -84,8 +96,8 @@
                     <div id="typeSubLabel"> {{resource.labels.child.info}}</div>
                 </div>
                 <div>
-                    <paper-dropdown-menu label="{{resource.fields.title.title}}" id="PaxTitle">
-                        <paper-listbox slot="dropdown-content" selected="{{resource.fields.title.selected}}">
+                    <paper-dropdown-menu label="{{resource.fields.title.title}}" id="PaxTitle" required>
+                        <paper-listbox slot="dropdown-content">
                             <template is="dom-repeat" items={{resource.fields.title.values}}>
                                 <paper-item>{{item.key}}</paper-item>
                             </template>
@@ -94,16 +106,16 @@
                 </div>
 
                 <div>
-                    <paper-input label="{{resource.fields.firstName.title}}" id="firstName"></paper-input>
+                    <paper-input label="{{resource.fields.firstName.title}}" id="firstName" required></paper-input>
                 </div>
                 <div>
-                    <paper-input label="{{resource.fields.lastName.title}}" id="lastName"></paper-input>
+                    <paper-input label="{{resource.fields.lastName.title}}" id="lastName" required></paper-input>
                 </div>
 
             </div>
             <div id="inputForm2">
                 <div id="emailAndLabel">
-                    <paper-input label="{{resource.fields.email.title}}" id="email" hidden$={{showEmailAddress}}></paper-input>
+                    <paper-input label="{{resource.fields.email.title}}" id="email" hidden$={{showEmailAddress}} required></paper-input>
                     <div id="emailLabel" hidden$="{{showEmailAddress}}">{{resource.fields.email.info}}</div>
                     <!--<div id="emailLabel">We'll send your confirmation voucher at this email ID.</div>-->
                 </div>
@@ -117,7 +129,7 @@
                     </paper-dropdown-menu>
                 </div>
                 <div>
-                    <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo" hidden$={{showContactNumber}}></paper-input>
+                    <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo" hidden$={{showContactNumber}} required></paper-input>
                 </div>
             </div>
         </form>

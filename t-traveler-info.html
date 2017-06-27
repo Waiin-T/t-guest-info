@@ -4,9 +4,8 @@
 <dom-module id="t-traveler-info">
     <template>
         <style>
-           
             #toolbarRoom {
-                background-color: #E8E8E8;
+                background-color: var(--toolbar-background-color);
                 width: 100%;
                 margin-left: 10px;
                 margin-top: 20px;
@@ -18,7 +17,7 @@
             }
 
             #subTitle {
-                color: gray;
+                color: var(--color-for-subTitle);
                 font-size: 14px;
                 padding: 5px;
             }
@@ -29,8 +28,8 @@
             }
 
             #policyList {
-                color: #4CB050;
-                margin-top: 20px;
+                color: var(--color-for-policies);
+                margin-top: 10px;
                 font-family: roboto;
             }
 
@@ -62,16 +61,16 @@
             <div id="policyList">
                 <template is="dom-repeat" items={{policyList}}>
                     <br>
-                <!--<iron-icon icon="check" id="checkIcon"></iron-icon>-->
-                <img id="checkIcon" src="checkImage.svg" height="10" width="10">
-                {{item}}
+                    <!--<iron-icon icon="check" id="checkIcon"></iron-icon>-->
+                    <img id="checkIcon" src="checkImage.svg" height="10" width="10"> {{item}}
                 </template>
             </div>
             <template is="dom-repeat" items="{{adultPaxCountArray}}">
                 <div id="paxInfoTemp">
-                    <pax-info id="paxInfo" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}" adult-pax-count="{{adultPaxCount}}"></pax-info>
+                    <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" class="adultPaxInfoClass" pax-list="{{paxlist}}" id="paxInfoId" option="[[option]]"
+                        resource="{{resource}}" index="{{_increaseIndex(index)}}" adult-pax-count="{{adultPaxCount}}">{{item}}</pax-info>
                     <div hidden$=[[_isCloseButtonHidden]]>
-                    <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
+                        <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
                     </div>
                 </div>
             </template>
@@ -84,20 +83,23 @@
 
         </div>
 
+        <!--<paper-button raised on-tap="_submit">save</paper-button>-->
 
     </template>
 
     <script>
         /**
-     * `t-traveler-info`
-     * 
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
+         * `t-traveler-info`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
         class TTravelerInfo extends Polymer.Element {
-            static get is() { return 't-traveler-info'; }
+            static get is() {
+                return 't-traveler-info';
+            }
             static get properties() {
                 return {
                     option: {
@@ -143,20 +145,44 @@
                     },
                     showCloseButton: {
                         type: Boolean,
-                        value: false 
+                        value: false
                     },
                     _isCloseButtonHidden: {
-                    type: Boolean,
-                    computed: '_lte(adultPaxCountArray.length , 1)'
-                },
+                        type: Boolean,
+                        computed: '_lte(adultPaxCountArray.length , 1)'
+                    },
                 };
+            }
+            isValid() {
+                var adultPaxInfoArray = [];
+                var validData = true;
+                for (var i = 1; i <= this.adultPaxCount; i++) {
+                    adultPaxInfoArray[i] = Polymer.dom(this.root).querySelector("#adultPaxInfo" + (i)).isValidPaxInfo();
+                }
+                for (var i = 1; i <= this.adultPaxCount; i++) {
+                    if (adultPaxInfoArray[i] === true) {
+                        validData = false;
+                    }
+                }
+                if (validData === true) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+            getState() {
+
+            }
+            setState() {
+
             }
             _lte(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
                 return adultPaxCountArrayLength <= hiddenButtonAdultNumber;
             }
-            _closeIconIfAdultIsOnlyOne(){
+            _closeIconIfAdultIsOnlyOne() {
                 var adultCount = this.adultPaxCount;
-                if(adultCount === 1){
+                if (adultCount === 1) {
                     this.showCloseButton = true;
                 }
             }
@@ -186,6 +212,7 @@
                     childPaxCount1.push(i);
                 }
                 this.childPaxCountArray = childPaxCount1;
+
             }
         }
 

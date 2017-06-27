@@ -26,9 +26,9 @@
 
       #buttonRemove {
         margin-top: 4%;
-        margin-left: 25px;
+        margin-left: 65px;
         width: 60px;
-        color: #478BD7;
+        color: var(--color-for-button-labels);
         font-weight: 450;
       }
 
@@ -40,6 +40,7 @@
       }
     </style>
     <div>
+
       <div>
         <paper-dropdown-menu label="Guest name" id="guestName">
           <paper-listbox slot="dropdown-content">
@@ -65,6 +66,7 @@
       <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
         <paper-button id="buttonRemove">Remove</paper-button>
       </div>
+
 
     </div>
   </template>
