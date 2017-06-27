@@ -242,6 +242,22 @@
                     }
                 }
             }
+            adultData() {
+                var adultData = {};
+                var adultFirstNameData = this.$.adultFirstName;
+                var adultLastNameData = this.$.adultLastName;
+                var adultTitleData = this.$.adultPaxTitle;
+                var adultEmailData = this.$.adultEmail;
+                var adultCountryCodeData = this.$.adultCountryCode;
+                var adultContactNumberData = this.$.adultContactNo;
+                adultData.Title = adultTitleData.value;
+                adultData.FirstName = adultFirstNameData.value;
+                adultData.LastName = adultLastNameData.value;
+                adultData.Email  = adultEmailData.value;
+                adultData.CountryCode = adultCountryCodeData.value;
+                adultData.ContactNumber = adultContactNumberData.value;    
+                return adultData;   
+            }
             _typeLabelIfAdultIsOnlyOne() {
                 var adultCount = this.adultPaxCount;
                 if (adultCount === 1) {
@@ -277,8 +293,6 @@
                 this._showAllowFieldsForLeadPax();
                 this._showAllowFields();
                 this._typeLabelIfAdultIsOnlyOne();
-                // this.isValidAdultPax();
-                var a = this.$.adultFirstName;
             }
 
         }

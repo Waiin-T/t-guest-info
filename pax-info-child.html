@@ -5,7 +5,7 @@
                 display: block;
             }
 
-             paper-dropdown-menu {
+            paper-dropdown-menu {
                 --paper-input-container-underline-focus: #4CB050;
                 --paper-input-container-focus-color: #4CB050;
                 --paper-input-container-label-focus: lightgray;
@@ -96,31 +96,31 @@
                     <div id="typeSubLabel"> {{resource.labels.child.info}}</div>
                 </div>
                 <div>
-                    <paper-dropdown-menu label="{{resource.fields.title.title}}" id="PaxTitle" required>
-                        <paper-listbox slot="dropdown-content">
+                    <paper-dropdown-menu label="{{resource.fields.title.title}}" id="PaxTitle" required auto-validate error-message="{{resource.fields.title.errors}}">
+                        <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
                             <template is="dom-repeat" items={{resource.fields.title.values}}>
                                 <paper-item>{{item.key}}</paper-item>
                             </template>
                         </paper-listbox>
                     </paper-dropdown-menu>
+                    <input is="iron-input" type="hidden" bind-value="[[titleValue]]">
                 </div>
 
                 <div>
-                    <paper-input label="{{resource.fields.firstName.title}}" id="firstName" required></paper-input>
+                    <paper-input label="{{resource.fields.firstName.title}}" id="firstName" required auto-validate error-message="{{resource.fields.firstName.errors}}"></paper-input>
                 </div>
                 <div>
-                    <paper-input label="{{resource.fields.lastName.title}}" id="lastName" required></paper-input>
+                    <paper-input label="{{resource.fields.lastName.title}}" id="lastName" required auto-validate error-message="{{resource.fields.lastName.errors}}"></paper-input>
                 </div>
 
             </div>
             <div id="inputForm2">
                 <div id="emailAndLabel">
-                    <paper-input label="{{resource.fields.email.title}}" id="email" hidden$={{showEmailAddress}} required></paper-input>
+                    <paper-input label="{{resource.fields.email.title}}" id="email" hidden$={{showEmailAddress}} required auto-validate error-message="{{resource.fields.email.errors}}"></paper-input>
                     <div id="emailLabel" hidden$="{{showEmailAddress}}">{{resource.fields.email.info}}</div>
-                    <!--<div id="emailLabel">We'll send your confirmation voucher at this email ID.</div>-->
                 </div>
                 <div hidden$={{showContactNumber}}>
-                    <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="countryCode">
+                    <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="countryCode" required auto-validate error-message="{{resource.fields.countryCode.errors}}">
                         <paper-listbox slot="dropdown-content">
                             <template is="dom-repeat" items={{resource.fields.countryCode.values}}>
                                 <paper-item>{{item.key}}</paper-item>
@@ -129,17 +129,17 @@
                     </paper-dropdown-menu>
                 </div>
                 <div>
-                    <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo" hidden$={{showContactNumber}} required></paper-input>
+                    <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo" hidden$={{showContactNumber}} required auto-validate
+                        error-message="{{resource.fields.contactNumber.errors}}"></paper-input>
                 </div>
             </div>
         </form>
 
-        <!--<paper-button toggles id="buttons" on-tap='_doneRoomCard'>Done</paper-button>-->
     </template>
 
     <script>
         /**
-         * `pax-info`
+         * `pax-info-child`
          * 
          *
          * @customElement
@@ -152,13 +152,9 @@
             }
             static get properties() {
                 return {
-                    maxChildAge: {
-                        type: Number,
-                        value: 12
-                    },
-                    type: {
+                    titleValue: {
                         type: String,
-                        value: 'Adult 1'
+                        value: '0'
                     },
                     option: {
                         type: Object,
@@ -208,9 +204,49 @@
                     this.showEmailAddress = true;
                 }
             }
+            isValidPaxInfoChild() {
+                var childFirstNameValidation = this.$.firstName;
+                var childLastNameValiadtion = this.$.lastName;
+                var childTitleValidation = this.$.paxTitle;
+                var childEmailValidation = this.$.email;
+                var childCountryCodeValidation = this.$.countryCode;
+                var childContactNumberValidation = this.$.contactNo;
+                if (childFirstNameValidation.value === undefined) {
+                    childFirstNameValidation.invalid = true;
+                }
+                if (childLastNameValiadtion.value === undefined) {
+                    childLastNameValiadtion.invalid = true;
+                }
+                if (childEmailValidation.value === undefined) {
+                    childEmailValidation.invalid = true;
+                }
+                if (childContactNumberValidation.value === undefined) {
+                    childContactNumberValidation.invalid = true;
+                }
+
+                if (childFirstNameValidation.invalid || childLastNameValiadtion.invalid) {
+                    return true;
+                }
+            }
+            childData() {
+                var childData = {};
+                var childFirstNameData = this.$.firstName;
+                var childLastNameData = this.$.lastName;
+                // var childTitleData = this.$.paxTitle;
+                var childEmailData = this.$.email;
+                var childCountryCodeData = this.$.countryCode;
+                var childContactNumberData = this.$.contactNo;
+                // childData.Title = childTitleData.value;
+                childData.FirstName = childFirstNameData.value;
+                childData.LastName = childLastNameData.value;
+                childData.Email  = childEmailData.value;
+                childData.CountryCode = childCountryCodeData.value;
+                childData.ContactNumber = childContactNumberData.value;    
+                return childData;   
+            }
             ready() {
                 super.ready();
-                this._showAllowFields(); 
+                this._showAllowFields();
             }
 
         }

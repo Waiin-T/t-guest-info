@@ -1,3 +1,15 @@
+<!--<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+<link rel="import" href="bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="bower_components/paper-item/paper-item.html">
+<link rel="import" href="bower_components/paper-input/paper-input.html">
+<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">-->
+<!--<link rel="import" href="bower_components/iron-media-query/iron-mdeia-query.html">-->
+
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
@@ -8,6 +20,7 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
 <link rel="import" href="t-traveler-info.html">
 <link rel="import" href="t-loyalty-program.html">
 <dom-module id="t-guest-info">
@@ -33,7 +46,7 @@
       #signInLink {
         color: #478BD7;
         text-decoration: none;
-        font-size: 20px;
+        font-size: 16px;
       }
 
       #loyaltyDiv {
@@ -48,9 +61,10 @@
         height: 50px;
       }
 
-      #tLoyaltyDatabase{
+      #tLoyaltyDatabase {
         margin-top: 2%;
       }
+
       #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
         margin-left: 50px;
@@ -58,13 +72,19 @@
         margin-top: 3%;
       }
     </style>
-
+    <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{tabletView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query>
+    <iron-media-query query="(max-width: 600px)" query-matches="{{mediumTablet}}"></iron-media-query>
+    <iron-media-query query="(max-width: 767px)" query-matches="{{mobilePhone}}"></iron-media-query>
 
     <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
 
     <template is="dom-repeat" items="{{product}}">
       <template is="dom-repeat" items="{{item.rooms}}">
-        <t-traveler-info id="travelerInfo" title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child"
+        <t-traveler-info id="travelerInfo{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child"
           policy-List="{{item.policies}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resources}}" adult-pax-count="{{item.criteria.traveler.adult}}"
           child-pax-count="{{item.criteria.traveler.child}}">
         </t-traveler-info>
@@ -102,13 +122,25 @@
       }
       static get properties() {
         return {
-          hotelProducts: {
-            type: Array,
-            value: [1, 2]
+          smallMobileView:{
+            type: Boolean,
+            value: false
           },
-          hotelRooms: {
-            type: Array,
-
+          mobileView: {
+            type: Boolean,
+            value: false
+          },
+          tabletView: {
+            type: Boolean,
+            value: false
+          },
+          desktopView: {
+            type: Boolean,
+            value: false
+          },
+          largeDesktopView: {
+            type: Boolean,
+            value: false
           },
           title: {
             type: String,
@@ -632,8 +664,24 @@
         return calIndex;
       }
       isValidGuest() {
-       var data =  Polymer.dom(this.root).querySelector("#travelerInfo").isValid();
-       return data;
+        var data = [];
+        var validData = [];
+        var productLength = this.product.length;
+        for (var i = 0; i < productLength; i++) {
+          var roomsLength = this.product[i].rooms.length;
+          for (var j = 0; j < roomsLength; j++) {
+            validData[j] = Polymer.dom(this.root).querySelector("#travelerInfo" + (j + 1)).isValid();
+            data[j] = Polymer.dom(this.root).querySelector("#travelerInfo" + (j + 1)).submit(event);            
+          }
+          for (var j = 0; j < roomsLength; j++) {
+            if (validData[j] === false) {
+              return false;
+            } else {
+              return true;
+            }
+          }
+        }
+        console.log(data);
       }
       ready() {
         super.ready();

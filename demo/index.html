@@ -20,7 +20,7 @@
       }
 
       t-guest-info {
-        --toolbar-background-color: #E8E8E8;
+        --toolbar-background-color: #BBB;
         --color-for-subTitle: #gray;
         --color-for-policies: #4CB050;
         --color-for-button-labels: #478BD7;
@@ -135,7 +135,7 @@
                           "checkout": "05/28/2017",
                           "stayDuration": 2,
                           "traveler": {
-                            "adult": 4,
+                            "adult": 2,
                             "child": 1
                           }
                         },
@@ -168,7 +168,6 @@
 
   <script>
     function fireIsValidMethod() {
-      alert("hi");
       var valid = document.getElementById("guestInfo").isValidGuest();
       alert(valid);
     }
