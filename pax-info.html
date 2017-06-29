@@ -17,6 +17,154 @@
                 --paper-input-container-label-focus: lightgray;
             }
 
+            .item[smallMobileView] #typeAndLabel {
+                margin-left: -10px;
+                width: 100%;
+            }
+
+            .item[smallMobileView] #adultEmailAndLabel {
+                width: 94%;
+                margin-left: -10px;
+            }
+
+            .item[smallMobileView] .inputForm #adultPaxTitle,
+            #adultFirstName,
+            #adultLastName {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[smallMobileView] #adultPaxTitle {
+                float: left;
+                width: 26%;
+                margin-left: -10px;
+            }
+
+            .item[smallMobileView] #adultFirstName {
+                float: left;
+                /*width: 28%;*/
+                /*margin-left: -10px;*/
+            }
+
+            .item[smallMobileView] #adultLastName {
+                float: left;
+                /*width: 28%;*/
+                margin-left: 12px;
+            }
+
+            .item[smallMobileView]#adultCountryCode,
+            #adultContactNo {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[smallMobileView] #adultCountryCode {
+                margin-left: -10px;
+                width: 45%;
+            }
+
+            .item[smallMobileView] #adultContactNo {
+                margin-left: 12px;
+                width: 45%;
+            }
+
+            .item[mobileView] #typeAndLabel {
+                margin-left: -10px;
+                width: 100%;
+            }
+
+            .item[mobileView] #adultEmailAndLabel {
+                width: 94%;
+                margin-left: -10px;
+            }
+
+            .item[mobileView] .inputForm #adultPaxTitle,
+            #adultFirstName,
+            #adultLastName {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[mobileView] #adultPaxTitle {
+                float: left;
+                width: 26%;
+                margin-left: -10px;
+            }
+
+            .item[mobileView] #adultFirstName {
+                float: left;
+                width: 28%;
+                /*margin-left: 10px;*/
+            }
+
+            .item[mobileView] #adultLastName {
+                float: left;
+                width: 28%;
+                margin-left: 12px;
+            }
+
+            .item[mobileView]#adultPaxTitle {
+                float: left;
+                width: 100%;
+                margin-left: -10px;
+            }
+
+            .item[mobileView]#adultCountryCode,
+            #adultContactNo {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[mobileView] #adultCountryCode {
+                margin-left: -10px;
+                width: 46%;
+            }
+
+            .item[mobileView] #adultContactNo {
+                margin-left: 12px;
+                width: 46%;
+            }
+
+
+            .item[tabletView] #typeAndLabel {
+                margin-left: -5px;
+                width: 100%;
+            }
+
+            .item[tabletView] #adultEmailAndLabel {
+                width: 94%;
+                margin-left: -5px;
+            }
+
+            .item[tabletView] .inputForm #adultPaxTitle,
+            #adultFirstName,
+            #adultLastName {
+                float: left;
+                margin-left: -5px;
+            }
+
+            .item[tabletView]#adultPaxTitle {
+                float: left;
+                margin-left: -5px;
+            }
+
+            .item[tabletView]#adultCountryCode,
+            #adultContactNo {
+                float: left;
+                margin-left: -5px;
+            }
+
+            .item[tabletView] #adultCountryCode {
+                margin-left: -5px;
+                width: 46%;
+            }
+
+            .item[tabletView] #adultContactNo {
+                margin-left: 12px;
+                width: 46%;
+            }
+
+
             .inputForm #adultPaxTitle,
             #adultFirstName,
             #adultLastName {
@@ -89,53 +237,65 @@
             }
         </style>
 
-        <form is="iron-form" id="form" method="post" action="/form/handler">
-            <div class="inputForm">
-                <div id="typeAndLabel" hidden$="{{showTypeLabel}}">
-                    <label id="typeLabel">{{resource.labels.adult.title}} {{index}}</label>
-                    <div id="typeSubLabel"> {{resource.labels.adult.info}}</div>
-                </div>
-                <div>
-                    <paper-dropdown-menu label="{{resource.fields.title.title}}" id="adultPaxTitle" required auto-validate error-message="{{resource.fields.title.errors}}">
-                        <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
-                            <template is="dom-repeat" items={{resource.fields.title.values}}>
-                                <paper-item>{{item.key}}</paper-item>
-                            </template>
-                        </paper-listbox>
-                    </paper-dropdown-menu>
-                    <input is="iron-input" type="hidden" bind-value="[[titleValue]]">
-                </div>
+        <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{tabletView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query>
 
-                <div>
-                    <paper-input label="{{resource.fields.firstName.title}}" class="inputAdultCount" id="adultFirstName" required auto-validate error-message="{{resource.fields.firstName.errors}}"></paper-input>
-                </div>
-                <div>
-                    <paper-input label="{{resource.fields.lastName.title}}" id="adultLastName" required auto-validate error-message="{{resource.fields.lastName.errors}}"></paper-input>
-                </div>
+        <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"
+            largeDesktopView$="{{_largeDesktopViewOther(largeDesktopView)}}" largeDesktopViewIE$="{{_largeDesktopViewIE(largeDesktopView)}}">
 
-            </div>
-            <div id="inputForm2">
-                <div id="adultEmailAndLabel">
-                    <paper-input label="{{resource.fields.email.title}}" id="adultEmail" hidden$="{{showEmailAddress}}" required auto-validate
-                        error-message="{{resource.fields.email.errors}}"></paper-input>
-                    <div id="adultEmailLabel" hidden$="{{showEmailAddress}}">{{resource.fields.email.info}}</div>
+
+            <form is="iron-form" id="form" method="post" action="/form/handler">
+                <div class="inputForm" id="inputForm">
+                    <div id="typeAndLabel" hidden$="{{showTypeLabel}}">
+                        <label id="typeLabel">{{resource.labels.adult.title}} {{index}}</label>
+                        <div id="typeSubLabel"> {{resource.labels.adult.info}}</div>
+                    </div>
+                    <div hidden$="{{showTitle}}">
+                        <paper-dropdown-menu label="{{resource.fields.title.title}}" id="adultPaxTitle" required auto-validate error-message="{{resource.fields.title.errors}}">
+                            <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
+                                <template is="dom-repeat" items={{resource.fields.title.values}}>
+                                    <paper-item>{{item.key}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                        <input is="iron-input" type="hidden" bind-value="[[titleValue]]">
+                    </div>
+
+                    <div>
+                        <paper-input label="{{resource.fields.firstName.title}}" class="inputAdultCount" id="adultFirstName" required auto-validate
+                            error-message="{{resource.fields.firstName.errors}}"></paper-input>
+                    </div>
+                    <div>
+                        <paper-input label="{{resource.fields.lastName.title}}" id="adultLastName" required auto-validate error-message="{{resource.fields.lastName.errors}}"></paper-input>
+                    </div>
+
                 </div>
-                <div hidden$="{{showContactNumber}}">
-                    <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="adultCountryCode" required auto-validate error-message="{{resource.fields.countryCode.errors}}">
-                        <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
-                            <template is="dom-repeat" items={{resource.fields.countryCode.values}}>
-                                <paper-item value="{{item.value}}">{{item.key}}</paper-item>
-                            </template>
-                        </paper-listbox>
-                    </paper-dropdown-menu>
-                    <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
+                <div id="inputForm2">
+                    <div id="adultEmailAndLabel">
+                        <paper-input label="{{resource.fields.email.title}}" id="adultEmail" hidden$="{{showEmailAddress}}" required auto-validate
+                            error-message="{{resource.fields.email.errors}}"></paper-input>
+                        <div id="adultEmailLabel" hidden$="{{showEmailAddress}}">{{resource.fields.email.info}}</div>
+                    </div>
+                    <div hidden$="{{showContactNumber}}">
+                        <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="adultCountryCode" required auto-validate error-message="{{resource.fields.countryCode.errors}}">
+                            <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
+                                <template is="dom-repeat" items={{resource.fields.countryCode.values}}>
+                                    <paper-item value="{{item.value}}">{{item.key}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                        <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
+                    </div>
+                    <div>
+                        <paper-input label="{{resource.fields.contactNumber.title}}" id="adultContactNo" hidden$="{{showContactNumber}}" required
+                            auto-validate error-message="{{resource.fields.contactNumber.errors}}"></paper-input>
+                    </div>
                 </div>
-                <div>
-                    <paper-input label="{{resource.fields.contactNumber.title}}" id="adultContactNo" hidden$="{{showContactNumber}}" required
-                        auto-validate error-message="{{resource.fields.contactNumber.errors}}"></paper-input>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </template>
 
     <script>
@@ -153,6 +313,26 @@
             }
             static get properties() {
                 return {
+                    smallMobileView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    mobileView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    tabletView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    desktopView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    largeDesktopView: {
+                        type: Boolean,
+                        value: false
+                    },
                     adultPaxCount: {
                         type: Number,
                     },
@@ -208,6 +388,10 @@
                         type: Boolean,
                         value: false
                     },
+                    //  _showTypeLabel : {
+                    //     type: Boolean,
+                    //     computed: '_lte(adultPaxCountArray.length , 1)'
+                    // },
                 }
             }
             isValidPaxInfo() {
@@ -230,14 +414,12 @@
                     adultContactNumberValidation.invalid = true;
                 }
                 if (this.index === 1) {
-                    if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid ||                        
+                    if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid ||
                         adultContactNumberValidation.invalid || adultEmailValidation.invalid) {
                         return true;
                     }
-                }
-                else {
-                    if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid )
-                    {
+                } else {
+                    if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid) {
                         return true;
                     }
                 }
@@ -250,13 +432,14 @@
                 var adultEmailData = this.$.adultEmail;
                 var adultCountryCodeData = this.$.adultCountryCode;
                 var adultContactNumberData = this.$.adultContactNo;
+                adultData.type = "Adult" + this.index;
                 adultData.Title = adultTitleData.value;
                 adultData.FirstName = adultFirstNameData.value;
                 adultData.LastName = adultLastNameData.value;
-                adultData.Email  = adultEmailData.value;
+                adultData.Email = adultEmailData.value;
                 adultData.CountryCode = adultCountryCodeData.value;
-                adultData.ContactNumber = adultContactNumberData.value;    
-                return adultData;   
+                adultData.ContactNumber = adultContactNumberData.value;
+                return adultData;
             }
             _typeLabelIfAdultIsOnlyOne() {
                 var adultCount = this.adultPaxCount;
@@ -275,6 +458,11 @@
                     if (checkLeadPax === true) {
                         this.showEmailAddress = false;
                     }
+                    var checkLeadPax = this.option.allowTitleForLeadPax;
+                    if (checkLeadPax === true) {
+                        this.showTitle = false;
+                    }
+                      this._dynamicStyle(); 
                 }
 
             }
@@ -287,12 +475,86 @@
                 if (check === true && this.index != 1) {
                     this.showEmailAddress = false;
                 }
+                var check = this.option.allowTitle;
+                if (check === true && this.index != 1) {
+                    this.showTitle = false;
+                }
+            }
+            /**
+             * Function to set view of internet explorer.       
+             * */
+            _largeDesktopViewIE(largeDesktopView) {
+                // Internet Explorer 6-11
+                var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+                return isIE && largeDesktopView;
+            }
+            /**
+             * Function for desktop view for browsers other than internet explorer.
+             * */
+            _largeDesktopViewOther(largeDesktopView) {
+                // Internet Explorer 6-11
+                var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+                return !isIE && largeDesktopView;
+            }
+            // _lte(adultPaxCount, hiddenLabelAdultNumber) {
+            //     return adultPaxCount <= hiddenLabelAdultNumber;
+            // }
+            _dynamicStyle() {
+                if (this.showTitle === false) {
+                    var divLen = 2 + 1;
+                } else {
+                    var divLen = 2;
+                }
+                var len = 100 / divLen - 4;
+                var lenTab = 100 / divLen - 5;
+                if (this.smallMobileView === true || this.mobileView === true) {
+                    Polymer.dom(this.root).querySelector("#adultFirstName").style.width = len + "%";
+                    Polymer.dom(this.root).querySelector("#adultLastName").style.width = len + "%";
+                    if (this.showTitle === true){
+                    Polymer.dom(this.root).querySelector("#adultFirstName").style.marginLeft  = "-10px";
+                    }
+                    else{
+                         Polymer.dom(this.root).querySelector("#adultFirstName").style.marginLeft  = "12px";
+                    }
+                    if (this.showTitle === false) {
+                        Polymer.dom(this.root).querySelector("#adultPaxTitle").style.width = len + "%";
+                        Polymer.dom(this.root).querySelector("#adultPaxTitle").style.marginLeft  = "-10px";                       
+                    }
+                }
+                if(this.tabletView === true){
+                    Polymer.dom(this.root).querySelector("#adultFirstName").style.width = lenTab + "%";
+                    Polymer.dom(this.root).querySelector("#adultLastName").style.width = lenTab + "%";
+                    if (this.showTitle === true){
+                    Polymer.dom(this.root).querySelector("#adultFirstName").style.marginLeft  = "-7px";
+                    }
+                    else{
+                         Polymer.dom(this.root).querySelector("#adultFirstName").style.marginLeft  = "15px";
+                    }
+                    if (this.showTitle === false) {
+                        Polymer.dom(this.root).querySelector("#adultPaxTitle").style.width = lenTab + "%";
+                        Polymer.dom(this.root).querySelector("#adultPaxTitle").style.marginLeft  = "-5px";                       
+                    }
+                }
             }
             ready() {
                 super.ready();
                 this._showAllowFieldsForLeadPax();
                 this._showAllowFields();
                 this._typeLabelIfAdultIsOnlyOne();
+                this._dynamicStyle();
+                var adultPax = this.adultPaxCount;
+                var childPax = this.childPaxCount;
+                var totalPax = +adultPax + +childPax;
+                var adultPaxCount1 = [];
+                for (var i = 0; i < adultPax; i++) {
+                    adultPaxCount1.push(i);
+                }
+                this.adultPaxCountArray = adultPaxCount1;
+                var childPaxCount1 = [];
+                for (var i = 0; i < childPax; i++) {
+                    childPaxCount1.push(i);
+                }
+                this.childPaxCountArray = childPaxCount1;
             }
 
         }

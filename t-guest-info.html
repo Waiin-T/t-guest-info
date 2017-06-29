@@ -7,8 +7,8 @@
 <link rel="import" href="bower_components/paper-item/paper-item.html">
 <link rel="import" href="bower_components/paper-input/paper-input.html">
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="bower_components/paper-button/paper-button.html">-->
-<!--<link rel="import" href="bower_components/iron-media-query/iron-mdeia-query.html">-->
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/iron-media-query/iron-media-query.html">-->
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymer/polymer-element.html">
@@ -23,6 +23,7 @@
 <link rel="import" href="../iron-media-query/iron-media-query.html">
 <link rel="import" href="t-traveler-info.html">
 <link rel="import" href="t-loyalty-program.html">
+
 <dom-module id="t-guest-info">
   <template>
     <style>
@@ -92,7 +93,7 @@
       </template>
     </template>
 
-    <div id="loyaltyDiv">
+    <!--<div id="loyaltyDiv">
       <div>
         <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
         <t-loyalty-program id="tLoyaltyDatabase"></t-loyalty-program>
@@ -100,7 +101,7 @@
       <div>
         <paper-button id=addProgramForOtherGuestButton>Add program for other guest</paper-button>
       </div>
-    </div>
+    </div>-->
     <br>
     <br>
 
@@ -183,6 +184,14 @@
             value: {
               "rooms": []
             }
+          },
+          allowTitle :{
+            type: Boolean,
+            value: false
+          },
+          allowTitleForLeadPax :{
+            type: Boolean,
+            value: false
           },
           allowContactNumber: {
             type: Boolean,
@@ -388,11 +397,23 @@
         if (this.option === undefined) {
           this.allowContactNumber;
           this.allowContactNumberForLeadPax;
+          this.allowTitle;
+          this.allowTitleForLeadPax;
           this.allowEmail;
           this.allowEmailForLeadPax;
           this.requiredField;
           this.requiredFieldForLeadPax;
         } else {
+          if (this.option.allowTitleForLeadPax === undefined) {
+            this.allowTitleForLeadPax;
+          } else {
+            this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
+          }
+          if (this.option.allowTitle === undefined) {
+            this.allowTitle;
+          } else {
+            this.allowTitle = this.option.allowTitle;
+          }
           if (this.option.allowContactNumber === undefined) {
             this.allowContactNumber;
           } else {
@@ -664,14 +685,12 @@
         return calIndex;
       }
       isValidGuest() {
-        var data = [];
         var validData = [];
         var productLength = this.product.length;
         for (var i = 0; i < productLength; i++) {
           var roomsLength = this.product[i].rooms.length;
           for (var j = 0; j < roomsLength; j++) {
             validData[j] = Polymer.dom(this.root).querySelector("#travelerInfo" + (j + 1)).isValid();
-            data[j] = Polymer.dom(this.root).querySelector("#travelerInfo" + (j + 1)).submit(event);            
           }
           for (var j = 0; j < roomsLength; j++) {
             if (validData[j] === false) {
@@ -681,7 +700,20 @@
             }
           }
         }
-        console.log(data);
+      }
+      isData(){
+        var totalData = [];
+        var data = [];
+        var prodLen = this.product.length;
+        for(var i = 0; i < prodLen; i++){
+          var roomLen = this.product[i].rooms.length;
+          for(var j = 0; j < roomLen; j++){
+            data[j]= Polymer.dom(this.root).querySelector("#travelerInfo" + (j + 1)).submit(event);
+          }
+          totalData[i] = data;
+        }
+        console.log(totalData);
+        return totalData;
       }
       ready() {
         super.ready();

@@ -4,6 +4,124 @@
 <dom-module id="t-traveler-info">
     <template>
         <style>
+            .item[smallMobileView] #toolbarRoom {
+                background-color: var(--toolbar-background-color);
+                width: 100%;
+                height: 50px;
+                margin-left: -14px;
+            }
+
+            .item[smallMobileView] #productPassengers {
+                width: 100%;
+                margin-left: 3px;
+            }
+
+            .item[smallMobileView] #title {
+                font-size: 14px;
+                width: 100%;
+                margin-top: -12px;
+                position: absolute;
+                margin-left: -5px;
+            }
+
+            .item[smallMobileView] #subTitle {
+                /*color: var(--color-for-subTitle);                */
+                font-size: 13px;
+                color: var(--color-for-subTitle);
+                width: 100%;
+                margin-top: 15px;
+                margin-left: -6px;
+            }
+
+            .item[smallMobileView] #policyList {
+                font-size: 13px;
+                margin-left: -18px;
+            }
+            .item[smallMobileView] #closeIcon {
+                margin-top: 4%;
+                margin-left: -16px;
+                color: #A8A8A8;
+            }
+
+            .item[mobileView] #toolbarRoom {
+                background-color: var(--toolbar-background-color);
+                width: 100%;
+                height: 50px;
+                margin-left: -14px;
+            }
+
+            .item[mobileView] #productPassengers {
+                width: 100%;
+            }
+
+            .item[mobileView] #title {
+                font-size: 14px;
+                width: 100%;
+                margin-top: -12px;
+                position: absolute;
+                margin-left: -5px;
+            }
+
+            .item[mobileView] #subTitle {
+                /*color: var(--color-for-subTitle);                */
+                font-size: 13px;
+                color: var(--color-for-subTitle);
+                width: 100%;
+                margin-top: 15px;
+                margin-left: -6px;
+            }
+
+            .item[mobileView] #policyList {
+                font-size: 13px;
+                margin-left: -18px;
+            }
+
+            .item[mobileView] #closeIcon {
+                margin-top: 4%;
+                margin-left: -14px;
+                color: #A8A8A8;
+            }
+
+            .item[tabletView] #toolbarRoom {
+                background-color: var(--toolbar-background-color);
+                width: 100%;
+                height: 50px;
+                margin-left: -6px;
+            }
+
+            .item[tabletView] #productPassengers {
+                width: 64%;
+            }
+
+            .item[tabletView] #extraSpace {
+                margin-top: 20px;
+                margin-left: 50px;
+                width: 30%;
+                border: 1px solid lightgray;
+                border-right: rebeccapurple solid 1px;
+            }
+
+            .item[tabletView] #title {
+                font-size: 14px;
+                padding: 5px;
+            }
+
+            .item[tabletView] #subTitle {
+                /*color: var(--color-for-subTitle);                */
+                font-size: 13px;
+                color: var(--color-for-subTitle);
+            }
+
+            .item[tabletView] #policyList {
+                font-size: 14px;
+                margin-left: -13px;
+                width: 100%;
+            }
+            .item[tabletView] #closeIcon {
+                 margin-top: 4%;
+                margin-left: -15px;
+                color: #A8A8A8;
+            }
             #toolbarRoom {
                 background-color: var(--toolbar-background-color);
                 width: 100%;
@@ -13,9 +131,19 @@
             }
 
             #productPassengers {
-                width: 67%;
+                width: 65%;
             }
 
+            #extraSpace {
+                margin-top: 20px;
+                margin-left: 50px;
+                width: 30%;
+                border: 1px solid lightgray;
+                border-right: rebeccapurple solid 1px;
+            }
+            #productPassengers, #extraSpace {
+                float: left;
+            }
             #subTitle {
                 color: var(--color-for-subTitle);
                 font-size: 14px;
@@ -41,14 +169,14 @@
             }*/
 
             #closeIcon {
-                margin-top: 4%;
-                margin-left: 20px;
+                margin-top: 3%;
+                margin-left: 18px;
                 color: #A8A8A8;
             }
 
             #paxInfoTemp {
                 float: left;
-                width: 96%;
+                width: 108%;
             }
         </style>
         <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
@@ -57,41 +185,47 @@
         <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
         <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query>
 
+        <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"
+            largeDesktopView$="{{_largeDesktopViewOther(largeDesktopView)}}" largeDesktopViewIE$="{{_largeDesktopViewIE(largeDesktopView)}}">
 
-        <div id="productPassengers">
-            <app-toolbar id="toolbarRoom">
-                <div id="title">{{title}}</div>
-                <div id="titleDash" hidden$={{hideDashForMobileView}}> - </div>
-                <div id="subTitle">{{subTitle}}</div>
-            </app-toolbar>
+            <div id="productPassengers">
+                <app-toolbar id="toolbarRoom">
+                    <div id="title">{{title}}</div>
+                    <div id="titleDash" hidden$={{hideDashForMobileView}}> - </div>
+                    <div id="subTitle">{{subTitle}}</div>
+                </app-toolbar>
 
-            <div id="policyList">
-                <template is="dom-repeat" items={{policyList}}>
-                    <br>
-                    <!--<iron-icon icon="check" id="checkIcon"></iron-icon>-->
-                    <img id="checkIcon" src="checkImage.svg" height="10" width="10"> {{item}}
+                <div id="policyList">
+                    <template is="dom-repeat" items={{policyList}}>
+                        <br>
+                        <div>
+                            <div style="float:left">
+                                <img id="checkIcon" src="checkImage.svg" height="10" width="10">
+                            </div>
+                            <div style="margin-left:20px; margin-top:-11px"> {{item}}</div>
+                        </div>
+                    </template>
+                </div>
+                <template is="dom-repeat" items="{{adultPaxCountArray}}">
+                    <div id="paxInfoTemp">
+                        <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}"
+                            adult-pax-count="{{adultPaxCount}}">{{item}}</pax-info>
+                        <div hidden$=[[_isCloseButtonHidden]]>
+                            <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
+                        </div>
+                    </div>
+                </template>
+                <template is="dom-repeat" items="{{childPaxCountArray}}">
+                    <div id="paxInfoTemp">
+                        <pax-info-child id="childPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resource}}"
+                            index="{{_increaseIndex(index)}}"></pax-info-child>
+                        <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxChildInfo"></paper-icon-button>
+                    </div>
                 </template>
             </div>
-            <template is="dom-repeat" items="{{adultPaxCountArray}}">
-                <div id="paxInfoTemp">
-                    <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}"
-                        adult-pax-count="{{adultPaxCount}}">{{item}}</pax-info>
-                    <div hidden$=[[_isCloseButtonHidden]]>
-                        <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
-                    </div>
-                </div>
-            </template>
-            <template is="dom-repeat" items="{{childPaxCountArray}}">
-                <div id="paxInfoTemp">
-                    <pax-info-child id="childPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resource}}"
-                        index="{{_increaseIndex(index)}}"></pax-info-child>
-                    <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxChildInfo"></paper-icon-button>
-                </div>
-            </template>
-
+            <!--<div id="extraSpace">
+            </div>-->
         </div>
-
-
     </template>
 
     <script>
@@ -129,10 +263,10 @@
                         type: Boolean,
                         value: false
                     },
-                    hideDashForMobileView:{
+                    hideDashForMobileView: {
                         type: Boolean,
-                        // value: false
-                        computed: '_hideDashForMobileView()'
+                        value: false
+                        // computed: '_hideDashForMobileView()'
                     },
                     option: {
                         type: Object,
@@ -143,19 +277,23 @@
                     },
                     adultPaxCount: {
                         type: Number,
+                        value: ''
                     },
                     adultPaxCountArray: {
                         type: Array,
+                        value: ''
                     },
                     childPaxCount: {
                         type: Number,
+                        value: ''
                     },
                     childPaxCountArray: {
                         type: Array,
+                        value: ''
                     },
                     totalPaxCount: {
                         type: Array,
-
+                        value: ''
                     },
                     paxList: {
                         type: Object,
@@ -240,7 +378,7 @@
                 // var adultPaxDataObject = JSON.stringify(adultPaxDataArray);
                 // var childPaxDataObject = JSON.stringify(childPaxDataArray);
                 var paxDataObject = adultPaxDataArray.concat(childPaxDataArray);
-                // console.log(paxDataObject);
+                return paxDataObject;
             }
             getState() {
 
@@ -251,9 +389,11 @@
             _lte(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
                 return adultPaxCountArrayLength <= hiddenButtonAdultNumber;
             }
-            _hideDashForMobileView(){
-                if(this.smallMobileView === true && this.mobileView === true){
-                    return true;
+            _hideDashForMobileView() {
+                if (this.smallMobileView === true || this.mobileView === true) {
+                    this.hideDashForMobileView = true;
+                } else {
+                    this.hideDashForMobileView = false;
                 }
             }
             _closeIconIfAdultIsOnlyOne() {
@@ -272,8 +412,25 @@
                 var calIndex = index + 1;
                 return calIndex;
             }
+            /**
+             * Function to set view of internet explorer.       
+             * */
+            _largeDesktopViewIE(largeDesktopView) {
+                // Internet Explorer 6-11
+                var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+                return isIE && largeDesktopView;
+            }
+            /**
+             * Function for desktop view for browsers other than internet explorer.
+             * */
+            _largeDesktopViewOther(largeDesktopView) {
+                // Internet Explorer 6-11
+                var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+                return !isIE && largeDesktopView;
+            }
             ready() {
                 super.ready();
+
                 this._closeIconIfAdultIsOnlyOne();
                 var adultPax = this.adultPaxCount;
                 var childPax = this.childPaxCount;
@@ -288,7 +445,7 @@
                     childPaxCount1.push(i);
                 }
                 this.childPaxCountArray = childPaxCount1;
-
+                this._hideDashForMobileView();
             }
         }
 

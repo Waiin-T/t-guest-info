@@ -17,7 +17,136 @@
                 --paper-input-container-label-focus: lightgray;
             }
 
-            .inputForm #PaxTitle,
+            .item[smallMobileView] #typeAndLabel {
+                margin-left: -10px;
+                width: 100%;
+            }
+
+            .item[smallMobileView] #emailAndLabel {
+                width: 100%;
+                margin-left: -10px;
+            }
+
+            .item[smallMobileView] .inputForm #paxTitle,
+            #firstName,
+            #lastName {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[smallMobileView] #paxTitle {
+                float: left;
+                width: 100%;
+                margin-left: -10px;
+            }
+
+            .item[smallMobileView] #firstName {
+                float: left;
+                /*width: 28%;*/
+                /*margin-left: -10px;*/
+            }
+
+            .item[smallMobileView] #lastName {
+                float: left;
+                /*width: 28%;*/
+                margin-left: 10px;
+            }
+
+            .item[smallMobileView] #countryCode,
+            #adultContactNo {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[smallMobileView] #countryCode {
+                margin-left: -10px;
+                width: 46%;
+            }
+
+            .item[smallMobileView] #contactNo {
+                margin-left: 25px;
+                width: 46%;
+            }
+            .item[mobileView] #typeAndLabel {
+                margin-left: -10px;
+                width: 100%;
+            }
+
+            .item[mobileView] #emailAndLabel {
+                width: 100%;
+                margin-left: -10px;
+            }
+
+            .item[mobileView] .inputForm #paxTitle,
+            #firstName,
+            #lastName {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[mobileView] #paxTitle {
+                float: left;
+                width: 100%;
+                margin-left: -10px;
+            }
+
+            .item[mobileView] #countryCode,
+            #adultContactNo {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[mobileView] #countryCode {
+                margin-left: -10px;
+                width: 46%;
+            }
+
+            .item[mobileView] #contactNo {
+                margin-left: 25px;
+                width: 46%;
+            }
+
+
+            .item[tabletView] #typeAndLabel {
+                margin-left: -7px;
+                width: 100%;
+            }
+
+            .item[tabletView] #emailAndLabel {
+                width: 100%;
+                margin-left: -10px;
+            }
+
+            .item[tabletView] .inputForm #paxTitle,
+            #firstName,
+            #lastName {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[tabletView] #paxTitle {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[tabletView] #countryCode,
+            #contactNo {
+                float: left;
+                margin-left: -10px;
+            }
+
+            .item[tabletView] #countryCode {
+                margin-left: -10px;
+                width: 46%;
+            }
+
+            .item[tabletView] #contactNo {
+                margin-left: 25px;
+                width: 46%;
+            }
+
+
+            .inputForm #paxTitle,
             #firstName,
             #lastName {
                 float: left;
@@ -47,7 +176,7 @@
                 color: #BDBDBD;
             }
 
-            #PaxTitle {
+            #paxTitle {
                 width: 21%;
                 margin-left: 10px;
             }
@@ -63,7 +192,7 @@
             }
 
             #inputForm2 {
-                margin-top: 15px;
+                margin-top: 20px;
             }
 
             #email {}
@@ -89,52 +218,61 @@
             }
         </style>
 
-        <form is="iron-form" id="form" method="post" action="/form/handler">
-            <div class="inputForm">
-                <div id="typeAndLabel">
-                    <label id="typeLabel">{{resource.labels.child.title}} {{index}}</label>
-                    <div id="typeSubLabel"> {{resource.labels.child.info}}</div>
-                </div>
-                <div>
-                    <paper-dropdown-menu label="{{resource.fields.title.title}}" id="PaxTitle" required auto-validate error-message="{{resource.fields.title.errors}}">
-                        <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
-                            <template is="dom-repeat" items={{resource.fields.title.values}}>
-                                <paper-item>{{item.key}}</paper-item>
-                            </template>
-                        </paper-listbox>
-                    </paper-dropdown-menu>
-                    <input is="iron-input" type="hidden" bind-value="[[titleValue]]">
-                </div>
+        <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{tabletView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query>
 
-                <div>
-                    <paper-input label="{{resource.fields.firstName.title}}" id="firstName" required auto-validate error-message="{{resource.fields.firstName.errors}}"></paper-input>
-                </div>
-                <div>
-                    <paper-input label="{{resource.fields.lastName.title}}" id="lastName" required auto-validate error-message="{{resource.fields.lastName.errors}}"></paper-input>
-                </div>
+        <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"
+            largeDesktopView$="{{_largeDesktopViewOther(largeDesktopView)}}" largeDesktopViewIE$="{{_largeDesktopViewIE(largeDesktopView)}}">
 
-            </div>
-            <div id="inputForm2">
-                <div id="emailAndLabel">
-                    <paper-input label="{{resource.fields.email.title}}" id="email" hidden$={{showEmailAddress}} required auto-validate error-message="{{resource.fields.email.errors}}"></paper-input>
-                    <div id="emailLabel" hidden$="{{showEmailAddress}}">{{resource.fields.email.info}}</div>
-                </div>
-                <div hidden$={{showContactNumber}}>
-                    <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="countryCode" required auto-validate error-message="{{resource.fields.countryCode.errors}}">
-                        <paper-listbox slot="dropdown-content">
-                            <template is="dom-repeat" items={{resource.fields.countryCode.values}}>
-                                <paper-item>{{item.key}}</paper-item>
-                            </template>
-                        </paper-listbox>
-                    </paper-dropdown-menu>
-                </div>
-                <div>
-                    <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo" hidden$={{showContactNumber}} required auto-validate
-                        error-message="{{resource.fields.contactNumber.errors}}"></paper-input>
-                </div>
-            </div>
-        </form>
+            <form is="iron-form" id="form" method="post" action="/form/handler">
+                <div class="inputForm">
+                    <div id="typeAndLabel">
+                        <label id="typeLabel">{{resource.labels.child.title}} {{index}}</label>
+                        <div id="typeSubLabel"> {{resource.labels.child.info}}</div>
+                    </div>
+                   <div hidden$="{{showTitle}}">
+                        <paper-dropdown-menu label="{{resource.fields.title.title}}" id="paxTitle" required auto-validate error-message="{{resource.fields.title.errors}}">
+                            <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
+                                <template is="dom-repeat" items={{resource.fields.title.values}}>
+                                    <paper-item>{{item.key}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                        <input is="iron-input" type="hidden" bind-value="[[titleValue]]">
+                    </div>
 
+                    <div>
+                        <paper-input label="{{resource.fields.firstName.title}}" id="firstName" required auto-validate error-message="{{resource.fields.firstName.errors}}"></paper-input>
+                    </div>
+                    <div>
+                        <paper-input label="{{resource.fields.lastName.title}}" id="lastName" required auto-validate error-message="{{resource.fields.lastName.errors}}"></paper-input>
+                    </div>
+
+                </div>
+                <div id="inputForm2">
+                    <div id="emailAndLabel">
+                        <paper-input label="{{resource.fields.email.title}}" id="email" hidden$={{showEmailAddress}} required auto-validate error-message="{{resource.fields.email.errors}}"></paper-input>
+                        <div id="emailLabel" hidden$="{{showEmailAddress}}">{{resource.fields.email.info}}</div>
+                    </div>
+                    <div hidden$={{showContactNumber}}>
+                        <paper-dropdown-menu label="{{resource.fields.countryCode.title}}" id="countryCode" required auto-validate error-message="{{resource.fields.countryCode.errors}}">
+                            <paper-listbox slot="dropdown-content">
+                                <template is="dom-repeat" items={{resource.fields.countryCode.values}}>
+                                    <paper-item>{{item.key}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                    </div>
+                    <div>
+                        <paper-input label="{{resource.fields.contactNumber.title}}" id="contactNo" hidden$={{showContactNumber}} required auto-validate
+                            error-message="{{resource.fields.contactNumber.errors}}"></paper-input>
+                    </div>
+                </div>
+            </form>
+        </div>
     </template>
 
     <script>
@@ -152,6 +290,26 @@
             }
             static get properties() {
                 return {
+                    smallMobileView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    mobileView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    tabletView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    desktopView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    largeDesktopView: {
+                        type: Boolean,
+                        value: false
+                    },
                     titleValue: {
                         type: String,
                         value: '0'
@@ -186,22 +344,27 @@
                     },
                     showContactNumber: {
                         type: Boolean,
-                        value: false
+                        value: true
                     },
                     showEmailAddress: {
                         type: Boolean,
-                        value: false
-                    }
+                        value: true
+                    },
+
                 }
             }
             _showAllowFields() {
                 var check = this.option.allowContactNumber;
-                if (check === false) {
-                    this.showContactNumber = true;
+                if (check === true) {
+                    this.showContactNumber = false;
                 }
                 var check = this.option.allowEmail;
-                if (check === false) {
-                    this.showEmailAddress = true;
+                if (check === true) {
+                    this.showEmailAddress = false;
+                }
+                var check = this.option.allowTitle;
+                if (check === true) {
+                    this.showTitle = false;
                 }
             }
             isValidPaxInfoChild() {
@@ -232,21 +395,61 @@
                 var childData = {};
                 var childFirstNameData = this.$.firstName;
                 var childLastNameData = this.$.lastName;
-                // var childTitleData = this.$.paxTitle;
+                var childTitleData = this.$.paxTitle;
                 var childEmailData = this.$.email;
                 var childCountryCodeData = this.$.countryCode;
                 var childContactNumberData = this.$.contactNo;
-                // childData.Title = childTitleData.value;
+                childData.type = "Child" + this.index;
+                childData.Title = childTitleData.value;
                 childData.FirstName = childFirstNameData.value;
                 childData.LastName = childLastNameData.value;
-                childData.Email  = childEmailData.value;
+                childData.Email = childEmailData.value;
                 childData.CountryCode = childCountryCodeData.value;
-                childData.ContactNumber = childContactNumberData.value;    
-                return childData;   
+                childData.ContactNumber = childContactNumberData.value;
+                return childData;
+            }
+            _dynamicStyle() {
+                if (this.showTitle === false) {
+                    var divLen = 2 + 1;
+                } else {
+                    var divLen = 2;
+                }
+                var len = 100 / divLen - 4.6;
+                if (this.smallMobileView === true || this.mobileView === true || this.tabletView === true) {
+                    Polymer.dom(this.root).querySelector("#firstName").style.width = len + "%";
+                    Polymer.dom(this.root).querySelector("#lastName").style.width = len + "%";
+                    if (this.showTitle === true){
+                    Polymer.dom(this.root).querySelector("#firstName").style.marginLeft  = "-7px";
+                    }
+                    else{
+                         Polymer.dom(this.root).querySelector("#firstName").style.marginLeft  = "10px";
+                    }
+                    if (this.showTitle === false) {
+                        Polymer.dom(this.root).querySelector("#paxTitle").style.width = len + "%";
+                        Polymer.dom(this.root).querySelector("#paxTitle").style.marginLeft  = "-5px";                       
+                    }
+                }
+            }
+             /**
+             * Function to set view of internet explorer.       
+             * */
+            _largeDesktopViewIE(largeDesktopView) {
+                // Internet Explorer 6-11
+                var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+                return isIE && largeDesktopView;
+            }
+            /**
+             * Function for desktop view for browsers other than internet explorer.
+             * */
+            _largeDesktopViewOther(largeDesktopView) {
+                // Internet Explorer 6-11
+                var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+                return !isIE && largeDesktopView;
             }
             ready() {
                 super.ready();
                 this._showAllowFields();
+                this._dynamicStyle();
             }
 
         }

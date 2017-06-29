@@ -20,8 +20,8 @@
       }
 
       t-guest-info {
-        --toolbar-background-color: #BBB;
-        --color-for-subTitle: #gray;
+        --toolbar-background-color: #EEE;
+        --color-for-subTitle: gray;
         --color-for-policies: #4CB050;
         --color-for-button-labels: #478BD7;
       }
@@ -32,6 +32,8 @@
 <body>
 
   <t-guest-info id="guestInfo" option='{
+                  "allowTitle" : true,
+                  "allowTitleForLeadPax" : true,
                   "allowContactNumber" : false,
                   "allowContactNumberForLeadPax" : true,
                   "allowEmail" : false,
@@ -107,7 +109,8 @@
                       "title": "Contact number",
                       "info": "In case of any notifications our agent will reach you on this number",
                       "errors": "Contact number is required"
-                      }
+                      },
+                      "newGuest" : "New Guest"
                    }
                   }' paxlist='{
                         "type": "Adult",
@@ -165,13 +168,14 @@
   <br><br><br><br><br><br><br><br><br><br><br><br>
   <button id="demoButton" style="color:darkblue;background-color:darkgrey" onclick="fireIsValidMethod()">Test Button</button>
 
-
-  <script>
-    function fireIsValidMethod() {
-      var valid = document.getElementById("guestInfo").isValidGuest();
-      alert(valid);
-    }
-  </script>
 </body>
+<script>
+  function fireIsValidMethod() {
+    var valid = document.getElementById("guestInfo").isValidGuest();
+    document.getElementById("guestInfo").isData();
+    alert(valid);
+  }
+</script>
+
 
 </html>
