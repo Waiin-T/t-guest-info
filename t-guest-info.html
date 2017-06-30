@@ -50,6 +50,33 @@
         font-size: 16px;
       }
 
+      /*.item[LargeDesktopview]*/
+      #chooseGuest {
+        width: 40%;
+        position: relative;
+        float: left;
+        margin-top: 335px;
+        /*margin-left: -542px;*/
+      }
+
+      /*.item[smallMobileView]#chooseGuest {
+        width: 50%;
+        background-color: violet;
+        float: left;
+      }
+
+      .item[mobileView] #chooseGuest {
+        width: 15%;
+        position: relative;
+        float: left;
+      }
+
+      .item[tablet] #chooseGuest {
+        width: 15%;
+        position: relative;
+        float: left;
+      }*/
+
       #loyaltyDiv {
         width: 67%;
       }
@@ -80,18 +107,30 @@
     <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query>
     <iron-media-query query="(max-width: 600px)" query-matches="{{mediumTablet}}"></iron-media-query>
     <iron-media-query query="(max-width: 767px)" query-matches="{{mobilePhone}}"></iron-media-query>
+    <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}">
 
-    <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
+      <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
 
-    <template is="dom-repeat" items="{{product}}">
-      <template is="dom-repeat" items="{{item.rooms}}">
-        <t-traveler-info id="travelerInfo{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child"
-          policy-List="{{item.policies}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resources}}" adult-pax-count="{{item.criteria.traveler.adult}}"
-          child-pax-count="{{item.criteria.traveler.child}}">
-        </t-traveler-info>
-        <br>
+      <template is="dom-repeat" items="{{product}}">
+        <template is="dom-repeat" items="{{item.rooms}}">
+          <t-traveler-info id="travelerInfo{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child"
+            policy-List="{{item.policies}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resources}}" adult-pax-count="{{item.criteria.traveler.adult}}"
+            child-pax-count="{{item.criteria.traveler.child}}">
+          </t-traveler-info>
+          <div hidden$={{_doNotShowForRoom1(index,1)}}>
+            <paper-dropdown-menu label="Choose guest" id="chooseGuest" required auto-validate error-message="chooseguest please">
+              <paper-listbox slot="dropdown-content" selected="{{selectedGuest}}">
+                <paper-item>Guest 1</paper-item>
+                <paper-item>Guest 2</paper-item>
+                <paper-item>Guest 3</paper-item>
+                <paper-item>Guest 4</paper-item>
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
+          <br>
+        </template>
       </template>
-    </template>
+    </div>
 
     <!--<div id="loyaltyDiv">
       <div>
@@ -123,7 +162,7 @@
       }
       static get properties() {
         return {
-          smallMobileView:{
+          smallMobileView: {
             type: Boolean,
             value: false
           },
@@ -185,11 +224,11 @@
               "rooms": []
             }
           },
-          allowTitle :{
+          allowTitle: {
             type: Boolean,
             value: false
           },
-          allowTitleForLeadPax :{
+          allowTitleForLeadPax: {
             type: Boolean,
             value: false
           },
@@ -390,6 +429,10 @@
             type: Boolean,
             value: true,
           },
+          // doNotShowForRoom1: {
+          //   type: Boolean,
+          //   computed: '_lteChooseGuest(this.index, 1)'
+          // },
         };
       } //End of Properties.
 
@@ -701,19 +744,25 @@
           }
         }
       }
-      isData(){
+      isData() {
         var totalData = [];
         var data = [];
         var prodLen = this.product.length;
-        for(var i = 0; i < prodLen; i++){
+        for (var i = 0; i < prodLen; i++) {
           var roomLen = this.product[i].rooms.length;
-          for(var j = 0; j < roomLen; j++){
-            data[j]= Polymer.dom(this.root).querySelector("#travelerInfo" + (j + 1)).submit(event);
+          for (var j = 0; j < roomLen; j++) {
+            data[j] = Polymer.dom(this.root).querySelector("#travelerInfo" + (j + 1)).getState(event);
           }
           totalData[i] = data;
         }
-        console.log(totalData);
-        return totalData;
+        var totalDataObjectArray = JSON.stringify(totalData);
+        console.log(totalDataObjectArray);
+        var totalDataObject = JSON.parse(totalDataObjectArray);
+        console.log(totalDataObject);
+        return totalDataObject;
+      }
+      _doNotShowForRoom1(room1, roomNumber) {
+        return room1 < roomNumber;
       }
       ready() {
         super.ready();

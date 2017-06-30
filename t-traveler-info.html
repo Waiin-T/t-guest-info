@@ -37,6 +37,7 @@
                 font-size: 13px;
                 margin-left: -18px;
             }
+
             .item[smallMobileView] #closeIcon {
                 margin-top: 4%;
                 margin-left: -16px;
@@ -117,11 +118,13 @@
                 margin-left: -13px;
                 width: 100%;
             }
+
             .item[tabletView] #closeIcon {
-                 margin-top: 4%;
+                margin-top: 4%;
                 margin-left: -15px;
                 color: #A8A8A8;
             }
+
             #toolbarRoom {
                 background-color: var(--toolbar-background-color);
                 width: 100%;
@@ -141,9 +144,12 @@
                 border: 1px solid lightgray;
                 border-right: rebeccapurple solid 1px;
             }
-            #productPassengers, #extraSpace {
+
+            #productPassengers,
+            #extraSpace {
                 float: left;
             }
+
             #subTitle {
                 color: var(--color-for-subTitle);
                 font-size: 14px;
@@ -208,8 +214,8 @@
                 </div>
                 <template is="dom-repeat" items="{{adultPaxCountArray}}">
                     <div id="paxInfoTemp">
-                        <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resource}}" index="{{_increaseIndex(index)}}"
-                            adult-pax-count="{{adultPaxCount}}">{{item}}</pax-info>
+                        <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resource}}"
+                            index="{{_increaseIndex(index)}}" adult-pax-count="{{adultPaxCount}}">{{item}}</pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
                             <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
                         </div>
@@ -217,7 +223,7 @@
                 </template>
                 <template is="dom-repeat" items="{{childPaxCountArray}}">
                     <div id="paxInfoTemp">
-                        <pax-info-child id="childPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resource}}"
+                        <pax-info-child id="childPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resource}}"
                             index="{{_increaseIndex(index)}}"></pax-info-child>
                         <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxChildInfo"></paper-icon-button>
                     </div>
@@ -366,7 +372,7 @@
                     return false;
                 }
             }
-            submit(event) {
+            getState(event) {
                 var adultPaxDataArray = [];
                 for (var i = 0; i < this.adultPaxCount; i++) {
                     adultPaxDataArray[i] = Polymer.dom(this.root).querySelector("#adultPaxInfo" + (i + 1)).adultData();
@@ -375,20 +381,28 @@
                 for (var i = 0; i < this.childPaxCount; i++) {
                     childPaxDataArray[i] = Polymer.dom(this.root).querySelector("#childPaxInfo" + (i + 1)).childData();
                 }
-                // var adultPaxDataObject = JSON.stringify(adultPaxDataArray);
-                // var childPaxDataObject = JSON.stringify(childPaxDataArray);
-                var paxDataObject = adultPaxDataArray.concat(childPaxDataArray);
-                return paxDataObject;
-            }
-            getState() {
+                var paxListArray = adultPaxDataArray.concat(childPaxDataArray);
+                // var totalPaxCountForOneRoom = this.adultPaxCount + this.childPaxCount;
+                // var paxDataObject = [];
+                // for( var i = 0; i < totalPaxCountForOneRoom; i++ ){
+                //     paxDataObject.push(paxList[i]);
+                // }
+                this.paxList = JSON.parse(JSON.stringify(paxListArray));
 
+                return this.paxList;
             }
-            setState() {
-
+            setState(paxList) {
+                var count = this.adultPaxCount + this.childPaxCount;
+                var finalData = [];
+                for (var i = 0; i < count; i++) {
+                    finalData[i] = paxList[i];
+                }
+                console.log(finalData);
             }
             _lte(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
                 return adultPaxCountArrayLength <= hiddenButtonAdultNumber;
             }
+
             _hideDashForMobileView() {
                 if (this.smallMobileView === true || this.mobileView === true) {
                     this.hideDashForMobileView = true;
@@ -404,9 +418,15 @@
             }
             _closePaxAdultInfo(e) {
                 this.splice('adultPaxCountArray', e.model.index, 1);
+                this.adultPaxCount = this.adultPaxCount - 1;
+                if (this.adultPaxCount === 1) {
+                    Polymer.dom(this.root).querySelector("#adultPaxInfo" + (e.model.index + 1))._lte((e.model.index +
+                        1), 1);
+                }
             }
             _closePaxChildInfo(e) {
                 this.splice('childPaxCountArray', e.model.index, 1);
+                this.childPaxCount = this.childPaxCount - 1;
             }
             _increaseIndex(index) {
                 var calIndex = index + 1;
