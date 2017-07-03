@@ -142,7 +142,7 @@
                         "firstName": "Anna",
                         "lastName": "Smith",
                         "email": "Anna@example.com",
-                        "contact": "963214587",
+                        "contact": "343453453",
                         "countrycode": "+91",
                         "membership": {
                           "programName": "",
@@ -153,9 +153,35 @@
                         "type": "Adult",
                         "title": "Mr",
                         "firstName": "Peter",
-                        "lastName": "Jones",
+                        "lastName": "Doe",
                         "email": "Peter@example.com",
-                        "contact": "785412693",
+                        "contact": "343453453",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      },{
+                        "type": "Adult",
+                        "title": "Ms",
+                        "firstName": "Nikita",
+                        "lastName": "Bachhav",
+                        "email": "Nikita@example.com",
+                        "contact": "343453453",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      },{
+                        "type": "Adult",
+                        "title": "Ms",
+                        "firstName": "Anupama",
+                        "lastName": "Kamble",
+                        "email": "anupama@example.com",
+                        "contact": "343453453",
                         "countrycode": "+91",
                         "membership": {
                           "programName": "",
@@ -175,8 +201,8 @@
                           "checkout": "05/28/2017",
                           "stayDuration": 2,
                           "traveler": {
-                            "adult": 3,
-                            "child": 0
+                            "adult": 4,
+                            "child": 1
                           }
                         },
                         "policies": [
@@ -219,7 +245,6 @@
       var roomLen = guestInfo.product[i].rooms.length;
       for (var j = 0; j < roomLen; j++) {
         data[j] = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1)).getState(event);
-        Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1))._dataForValue();
       }
       totalData[i] = data;
     }

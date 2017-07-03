@@ -214,13 +214,14 @@
                 </div>
                 <template is="dom-repeat" items="{{adultPaxCountArray}}">
                     <div id="paxInfoTemp">
-                        <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxList}}" option="[[option]]" resources="{{resource}}"
+                        <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" pax-list="[[_getPaxList(index, paxList)]]" option="[[option]]" resources="{{resource}}"
                             index="{{_increaseIndex(index)}}" adult-pax-count="{{adultPaxCount}}">{{item}}</pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
                             <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
                         </div>
                     </div>
                 </template>
+               
                 <template is="dom-repeat" items="{{childPaxCountArray}}">
                     <div id="paxInfoTemp">
                         <pax-info-child id="childPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxList}}" option="[[option]]" resources="{{resource}}"
@@ -302,10 +303,7 @@
                         value: ''
                     },
                     paxList: {
-                        type: Object,
-                        value: {
-                            "membership": {}
-                        }
+                        type: Array,
                     },
                     product: {
                         type: Object,
@@ -332,10 +330,10 @@
             _dataForValue() {
                 var adultPax = [];
                 var adultPaxData = [];
-                 for (var i = 0; i < this.adultPaxCount; i++) {
-                    adultPax[i] = Polymer.dom(this.root).querySelector("#adultPaxInfo" + (i+1));
+                for (var i = 0; i < this.adultPaxCount; i++) {
+                    adultPax[i] = Polymer.dom(this.root).querySelector("#adultPaxInfo" + (i + 1));
                 }
-                for(var j = 0; j < this.adultPaxCount; j++){
+                for (var j = 0; j < this.adultPaxCount; j++) {
                     adultPaxData[i] = this.paxList[i];
                 }
             }
@@ -453,6 +451,9 @@
                 var isIE = /*@cc_on!@*/ false || !!document.documentMode;
                 return !isIE && largeDesktopView;
             }
+            _getPaxList(index, arr) {
+                return arr[index];
+            }
             ready() {
                 super.ready();
 
@@ -476,7 +477,7 @@
                 }
                 this.childPaxCountArray = childPaxCount1;
                 this._hideDashForMobileView();
-               
+
             }
         }
 

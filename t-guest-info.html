@@ -133,15 +133,17 @@
       </template>
     </div>
 
-    <!--<div id="loyaltyDiv">
+    <div id="loyaltyDiv">
       <div>
         <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
-        <t-loyalty-program id="tLoyaltyDatabase"></t-loyalty-program>
+        <template is="dom-reapeat" items={{loyaltyPrograms}}>
+        <t-loyalty-program id="tLoyaltyDatabase">{{item}}</t-loyalty-program>
+        </template>
       </div>
       <div>
-        <paper-button id=addProgramForOtherGuestButton>Add program for other guest</paper-button>
+        <paper-button id=addProgramForOtherGuestButton on-tap="_addProgramForOtherGuest">Add program for other guest</paper-button>
       </div>
-    </div>-->
+    </div>
     <br>
     <br>
 
@@ -163,6 +165,9 @@
       }
       static get properties() {
         return {
+          loyaltyPrograms: {
+            type: Array,
+          },
           onlyLeadPaxInfo: {
             type: Boolean,
             value: true
@@ -201,7 +206,8 @@
             type: Number
           },
           paxlist: {
-            type: Object
+            type: Array,
+            value: []
           },
           policyList: {
             type: Array
@@ -609,10 +615,15 @@
       _doNotShowForRoom1(room1, roomNumber) {
         return room1 < roomNumber;
       }
+      _addProgramForOtherGuest(){
+        this.push('loyaltyPrograms', { loyaltyProgram: "" });
+      }
       ready() {
         super.ready();
+        this.loyaltyPrograms = [];
         this._defaultOptionValue();
         this._defaultResourcesValue();
+          this.push('loyaltyPrograms', { loyaltyProgram: "" });
       }
     }
 
