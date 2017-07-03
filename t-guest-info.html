@@ -49,8 +49,8 @@
         text-decoration: none;
         font-size: 16px;
       }
-
       /*.item[LargeDesktopview]*/
+
       #chooseGuest {
         width: 40%;
         position: relative;
@@ -59,7 +59,6 @@
         margin-bottom: 100px;
         /*margin-left: -542px;*/
       }
-
       /*.item[smallMobileView]#chooseGuest {
         width: 50%;
         background-color: violet;
@@ -119,12 +118,13 @@
             child-pax-count="{{item.criteria.traveler.child}}" only-lead-pax-info="{{item.onlyLeadPaxInfo}}">
           </t-traveler-info>
           <div hidden$={{_doNotShowForRoom1(index,1)}}>
-            <paper-dropdown-menu label="Choose guest" id="chooseGuest" required auto-validate error-message="chooseguest please">
+            <paper-dropdown-menu label="{{newGuest}}" id="chooseGuest" required auto-validate error-message="chooseguest please">
               <paper-listbox slot="dropdown-content" selected="{{selectedGuest}}">
-                <template is="dom-repeat" items={{paxlist}}>                
-                <paper-item>{{item.firstName}}</paper-item>
-                <paper-item>hello</paper-item>
+                <template is="dom-repeat" items={{paxlist}}>
+                  <paper-item>{{item.firstName}}</paper-item>
+                  
                 </template>
+                <paper-item>Add new</paper-item>
               </paper-listbox>
             </paper-dropdown-menu>
           </div>
@@ -136,8 +136,8 @@
     <div id="loyaltyDiv">
       <div>
         <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
-        <template is="dom-reapeat" items={{loyaltyPrograms}}>
-        <t-loyalty-program id="tLoyaltyDatabase">{{item}}</t-loyalty-program>
+        <template is="dom-reapeat" items="{{loyaltyPrograms}}">
+          <t-loyalty-program id="tLoyaltyDatabase">{{item}}</t-loyalty-program>
         </template>
       </div>
       <div>
@@ -167,6 +167,7 @@
         return {
           loyaltyPrograms: {
             type: Array,
+            notify: true
           },
           onlyLeadPaxInfo: {
             type: Boolean,
@@ -391,19 +392,11 @@
           contactNumberError: {
             type: String,
             value: 'Contact number is required'
-          },          
-          productID: {
+          },
+          newGuest: {
             type: String,
-            value: '123123'
-          },
-          productName: {
-            type: String,
-            value: 'El Cortez Hotel &; Casino'
-          },
-          productAllowLoyalty: {
-            type: Boolean,
-            value: true,
-          },
+            value: 'New Guest'
+          }
         };
       } //End of Properties.
 
@@ -418,44 +411,44 @@
           this.requiredField;
           this.requiredFieldForLeadPax;
         } else {
-          if (this.option.allowTitleForLeadPax){
+          if (this.option.allowTitleForLeadPax) {
             this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
           }
-          if (this.option.allowTitle){
+          if (this.option.allowTitle) {
             this.allowTitle = this.option.allowTitle;
           }
-          if (this.option.allowContactNumber){
+          if (this.option.allowContactNumber) {
             this.allowContactNumber = this.option.allowContactNumber;
           }
-          if (this.option.allowContactNumberForLeadPax){
+          if (this.option.allowContactNumberForLeadPax) {
             this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
           }
-          if (this.option.allowEmail){
+          if (this.option.allowEmail) {
             this.allowEmailt = this.option.allowEmail;
           }
-          if (this.option.allowEmailForLeadPax){
+          if (this.option.allowEmailForLeadPax) {
             this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
           }
-          if (this.option.requiredField ){
+          if (this.option.requiredField) {
             this.requiredField = this.option.requiredField;
           }
-          if (this.option.requiredFieldForLeadPax){
+          if (this.option.requiredFieldForLeadPax) {
             this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
           }
         }
       }
       _defaultResourcesValue() {
-        if (this.resources.icons.terms){
+        if (this.resources.icons.terms) {
           this.terms = this.resources.icons.terms;
         }
         if (this.resources.labels.adult === undefined) {
           this.adultTitle;
           this.adultInfo;
         } else {
-          if (this.resources.labels.adult.title){
+          if (this.resources.labels.adult.title) {
             this.adultTitle = this.resources.labels.adult.title;
           }
-          if (this.resources.labels.adult.info){
+          if (this.resources.labels.adult.info) {
             this.adultInfo = this.resources.labels.adult.info;
           }
         }
@@ -463,10 +456,10 @@
           this.childTitle;
           this.childInfo;
         } else {
-          if (this.resources.labels.child.title){
+          if (this.resources.labels.child.title) {
             this.childTitle = this.resources.labels.child.title;
           }
-          if (this.resources.labels.child.info){
+          if (this.resources.labels.child.info) {
             this.childInfo = this.resources.labels.child.info;
           }
         }
@@ -476,16 +469,16 @@
           this.titleLabel;
           this.titleError;
         } else {
-          if (this.resources.fields.title.values){
+          if (this.resources.fields.title.values) {
             this.titleValues = this.resources.fields.title.values;
           }
-          if (this.resources.fields.title.selected){
+          if (this.resources.fields.title.selected) {
             this.titleSelected = this.resources.fields.title.selected;
           }
-          if (this.resources.fields.title.title){
+          if (this.resources.fields.title.title) {
             this.titleLabel = this.resources.fields.title.title;
           }
-          if (this.resources.fields.title.errors){
+          if (this.resources.fields.title.errors) {
             this.titleError = this.resources.fields.title.errors;
           }
         }
@@ -494,13 +487,13 @@
           this.firstnameTitle;
           this.firstNameError;
         } else {
-          if (this.resources.fields.firstName.value){
+          if (this.resources.fields.firstName.value) {
             this.firstNameValue = this.resources.fields.firstName.value;
           }
-          if (this.resources.fields.firstName.title){
+          if (this.resources.fields.firstName.title) {
             this.firstnameTitle = this.resources.fields.firstName.title;
           }
-          if (this.resources.fields.firstName.errors){
+          if (this.resources.fields.firstName.errors) {
             this.firstNameError = this.resources.fields.firstName.errors;
           }
         }
@@ -509,13 +502,13 @@
           this.lastnameTitle;
           this.lastNameError;
         } else {
-          if (this.resources.fields.lastName.value ){
+          if (this.resources.fields.lastName.value) {
             this.lastNameValue = this.resources.fields.lastName.value;
           }
-          if (this.resources.fields.lastName.title){
+          if (this.resources.fields.lastName.title) {
             this.lastnameTitle = this.resources.fields.lastName.title;
           }
-          if (this.resources.fields.lastName.errors){
+          if (this.resources.fields.lastName.errors) {
             this.lastNameError = this.resources.fields.lastName.errors;
           }
         }
@@ -525,16 +518,16 @@
           this.emailInfo;
           this.emailError;
         } else {
-          if (this.resources.fields.email.value){
+          if (this.resources.fields.email.value) {
             this.emailValue = this.resources.fields.email.value;
           }
-          if (this.resources.fields.email.title){
+          if (this.resources.fields.email.title) {
             this.emailTitle = this.resources.fields.email.title;
           }
-          if (this.resources.fields.email.errors){
+          if (this.resources.fields.email.errors) {
             this.emailInfo = this.resources.fields.email.errors;
           }
-          if (this.resources.fields.email.errors){
+          if (this.resources.fields.email.errors) {
             this.emailError = this.resources.fields.email.errors;
           }
         }
@@ -543,13 +536,13 @@
           this.countryCodeTitle;
           this.countryCodeError;
         } else {
-          if (this.resources.fields.countryCode.values){
+          if (this.resources.fields.countryCode.values) {
             this.countryCodeValues = this.resources.fields.countryCode.values;
           }
-          if (this.resources.fields.countryCode.title){
+          if (this.resources.fields.countryCode.title) {
             this.countryCodeTitle = this.resources.fields.countryCode.title;
           }
-          if (this.resources.fields.countryCode.errors){
+          if (this.resources.fields.countryCode.errors) {
             this.countryCodeError = this.resources.fields.countryCode.errors;
           }
         }
@@ -559,21 +552,24 @@
           this.contactNumberInfo;
           this.contactNumberError;
         } else {
-          if (this.resources.fields.contactNumber.value ){
+          if (this.resources.fields.contactNumber.value) {
             this.contactNumberValue = this.resources.fields.contactNumber.value;
           }
-          if (this.resources.fields.contactNumber.title){
+          if (this.resources.fields.contactNumber.title) {
             this.contactNumberTitle = this.resources.fields.contactNumber.title;
           }
-          if (this.resources.fields.contactNumber.errors){
+          if (this.resources.fields.contactNumber.errors) {
             this.contactNumberInfo = this.resources.fields.contactNumber.errors;
           }
-          if (this.resources.fields.contactNumber.errors){
+          if (this.resources.fields.contactNumber.errors) {
             this.contactNumberError = this.resources.fields.contactNumber.errors;
           }
         }
+        if(this.resources.fields.newGuest){
+          this.newGuest = this.resources.fields.newGuest;
+        }
       }
-     
+
       _increaseIndex(index) {
         var calIndex = index + 1;
         return calIndex;
@@ -615,15 +611,20 @@
       _doNotShowForRoom1(room1, roomNumber) {
         return room1 < roomNumber;
       }
-      _addProgramForOtherGuest(){
-        this.push('loyaltyPrograms', { loyaltyProgram: "" });
+      _addProgramForOtherGuest() {
+        this.push('loyaltyPrograms', {
+          loyaltyPrograms
+        });
+        console.log(loyaltyPrograms);
       }
       ready() {
         super.ready();
         this.loyaltyPrograms = [];
         this._defaultOptionValue();
         this._defaultResourcesValue();
-          this.push('loyaltyPrograms', { loyaltyProgram: "" });
+        this.push('loyaltyPrograms', {
+          loyaltyPrograms: ""
+        });
       }
     }
 

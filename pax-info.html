@@ -584,12 +584,32 @@
                 var adultCountryCodeData = this.$.adultCountryCode;
                 var adultContactNumberData = this.$.adultContactNo;
                 adultData.type = "Adult";
-                adultData.Title = adultTitleData.value;
+                if(this.index === 1){
+                    if(this.allowTitleForLeadPax === true){
+                        adultData.Title = adultTitleData.value;
+                    }
+                    if(this.allowEmailForLeadPax === true){
+                        adultData.Email = adultEmailData.value;
+                    }
+                    if(this.allowContactNumberForLeadPax === true){
+                         adultData.CountryCode = adultCountryCodeData.value;
+                        adultData.ContactNumber = adultContactNumberData.value;
+                    }
+                }
+                else{
+                     if(this.allowTitle === true){
+                        adultData.Title = adultTitleData.value;
+                    }
+                    if(this.allowEmail === true){
+                        adultData.Email = adultEmailData.value;
+                    }
+                    if(this.allowContactNumber === true){
+                         adultData.CountryCode = adultCountryCodeData.value;
+                        adultData.ContactNumber = adultContactNumberData.value;
+                    }
+                }
                 adultData.FirstName = adultFirstNameData.value;
-                adultData.LastName = adultLastNameData.value;
-                adultData.Email = adultEmailData.value;
-                adultData.CountryCode = adultCountryCodeData.value;
-                adultData.ContactNumber = adultContactNumberData.value;
+                adultData.LastName = adultLastNameData.value;                
                 return adultData;
             }
             _typeLabelIfAdultIsOnlyOne() {
