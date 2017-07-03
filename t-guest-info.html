@@ -56,6 +56,7 @@
         position: relative;
         float: left;
         margin-top: 335px;
+        margin-bottom: 100px;
         /*margin-left: -542px;*/
       }
 
@@ -115,15 +116,15 @@
         <template is="dom-repeat" items="{{item.rooms}}">
           <t-traveler-info id="travelerInfo{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child"
             policy-List="{{item.policies}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resources}}" adult-pax-count="{{item.criteria.traveler.adult}}"
-            child-pax-count="{{item.criteria.traveler.child}}">
+            child-pax-count="{{item.criteria.traveler.child}}" only-lead-pax-info="{{item.onlyLeadPaxInfo}}">
           </t-traveler-info>
           <div hidden$={{_doNotShowForRoom1(index,1)}}>
             <paper-dropdown-menu label="Choose guest" id="chooseGuest" required auto-validate error-message="chooseguest please">
               <paper-listbox slot="dropdown-content" selected="{{selectedGuest}}">
-                <paper-item>Guest 1</paper-item>
-                <paper-item>Guest 2</paper-item>
-                <paper-item>Guest 3</paper-item>
-                <paper-item>Guest 4</paper-item>
+                <template is="dom-repeat" items={{paxlist}}>                
+                <paper-item>{{item.firstName}}</paper-item>
+                <paper-item>hello</paper-item>
+                </template>
               </paper-listbox>
             </paper-dropdown-menu>
           </div>
@@ -162,6 +163,10 @@
       }
       static get properties() {
         return {
+          onlyLeadPaxInfo: {
+            type: Boolean,
+            value: true
+          },
           smallMobileView: {
             type: Boolean,
             value: false
@@ -380,43 +385,7 @@
           contactNumberError: {
             type: String,
             value: 'Contact number is required'
-          },
-          paxListType: {
-            type: String,
-            value: 'Adult'
-          },
-          paxListTitle: {
-            type: String,
-            value: 'Mr'
-          },
-          paxListFirstName: {
-            type: String,
-            value: 'John'
-          },
-          paxListLastName: {
-            type: String,
-            value: 'Doe'
-          },
-          paxListEmail: {
-            type: String,
-            value: 'john@example.com'
-          },
-          paxListContact: {
-            type: Number,
-            value: 343453453
-          },
-          paxListcountryCode: {
-            type: String,
-            value: '+91'
-          },
-          paxListMemberShip: {
-            type: Array,
-            value: [{
-              "programName": "",
-              "programCode": "",
-              "number": ""
-            }]
-          },
+          },          
           productID: {
             type: String,
             value: '123123'
@@ -429,10 +398,6 @@
             type: Boolean,
             value: true,
           },
-          // doNotShowForRoom1: {
-          //   type: Boolean,
-          //   computed: '_lteChooseGuest(this.index, 1)'
-          // },
         };
       } //End of Properties.
 
@@ -447,66 +412,44 @@
           this.requiredField;
           this.requiredFieldForLeadPax;
         } else {
-          if (this.option.allowTitleForLeadPax === undefined) {
-            this.allowTitleForLeadPax;
-          } else {
+          if (this.option.allowTitleForLeadPax){
             this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
           }
-          if (this.option.allowTitle === undefined) {
-            this.allowTitle;
-          } else {
+          if (this.option.allowTitle){
             this.allowTitle = this.option.allowTitle;
           }
-          if (this.option.allowContactNumber === undefined) {
-            this.allowContactNumber;
-          } else {
+          if (this.option.allowContactNumber){
             this.allowContactNumber = this.option.allowContactNumber;
           }
-          if (this.option.allowContactNumberForLeadPax === undefined) {
-            this.allowContactNumberForLeadPax;
-          } else {
+          if (this.option.allowContactNumberForLeadPax){
             this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
           }
-          if (this.option.allowEmail === undefined) {
-            this.allowEmail;
-          } else {
+          if (this.option.allowEmail){
             this.allowEmailt = this.option.allowEmail;
           }
-          if (this.option.allowEmailForLeadPax === undefined) {
-            this.allowEmailForLeadPax;
-          } else {
+          if (this.option.allowEmailForLeadPax){
             this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
           }
-          if (this.option.requiredField === undefined) {
-            this.requiredField;
-          } else {
+          if (this.option.requiredField ){
             this.requiredField = this.option.requiredField;
           }
-          if (this.option.requiredFieldForLeadPax === undefined) {
-            this.requiredFieldForLeadPax;
-          } else {
+          if (this.option.requiredFieldForLeadPax){
             this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
           }
         }
       }
       _defaultResourcesValue() {
-        if (this.resources.icons.terms === undefined) {
-          this.terms;
-        } else {
+        if (this.resources.icons.terms){
           this.terms = this.resources.icons.terms;
         }
         if (this.resources.labels.adult === undefined) {
           this.adultTitle;
           this.adultInfo;
         } else {
-          if (this.resources.labels.adult.title === undefined) {
-            this.adultTitle;
-          } else {
+          if (this.resources.labels.adult.title){
             this.adultTitle = this.resources.labels.adult.title;
           }
-          if (this.resources.labels.adult.info === undefined) {
-            this.adultInfo;
-          } else {
+          if (this.resources.labels.adult.info){
             this.adultInfo = this.resources.labels.adult.info;
           }
         }
@@ -514,14 +457,10 @@
           this.childTitle;
           this.childInfo;
         } else {
-          if (this.resources.labels.child.title === undefined) {
-            this.childTitle;
-          } else {
+          if (this.resources.labels.child.title){
             this.childTitle = this.resources.labels.child.title;
           }
-          if (this.resources.labels.child.info === undefined) {
-            this.childInfo;
-          } else {
+          if (this.resources.labels.child.info){
             this.childInfo = this.resources.labels.child.info;
           }
         }
@@ -531,24 +470,16 @@
           this.titleLabel;
           this.titleError;
         } else {
-          if (this.resources.fields.title.values === undefined) {
-            this.titleValues;
-          } else {
+          if (this.resources.fields.title.values){
             this.titleValues = this.resources.fields.title.values;
           }
-          if (this.resources.fields.title.selected === undefined) {
-            this.titleSelected;
-          } else {
+          if (this.resources.fields.title.selected){
             this.titleSelected = this.resources.fields.title.selected;
           }
-          if (this.resources.fields.title.title === undefined) {
-            this.titleLabel;
-          } else {
+          if (this.resources.fields.title.title){
             this.titleLabel = this.resources.fields.title.title;
           }
-          if (this.resources.fields.title.errors === undefined) {
-            this.titleError;
-          } else {
+          if (this.resources.fields.title.errors){
             this.titleError = this.resources.fields.title.errors;
           }
         }
@@ -557,19 +488,13 @@
           this.firstnameTitle;
           this.firstNameError;
         } else {
-          if (this.resources.fields.firstName.value === undefined) {
-            this.firstNameValue;
-          } else {
+          if (this.resources.fields.firstName.value){
             this.firstNameValue = this.resources.fields.firstName.value;
           }
-          if (this.resources.fields.firstName.title === undefined) {
-            this.firstnameTitle;
-          } else {
+          if (this.resources.fields.firstName.title){
             this.firstnameTitle = this.resources.fields.firstName.title;
           }
-          if (this.resources.fields.firstName.errors === undefined) {
-            this.firstNameError;
-          } else {
+          if (this.resources.fields.firstName.errors){
             this.firstNameError = this.resources.fields.firstName.errors;
           }
         }
@@ -578,19 +503,13 @@
           this.lastnameTitle;
           this.lastNameError;
         } else {
-          if (this.resources.fields.lastName.value === undefined) {
-            this.lastNameValue;
-          } else {
+          if (this.resources.fields.lastName.value ){
             this.lastNameValue = this.resources.fields.lastName.value;
           }
-          if (this.resources.fields.lastName.title === undefined) {
-            this.lastnameTitle;
-          } else {
+          if (this.resources.fields.lastName.title){
             this.lastnameTitle = this.resources.fields.lastName.title;
           }
-          if (this.resources.fields.lastName.errors === undefined) {
-            this.lastNameError;
-          } else {
+          if (this.resources.fields.lastName.errors){
             this.lastNameError = this.resources.fields.lastName.errors;
           }
         }
@@ -600,24 +519,16 @@
           this.emailInfo;
           this.emailError;
         } else {
-          if (this.resources.fields.email.value === undefined) {
-            this.emailValue;
-          } else {
+          if (this.resources.fields.email.value){
             this.emailValue = this.resources.fields.email.value;
           }
-          if (this.resources.fields.email.title === undefined) {
-            this.emailTitle;
-          } else {
+          if (this.resources.fields.email.title){
             this.emailTitle = this.resources.fields.email.title;
           }
-          if (this.resources.fields.email.errors === undefined) {
-            this.emailInfo;
-          } else {
+          if (this.resources.fields.email.errors){
             this.emailInfo = this.resources.fields.email.errors;
           }
-          if (this.resources.fields.email.errors === undefined) {
-            this.emailError;
-          } else {
+          if (this.resources.fields.email.errors){
             this.emailError = this.resources.fields.email.errors;
           }
         }
@@ -626,19 +537,13 @@
           this.countryCodeTitle;
           this.countryCodeError;
         } else {
-          if (this.resources.fields.countryCode.values === undefined) {
-            this.countryCodeValues;
-          } else {
+          if (this.resources.fields.countryCode.values){
             this.countryCodeValues = this.resources.fields.countryCode.values;
           }
-          if (this.resources.fields.countryCode.title === undefined) {
-            this.countryCodeTitle;
-          } else {
+          if (this.resources.fields.countryCode.title){
             this.countryCodeTitle = this.resources.fields.countryCode.title;
           }
-          if (this.resources.fields.countryCode.errors === undefined) {
-            this.countryCodeError;
-          } else {
+          if (this.resources.fields.countryCode.errors){
             this.countryCodeError = this.resources.fields.countryCode.errors;
           }
         }
@@ -648,81 +553,21 @@
           this.contactNumberInfo;
           this.contactNumberError;
         } else {
-          if (this.resources.fields.contactNumber.value === undefined) {
-            this.contactNumberValue;
-          } else {
+          if (this.resources.fields.contactNumber.value ){
             this.contactNumberValue = this.resources.fields.contactNumber.value;
           }
-          if (this.resources.fields.contactNumber.title === undefined) {
-            this.contactNumberTitle;
-          } else {
+          if (this.resources.fields.contactNumber.title){
             this.contactNumberTitle = this.resources.fields.contactNumber.title;
           }
-          if (this.resources.fields.contactNumber.errors === undefined) {
-            this.contactNumberInfo;
-          } else {
+          if (this.resources.fields.contactNumber.errors){
             this.contactNumberInfo = this.resources.fields.contactNumber.errors;
           }
-          if (this.resources.fields.contactNumber.errors === undefined) {
-            this.contactNumberError;
-          } else {
+          if (this.resources.fields.contactNumber.errors){
             this.contactNumberError = this.resources.fields.contactNumber.errors;
           }
         }
       }
-      _defaultpaxListValue() {
-        if (this.paxList === undefined) {
-          this.paxListType;
-          this.paxListTitle;
-          this.paxListFirstName;
-          this.paxListLastName;
-          this.paxListEmail;
-          this.paxListContact;
-          this.paxListcountryCode;
-          this.paxListMemberShip;
-        } else {
-          if (this.paxList.type === undefined) {
-            this.paxListType;
-          } else {
-            this.paxListType = this.paxList.type;
-          }
-          if (this.paxList.title === undefined) {
-            this.paxListTitle;
-          } else {
-            this.paxListTitle = this.paxList.title;
-          }
-          if (this.paxList.firstName === undefined) {
-            this.paxListFirstName;
-          } else {
-            this.paxListFirstName = this.paxList.firstName;
-          }
-          if (this.paxList.lastName === undefined) {
-            this.paxListLastName;
-          } else {
-            this.paxListLastName = this.paxList.lastName;
-          }
-          if (this.paxList.email === undefined) {
-            this.paxListEmail;
-          } else {
-            this.paxListEmail = this.paxList.email;
-          }
-          if (this.paxList.contact === undefined) {
-            this.paxListContact;
-          } else {
-            this.paxListContact = this.paxList.contact;
-          }
-          if (this.paxList.countryCode === undefined) {
-            this.paxListcountryCode;
-          } else {
-            this.paxListcountryCode = this.paxList.countryCode;
-          }
-          if (this.paxList.membership === undefined) {
-            this.paxListMemberShip;
-          } else {
-            this.paxListMemberShip = this.paxList.membership;
-          }
-        }
-      }
+     
       _increaseIndex(index) {
         var calIndex = index + 1;
         return calIndex;
@@ -768,7 +613,6 @@
         super.ready();
         this._defaultOptionValue();
         this._defaultResourcesValue();
-        this._defaultpaxListValue();
       }
     }
 

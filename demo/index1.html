@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>t-guest-info demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../t-guest-info.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      body {
+        background-color: white;
+      }
+
+      t-guest-info {
+        --toolbar-background-color: #EEE;
+        --color-for-subTitle: gray;
+        --color-for-policies: #4CB050;
+        --color-for-button-labels: #478BD7;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+
+  <t-guest-info id="guestInfo"></t-guest-info>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+  <button id="demoButton" style="color:darkblue; background-color:darkgrey" onclick="fireIsValidMethod()">Test Button</button>
+
+</body>
+<script>
+  function fireIsValidMethod() {
+    var valid = document.getElementById("guestInfo").isValidGuest();
+    document.getElementById("guestInfo").isData();
+
+    var totalData = [];
+    var data = [];
+    var guestInfo = document.getElementById("guestInfo");
+    var prodLen = guestInfo.product.length;
+    for (var i = 0; i < prodLen; i++) {
+      var roomLen = guestInfo.product[i].rooms.length;
+      for (var j = 0; j < roomLen; j++) {
+        data[j] = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1)).getState(event);
+      }
+      totalData[i] = data;
+    }
+    for (var i = 0; i < prodLen; i++) {
+      var roomLen = guestInfo.product[i].rooms.length;
+      for (var j = 0; j < roomLen; j++) {
+        Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1)).setState(data[j]);
+      }
+    }
+  
+    for (var i = 0; i < prodLen; i++) {
+      var roomLen = guestInfo.product[i].rooms.length;
+      for (var j = 0; j < roomLen; j++) {
+        var traveler = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1));
+        var adultCount = traveler.adultPaxCount;
+        for ( var k = 0; k < adultCount; k++){
+        var paxInfoRoom = Polymer.dom(traveler.root).querySelector("#adultPaxInfo" + (k + 1));
+        var paxInfoEmail = Polymer.dom(paxInfoRoom.root).querySelector("#adultEmail");
+        if(paxInfoEmail.invalid === true){
+        var PaxInfoEmailLabel = Polymer.dom(paxInfoRoom.root).querySelector("#adultEmailLabel");
+        PaxInfoEmailLabel.hidden = true;
+        }
+        }
+      }
+    }
+        alert(valid);
+      }
+</script>
+
+
+</html>

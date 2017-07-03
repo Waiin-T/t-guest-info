@@ -214,7 +214,7 @@
                 </div>
                 <template is="dom-repeat" items="{{adultPaxCountArray}}">
                     <div id="paxInfoTemp">
-                        <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resource}}"
+                        <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxList}}" option="[[option]]" resources="{{resource}}"
                             index="{{_increaseIndex(index)}}" adult-pax-count="{{adultPaxCount}}">{{item}}</pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
                             <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
@@ -223,7 +223,7 @@
                 </template>
                 <template is="dom-repeat" items="{{childPaxCountArray}}">
                     <div id="paxInfoTemp">
-                        <pax-info-child id="childPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resource}}"
+                        <pax-info-child id="childPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxList}}" option="[[option]]" resources="{{resource}}"
                             index="{{_increaseIndex(index)}}"></pax-info-child>
                         <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxChildInfo"></paper-icon-button>
                     </div>
@@ -329,6 +329,16 @@
                     },
                 };
             }
+            _dataForValue() {
+                var adultPax = [];
+                var adultPaxData = [];
+                 for (var i = 0; i < this.adultPaxCount; i++) {
+                    adultPax[i] = Polymer.dom(this.root).querySelector("#adultPaxInfo" + (i+1));
+                }
+                for(var j = 0; j < this.adultPaxCount; j++){
+                    adultPaxData[i] = this.paxList[i];
+                }
+            }
             isValid() {
                 var adultValidation = this.isValidAdult();
                 var childValidation = this.isValidChild();
@@ -382,11 +392,6 @@
                     childPaxDataArray[i] = Polymer.dom(this.root).querySelector("#childPaxInfo" + (i + 1)).childData();
                 }
                 var paxListArray = adultPaxDataArray.concat(childPaxDataArray);
-                // var totalPaxCountForOneRoom = this.adultPaxCount + this.childPaxCount;
-                // var paxDataObject = [];
-                // for( var i = 0; i < totalPaxCountForOneRoom; i++ ){
-                //     paxDataObject.push(paxList[i]);
-                // }
                 this.paxList = JSON.parse(JSON.stringify(paxListArray));
 
                 return this.paxList;
@@ -452,6 +457,11 @@
                 super.ready();
 
                 this._closeIconIfAdultIsOnlyOne();
+                var leadPaxInfo = this.onlyLeadPaxInfo;
+                if (leadPaxInfo === true) {
+                    this.adultPaxCount = 1;
+                    this.childPaxCount = 0;
+                }
                 var adultPax = this.adultPaxCount;
                 var childPax = this.childPaxCount;
                 var totalPax = +adultPax + +childPax;
@@ -466,6 +476,7 @@
                 }
                 this.childPaxCountArray = childPaxCount1;
                 this._hideDashForMobileView();
+               
             }
         }
 

@@ -265,17 +265,17 @@
                     </div>
 
                     <div>
-                        <paper-input label="{{firstNameTitle}}" class="inputAdultCount" id="adultFirstName" required auto-validate error-message="{{firstNameError}}"></paper-input>
+                        <paper-input label="{{firstNameTitle}}" class="inputAdultCount" id="adultFirstName" required auto-validate error-message="{{firstNameError}}" value="{{paxList.firstName}}"></paper-input>
                     </div>
                     <div>
-                        <paper-input label="{{lastNameTitle}}" id="adultLastName" required auto-validate error-message="{{lastNameError}}"></paper-input>
+                        <paper-input label="{{lastNameTitle}}" id="adultLastName" required auto-validate error-message="{{lastNameError}}" value="{{paxList.lastName}}"></paper-input>
                     </div>
 
                 </div>
                 <div id="inputForm2">
                     <div id="adultEmailAndLabel">
-                        <paper-input label="{{emailTitle}}" id="adultEmail" hidden$="{{showEmailAddress}}" required auto-validate error-message="{{emailError}}"></paper-input>
-                        <div id="adultEmailLabel" hidden$="{{showEmailAddress}}">{{emailInfo}}</div>
+                        <paper-input label="{{emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{showEmailAddress}}" value="{{paxList.email}}" required auto-validate error-message="{{emailError}}"></paper-input>
+                        <div id="adultEmailLabel" hidden$="{{showEmailAddressInfo}}">{{emailInfo}}</div>
                     </div>
                     <div hidden$="{{showContactNumber}}">
                         <paper-dropdown-menu label="{{countryCodeTitle}}" id="adultCountryCode" required auto-validate error-message="{{countryCodeError}}">
@@ -288,7 +288,7 @@
                         <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
                     </div>
                     <div>
-                        <paper-input label="{{contactNumberTitle}}" id="adultContactNo" hidden$="{{showContactNumber}}" required auto-validate error-message="{{contactNumberError}}"></paper-input>
+                        <paper-input label="{{contactNumberTitle}}" id="adultContactNo" hidden$="{{showContactNumber}}" value="{{paxList.contact}}" required auto-validate error-message="{{contactNumberError}}"></paper-input>
                     </div>
                 </div>
             </form>
@@ -537,6 +537,10 @@
                         type: Boolean,
                         value: true
                     },
+                     showEmailAddressInfo: {
+                        type: Boolean,
+                        value: true
+                    },
                     showTypeLabel: {
                         type: Boolean,
                         value: false
@@ -606,6 +610,7 @@
                     var checkLeadPax = this.option.allowEmailForLeadPax;
                     if (checkLeadPax === true) {
                         this.showEmailAddress = false;
+                        this.showEmailAddressInfo = false;
                     }
                     var checkLeadPax = this.option.allowTitleForLeadPax;
                     if (checkLeadPax === true) {
@@ -623,6 +628,7 @@
                 var check = this.option.allowEmail;
                 if (check === true && this.index != 1) {
                     this.showEmailAddress = false;
+                    this.showEmailAddressInfo = false;
                 }
                 var check = this.option.allowTitle;
                 if (check === true && this.index != 1) {
@@ -694,44 +700,28 @@
                     this.requiredField;
                     this.requiredFieldForLeadPax;
                 } else {
-                    if (this.option.allowTitleForLeadPax === undefined) {
-                        this.allowTitleForLeadPax;
-                    } else {
+                    if (this.option.allowTitleForLeadPax){
                         this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
                     }
-                    if (this.option.allowTitle === undefined) {
-                        this.allowTitle;
-                    } else {
+                    if (this.option.allowTitle){
                         this.allowTitle = this.option.allowTitle;
                     }
-                    if (this.option.allowContactNumber === undefined) {
-                        this.allowContactNumber;
-                    } else {
+                    if (this.option.allowContactNumber){
                         this.allowContactNumber = this.option.allowContactNumber;
                     }
-                    if (this.option.allowContactNumberForLeadPax === undefined) {
-                        this.allowContactNumberForLeadPax;
-                    } else {
+                    if (this.option.allowContactNumberForLeadPax){
                         this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
                     }
-                    if (this.option.allowEmail === undefined) {
-                        this.allowEmail;
-                    } else {
+                    if (this.option.allowEmail){
                         this.allowEmailt = this.option.allowEmail;
                     }
-                    if (this.option.allowEmailForLeadPax === undefined) {
-                        this.allowEmailForLeadPax;
-                    } else {
+                    if (this.option.allowEmailForLeadPax){
                         this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
                     }
-                    if (this.option.requiredField === undefined) {
-                        this.requiredField;
-                    } else {
+                    if (this.option.requiredField){
                         this.requiredField = this.option.requiredField;
                     }
-                    if (this.option.requiredFieldForLeadPax === undefined) {
-                        this.requiredFieldForLeadPax;
-                    } else {
+                    if (this.option.requiredFieldForLeadPax){
                         this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
                     }
                 }
@@ -746,15 +736,10 @@
                     this.adultTitle;
                     this.adultInfo;
                 } else {
-                    if (this.resources.labels.adult.title) 
-                    {
-                    //     this.adultTitle;
-                    // } else {
+                    if (this.resources.labels.adult.title) {
                         this.adultTitle = this.resources.labels.adult.title;
                     }
-                    if (this.resources.labels.adult.info === undefined) {
-                        this.adultInfo;
-                    } else {
+                    if (this.resources.labels.adult.info){
                         this.adultInfo = this.resources.labels.adult.info;
                     }
                 }
@@ -762,14 +747,10 @@
                     this.childTitle;
                     this.childInfo;
                 } else {
-                    if (this.resources.labels.child.title === undefined) {
-                        this.childTitle;
-                    } else {
+                    if (this.resources.labels.child.title){
                         this.childTitle = this.resources.labels.child.title;
                     }
-                    if (this.resources.labels.child.info === undefined) {
-                        this.childInfo;
-                    } else {
+                    if (this.resources.labels.child.info){
                         this.childInfo = this.resources.labels.child.info;
                     }
                 }
@@ -779,24 +760,16 @@
                     this.titleLabel;
                     this.titleError;
                 } else {
-                    if (this.resources.fields.title.values === undefined) {
-                        this.titleValues;
-                    } else {
+                    if (this.resources.fields.title.values){
                         this.titleValues = this.resources.fields.title.values;
                     }
-                    if (this.resources.fields.title.selected === undefined) {
-                        this.titleSelected;
-                    } else {
+                    if (this.resources.fields.title.selected){
                         this.titleSelected = this.resources.fields.title.selected;
                     }
-                    if (this.resources.fields.title.title === undefined) {
-                        this.titleLabel;
-                    } else {
+                    if (this.resources.fields.title.title){
                         this.titleLabel = this.resources.fields.title.title;
                     }
-                    if (this.resources.fields.title.errors === undefined) {
-                        this.titleError;
-                    } else {
+                    if (this.resources.fields.title.errors){
                         this.titleError = this.resources.fields.title.errors;
                     }
                 }
@@ -805,19 +778,13 @@
                     this.firstNameTitle;
                     this.firstNameError;
                 } else {
-                    if (this.resources.fields.firstName.value === undefined) {
-                        this.firstNameValue;
-                    } else {
+                    if (this.resources.fields.firstName.value){
                         this.firstNameValue = this.resources.fields.firstName.value;
                     }
-                    if (this.resources.fields.firstName.title === undefined) {
-                        this.firstNameTitle;
-                    } else {
+                    if (this.resources.fields.firstName.title){
                         this.firstNameTitle = this.resources.fields.firstName.title;
                     }
-                    if (this.resources.fields.firstName.errors === undefined) {
-                        this.firstNameError;
-                    } else {
+                    if (this.resources.fields.firstName.errors){
                         this.firstNameError = this.resources.fields.firstName.errors;
                     }
                 }
@@ -826,19 +793,13 @@
                     this.lastNameTitle;
                     this.lastNameError;
                 } else {
-                    if (this.resources.fields.lastName.value === undefined) {
-                        this.lastNameValue;
-                    } else {
+                    if (this.resources.fields.lastName.value ){
                         this.lastNameValue = this.resources.fields.lastName.value;
                     }
-                    if (this.resources.fields.lastName.title === undefined) {
-                        this.lastNameTitle;
-                    } else {
+                    if (this.resources.fields.lastName.title){
                         this.lastNameTitle = this.resources.fields.lastName.title;
                     }
-                    if (this.resources.fields.lastName.errors === undefined) {
-                        this.lastNameError;
-                    } else {
+                    if (this.resources.fields.lastName.errors){
                         this.lastNameError = this.resources.fields.lastName.errors;
                     }
                 }
@@ -848,24 +809,16 @@
                     this.emailInfo;
                     this.emailError;
                 } else {
-                    if (this.resources.fields.email.value === undefined) {
-                        this.emailValue;
-                    } else {
+                    if (this.resources.fields.email.value){
                         this.emailValue = this.resources.fields.email.value;
                     }
-                    if (this.resources.fields.email.title === undefined) {
-                        this.emailTitle;
-                    } else {
+                    if (this.resources.fields.email.title){
                         this.emailTitle = this.resources.fields.email.title;
                     }
-                    if (this.resources.fields.email.info === undefined) {
-                        this.emailInfo;
-                    } else {
+                    if (this.resources.fields.email.info){
                         this.emailInfo = this.resources.fields.email.info;
                     }
-                    if (this.resources.fields.email.errors === undefined) {
-                        this.emailError;
-                    } else {
+                    if (this.resources.fields.email.errors){
                         this.emailError = this.resources.fields.email.errors;
                     }
                 }
@@ -874,19 +827,13 @@
                     this.countryCodeTitle;
                     this.countryCodeError;
                 } else {
-                    if (this.resources.fields.countryCode.values === undefined) {
-                        this.countryCodeValues;
-                    } else {
+                    if (this.resources.fields.countryCode.values){
                         this.countryCodeValues = this.resources.fields.countryCode.values;
                     }
-                    if (this.resources.fields.countryCode.title === undefined) {
-                        this.countryCodeTitle;
-                    } else {
+                    if (this.resources.fields.countryCode.title){
                         this.countryCodeTitle = this.resources.fields.countryCode.title;
                     }
-                    if (this.resources.fields.countryCode.errors === undefined) {
-                        this.countryCodeError;
-                    } else {
+                    if (this.resources.fields.countryCode.errors){
                         this.countryCodeError = this.resources.fields.countryCode.errors;
                     }
                 }
@@ -896,27 +843,23 @@
                     this.contactNumberInfo;
                     this.contactNumberError;
                 } else {
-                    if (this.resources.fields.contactNumber.value === undefined) {
-                        this.contactNumberValue;
-                    } else {
+                    if (this.resources.fields.contactNumber.value){
                         this.contactNumberValue = this.resources.fields.contactNumber.value;
                     }
-                    if (this.resources.fields.contactNumber.title === undefined) {
-                        this.contactNumberTitle;
-                    } else {
+                    if (this.resources.fields.contactNumber.title){
                         this.contactNumberTitle = this.resources.fields.contactNumber.title;
                     }
-                    if (this.resources.fields.contactNumber.errors === undefined) {
-                        this.contactNumberInfo;
-                    } else {
+                    if (this.resources.fields.contactNumber.errors){
                         this.contactNumberInfo = this.resources.fields.contactNumber.errors;
                     }
-                    if (this.resources.fields.contactNumber.errors === undefined) {
-                        this.contactNumberError;
-                    } else {
+                    if (this.resources.fields.contactNumber.errors){
                         this.contactNumberError = this.resources.fields.contactNumber.errors;
                     }
                 }
+            }
+            _showEmailInfo() {
+                Polymer.dom(this.root).querySelector("#adultEmailLabel").hidden = false;
+                Polymer.dom(this.root).querySelector("#adultEmailLabel").invalid = false;               
             }
             ready() {
                 super.ready();
@@ -926,19 +869,7 @@
                 this._showAllowFields();
                 this._typeLabelIfAdultIsOnlyOne();
                 this._dynamicStyle();
-                var adultPax = this.adultPaxCount;
-                var childPax = this.childPaxCount;
-                var totalPax = +adultPax + +childPax;
-                var adultPaxCount1 = [];
-                for (var i = 0; i < adultPax; i++) {
-                    adultPaxCount1.push(i);
-                }
-                this.adultPaxCountArray = adultPaxCount1;
-                var childPaxCount1 = [];
-                for (var i = 0; i < childPax; i++) {
-                    childPaxCount1.push(i);
-                }
-                this.childPaxCountArray = childPaxCount1;
+               
             }
 
         }

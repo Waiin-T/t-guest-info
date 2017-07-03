@@ -8,10 +8,21 @@
   <title>t-guest-info demo</title>
 
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-
+  <!--<script>
+    // Force all polyfills on
+    window.customElements && window.customElements.forcePolyfill = true;
+    ShadyDOM = {
+      force: true
+    };
+    ShadyCSS = {
+      shimcssproperties: true
+    };
+  </script>-->
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
   <link rel="import" href="../t-guest-info.html">
+
 
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
@@ -112,7 +123,7 @@
                       },
                       "newGuest" : "New Guest"
                    }
-                  }' paxlist='{
+                  }' paxlist='[{
                         "type": "Adult",
                         "title": "Mr",
                         "firstName": "John",
@@ -125,21 +136,47 @@
                           "programCode": "",
                           "number": ""
                         }
-                      }' product=' [{
+                      },{
+                        "type": "Adult",
+                        "title": "Ms",
+                        "firstName": "Anna",
+                        "lastName": "Smith",
+                        "email": "Anna@example.com",
+                        "contact": "963214587",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      },{
+                        "type": "Adult",
+                        "title": "Mr",
+                        "firstName": "Peter",
+                        "lastName": "Jones",
+                        "email": "Peter@example.com",
+                        "contact": "785412693",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      }]' product=' [{
                       "id": "123123",
                       "name": "El Cortez Hotel &; Casino",
                       "allowLoyalty": true,
                       "rooms": [{
                         "id": "ypHtxnfawEWvbhtBo2ZKOw",
                         "name": "Strip View, 1 King Bed",
-                        "onlyLeadPaxInfo": true,
+                        "onlyLeadPaxInfo": false,
                         "criteria": {
                           "checkIn": "05/22/2017",
                           "checkout": "05/28/2017",
                           "stayDuration": 2,
                           "traveler": {
-                            "adult": 4,
-                            "child": 1
+                            "adult": 3,
+                            "child": 0
                           }
                         },
                         "policies": [
@@ -172,25 +209,45 @@
   function fireIsValidMethod() {
     var valid = document.getElementById("guestInfo").isValidGuest();
     document.getElementById("guestInfo").isData();
-    alert(valid);
+
     var totalData = [];
     var data = [];
     var guestInfo = document.getElementById("guestInfo");
     var prodLen = guestInfo.product.length;
+    if (valid === true) {}
     for (var i = 0; i < prodLen; i++) {
       var roomLen = guestInfo.product[i].rooms.length;
       for (var j = 0; j < roomLen; j++) {
         data[j] = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1)).getState(event);
+        Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1))._dataForValue();
       }
       totalData[i] = data;
     }
-    for (var i = 0; i < prodLen; i++) {
-      var roomLen = guestInfo.product[i].rooms.length;
-      for (var j = 0; j < roomLen; j++) {
-        Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1)).setState(data[j]);
+  
+  // for (var i = 0; i < prodLen; i++) {
+  // var roomLen = guestInfo.product[i].rooms.length;
+  // for (var j = 0; j < roomLen; j++) {
+  // Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1)).setState(data[j]);
+  guestInfo.paxlist = totalData;
+  // }
+  // }
+  console.log(guestInfo.paxlist);
+  for (var i = 0; i < prodLen; i++) {
+    var roomLen = guestInfo.product[i].rooms.length;
+    for (var j = 0; j < roomLen; j++) {
+      var traveler = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1));
+      var adultCount = traveler.adultPaxCount;
+      for (var k = 0; k < adultCount; k++) {
+        var paxInfoRoom = Polymer.dom(traveler.root).querySelector("#adultPaxInfo" + (k + 1));
+        var paxInfoEmail = Polymer.dom(paxInfoRoom.root).querySelector("#adultEmail");
+        if (paxInfoEmail.invalid === true) {
+          var PaxInfoEmailLabel = Polymer.dom(paxInfoRoom.root).querySelector("#adultEmailLabel");
+          PaxInfoEmailLabel.hidden = true;
+        }
       }
-
     }
+  }
+  alert(valid);
   }
 </script>
 
