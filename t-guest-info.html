@@ -49,41 +49,74 @@
         text-decoration: none;
         font-size: 16px;
       }
-      /*.item[LargeDesktopview]*/
 
-      #chooseGuest {
-        width: 40%;
-        position: relative;
-        float: left;
-        margin-top: 335px;
-        margin-bottom: 100px;
-        /*margin-left: -542px;*/
-      }
-      /*.item[smallMobileView]#chooseGuest {
-        width: 50%;
-        background-color: violet;
-        float: left;
+
+      .item[smallMobileView] #toolbarLotalty {
+        background-color: var(--toolbar-background-color);
+        width: 100%;
+        height: 50px;
+        margin-left: -14px;
       }
 
-      .item[mobileView] #chooseGuest {
-        width: 15%;
-        position: relative;
-        float: left;
+      .item[smallMobileView] #loyaltyDiv {
+        width: 100%;
       }
 
-      .item[tablet] #chooseGuest {
-        width: 15%;
-        position: relative;
+      .item[smallMobileView] #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: -5px;
         float: left;
-      }*/
+        margin-top: 3%;
+      }
+
+      .item[mobileView] #toolbarLotalty {
+        background-color: var(--toolbar-background-color);
+        width: 100%;
+        height: 50px;
+        margin-left: -14px;
+      }
+
+      .item[mobileView] #loyaltyDiv {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .item[mobileView] #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: -5px;
+        float: left;
+        margin-top: 3%;
+      }
+
+      .item[mobileView] #tLoyaltyProgram {}
+
+      .item[tabletView] #toolbarLotalty {
+        background-color: var(--toolbar-background-color);
+        width: 97%;
+        height: 50px;
+        margin-left: -5px;
+      }
+
+
+      .item[tabletView] #loyaltyDiv {
+        width: 100%;
+      }
+
+      .item[tabletView] #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: 50px;
+        float: left;
+        margin-top: 3%;
+      }
 
       #loyaltyDiv {
         width: 67%;
       }
 
       #toolbarLotalty {
-        background-color: #E8E8E8;
-        width: 100%;
+        font-size: 16px;
+        background-color: var(--toolbar-background-color);
+        width: 97%;
         margin-left: 10px;
         margin-top: 20px;
         height: 50px;
@@ -95,7 +128,7 @@
 
       #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
-        margin-left: 50px;
+        margin-left: 6px;
         float: left;
         margin-top: 3%;
       }
@@ -113,40 +146,31 @@
 
       <template is="dom-repeat" items="{{product}}">
         <template is="dom-repeat" items="{{item.rooms}}">
+
           <t-traveler-info id="travelerInfo{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child"
-            policy-List="{{item.policies}}" pax-list="{{paxlist}}" option="[[option]]" resource="{{resources}}" adult-pax-count="{{item.criteria.traveler.adult}}"
-            child-pax-count="{{item.criteria.traveler.child}}" only-lead-pax-info="{{item.onlyLeadPaxInfo}}">
+            policy-List="{{item.policies}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}"
+            adult-pax-count="{{item.criteria.traveler.adult}}" child-pax-count="{{item.criteria.traveler.child}}" only-lead-pax-info="{{item.onlyLeadPaxInfo}}"
+            room-number="{{_increaseIndex(index)}}">
           </t-traveler-info>
-          <div hidden$={{_doNotShowForRoom1(index,1)}}>
-            <paper-dropdown-menu label="{{newGuest}}" id="chooseGuest" required auto-validate error-message="chooseguest please">
-              <paper-listbox slot="dropdown-content" selected="{{selectedGuest}}">
-                <template is="dom-repeat" items={{paxlist}}>
-                  <paper-item>{{item.firstName}}</paper-item>
-                  
-                </template>
-                <paper-item>Add new</paper-item>
-              </paper-listbox>
-            </paper-dropdown-menu>
-          </div>
           <br>
         </template>
+
+        <div id="loyaltyDiv">
+          <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
+          <template is="dom-repeat" items="{{loyaltyPrograms}}">
+            <div id="tLoyaltyProgram">
+              <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(index)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(index)}}"></t-loyalty-program>
+            </div>
+          </template>
+          <div>
+            <paper-button id="addProgramForOtherGuestButton" on-tap="_addProgramForOtherGuest">Add program for other guest</paper-button>
+          </div>
+        </div>
+
       </template>
+      <br>
+      <br>
     </div>
-
-    <div id="loyaltyDiv">
-      <div>
-        <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
-        <template is="dom-reapeat" items="{{loyaltyPrograms}}">
-          <t-loyalty-program id="tLoyaltyDatabase">{{item}}</t-loyalty-program>
-        </template>
-      </div>
-      <div>
-        <paper-button id=addProgramForOtherGuestButton on-tap="_addProgramForOtherGuest">Add program for other guest</paper-button>
-      </div>
-    </div>
-    <br>
-    <br>
-
   </template>
 
   <script>
@@ -167,7 +191,7 @@
         return {
           loyaltyPrograms: {
             type: Array,
-            notify: true
+            value: []
           },
           onlyLeadPaxInfo: {
             type: Boolean,
@@ -224,182 +248,36 @@
           resources: {
             type: Object
           },
-          paxList1: {
-            type: Object,
-            value: {
-              "membership": {}
-            }
-          },
           product: {
             type: Object,
             value: {
               "rooms": []
             }
           },
-          allowTitle: {
-            type: Boolean,
-            value: false
-          },
-          allowTitleForLeadPax: {
-            type: Boolean,
-            value: false
-          },
-          allowContactNumber: {
-            type: Boolean,
-            value: false
-          },
-          allowContactNumberForLeadPax: {
-            type: Boolean,
-            value: false
-          },
-          allowEmail: {
-            type: Boolean,
-            value: false
-          },
-          allowEmailForLeadPax: {
-            type: Boolean,
-            value: false
-          },
-          requiredField: {
-            type: Array,
-            value: [
-              "firstname",
-              "lastname"
-            ]
-          },
-          requiredFieldForLeadPax: {
-            type: Array,
-            value: [
-              "contactNumber",
-              "title",
-              "email"
-            ]
-          },
-          terms: {
-            type: String,
-            value: 'terms-ico'
-          },
-          adultTitle: {
-            type: String,
-            value: 'Adult {count}'
-          },
-          adultInfo: {
-            type: String,
-            value: '(12+ years)'
-          },
-          childTitle: {
-            type: String,
-            value: 'Child {count}'
-          },
-          childInfo: {
-            type: String,
-            value: '(upto 7 years)'
-          },
-          titleValues: {
-            type: Array,
-            value: [{
-                "key": "Mr"
-              },
-              {
-                "key": "Ms"
-              }
-            ]
-          },
-          titleSelected: {
-            type: String,
-            value: 'Mr'
-          },
-          titleLabel: {
-            type: String,
-            value: 'Title'
-          },
-          titleError: {
-            type: String,
-            value: 'Please select a title'
-          },
-          firstNameValue: {
-            type: String,
-            value: ''
-          },
-          firstnameTitle: {
-            type: String,
-            value: 'First name'
-          },
-          firstNameError: {
-            type: String,
-            value: 'Firstname is required'
-          },
-          lastNameValue: {
-            type: String,
-            value: ''
-          },
-          lastnameTitle: {
-            type: String,
-            value: 'Last name'
-          },
-          lastNameError: {
-            type: String,
-            value: 'Lastname is required'
-          },
-          emailValue: {
-            type: String,
-            value: ''
-          },
-          emailTitle: {
-            type: String,
-            value: 'Email address'
-          },
-          emailInfo: {
-            type: String,
-            value: 'We will send you email confirmation on this address'
-          },
-          emailError: {
-            type: String,
-            value: 'Please enter a valid email address'
-          },
-          countryCodeValues: {
-            type: Array,
-            value: [{
-                "key": "India +91",
-                "value": "91"
-              },
-              {
-                "key": "USA +1",
-                "value": "1"
-              }
-            ]
-          },
-          countryCodeTitle: {
-            type: String,
-            value: 'Country code'
-          },
-          countryCodeError: {
-            type: String,
-            value: 'Countrycode is required'
-          },
-          contactNumberValue: {
-            type: Number,
-            value: ''
-          },
-          contactNumberTitle: {
-            type: String,
-            value: 'Contact number'
-          },
-          contactNumberInfo: {
-            type: String,
-            value: 'In case of any notifications our agent will reach you on this number'
-          },
-          contactNumberError: {
-            type: String,
-            value: 'Contact number is required'
-          },
-          newGuest: {
-            type: String,
-            value: 'New Guest'
-          }
+
+
         };
       } //End of Properties.
-
+      _paxlistFromPreviousRoom() {
+        if(this.roomNumer === 1){
+          return null;
+        }
+        else{
+         var totalData = [];
+        var data = [];
+        var prodLen = this.product.length;
+        for (var i = 0; i < prodLen; i++) {
+          var roomLen = this.product[i].rooms.length;
+          for (var j = 0; j < roomLen; j++) {
+            if (this.roomNumber != 1) {
+              data[j] = this.shadowRoot.querySelector("#travelerInfo" + (j + 1)).getState(event)
+            }
+            totalData[i] = data;
+          }
+        }
+        return totalData;
+        }
+      }
       _defaultOptionValue() {
         if (this.option === undefined) {
           this.allowContactNumber;
@@ -484,14 +362,14 @@
         }
         if (this.resources.fields.firstName === undefined) {
           this.firstNameValue;
-          this.firstnameTitle;
+          this.firstNameTitle;
           this.firstNameError;
         } else {
           if (this.resources.fields.firstName.value) {
             this.firstNameValue = this.resources.fields.firstName.value;
           }
           if (this.resources.fields.firstName.title) {
-            this.firstnameTitle = this.resources.fields.firstName.title;
+            this.firstNameTitle = this.resources.fields.firstName.title;
           }
           if (this.resources.fields.firstName.errors) {
             this.firstNameError = this.resources.fields.firstName.errors;
@@ -499,14 +377,14 @@
         }
         if (this.resources.fields.lastName === undefined) {
           this.lastNameValue;
-          this.lastnameTitle;
+          this.lastNameTitle;
           this.lastNameError;
         } else {
           if (this.resources.fields.lastName.value) {
             this.lastNameValue = this.resources.fields.lastName.value;
           }
           if (this.resources.fields.lastName.title) {
-            this.lastnameTitle = this.resources.fields.lastName.title;
+            this.lastNameTitle = this.resources.fields.lastName.title;
           }
           if (this.resources.fields.lastName.errors) {
             this.lastNameError = this.resources.fields.lastName.errors;
@@ -565,7 +443,7 @@
             this.contactNumberError = this.resources.fields.contactNumber.errors;
           }
         }
-        if(this.resources.fields.newGuest){
+        if (this.resources.fields.newGuest) {
           this.newGuest = this.resources.fields.newGuest;
         }
       }
@@ -580,7 +458,7 @@
         for (var i = 0; i < productLength; i++) {
           var roomsLength = this.product[i].rooms.length;
           for (var j = 0; j < roomsLength; j++) {
-            validData[j] = Polymer.dom(this.root).querySelector("#travelerInfo" + (j + 1)).isValid();
+            validData[j] = this.shadowRoot.querySelector("#travelerInfo" + (j + 1)).isValid();
           }
           for (var j = 0; j < roomsLength; j++) {
             if (validData[j] === false) {
@@ -591,39 +469,73 @@
           }
         }
       }
+      _increaseIndex(index) {
+        var calIndex = index + 1;
+        return calIndex;
+      }
       isData() {
         var totalData = [];
         var data = [];
+        var productPaxArray = [];
+        var totalProductPaxArray = [];
         var prodLen = this.product.length;
         for (var i = 0; i < prodLen; i++) {
           var roomLen = this.product[i].rooms.length;
           for (var j = 0; j < roomLen; j++) {
-            data[j] = Polymer.dom(this.root).querySelector("#travelerInfo" + (j + 1)).getState(event);
+            var productPax = {};
+            productPax.ProductId = this.product[i].id;
+            productPax.subProductId = this.product[i].rooms[j].id;
+            data[j] = this.shadowRoot.querySelector("#travelerInfo" + (j + 1)).getState(event);
+            productPax.paxList = data[j];
+            var productPax1 = productPax;
+            productPaxArray[j] = productPax1;
           }
+          totalProductPaxArray[i] = productPaxArray;
           totalData[i] = data;
+        };
+        console.log(totalProductPaxArray);
+        console.log(totalData);
+        // var totalDataObjectArray = JSON.stringify(totalData);
+        // console.log(totalDataObjectArray);
+        // var totalDataObject = JSON.parse(totalDataObjectArray);
+        // console.log(totalDataObject);
+        this._loyaltyProgramData();
+        return totalData;
+      }
+      _loyaltyProgramData() {
+        var loyaltyProgramObject = {};
+        var loyaltyProgramArrayData = [];
+        for (var i = 0; i < this.loyaltyPrograms.length; i++) {
+          var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (i + 1));
+          var loyaltyProgramArray = [];
+          loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
+          loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
+          loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
+          loyaltyProgramArrayData[i] = loyaltyProgramArray;
         }
-        var totalDataObjectArray = JSON.stringify(totalData);
-        console.log(totalDataObjectArray);
-        var totalDataObject = JSON.parse(totalDataObjectArray);
-        console.log(totalDataObject);
-        return totalDataObject;
+        console.log(loyaltyProgramArrayData);
+
+        loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
+        console.log(loyaltyProgramObject);
+        return loyaltyProgramArrayData;
       }
       _doNotShowForRoom1(room1, roomNumber) {
         return room1 < roomNumber;
       }
       _addProgramForOtherGuest() {
         this.push('loyaltyPrograms', {
-          loyaltyPrograms
+          loyaltyProgram: ""
         });
-        console.log(loyaltyPrograms);
+        console.log(this.loyaltyPrograms);
       }
       ready() {
         super.ready();
         this.loyaltyPrograms = [];
+        // this._paxlistFromPreviousRoom()
         this._defaultOptionValue();
         this._defaultResourcesValue();
         this.push('loyaltyPrograms', {
-          loyaltyPrograms: ""
+          loyaltyProgram: ""
         });
       }
     }

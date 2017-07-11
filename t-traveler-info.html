@@ -1,3 +1,14 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
 <link rel="import" href="pax-info.html">
 <link rel="import" href="pax-info-child.html">
 
@@ -38,10 +49,20 @@
                 margin-left: -18px;
             }
 
-            .item[smallMobileView] #closeIcon {
+            .item[smallMobileView] .closeIconAdult,
+            .closeIconChild {
                 margin-top: 4%;
                 margin-left: -16px;
                 color: #A8A8A8;
+            }
+
+            .item[smallMobileView] .closeIconChooseGuest {
+                float: left;
+                position: absolute;
+                margin-top: -39px;
+                margin-left: 205px;
+                color: #A8A8A8;
+                visibility: hidden;
             }
 
             .item[mobileView] #toolbarRoom {
@@ -77,10 +98,20 @@
                 margin-left: -18px;
             }
 
-            .item[mobileView] #closeIcon {
+            .item[mobileView] .closeIconAdult,
+            .closeIconChild {
                 margin-top: 4%;
                 margin-left: -14px;
                 color: #A8A8A8;
+            }
+
+            .item[mobileView] .closeIconChooseGuest {
+                float: left;
+                position: absolute;
+                margin-top: -39px;
+                margin-left: 205px;
+                color: #A8A8A8;
+                visibility: hidden;
             }
 
             .item[tabletView] #toolbarRoom {
@@ -119,10 +150,20 @@
                 width: 100%;
             }
 
-            .item[tabletView] #closeIcon {
+            .item[tabletView] .closeIconAdult,
+            .closeIconChild {
                 margin-top: 4%;
                 margin-left: -15px;
                 color: #A8A8A8;
+            }
+
+            .item[tabletView] .closeIconChooseGuest {
+                float: left;
+                position: absolute;
+                margin-top: -39px;
+                margin-left: 205px;
+                color: #A8A8A8;
+                visibility: hidden;
             }
 
             #toolbarRoom {
@@ -174,10 +215,20 @@
                 float: left;
             }*/
 
-            #closeIcon {
+            .closeIconAdult,
+            .closeIconChild {
                 margin-top: 3%;
                 margin-left: 18px;
                 color: #A8A8A8;
+            }
+
+            .closeIconChooseGuest {
+                float: left;
+                position: absolute;
+                margin-top: -39px;
+                margin-left: 420px;
+                color: #A8A8A8;
+                visibility: hidden;
             }
 
             #paxInfoTemp {
@@ -214,19 +265,21 @@
                 </div>
                 <template is="dom-repeat" items="{{adultPaxCountArray}}">
                     <div id="paxInfoTemp">
-                        <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" pax-list="[[_getPaxList(index, paxList)]]" option="[[option]]" resources="{{resource}}"
-                            index="{{_increaseIndex(index)}}" adult-pax-count="{{adultPaxCount}}">{{item}}</pax-info>
+                        <pax-info id="adultPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxListAdult}}" option="[[option]]" resources="{{resources}}"
+                            index="{{_increaseIndex(index)}}" adult-pax-count="{{adultPaxCount}}" room-number="{{roomNumber}}">{{item}}</pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
-                            <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxAdultInfo"></paper-icon-button>
+                            <paper-icon-button icon="close" id="closeIconAdult{{_increaseIndex(index)}}" class="closeIconAdult" on-tap="_closePaxAdultInfo"></paper-icon-button>
                         </div>
                     </div>
                 </template>
-               
+
                 <template is="dom-repeat" items="{{childPaxCountArray}}">
                     <div id="paxInfoTemp">
-                        <pax-info-child id="childPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxList}}" option="[[option]]" resources="{{resource}}"
-                            index="{{_increaseIndex(index)}}"></pax-info-child>
-                        <paper-icon-button icon="close" id="closeIcon" on-tap="_closePaxChildInfo"></paper-icon-button>
+                        <pax-info-child id="childPaxInfo{{_increaseIndex(index)}}" pax-list="{{paxListChild}}" option="[[option]]" resources="{{resources}}"
+                            index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}"></pax-info-child>
+                        <div>
+                            <paper-icon-button icon="close" id="closeIconChild{{_increaseIndex(index)}}" class="closeIconChild" on-tap="_closePaxChildInfo"></paper-icon-button>
+                        </div>
                     </div>
                 </template>
             </div>
@@ -250,6 +303,16 @@
             }
             static get properties() {
                 return {
+                    roomNumber: {
+                        type: Number
+                    },
+                    title: {
+                        type: String,
+                        value: 'Room'
+                    },
+                    subTitle: {
+                        type: String,
+                    },
                     smallMobileView: {
                         type: Boolean,
                         value: false
@@ -302,7 +365,13 @@
                         type: Array,
                         value: ''
                     },
-                    paxList: {
+                    paxlist: {
+                        type: Array,
+                    },
+                    paxListAdult: {
+                        type: Array,
+                    },
+                    paxListChild: {
                         type: Array,
                     },
                     product: {
@@ -314,7 +383,7 @@
                     policyList: {
                         type: Array,
                     },
-                    resource: {
+                    resources: {
                         type: Object
                     },
                     showCloseButton: {
@@ -327,16 +396,7 @@
                     },
                 };
             }
-            _dataForValue() {
-                var adultPax = [];
-                var adultPaxData = [];
-                for (var i = 0; i < this.adultPaxCount; i++) {
-                    adultPax[i] = Polymer.dom(this.root).querySelector("#adultPaxInfo" + (i + 1));
-                }
-                for (var j = 0; j < this.adultPaxCount; j++) {
-                    adultPaxData[i] = this.paxList[i];
-                }
-            }
+            
             isValid() {
                 var adultValidation = this.isValidAdult();
                 var childValidation = this.isValidChild();
@@ -350,7 +410,7 @@
                 var adultPaxInfoArray = [];
                 var validData = true;
                 for (var i = 1; i <= this.adultPaxCount; i++) {
-                    adultPaxInfoArray[i] = Polymer.dom(this.root).querySelector("#adultPaxInfo" + (i)).isValidPaxInfo();
+                    adultPaxInfoArray[i] = this.shadowRoot.querySelector("#adultPaxInfo" + (i)).isValidPaxInfo();
                 }
                 for (var i = 1; i <= this.adultPaxCount; i++) {
                     if (adultPaxInfoArray[i] === true) {
@@ -367,7 +427,7 @@
                 var childPaxInfoArray = [];
                 var validData = true;
                 for (var i = 1; i <= this.childPaxCount; i++) {
-                    childPaxInfoArray[i] = Polymer.dom(this.root).querySelector("#childPaxInfo" + (i)).isValidPaxInfoChild();
+                    childPaxInfoArray[i] = this.shadowRoot.querySelector("#childPaxInfo" + (i)).isValidPaxInfoChild();
                 }
                 for (var i = 1; i <= this.childPaxCount; i++) {
                     if (childPaxInfoArray[i] === true) {
@@ -383,15 +443,14 @@
             getState(event) {
                 var adultPaxDataArray = [];
                 for (var i = 0; i < this.adultPaxCount; i++) {
-                    adultPaxDataArray[i] = Polymer.dom(this.root).querySelector("#adultPaxInfo" + (i + 1)).adultData();
+                    adultPaxDataArray[i] = this.shadowRoot.querySelector("#adultPaxInfo" + (i + 1)).adultData();
                 }
                 var childPaxDataArray = [];
                 for (var i = 0; i < this.childPaxCount; i++) {
-                    childPaxDataArray[i] = Polymer.dom(this.root).querySelector("#childPaxInfo" + (i + 1)).childData();
+                    childPaxDataArray[i] = this.shadowRoot.querySelector("#childPaxInfo" + (i + 1)).childData();
                 }
                 var paxListArray = adultPaxDataArray.concat(childPaxDataArray);
                 this.paxList = JSON.parse(JSON.stringify(paxListArray));
-
                 return this.paxList;
             }
             setState(paxList) {
@@ -420,20 +479,51 @@
                 }
             }
             _closePaxAdultInfo(e) {
-                this.splice('adultPaxCountArray', e.model.index, 1);
-                this.adultPaxCount = this.adultPaxCount - 1;
-                if (this.adultPaxCount === 1) {
-                    Polymer.dom(this.root).querySelector("#adultPaxInfo" + (e.model.index + 1))._lte((e.model.index +
-                        1), 1);
+                if (this.roomNumber != 1) {
+                    var adultPaxInfoVar = this.shadowRoot.querySelector("#adultPaxInfo" + (e.model.index + 1));
+                    adultPaxInfoVar.showChooseGuest = false;
+                    adultPaxInfoVar.showPaxInfoFields = true;
+                    var closeIconAdultVar = this.shadowRoot.querySelector("#closeIconAdult" + (e.model.index +1))
+                    closeIconAdultVar.classList.add("closeIconChooseGuest");
+                    closeIconAdultVar.classList.remove("closeIconAdult");
+                    var paxInfo = this.shadowRoot.querySelector("#adultPaxInfo" + (e.model.index + 1));
+                    paxInfo.shadowRoot.querySelector("#chooseGuest").contentElement.selected = -1;
+                }
+                else{
+                    this.splice('adultPaxCountArray', e.model.index, 1);
                 }
             }
             _closePaxChildInfo(e) {
-                this.splice('childPaxCountArray', e.model.index, 1);
-                this.childPaxCount = this.childPaxCount - 1;
+                if (this.roomNumber != 1) {              
+                var childPaxInfoVar = this.shadowRoot.querySelector("#childPaxInfo" + (e.model.index + 1));
+                childPaxInfoVar.showChooseGuest = false;
+                childPaxInfoVar.showPaxInfoFields = true;
+                var closeIconchildVar = this.shadowRoot.querySelector("#closeIconChild" + (e.model.index + 1))
+                closeIconchildVar.classList.add("closeIconChooseGuest");
+                closeIconchildVar.classList.remove("closeIconAdult");
+                var paxInfo = this.shadowRoot.querySelector("#childPaxInfo" + (e.model.index + 1));
+                paxInfo.shadowRoot.querySelector("#chooseGuest").contentElement.selected = -1;
+                }else{
+                    this.splice('childPaxCountArray', e.model.index, 1);
+                }
             }
             _increaseIndex(index) {
                 var calIndex = index + 1;
                 return calIndex;
+            }
+            _getAdultPaxList() {
+                var paxList = this.paxList;
+                var adults = paxList.filter(function (item) {
+                    return item.type.toLowerCase() === 'adult';
+                });
+                this.paxListAdult = adults;
+            }
+            _getChildPaxList() {
+                var paxList = this.paxList;
+                var children = paxList.filter(function (item) {
+                    return item.type.toLowerCase() === 'child';
+                });
+                this.paxListChild = children;
             }
             /**
              * Function to set view of internet explorer.       
@@ -477,7 +567,8 @@
                 }
                 this.childPaxCountArray = childPaxCount1;
                 this._hideDashForMobileView();
-
+                this._getAdultPaxList();
+                this._getChildPaxList();
             }
         }
 

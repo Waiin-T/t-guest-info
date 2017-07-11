@@ -31,7 +31,7 @@
       }
 
       t-guest-info {
-        --toolbar-background-color: #EEE;
+        --toolbar-background-color: goldenrod;
         --color-for-subTitle: gray;
         --color-for-policies: #4CB050;
         --color-for-button-labels: #478BD7;
@@ -43,7 +43,7 @@
 <body>
 
   <t-guest-info id="guestInfo" option='{
-                  "allowTitle" : true,
+                  "allowTitle": true,
                   "allowTitleForLeadPax" : true,
                   "allowContactNumber" : false,
                   "allowContactNumberForLeadPax" : true,
@@ -65,7 +65,7 @@
                     },
                   "labels": {
                     "adult": {
-                      "title": "Adult",
+                      "title": "Adult pax",
                       "info": "(12+ years)"
                       },
                     "child": {
@@ -98,7 +98,6 @@
                       },
                     "email": {
                       "value": "",
-                      "title": "Email address",
                       "info": "We will send you email confirmation on this address",
                       "errors": "Please enter a valid email address"
                       },
@@ -155,6 +154,19 @@
                         "firstName": "Peter",
                         "lastName": "Doe",
                         "email": "Peter@example.com",
+                        "contact": "343453453",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      },{
+                        "type": "Child",
+                        "title": "Ms",
+                        "firstName": "John",
+                        "lastName": "peter",
+                        "email": "john@example.com",
                         "contact": "343453453",
                         "countrycode": "+91",
                         "membership": {

@@ -5,24 +5,104 @@
         display: block;
       }
 
-      #guestName {
+      paper-dropdown-menu {
+        --paper-input-container-underline-focus: #4CB050;
+        --paper-input-container-focus-color: #4CB050;
+        --paper-input-container-label-focus: lightgray;
+      }
+
+      paper-input {
+        --paper-input-container-underline-focus: #4CB050;
+        --paper-input-container-focus-color: #4CB050;
+        --paper-input-container-label-focus: lightgray;
+      }
+
+      .item[smallMobileView] .guestName {
+        width: 45%;
+        margin-left: -5px;
+      }
+
+      .item[smallMobileView] .programName {
+        width: 45%;
+      }
+
+      .item[smallMobileView] .programNumber {
+        width: 45%;
+        margin-left: -5px;
+      }
+
+      .item[smallMobileView] #buttonRemove {
+        margin-left: 40px;
+        margin-top: 20px;
+      }
+
+      .item[smallMobileView] #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: -5px;
+        float: left;
+        margin-top: 3%;
+        visibility: hidden;
+      }
+
+      .item[mobileView] .guestName {
+        width: 45%;
+        margin-left: -5px;
+      }
+
+      .item[mobileView] .programName {
+        width: 45%;
+      }
+
+      .item[mobileView] .programNumber {
+        width: 45%;
+        margin-left: -5px;
+      }
+
+      .item[mobileView] #buttonRemove {
+        margin-left: 55px;
+        margin-top: 6%;
+      }
+
+      .item[mobileView] #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: -5px;
+        float: left;
+        margin-top: 3%;
+        visibility: hidden;
+      }
+
+      .item[tabletView] .guestName {
+        width: 22%;
+      }
+
+      .item[tabletView] .programName {
+        width: 22%;
+      }
+
+      .item[tabletView] .programNumber {
+        width: 22%;
+        margin-left: 10px;
+      }
+
+      .item[tabletView] #buttonRemove {
+        margin-top: 5%;
+        margin-left: 20px;
+      }
+
+      .guestName {
         width: 23%;
         margin-left: 10px;
       }
 
-      #programName {
+      .programName {
         width: 23%;
         margin-left: 25px;
       }
 
-      #programNumber {
+      .programNumber {
         width: 23%;
         margin-left: 25px;
       }
-      /*#buttonRemoveDiv{
-        width: 23%;
-        margin-left: 25px;
-      }*/
 
       #buttonRemove {
         margin-top: 4%;
@@ -32,42 +112,53 @@
         font-weight: 450;
       }
 
-      #guestName,
-      #programName,
-      #programNumber,
+      .guestName,
+      .programName,
+      .programNumber,
       #buttonRemove {
         float: left;
       }
+
+      #addProgramForOtherGuestButton {
+        /*visibility: hidden;*/
+      }
+
+      .item {
+        clear: both;
+      }
     </style>
-    <div>
+    <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{tabletView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query>
+
+    <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}">
 
       <div>
-        <paper-dropdown-menu label="Guest name" id="guestName">
+        <paper-dropdown-menu label="Guest name" id="guestName{{index}}" class="guestName">
+          <paper-listbox slot="dropdown-content">
+            <template is="dom-repeat" items={{paxList}}>
+              <paper-item>{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
+            </template>
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </div>
+      <div>
+        <paper-dropdown-menu label="Program name" id="programName{{index}}" class="programName">
           <paper-listbox slot="dropdown-content">
             <!--<template is="dom-repeat" items={{resource.fields.title.values}}>-->
             <paper-item>abc</paper-item>
-            <paper-item>xyz</paper-item>
             <!--</template>-->
           </paper-listbox>
         </paper-dropdown-menu>
       </div>
       <div>
-        <paper-dropdown-menu label="Program name" id="programName">
-          <paper-listbox slot="dropdown-content">
-            <!--<template is="dom-repeat" items={{resource.fields.title.values}}>-->
-            <paper-item>abc</paper-item>
-            <!--</template>-->
-          </paper-listbox>
-        </paper-dropdown-menu>
+        <paper-input label="Program number" id="programNumber{{index}}" class="programNumber"></paper-input>
       </div>
-      <div>
-        <paper-input label="Program number" id="programNumber"></paper-input>
+      <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden(1,1)]]>
+        <paper-button id="buttonRemove" on-tap="_deleteProgramForOtherGuest">Remove</paper-button>
       </div>
-      <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
-        <paper-button id="buttonRemove">Remove</paper-button>
-      </div>
-
-
     </div>
   </template>
 
@@ -87,17 +178,53 @@
       }
       static get properties() {
         return {
-
-          _isRemoveButtonHidden: {
+          smallMobileView: {
             type: Boolean,
             value: false
-            // computed: '_lte(adultPaxCountArray.length , 1)'
+          },
+          mobileView: {
+            type: Boolean,
+            value: false
+          },
+          tabletView: {
+            type: Boolean,
+            value: false
+          },
+          desktopView: {
+            type: Boolean,
+            value: false
+          },
+          largeDesktopView: {
+            type: Boolean,
+            value: false
+          },
+          _isRemoveButtonHidden: {
+            type: Boolean,
+            computed: '_lte(adultPaxCountArray.length , 1)'
+          },
+          paxList: {
+            type: Object,
+          },
+          loyaltyPrograms: {
+            type: Array,
+          },
+          loyaltyProgramsCount: {
+            type: Number,
+            value: ''
           },
         };
       }
-      // _lte(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
-      //   return adultPaxCountArrayLength <= hiddenButtonAdultNumber;
+      _lte(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
+        return adultPaxCountArrayLength <= hiddenButtonAdultNumber;
+      }
+      // _deleteProgramForOtherGuest() {
+      //   this.splice('loyaltyPrograms', 1, 1);
+      //   this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
       // }
+      _increaseIndex(index) {
+        var calIndex = index + 1;
+        return calIndex;
+      }
     }
 
     window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);
