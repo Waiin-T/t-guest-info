@@ -64,9 +64,16 @@
 
       .item[smallMobileView] #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
-        margin-left: -5px;
+        margin-left: -13px;
         float: left;
         margin-top: 3%;
+        padding-bottom: 30px;
+      }
+
+      .item[smallMobileView] #lineBreakBetweenProduct {
+        margin-top: 74px;
+        clear: both;
+        margin-left: -4px;
       }
 
       .item[mobileView] #toolbarLotalty {
@@ -83,9 +90,10 @@
 
       .item[mobileView] #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
-        margin-left: -5px;
+        margin-left: -13px;
         float: left;
         margin-top: 3%;
+        padding-bottom: 30px;
       }
 
       .item[mobileView] #tLoyaltyProgram {}
@@ -97,6 +105,11 @@
         margin-left: -5px;
       }
 
+      .item[mobileView] #lineBreakBetweenProduct {
+        margin-top: 74px;
+        clear: both;
+        margin-left: -4px;
+      }
 
       .item[tabletView] #loyaltyDiv {
         width: 100%;
@@ -107,6 +120,7 @@
         margin-left: 50px;
         float: left;
         margin-top: 3%;
+        padding-bottom: 30px;
       }
 
       #loyaltyDiv {
@@ -131,6 +145,36 @@
         margin-left: 6px;
         float: left;
         margin-top: 3%;
+        padding-bottom: 30px;
+      }
+
+      #lineBreakBetweenProduct {
+        margin-top: 74px;
+        clear: both;
+        margin-left: 10px;
+      }
+
+      .item[smallMobileView] #buttonRemove {
+        margin-left: 40px;
+        margin-top: 20px;
+      }
+
+      .item[mobileView] #buttonRemove {
+        margin-left: 55px;
+        margin-top: 6%;
+      }
+
+      .item[tabletView] #buttonRemove {
+        margin-top: 5%;
+        margin-left: 20px;
+      }
+
+      #buttonRemove {
+        margin-top: 4%;
+        margin-left: 65px;
+        width: 60px;
+        color: var(--color-for-button-labels);
+        font-weight: 450;
       }
     </style>
     <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
@@ -143,31 +187,38 @@
     <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}">
 
       <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
+      <br />
 
-      <template is="dom-repeat" items="{{product}}">
-        <template is="dom-repeat" items="{{item.rooms}}">
+      <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo">
+        <template is="dom-repeat" items="{{product.rooms}}" as="room">
 
-          <t-traveler-info id="travelerInfo{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}" sub-title="{{item.name}} | {{item.criteria.traveler.adult}} Adults, {{item.criteria.traveler.child}} Child"
-            policy-List="{{item.policies}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}"
-            adult-pax-count="{{item.criteria.traveler.adult}}" child-pax-count="{{item.criteria.traveler.child}}" only-lead-pax-info="{{item.onlyLeadPaxInfo}}"
-            room-number="{{_increaseIndex(index)}}">
+          <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}"
+            sub-title="{{room.name}} | {{room.criteria.traveler.adult}} Adults, {{room.criteria.traveler.child}} Child" policy-List="{{room.policies}}"
+            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}"
+            adult-pax-count="[[room.criteria.traveler.adult]]" child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}"
+            only-lead-pax-info="{{room.onlyLeadPaxInfo}}" pax-list-available="{{paxlistAvailable}}">
           </t-traveler-info>
           <br>
         </template>
 
-        <div id="loyaltyDiv">
+        <div id="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
           <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
           <template is="dom-repeat" items="{{loyaltyPrograms}}">
             <div id="tLoyaltyProgram">
-              <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(index)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(index)}}"></t-loyalty-program>
+              <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}"></t-loyalty-program>
+              <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
+                <paper-button id="buttonRemove" on-tap="_deleteProgramForOtherGuest">Remove</paper-button>
+              </div>
             </div>
           </template>
           <div>
             <paper-button id="addProgramForOtherGuestButton" on-tap="_addProgramForOtherGuest">Add program for other guest</paper-button>
+            <br />
           </div>
         </div>
-
+        <hr id="lineBreakBetweenProduct">
       </template>
+
       <br>
       <br>
     </div>
@@ -189,9 +240,11 @@
       }
       static get properties() {
         return {
-          loyaltyPrograms: {
-            type: Array,
-            value: []
+          guestInfo: Object,
+          loyaltyPrograms: Array,
+          _isRemoveButtonHidden: {
+            type: Boolean,
+            computed: '_lte(loyaltyPrograms.length , 1)'
           },
           onlyLeadPaxInfo: {
             type: Boolean,
@@ -232,7 +285,8 @@
           },
           paxlist: {
             type: Array,
-            value: []
+            value: [],
+            notify: true
           },
           policyList: {
             type: Array
@@ -254,238 +308,61 @@
               "rooms": []
             }
           },
-
+          paxlistAvailable: {
+            type: Boolean,
+            value: false
+          },
 
         };
       } //End of Properties.
-      _paxlistFromPreviousRoom() {
-        if(this.roomNumer === 1){
-          return null;
-        }
-        else{
-         var totalData = [];
-        var data = [];
-        var prodLen = this.product.length;
-        for (var i = 0; i < prodLen; i++) {
-          var roomLen = this.product[i].rooms.length;
-          for (var j = 0; j < roomLen; j++) {
-            if (this.roomNumber != 1) {
-              data[j] = this.shadowRoot.querySelector("#travelerInfo" + (j + 1)).getState(event)
-            }
-            totalData[i] = data;
-          }
-        }
-        return totalData;
-        }
-      }
-      _defaultOptionValue() {
-        if (this.option === undefined) {
-          this.allowContactNumber;
-          this.allowContactNumberForLeadPax;
-          this.allowTitle;
-          this.allowTitleForLeadPax;
-          this.allowEmail;
-          this.allowEmailForLeadPax;
-          this.requiredField;
-          this.requiredFieldForLeadPax;
-        } else {
-          if (this.option.allowTitleForLeadPax) {
-            this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
-          }
-          if (this.option.allowTitle) {
-            this.allowTitle = this.option.allowTitle;
-          }
-          if (this.option.allowContactNumber) {
-            this.allowContactNumber = this.option.allowContactNumber;
-          }
-          if (this.option.allowContactNumberForLeadPax) {
-            this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
-          }
-          if (this.option.allowEmail) {
-            this.allowEmailt = this.option.allowEmail;
-          }
-          if (this.option.allowEmailForLeadPax) {
-            this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
-          }
-          if (this.option.requiredField) {
-            this.requiredField = this.option.requiredField;
-          }
-          if (this.option.requiredFieldForLeadPax) {
-            this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
-          }
-        }
-      }
-      _defaultResourcesValue() {
-        if (this.resources.icons.terms) {
-          this.terms = this.resources.icons.terms;
-        }
-        if (this.resources.labels.adult === undefined) {
-          this.adultTitle;
-          this.adultInfo;
-        } else {
-          if (this.resources.labels.adult.title) {
-            this.adultTitle = this.resources.labels.adult.title;
-          }
-          if (this.resources.labels.adult.info) {
-            this.adultInfo = this.resources.labels.adult.info;
-          }
-        }
-        if (this.resources.labels.child === undefined) {
-          this.childTitle;
-          this.childInfo;
-        } else {
-          if (this.resources.labels.child.title) {
-            this.childTitle = this.resources.labels.child.title;
-          }
-          if (this.resources.labels.child.info) {
-            this.childInfo = this.resources.labels.child.info;
-          }
-        }
-        if (this.resources.fields.title === undefined) {
-          this.titleValues;
-          this.titleSelected;
-          this.titleLabel;
-          this.titleError;
-        } else {
-          if (this.resources.fields.title.values) {
-            this.titleValues = this.resources.fields.title.values;
-          }
-          if (this.resources.fields.title.selected) {
-            this.titleSelected = this.resources.fields.title.selected;
-          }
-          if (this.resources.fields.title.title) {
-            this.titleLabel = this.resources.fields.title.title;
-          }
-          if (this.resources.fields.title.errors) {
-            this.titleError = this.resources.fields.title.errors;
-          }
-        }
-        if (this.resources.fields.firstName === undefined) {
-          this.firstNameValue;
-          this.firstNameTitle;
-          this.firstNameError;
-        } else {
-          if (this.resources.fields.firstName.value) {
-            this.firstNameValue = this.resources.fields.firstName.value;
-          }
-          if (this.resources.fields.firstName.title) {
-            this.firstNameTitle = this.resources.fields.firstName.title;
-          }
-          if (this.resources.fields.firstName.errors) {
-            this.firstNameError = this.resources.fields.firstName.errors;
-          }
-        }
-        if (this.resources.fields.lastName === undefined) {
-          this.lastNameValue;
-          this.lastNameTitle;
-          this.lastNameError;
-        } else {
-          if (this.resources.fields.lastName.value) {
-            this.lastNameValue = this.resources.fields.lastName.value;
-          }
-          if (this.resources.fields.lastName.title) {
-            this.lastNameTitle = this.resources.fields.lastName.title;
-          }
-          if (this.resources.fields.lastName.errors) {
-            this.lastNameError = this.resources.fields.lastName.errors;
-          }
-        }
-        if (this.resources.fields.email === undefined) {
-          this.emailValue;
-          this.emailTitle;
-          this.emailInfo;
-          this.emailError;
-        } else {
-          if (this.resources.fields.email.value) {
-            this.emailValue = this.resources.fields.email.value;
-          }
-          if (this.resources.fields.email.title) {
-            this.emailTitle = this.resources.fields.email.title;
-          }
-          if (this.resources.fields.email.errors) {
-            this.emailInfo = this.resources.fields.email.errors;
-          }
-          if (this.resources.fields.email.errors) {
-            this.emailError = this.resources.fields.email.errors;
-          }
-        }
-        if (this.resources.fields.countryCode === undefined) {
-          this.countryCodeValues;
-          this.countryCodeTitle;
-          this.countryCodeError;
-        } else {
-          if (this.resources.fields.countryCode.values) {
-            this.countryCodeValues = this.resources.fields.countryCode.values;
-          }
-          if (this.resources.fields.countryCode.title) {
-            this.countryCodeTitle = this.resources.fields.countryCode.title;
-          }
-          if (this.resources.fields.countryCode.errors) {
-            this.countryCodeError = this.resources.fields.countryCode.errors;
-          }
-        }
-        if (this.resources.fields.contactNumber === undefined) {
-          this.contactNumberValue;
-          this.contactNumberTitle;
-          this.contactNumberInfo;
-          this.contactNumberError;
-        } else {
-          if (this.resources.fields.contactNumber.value) {
-            this.contactNumberValue = this.resources.fields.contactNumber.value;
-          }
-          if (this.resources.fields.contactNumber.title) {
-            this.contactNumberTitle = this.resources.fields.contactNumber.title;
-          }
-          if (this.resources.fields.contactNumber.errors) {
-            this.contactNumberInfo = this.resources.fields.contactNumber.errors;
-          }
-          if (this.resources.fields.contactNumber.errors) {
-            this.contactNumberError = this.resources.fields.contactNumber.errors;
-          }
-        }
-        if (this.resources.fields.newGuest) {
-          this.newGuest = this.resources.fields.newGuest;
-        }
-      }
 
+      _updatePaxList(paxlist) {
+        return `${paxlist}`
+      }
+      _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
+        return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
+      }
+      _deleteProgramForOtherGuest() {
+        this.splice('loyaltyPrograms', 1, 1);
+        this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
+      }
+    
       _increaseIndex(index) {
         var calIndex = index + 1;
         return calIndex;
       }
       isValidGuest() {
         var validData = [];
+        var valid;
         var productLength = this.product.length;
         for (var i = 0; i < productLength; i++) {
           var roomsLength = this.product[i].rooms.length;
           for (var j = 0; j < roomsLength; j++) {
-            validData[j] = this.shadowRoot.querySelector("#travelerInfo" + (j + 1)).isValid();
+            validData[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).isValid();
           }
           for (var j = 0; j < roomsLength; j++) {
             if (validData[j] === false) {
-              return false;
+              valid = false;
             } else {
-              return true;
+              valid = true;
             }
           }
         }
-      }
-      _increaseIndex(index) {
-        var calIndex = index + 1;
-        return calIndex;
+        return valid;
       }
       isData() {
         var totalData = [];
-        var data = [];
-        var productPaxArray = [];
         var totalProductPaxArray = [];
         var prodLen = this.product.length;
         for (var i = 0; i < prodLen; i++) {
+          var data = [];
+          var productPaxArray = [];
           var roomLen = this.product[i].rooms.length;
           for (var j = 0; j < roomLen; j++) {
             var productPax = {};
             productPax.ProductId = this.product[i].id;
             productPax.subProductId = this.product[i].rooms[j].id;
-            data[j] = this.shadowRoot.querySelector("#travelerInfo" + (j + 1)).getState(event);
+            data[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).getState(event);
             productPax.paxList = data[j];
             var productPax1 = productPax;
             productPaxArray[j] = productPax1;
@@ -495,11 +372,14 @@
         };
         console.log(totalProductPaxArray);
         console.log(totalData);
-        // var totalDataObjectArray = JSON.stringify(totalData);
-        // console.log(totalDataObjectArray);
-        // var totalDataObject = JSON.parse(totalDataObjectArray);
-        // console.log(totalDataObject);
-        this._loyaltyProgramData();
+
+        var loyaltyTotalData = [];
+        for (var i = 0; i < prodLen; i++) {
+          if (this.product[i].allowLoyalty === true) {
+            loyaltyTotalData[i] = this._loyaltyProgramData();
+          }
+        }
+        console.log(loyaltyTotalData);
         return totalData;
       }
       _loyaltyProgramData() {
@@ -514,13 +394,9 @@
           loyaltyProgramArrayData[i] = loyaltyProgramArray;
         }
         console.log(loyaltyProgramArrayData);
-
         loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
         console.log(loyaltyProgramObject);
         return loyaltyProgramArrayData;
-      }
-      _doNotShowForRoom1(room1, roomNumber) {
-        return room1 < roomNumber;
       }
       _addProgramForOtherGuest() {
         this.push('loyaltyPrograms', {
@@ -531,12 +407,14 @@
       ready() {
         super.ready();
         this.loyaltyPrograms = [];
-        // this._paxlistFromPreviousRoom()
-        this._defaultOptionValue();
-        this._defaultResourcesValue();
         this.push('loyaltyPrograms', {
           loyaltyProgram: ""
         });
+        if (this.paxlist.length === 0) {
+          this.paxlistAvailable = true;
+          this.paxList = [];
+        }
+        this.guestInfo = this;
       }
     }
 

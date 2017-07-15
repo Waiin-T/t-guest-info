@@ -8,19 +8,20 @@
   <title>t-guest-info demo</title>
 
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
   <link rel="import" href="../t-guest-info.html">
+
 
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
       body {
         background-color: white;
+        font-family: 'Roboto';
       }
 
       t-guest-info {
-        --toolbar-background-color: #EEE;
+        --toolbar-background-color: #eee;
         --color-for-subTitle: gray;
         --color-for-policies: #4CB050;
         --color-for-button-labels: #478BD7;
@@ -31,7 +32,294 @@
 
 <body>
 
-  <t-guest-info id="guestInfo"></t-guest-info>
+  <t-guest-info id="guestInfo" option='{
+                  "allowTitle": true,
+                  "allowTitleForLeadPax" : true,
+                  "allowContactNumber" : false,
+                  "allowContactNumberForLeadPax" : true,
+                  "allowEmail" : false,
+                  "allowEmailForLeadPax" : true,
+
+                  "requiredField" : [
+                      "firstname",
+                      "lastname"
+                      ],
+                  "requiredFieldForLeadPax" : [
+                      "contactNumber",
+                      "title",
+                      "email"
+                      ]
+                }' resources='{
+                  "icons": {
+                    "terms": "terms-ico"
+                    },
+                  "labels": {
+                    "adult": {
+                      "title": "Adult pax",
+                      "info": "(12+ years)"
+                      },
+                    "child": {
+                      "title": "Child",
+                      "info": "(upto 12 years)"
+                      }
+                    },
+                  "fields": {
+                    "title": {
+                      "values": [{
+                          "key": "Mr"
+                          },
+                          {
+                          "key": "Ms"
+                          }
+                          ],
+                      "selected": "Mr",
+                      "title": "Title",
+                      "errors": "Please select a title"
+                      },
+                    "firstName": {
+                      "value": "",
+                      "title": "First name",
+                      "errors": "Firstname is required"
+                      },
+                    "lastName": {
+                      "value": "",
+                      "title": "Last name",
+                      "errors": "Lastname is required"
+                      },
+                    "email": {
+                      "value": "",
+                      "info": "We will send you email confirmation on this address",
+                      "errors": "Please enter a valid email address"
+                      },
+                    "countryCode": {
+                      "values": [{
+                          "key": "India +91",
+                          "value": "+91"
+                          },
+                          {
+                          "key": "USA +1",
+                          "value": "+1"
+                          }
+                      ],
+                      "title": "Country code",
+                      "errors": "Countrycode is required"
+                      },
+                    "contactNumber": {
+                      "value": "",
+                      "title": "Contact number",
+                      "info": "In case of any notifications our agent will reach you on this number",
+                      "errors": "Contact number is required"
+                      }                     
+                   },
+                      "newGuest" : "Add New",
+                      "chooseGuest" : "Choose guest" 
+                  }'  paxlist='[{
+                        "type": "Adult",
+                        "title": "Mr",
+                        "firstName": "John",
+                        "lastName": "Doe",
+                        "email": "john@example.com",
+                        "contact": "343453453",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      },{
+                        "type": "Adult",
+                        "title": "Ms",
+                        "firstName": "Anna",
+                        "lastName": "Smith",
+                        "email": "Anna@example.com",
+                        "contact": "343453453",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      },{
+                        "type": "Adult",
+                        "title": "Mr",
+                        "firstName": "Peter",
+                        "lastName": "Doe",
+                        "email": "Peter@example.com",
+                        "contact": "343453453",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      },{
+                        "type": "Adult",
+                        "title": "Ms",
+                        "firstName": "Nikita",
+                        "lastName": "Bachhav",
+                        "email": "Nikita@example.com",
+                        "contact": "343453453",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      },{
+                        "type": "Adult",
+                        "title": "Ms",
+                        "firstName": "Anupama",
+                        "lastName": "Kamble",
+                        "email": "anupama@example.com",
+                        "contact": "343453453",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      },{
+                        "type": "Child",
+                        "title": "Ms",
+                        "firstName": "John",
+                        "lastName": "peter",
+                        "email": "john@example.com",
+                        "contact": "343453453",
+                        "countrycode": "+91",
+                        "membership": {
+                          "programName": "",
+                          "programCode": "",
+                          "number": ""
+                        }
+                      }]'
+                     product='[{
+ 	"id": "123123",
+ 	"name": "El Cortez Hotel &; Casino",
+ 	"allowLoyalty": true,
+ 	"rooms": [{
+ 		"id": "Product1_Room1",
+ 		"name": "Strip View, 1 King Bed",
+ 		"onlyLeadPaxInfo": false,
+ 		"criteria": {
+ 			"checkIn": "05/22/2017",
+ 			"checkout": "05/28/2017",
+ 			"stayDuration": 2,
+ 			"traveler": {
+ 				"adult": 2,
+ 				"child": 2
+ 			}
+ 		},
+ 		"policies": [
+ 			"FREE cancellation before 11:59PM on April 25, 2017",
+ 			"You can cancel or change your booking easily for free! Just follow the link from your confirmation email."
+ 		]
+ 	}, {
+ 		"id": "Product1_Room2",
+ 		"name": "mandarin View, 1 King Bed",
+ 		"onlyLeadPaxInfo": false,
+ 		"criteria": {
+ 			"checkIn": "06/13/2017",
+ 			"checkout": "06/18/2017",
+ 			"stayDuration": 5,
+ 			"traveler": {
+ 				"adult": 3,
+ 				"child": 1
+ 			}
+ 		},
+ 		"policies": [
+ 			"FREE cancellation before 11:59PM on April 25, 2017"
+ 		]
+ 	}, {
+ 		"id": "Product1_Room3",
+ 		"name": "Strip View, 1 King Bed",
+ 		"onlyLeadPaxInfo": false,
+ 		"criteria": {
+ 			"checkIn": "05/22/2017",
+ 			"checkout": "05/28/2017",
+ 			"stayDuration": 2,
+ 			"traveler": {
+ 				"adult": 2,
+ 				"child": 4
+ 			}
+ 		},
+ 		"policies": [
+ 			"FREE cancellation before 11:59PM on April 25, 2017",
+ 			"You can cancel or change your booking easily for free! Just follow the link from your confirmation email."
+ 		]
+ 	}, {
+ 		"id": "Product1_Room4",
+ 		"name": "Strip View, 1 King Bed",
+ 		"onlyLeadPaxInfo": false,
+ 		"criteria": {
+ 			"checkIn": "05/22/2017",
+ 			"checkout": "05/28/2017",
+ 			"stayDuration": 2,
+ 			"traveler": {
+ 				"adult": 2,
+ 				"child": 3
+ 			}
+ 		},
+ 		"policies": [
+ 			"FREE cancellation before 11:59PM on April 25, 2017",
+ 			"You can cancel or change your booking easily for free! Just follow the link from your confirmation email."
+ 		]
+ 	}]
+ },{
+ 	"id": "456456",
+ 	"name": "Shelburne NYC, an Affinia Hotel",
+ 	"allowLoyalty": false,
+ 	"rooms": [{
+ 		"id": "Product2_Room1",
+ 		"name": "Beach View, 1 King Bed",
+ 		"onlyLeadPaxInfo": false,
+ 		"criteria": {
+ 			"checkIn": "05/22/2017",
+ 			"checkout": "05/28/2017",
+ 			"stayDuration": 2,
+ 			"traveler": {
+ 				"adult": 2,
+ 				"child": 1
+ 			}
+ 		},
+ 		"policies": [
+ 			"FREE cancellation before 11:59PM on April 25, 2017",
+ 			"You can cancel or change your booking easily for free! Just follow the link from your confirmation email."
+ 		]
+ 	}, {
+ 		"id": "Product2_Room2",
+ 		"name": "mandarin View, 1 King Bed",
+ 		"onlyLeadPaxInfo": false,
+ 		"criteria": {
+ 			"checkIn": "06/13/2017",
+ 			"checkout": "06/18/2017",
+ 			"stayDuration": 5,
+ 			"traveler": {
+ 				"adult": 1,
+ 				"child": 2
+ 			}
+ 		},
+ 		"policies": [
+ 			"FREE cancellation before 11:59PM on April 25, 2017"
+ 		]
+ 	}, {
+ 		"id": "Product2_Room3",
+ 		"name": "Strip View, 1 King Bed",
+ 		"onlyLeadPaxInfo": false,
+ 		"criteria": {
+ 			"checkIn": "05/22/2017",
+ 			"checkout": "05/28/2017",
+ 			"stayDuration": 2,
+ 			"traveler": {
+ 				"adult": 1,
+ 				"child": 0
+ 			}
+ 		},
+ 		"policies": [
+ 			"FREE cancellation before 11:59PM on April 25, 2017",
+ 			"You can cancel or change your booking easily for free! Just follow the link from your confirmation email."
+ 		]
+ 	}]
+ }]'></t-guest-info>
   <br><br><br><br><br><br><br><br><br><br><br><br>
   <button id="demoButton" style="color:darkblue; background-color:darkgrey" onclick="fireIsValidMethod()">Test Button</button>
 
@@ -42,40 +330,39 @@
     document.getElementById("guestInfo").isData();
 
     var totalData = [];
-    var data = [];
-    var guestInfo = document.getElementById("guestInfo");
+    
+  //   var guestInfo = document.getElementById("guestInfo");
     var prodLen = guestInfo.product.length;
-    for (var i = 0; i < prodLen; i++) {
-      var roomLen = guestInfo.product[i].rooms.length;
-      for (var j = 0; j < roomLen; j++) {
-        data[j] = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1)).getState(event);
-      }
-      totalData[i] = data;
-    }
-    for (var i = 0; i < prodLen; i++) {
-      var roomLen = guestInfo.product[i].rooms.length;
-      for (var j = 0; j < roomLen; j++) {
-        Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1)).setState(data[j]);
-      }
-    }
+  //   // if (valid === true) {}
+  //   for (var i = 0; i < prodLen; i++) {
+  //     var data = [];
+  //     var roomLen = guestInfo.product[i].rooms.length;
+  //     for (var j = 0; j < roomLen; j++) {
+  //       data[j] = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1)).getState(event);
+  //     }
+  //     totalData[i] = data;
+  //   }
   
-    for (var i = 0; i < prodLen; i++) {
-      var roomLen = guestInfo.product[i].rooms.length;
-      for (var j = 0; j < roomLen; j++) {
-        var traveler = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1));
-        var adultCount = traveler.adultPaxCount;
-        for ( var k = 0; k < adultCount; k++){
+  // guestInfo.paxlist = totalData;
+  
+  console.log(guestInfo.paxlist);
+  for (var i = 0; i < prodLen; i++) {
+    var roomLen = guestInfo.product[i].rooms.length;
+    for (var j = 0; j < roomLen; j++) {
+      var traveler = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (i + 1) + (j + 1));
+      var adultCount = traveler.adultPaxCount;
+      for (var k = 0; k < adultCount; k++) {
         var paxInfoRoom = Polymer.dom(traveler.root).querySelector("#adultPaxInfo" + (k + 1));
         var paxInfoEmail = Polymer.dom(paxInfoRoom.root).querySelector("#adultEmail");
-        if(paxInfoEmail.invalid === true){
-        var PaxInfoEmailLabel = Polymer.dom(paxInfoRoom.root).querySelector("#adultEmailLabel");
-        PaxInfoEmailLabel.hidden = true;
-        }
+        if (paxInfoEmail.invalid === true) {
+          var PaxInfoEmailLabel = Polymer.dom(paxInfoRoom.root).querySelector("#adultEmailLabel");
+          PaxInfoEmailLabel.hidden = true;
         }
       }
     }
-        alert(valid);
-      }
+  }
+  alert(valid);
+  }
 </script>
 
 

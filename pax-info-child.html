@@ -68,6 +68,10 @@
                 width: 46%;
             }
 
+            .item[smallMobileView] #chooseGuest {
+                margin-left: -7px;
+            }
+
             .item[mobileView] #typeAndLabel {
                 margin-left: -10px;
                 width: 100%;
@@ -107,6 +111,9 @@
                 width: 46%;
             }
 
+            .item[mobileView] #chooseGuest {
+                margin-left: -7px;
+            }
 
             .item[tabletView] #typeAndLabel {
                 margin-left: -7px;
@@ -146,6 +153,9 @@
                 width: 46%;
             }
 
+            .item[tabletView] #chooseGuest {
+                margin-left: -5px;
+            }
 
             #paxTitle,
             #firstName,
@@ -217,7 +227,8 @@
                 width: 21%;
                 margin-left: 20px;
             }
-            #chooseGuest{
+
+            #chooseGuest {
                 margin-left: 12px;
             }
         </style>
@@ -238,21 +249,21 @@
                     <div id="typeSubLabel"> {{_resources.childInfo}}</div>
                 </div>
                 <div hidden$="{{showChooseGuest}}" id="chooseGuestPaxInfoDiv">
-                    <paper-dropdown-menu label="choose guest" id="chooseGuest">
+                    <paper-dropdown-menu label="{{_resources.chooseGuest}}" id="chooseGuest">
                         <paper-listbox slot="dropdown-content">
                             <template is="dom-repeat" items="{{paxList}}">
                                 <paper-item on-tap="_showPaxInfoFields">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
                             </template>
-                            <paper-item>Add New</paper-item>
+                            <paper-item on-tap="_addNewGuest">{{_resources.newGuest}}</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
                 </div>
                 <div id="paxInfoDiv{{index}}" hidden="{{showPaxInfoFields}}">
                     <div hidden$="{{showTitle}}">
-                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="paxTitle" required auto-validate error-message="{{_resources.titleError}}">
+                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="paxTitle" on-blur="_updatePaxList" required auto-validate error-message="{{_resources.titleError}}">
                             <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
                                 <template is="dom-repeat" items={{_resources.titleValues}}>
-                                    <paper-item>{{item.key}}</paper-item>
+                                    <paper-item id="titlePaperItem">{{item.key}}</paper-item>
                                 </template>
                             </paper-listbox>
                         </paper-dropdown-menu>
@@ -260,29 +271,29 @@
                     </div>
 
                     <div>
-                        <paper-input label="{{_resources.firstNameTitle}}" id="firstName" required auto-validate error-message="{{_resources.firstNameError}}"></paper-input>
+                        <paper-input label="{{_resources.firstNameTitle}}" id="firstName" on-blur="_updatePaxList" required auto-validate error-message="{{_resources.firstNameError}}"></paper-input>
                     </div>
                     <div>
-                        <paper-input label="{{_resources.lastNameTitle}}" id="lastName" required auto-validate error-message="{{_resources.lastNameError}}"></paper-input>
+                        <paper-input label="{{_resources.lastNameTitle}}" id="lastName" on-blur="_updatePaxList" required auto-validate error-message="{{_resources.lastNameError}}"></paper-input>
                     </div>
-
-                    <!--</div>-->
-                    <!--<div id="inputForm2">-->
                     <div id="emailAndLabel">
-                        <paper-input label="{{_resources.emailTitle}}" id="email" hidden$={{showEmailAddress}} required auto-validate error-message="{{_resources.emailError}}"></paper-input>
+                        <paper-input label="{{_resources.emailTitle}}" on-blur="_updatePaxList" id="email" hidden$={{showEmailAddress}} required
+                            auto-validate error-message="{{_resources.emailError}}"></paper-input>
                         <div id="emailLabel" hidden$="{{showEmailAddress}}">{{_resources.emailInfo}}</div>
                     </div>
                     <div hidden$={{showContactNumber}}>
-                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="countryCode" required auto-validate error-message="{{_resources.countryCodeError}}">
-                            <paper-listbox slot="dropdown-content">
+                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="countryCode" on-blur="_updatePaxList" required auto-validate error-message="{{_resources.countryCodeError}}">
+                            <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
                                 <template is="dom-repeat" items={{countryCodeValues}}>
                                     <paper-item>{{item.key}}</paper-item>
                                 </template>
                             </paper-listbox>
                         </paper-dropdown-menu>
+                        <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
                     </div>
                     <div>
-                        <paper-input label="{{_resources.contactNumberTitle}}" id="contactNo" hidden$={{showContactNumber}} required auto-validate error-message="{{_resources.contactNumberError}}"></paper-input>
+                        <paper-input label="{{_resources.contactNumberTitle}}" on-blur="_updatePaxList" id="contactNo" hidden$={{showContactNumber}}
+                            required auto-validate error-message="{{_resources.contactNumberError}}"></paper-input>
                     </div>
                 </div>
             </form>
@@ -336,6 +347,10 @@
                         type: String,
                         value: '0'
                     },
+                    countryCodeValue: {
+                        type: String,
+                        value: '-1'
+                    },
                     allowOption: {
                         type: Object,
                         value: function () {
@@ -366,7 +381,7 @@
                                 adultTitle: 'Adult',
                                 adultInfo: '(12+ years)',
                                 childTitle: 'Child',
-                                childInfo: '(upto 7 years)',
+                                childInfo: '(upto 11 years)',
                                 titleValues: [{
                                         "key": "Mr"
                                     },
@@ -389,11 +404,11 @@
                                 emailError: 'Please enter a valid email address',
                                 countryCodeValues: [{
                                         "key": "India +91",
-                                        "value": "91"
+                                        "value": "+91"
                                     },
                                     {
                                         "key": "USA +1",
-                                        "value": "1"
+                                        "value": "+1"
                                     }
                                 ],
                                 countryCodeTitle: 'Country code',
@@ -402,6 +417,8 @@
                                 contactNumberTitle: 'Contact number',
                                 contactNumberInfo: 'In case of any notifications our agent will reach you on this number',
                                 contactNumberError: 'Contact number is required',
+                                newGuest: "New Guest",
+                                chooseGuest: "Choose Guest",
                             }
                         },
                     },
@@ -416,7 +433,7 @@
                             "rooms": []
                         }
                     },
-                   
+
                     showTitle: {
                         type: Boolean,
                         value: true
@@ -431,6 +448,43 @@
                     },
 
                 }
+            }
+             _updatePaxList() {
+                var adultData = {};
+                if (this.paxListAvailable === true) {
+                    var paxInfo = this.travelerInfo.getState();
+                    this.travelerInfo.guestInfo.paxlist = paxInfo;
+                    // this.dispatchEvent(new CustomEvent('custom-child-event', { detail: { value: childData } }));
+                }
+                if (this.shadowRoot.querySelector("#contactNo").focused) {
+                    this._showInvalidContact();
+                }
+                if (this.shadowRoot.querySelector("#email").focused) {
+                    this._showInvalidEmail();
+                }
+
+            }
+            _addNewGuest() {
+                this.$.firstName.value = undefined;
+                this.$.lastName.value = undefined;
+                this.$.paxTitle.value = '';
+                this.$.email.value = undefined;
+                this.$.countryCode.value = '';
+                this.$.contactNo.value = undefined;
+                this.$.firstName.invalid = false;
+                this.$.lastName.invalid = false;
+                this.$.paxTitle.invalid = false;
+                this.$.email.invalid = false;
+                this.$.countryCode.invalid = false;
+                this.$.contactNo.invalid = false;
+                this.showPaxInfoFields = false;
+                this.showChooseGuest = true;
+                this.showPaxInfoFields = false;
+                this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
+                    "closeIconChooseGuest");
+                this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
+                    "closeIconAdult");
+                // this.isValidPaxInfo();
             }
             _showAllowFields() {
                 var check = this.option.allowContactNumber;
@@ -448,27 +502,39 @@
             }
             _showPaxInfoFields(e) {
                 var paxIndex = e.model.index;
-                var paxListArray = this.paxList;
-                var divPax = this.$.form.querySelector("#paxInfoDiv" + (this.index));
-                var adultFirstNameData = divPax.querySelector("#firstName");
-                var adultLastNameData = divPax.querySelector("#lastName");
-                var adultTitleData = divPax.querySelector("#paxTitle");
-                var adultEmailData = divPax.querySelector("#email");
-                var adultCountryCodeData = divPax.querySelector("#countryCode");
-                var adultContactNumberData = divPax.querySelector("#contactNo");
+                var flag = this.indexArrayChild.indexOf(paxIndex) > -1;
+                if (flag == false) {
+                    this.indexArrayChild.push(paxIndex);
+                    var paxListArray = this.paxList;
+                    var divPax = this.$.form.querySelector("#paxInfoDiv" + (this.index));
+                    var adultFirstNameData = divPax.querySelector("#firstName");
+                    var adultLastNameData = divPax.querySelector("#lastName");
+                    var adultTitleData = divPax.querySelector("#paxTitle");
+                    var adultEmailData = divPax.querySelector("#email");
+                    var adultCountryCodeData = divPax.querySelector("#countryCode");
+                    var adultContactNumberData = divPax.querySelector("#contactNo");
 
-                adultFirstNameData.value = paxListArray[paxIndex].firstName;
-                adultLastNameData.value = paxListArray[paxIndex].lastName;
-                adultTitleData.value = paxListArray[paxIndex].title;
-                adultEmailData.value = paxListArray[paxIndex].email;
-                adultCountryCodeData.value = paxListArray[paxIndex].countrycode;
-                adultContactNumberData.value = paxListArray[paxIndex].contact;
+                    adultFirstNameData.value = paxListArray[paxIndex].firstName;
+                    adultLastNameData.value = paxListArray[paxIndex].lastName;                    
+                    var titleIndex = this._resources.titleValues.findIndex(x => x.key==paxListArray[paxIndex].title);
+                    adultTitleData.contentElement.selected = titleIndex;
+                    adultEmailData.value = paxListArray[paxIndex].email;
+                     var countryCodeIndex = this._resources.countryCodeValues.findIndex(x => x.value==paxListArray[paxIndex].countrycode);
+                    adultCountryCodeData.contentElement.selected = countryCodeIndex;
+                    adultContactNumberData.value = paxListArray[paxIndex].contact;
 
-                this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove("closeIconChooseGuest");
-                this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add("closeIconChild");
+                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
+                        "closeIconChooseGuest");
+                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
+                        "closeIconChild");
 
-                this.showChooseGuest = true;
-                this.showPaxInfoFields = false;
+                    this.showChooseGuest = true;
+                    this.showPaxInfoFields = false;
+                } else {
+                    this.shadowRoot.querySelector("#chooseGuest").invalid = true;
+                    this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
+                }
+
             }
             isValidPaxInfoChild() {
                 var childFirstNameValidation = this.$.firstName;
@@ -719,16 +785,44 @@
                         this._resources.contactNumberError = this.resources.fields.contactNumber.errors;
                     }
                 }
+                if (this.resources.newGuest) {
+                    this._resources.newGuest = this.resources.newGuest;
+                }
+                if (this.resources.chooseGuest) {
+                    this._resources.chooseGuest = this.resources.chooseGuest;
+                }
+            }
+            _showInvalidEmail() {
+                var email = this.shadowRoot.querySelector("#email").value;
+                var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
+                if (!filter.test(email)) {
+                    var emailElement = this.shadowRoot.querySelector("#email")
+                    emailElement.invalid = true;
+                    if (emailElement.invalid === true) {
+                        var PaxInfoEmailLabel = this.shadowRoot.querySelector("#emailLabel");
+                        PaxInfoEmailLabel.hidden = true;
+                    }
+                }
+            }
+            _showInvalidContact() {
+                var contactNumber = this.shadowRoot.querySelector("#contactNo").value;
+                var filter = /^\[0-9]+$/;
+                if (!filter.test(contactNumber)) {
+                    var contactNoElement = this.shadowRoot.querySelector("#contactNo");
+                    contactNoElement.invalid = true;
+                }
             }
             ready() {
                 super.ready();
-                if(this.roomNumber === 1){
+                if (this.roomNumber === 1 && this.paxList.length === 0) {
                     this.showChooseGuest = true;
                     this.showPaxInfoFields = false;
                 }
                 if (this.showChooseGuest === false) {
-                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove("closeIconChild");
-                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add("closeIconChooseGuest");
+                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
+                        "closeIconChild");
+                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
+                        "closeIconChooseGuest");
                 }
                 this._defaultOptionValue();
                 this._defaultResourcesValue();

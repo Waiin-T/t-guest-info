@@ -31,10 +31,7 @@
         margin-left: -5px;
       }
 
-      .item[smallMobileView] #buttonRemove {
-        margin-left: 40px;
-        margin-top: 20px;
-      }
+
 
       .item[smallMobileView] #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
@@ -58,10 +55,6 @@
         margin-left: -5px;
       }
 
-      .item[mobileView] #buttonRemove {
-        margin-left: 55px;
-        margin-top: 6%;
-      }
 
       .item[mobileView] #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
@@ -84,10 +77,7 @@
         margin-left: 10px;
       }
 
-      .item[tabletView] #buttonRemove {
-        margin-top: 5%;
-        margin-left: 20px;
-      }
+
 
       .guestName {
         width: 23%;
@@ -104,13 +94,7 @@
         margin-left: 25px;
       }
 
-      #buttonRemove {
-        margin-top: 4%;
-        margin-left: 65px;
-        width: 60px;
-        color: var(--color-for-button-labels);
-        font-weight: 450;
-      }
+
 
       .guestName,
       .programName,
@@ -156,9 +140,7 @@
       <div>
         <paper-input label="Program number" id="programNumber{{index}}" class="programNumber"></paper-input>
       </div>
-      <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden(1,1)]]>
-        <paper-button id="buttonRemove" on-tap="_deleteProgramForOtherGuest">Remove</paper-button>
-      </div>
+
     </div>
   </template>
 
@@ -198,10 +180,7 @@
             type: Boolean,
             value: false
           },
-          _isRemoveButtonHidden: {
-            type: Boolean,
-            computed: '_lte(adultPaxCountArray.length , 1)'
-          },
+          
           paxList: {
             type: Object,
           },
@@ -214,17 +193,9 @@
           },
         };
       }
-      _lte(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
-        return adultPaxCountArrayLength <= hiddenButtonAdultNumber;
-      }
-      // _deleteProgramForOtherGuest() {
-      //   this.splice('loyaltyPrograms', 1, 1);
-      //   this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
-      // }
-      _increaseIndex(index) {
-        var calIndex = index + 1;
-        return calIndex;
-      }
+
+      
+     
     }
 
     window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);
