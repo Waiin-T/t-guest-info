@@ -15,7 +15,7 @@
                 --paper-input-container-underline-focus: #4CB050;
                 --paper-input-container-focus-color: #4CB050;
                 --paper-input-container-label-focus: lightgray;
-                 /* --paper-input-container-invalid-color: #4CB050;     */
+                /* --paper-input-container-invalid-color: #4CB050;     */
             }
 
             .item[smallMobileView] #typeAndLabel {
@@ -294,7 +294,7 @@
 
                     <div>
                         <paper-input label="{{_resources.firstNameTitle}}" on-blur="_updatePaxList" class="inputAdultCount" id="adultFirstName" required
-                             error-message="{{_resources.firstNameError}}"></paper-input>
+                            error-message="{{_resources.firstNameError}}"></paper-input>
                     </div>
                     <div>
                         <paper-input label="{{_resources.lastNameTitle}}" on-blur="_updatePaxList" id="adultLastName" required error-message="{{_resources.lastNameError}}"></paper-input>
@@ -304,12 +304,11 @@
                     <!--<div id="inputForm2">-->
                     <div id="adultEmailAndLabel">
                         <paper-input label="{{_resources.emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{showEmailAddress}}"
-                            required  error-message="{{_resources.emailError}}" on-blur="_updatePaxList"></paper-input>
+                            required error-message="{{_resources.emailError}}" on-blur="_updatePaxList"></paper-input>
                         <div id="adultEmailLabel" hidden$="{{showEmailAddressInfo}}">{{_resources.emailInfo}}</div>
                     </div>
                     <div hidden$="{{showContactNumber}}">
-                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="adultCountryCode" on-blur="_updatePaxList" required 
-                            error-message="{{_resources.countryCodeError}}">
+                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="adultCountryCode" on-blur="_updatePaxList" required error-message="{{_resources.countryCodeError}}">
                             <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
                                 <template is="dom-repeat" items={{_resources.countryCodeValues}}>
                                     <paper-item value="{{item.value}}">{{item.key}}</paper-item>
@@ -505,10 +504,20 @@
 
             _updatePaxList() {
                 var adultData = {};
+                var adultFirstNameValidation = this.$.adultFirstName;
+                var adultLastNameValiadtion = this.$.adultLastName;
+                var adultTitleValidation = this.$.adultPaxTitle;
+                var adultEmailValidation = this.$.adultEmail;
+                var adultCountryCodeValidation = this.$.adultCountryCode;
+                var adultContactNumberValidation = this.$.adultContactNo;
                 if (this.paxListAvailable === true) {
-                    var paxInfo = this.travelerInfo.getState();
-                    this.travelerInfo.guestInfo.paxlist = paxInfo;
-                    // this.dispatchEvent(new CustomEvent('custom-child-event', { detail: { value: childData } }));
+                    if (adultFirstNameValidation.value != undefined && adultLastNameValiadtion.value !=
+                        undefined &&
+                        adultEmailValidation.value != undefined && adultContactNumberValidation.value !=
+                        undefined) {
+                        var paxInfo = this.travelerInfo.getState();
+                        this.travelerInfo.guestInfo.paxlist = paxInfo;
+                    }
                 }
                 if (this.shadowRoot.querySelector("#adultContactNo").focused) {
                     this._showInvalidContact();
@@ -924,13 +933,16 @@
             _showInvalidEmail() {
                 var email = this.shadowRoot.querySelector("#adultEmail").value;
                 var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
-                if (!filter.test(email)) {
-                    var emailElement = this.shadowRoot.querySelector("#adultEmail")
+                 var emailElement = this.shadowRoot.querySelector("#adultEmail");
+                if (!filter.test(email)) {                   
                     emailElement.invalid = true;
                     if (emailElement.invalid === true) {
                         var PaxInfoEmailLabel = this.shadowRoot.querySelector("#adultEmailLabel");
                         PaxInfoEmailLabel.hidden = true;
                     }
+                }
+                else{
+                    emailElement.invalid = false;
                 }
             }
             _showInvalidContact() {

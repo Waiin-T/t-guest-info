@@ -40,7 +40,7 @@
 
             .item[smallMobileView] .closeIconAdult {
                 margin-top: 4%;
-                margin-left: -16px;
+                margin-left: -21px;
                 color: #A8A8A8;
             }
 
@@ -543,7 +543,7 @@
                 var closeIconchildVar = this.shadowRoot.querySelector("#closeIconChild" + (e.model.index +
                     1))
                 closeIconchildVar.classList.add("closeIconChooseGuest");
-                closeIconchildVar.classList.remove("closeIconAdult");
+                closeIconchildVar.classList.remove("closeIconChild");
                 var paxInfo = this.shadowRoot.querySelector("#childPaxInfo" + (e.model.index + 1));
                 paxInfo.shadowRoot.querySelector("#chooseGuest").contentElement.selected = -1;
             }

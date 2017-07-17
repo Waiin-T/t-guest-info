@@ -194,7 +194,7 @@
 
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} Adults, {{room.criteria.traveler.child}} Child" policy-List="{{room.policies}}"
-            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}"
+            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{_updatePaxList(paxlist)}}" option="[[option]]" resources="{{resources}}"
             adult-pax-count="[[room.criteria.traveler.adult]]" child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}"
             only-lead-pax-info="{{room.onlyLeadPaxInfo}}" pax-list-available="{{paxlistAvailable}}">
           </t-traveler-info>
@@ -207,7 +207,7 @@
             <div id="tLoyaltyProgram">
               <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}"></t-loyalty-program>
               <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
-                <paper-button id="buttonRemove" on-tap="_deleteProgramForOtherGuest">Remove</paper-button>
+                <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram">Remove</paper-button>
               </div>
             </div>
           </template>
@@ -317,13 +317,14 @@
       } //End of Properties.
 
       _updatePaxList(paxlist) {
-        return `${paxlist}`
+        console.log(paxlist);
+        return paxlist;
       }
       _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
         return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
       }
-      _deleteProgramForOtherGuest() {
-        this.splice('loyaltyPrograms', 1, 1);
+      _deleteLoyaltyProgram(e) {
+        this.splice('loyaltyPrograms', e.model.index, 1);
         this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
       }
     
