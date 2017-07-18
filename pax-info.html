@@ -10,12 +10,14 @@
                 --paper-input-container-focus-color: #4CB050;
                 --paper-input-container-label-focus: lightgray;
             }
-
+            paper-item {
+                cursor: default;
+            }
             paper-input {
                 --paper-input-container-underline-focus: #4CB050;
                 --paper-input-container-focus-color: #4CB050;
                 --paper-input-container-label-focus: lightgray;
-                /* --paper-input-container-invalid-color: #4CB050;     */
+                 /* --paper-input-container-invalid-color: #4CB050;      */
             }
 
             .item[smallMobileView] #typeAndLabel {
@@ -501,24 +503,40 @@
                     },
                 }
             }
-
+            _showPaxList(){
+                 var list = this._updatePaxList();
+                 this.paxList.push(list);
+            //    return this.travelerInfo.guestInfo.paxlist;
+            }
             _updatePaxList() {
-                var adultData = {};
-                var adultFirstNameValidation = this.$.adultFirstName;
-                var adultLastNameValiadtion = this.$.adultLastName;
-                var adultTitleValidation = this.$.adultPaxTitle;
-                var adultEmailValidation = this.$.adultEmail;
-                var adultCountryCodeValidation = this.$.adultCountryCode;
-                var adultContactNumberValidation = this.$.adultContactNo;
-                if (this.paxListAvailable === true) {
-                    if (adultFirstNameValidation.value != undefined && adultLastNameValiadtion.value !=
-                        undefined &&
-                        adultEmailValidation.value != undefined && adultContactNumberValidation.value !=
-                        undefined) {
-                        var paxInfo = this.travelerInfo.getState();
-                        this.travelerInfo.guestInfo.paxlist = paxInfo;
-                    }
-                }
+                // var adultData = {};
+                // var adultFirstNameValidation = this.$.adultFirstName;
+                // var adultLastNameValiadtion = this.$.adultLastName;
+                // var adultTitleValidation = this.$.adultPaxTitle;
+                // var adultEmailValidation = this.$.adultEmail;
+                // var adultCountryCodeValidation = this.$.adultCountryCode;
+                // var adultContactNumberValidation = this.$.adultContactNo;
+                // if (this.paxListAvailable === true) {
+                //     if (adultFirstNameValidation.value != undefined && adultLastNameValiadtion.value !=
+                //         undefined) {
+                //         var paxInfo = this.travelerInfo.getState();
+                //         this.travelerInfo.guestInfo.paxlist.push(paxInfo);
+                //         this.paxList.push(paxInfo);
+                //         // return paxInfo;
+                //     }
+                // }
+                // if(this.shadowRoot.querySelector()
+                // if(this.shadowRoot.querySelector("#adultFirstName").focused || this.shadowRoot.querySelector("#adultLastName").focused && 
+                // this.shadowRoot.querySelector("#adultFirstName").value != undefined || this.shadowRoot.querySelector("#adultLastName").value != undefined){
+                //     this.travelerInfo.getState();
+                // }
+                if(this.shadowRoot.querySelector("#adultFirstName").focused){
+                    this.shadowRoot.querySelector("#adultFirstName").invalid = false;
+                } 
+                if(this.shadowRoot.querySelector("#adultLastName").focused){
+                    this.shadowRoot.querySelector("#adultLastName").invalid = false;
+                }   
+
                 if (this.shadowRoot.querySelector("#adultContactNo").focused) {
                     this._showInvalidContact();
                 }
@@ -606,7 +624,7 @@
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
                 if (flag == false) {
                     this.indexArray.push(paxIndex);
-                    var paxListArray = this.paxList;
+                    var paxListArray = this.paxList;                   
                     var divPax = this.$.form.querySelector(("#paxInfoDiv" + (this.index)));
                     var adultFirstNameData = divPax.querySelector("#adultFirstName");
                     var adultLastNameData = divPax.querySelector("#adultLastName");
@@ -631,6 +649,9 @@
 
                     this.showChooseGuest = true;
                     this.showPaxInfoFields = false;
+                    // this.shadowRoot.querySelector("#adultFirstName").focus();
+                    // this.shadowRoot.querySelector("#adultLastName").focus();
+                    
                 } else {
                     this.shadowRoot.querySelector("#chooseGuest").invalid = true;
                     this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
@@ -952,6 +973,9 @@
                     var contactNoElement = this.shadowRoot.querySelector("#adultContactNo");
                     contactNoElement.invalid = true;
                     contactNoElement.errorMessage = "Contact Number is invalid"
+                }
+                else{
+                this.shadowRoot.querySelector("#adultContactNo").invalid = false;
                 }
             }
             ready() {

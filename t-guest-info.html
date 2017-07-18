@@ -194,7 +194,7 @@
 
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} Adults, {{room.criteria.traveler.child}} Child" policy-List="{{room.policies}}"
-            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{_updatePaxList(paxlist)}}" option="[[option]]" resources="{{resources}}"
+            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}"
             adult-pax-count="[[room.criteria.traveler.adult]]" child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}"
             only-lead-pax-info="{{room.onlyLeadPaxInfo}}" pax-list-available="{{paxlistAvailable}}">
           </t-traveler-info>
@@ -205,7 +205,7 @@
           <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
           <template is="dom-repeat" items="{{loyaltyPrograms}}">
             <div id="tLoyaltyProgram">
-              <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}"></t-loyalty-program>
+              <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
               <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
                 <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram">Remove</paper-button>
               </div>
@@ -312,22 +312,32 @@
             type: Boolean,
             value: false
           },
-
         };
       } //End of Properties.
 
-      _updatePaxList(paxlist) {
-        console.log(paxlist);
-        return paxlist;
-      }
+      // _updatePaxList(paxlist) {
+      //   console.log(paxlist);        
+      //   return paxlist;
+      // }
       _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
         return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
       }
-      _deleteLoyaltyProgram(e) {
-        this.splice('loyaltyPrograms', e.model.index, 1);
-        this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
+      _addProgramForOtherGuest(loyaltyProgram) {
+        this._loyaltyProgramData();
+        // if(this.loyaltyPrograms.length < this.paxlist.length){
+        this.push('loyaltyPrograms', {loyaltyProgram: "" });
+        // }
+        // if(this.loyaltyPrograms.length === this.paxlist.length)
+        // {
+        //   this.shadowRoot.querySelector("#addProgramForOtherGuestButton").style.visibility = 'hidden';
+        // }
+        // console.log(this.loyaltyPrograms);
       }
-    
+      _deleteLoyaltyProgram(loyaltyProgram) {
+        var index = this.loyaltyPrograms.indexOf(loyaltyProgram);
+        this.splice('loyaltyPrograms', index, 1,);
+        this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
+      }    
       _increaseIndex(index) {
         var calIndex = index + 1;
         return calIndex;
@@ -364,6 +374,7 @@
             productPax.ProductId = this.product[i].id;
             productPax.subProductId = this.product[i].rooms[j].id;
             data[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).getState(event);
+            // console.log(data[j]);
             productPax.paxList = data[j];
             var productPax1 = productPax;
             productPaxArray[j] = productPax1;
@@ -380,7 +391,7 @@
             loyaltyTotalData[i] = this._loyaltyProgramData();
           }
         }
-        console.log(loyaltyTotalData);
+        // console.log(loyaltyTotalData);
         return totalData;
       }
       _loyaltyProgramData() {
@@ -394,17 +405,12 @@
           loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
           loyaltyProgramArrayData[i] = loyaltyProgramArray;
         }
-        console.log(loyaltyProgramArrayData);
+        // console.log(loyaltyProgramArrayData);
         loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
-        console.log(loyaltyProgramObject);
+        // console.log(loyaltyProgramObject);
         return loyaltyProgramArrayData;
       }
-      _addProgramForOtherGuest() {
-        this.push('loyaltyPrograms', {
-          loyaltyProgram: ""
-        });
-        console.log(this.loyaltyPrograms);
-      }
+      
       ready() {
         super.ready();
         this.loyaltyPrograms = [];
