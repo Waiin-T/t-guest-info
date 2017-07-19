@@ -263,7 +263,7 @@
                 </div>
                 <div id="paxInfoDiv{{index}}" hidden="{{showPaxInfoFields}}">
                     <div hidden$="{{showTitle}}">
-                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="paxTitle" on-blur="_updatePaxList" required auto-validate error-message="{{_resources.titleError}}">
+                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="paxTitle" on-blur="_updatePaxList" required auto-validate >
                             <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
                                 <template is="dom-repeat" items={{_resources.titleValues}}>
                                     <paper-item id="titlePaperItem">{{item.key}}</paper-item>
@@ -285,7 +285,7 @@
                         <div id="emailLabel" hidden$="{{showEmailAddress}}">{{_resources.emailInfo}}</div>
                     </div>
                     <div hidden$={{showContactNumber}}>
-                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="countryCode" on-blur="_updatePaxList" required auto-validate error-message="{{_resources.countryCodeError}}">
+                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="countryCode" on-blur="_updatePaxList" required auto-validate >
                             <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
                                 <template is="dom-repeat" items={{countryCodeValues}}>
                                     <paper-item>{{item.key}}</paper-item>

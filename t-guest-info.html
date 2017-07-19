@@ -17,6 +17,8 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
+ <!-- <link rel="import" href="../neon-animation/web-animations.html"> -->
+
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-button/paper-button.html">
@@ -194,9 +196,9 @@
 
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} Adults, {{room.criteria.traveler.child}} Child" policy-List="{{room.policies}}"
-            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{_updatePaxList(paxlist)}}" option="[[option]]" resources="{{resources}}"
-            adult-pax-count="[[room.criteria.traveler.adult]]" child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}"
-            only-lead-pax-info="{{room.onlyLeadPaxInfo}}" pax-list-available="{{paxlistAvailable}}">
+            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{_updatePaxList(paxlist)}}" option="[[option]]"
+            resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]" child-pax-count="[[room.criteria.traveler.child]]"
+            guest-info="{{guestInfo}}" only-lead-pax-info="{{room.onlyLeadPaxInfo}}" pax-list-available="{{paxlistAvailable}}">
           </t-traveler-info>
           <br>
         </template>
@@ -205,7 +207,7 @@
           <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
           <template is="dom-repeat" items="{{loyaltyPrograms}}">
             <div id="tLoyaltyProgram">
-              <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
+              <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(index)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
               <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
                 <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram">Remove</paper-button>
               </div>
@@ -241,7 +243,16 @@
       static get properties() {
         return {
           guestInfo: Object,
-          loyaltyPrograms: Array,
+          loyaltyPrograms: {
+            type: Array,
+            notify: true,
+            value: []
+          },
+          loyaltyProgramIds: {
+
+            type: Array,
+            value: []
+          },
           _isRemoveButtonHidden: {
             type: Boolean,
             computed: '_lte(loyaltyPrograms.length , 1)'
@@ -316,7 +327,7 @@
       } //End of Properties.
 
       _updatePaxList(paxlist) {
-        console.log(paxlist);        
+        // console.log(paxlist);
         return paxlist;
       }
       _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
@@ -325,8 +336,16 @@
       _addProgramForOtherGuest(loyaltyProgram) {
         // this._loyaltyProgramData();
         // if(this.loyaltyPrograms.length < this.paxlist.length){
-        this.push('loyaltyPrograms', {loyaltyProgram: "" });
-        this.push('loyaltyProgramsIds', {loyaltyProgramId: ""});
+        var copy = Object.assign({}, {
+          loyaltyProgram: ""
+        })
+        var ind = this.push('loyaltyPrograms', copy);
+        setTimeout(() => {
+          var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
+          // console.log(this.loyaltyProgramIds);
+          this.push('loyaltyProgramIds', loyaltyProgramID)
+        }, 1);
+
         // }
         // if(this.loyaltyPrograms.length === this.paxlist.length)
         // {
@@ -334,96 +353,115 @@
         // }
         // console.log(this.loyaltyPrograms);
       }
-      _deleteLoyaltyProgram(loyaltyProgram) {
-        var index = this.loyaltyPrograms.indexOf(loyaltyProgram);
-        this.splice('loyaltyPrograms', index, 1,);
-        this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
-      }    
-      _increaseIndex(index) {
-        var calIndex = index + 1;
-        return calIndex;
-      }
-      isValidGuest() {
-        var validData = [];
-        var valid;
-        var productLength = this.product.length;
-        for (var i = 0; i < productLength; i++) {
-          var roomsLength = this.product[i].rooms.length;
-          for (var j = 0; j < roomsLength; j++) {
-            validData[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).isValid();
-          }
-          for (var j = 0; j < roomsLength; j++) {
-            if (validData[j] === false) {
-              valid = false;
-            } else {
-              valid = true;
-            }
-          }
-        }
-        return valid;
-      }
-      isData() {
-        var totalData = [];
-        var totalProductPaxArray = [];
-        var prodLen = this.product.length;
-        for (var i = 0; i < prodLen; i++) {
-          var data = [];
-          var productPaxArray = [];
-          var roomLen = this.product[i].rooms.length;
-          for (var j = 0; j < roomLen; j++) {
-            var productPax = {};
-            productPax.ProductId = this.product[i].id;
-            productPax.subProductId = this.product[i].rooms[j].id;
-            data[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).getState(event);
-            // console.log(data[j]);
-            productPax.paxList = data[j];
-            var productPax1 = productPax;
-            productPaxArray[j] = productPax1;
-          }
-          totalProductPaxArray[i] = productPaxArray;
-          totalData[i] = data;
-        };
-        console.log(totalProductPaxArray);
-        console.log(totalData);
+      _deleteLoyaltyProgram(e) {
+        var index = e.model.index;
+        var lp = this.loyaltyPrograms[index];
+        // this.notifyPath('list.' + e.model.index + 1, 'changed');
 
-        var loyaltyTotalData = [];
-        for (var i = 0; i < prodLen; i++) {
-          if (this.product[i].allowLoyalty === true) {
-            loyaltyTotalData[i] = this._loyaltyProgramData();
+        // this.no('loyaltyProgramIds', index, 1);       
+
+        // var path = this.notifyPath(this.loyaltyPrograms[index]);
+        // console.log(path);
+
+        this.splice('loyaltyPrograms', index, 1, );
+
+        // if (this.loyaltyPrograms.length > 0)
+        //   this.loyaltyPrograms[this.loyaltyPrograms.length - 1].name = "Last";
+        // this.notifyPath("loyaltyPrograms." + (this.loyaltyPrograms.length - 1) + ".name", this.loyaltyPrograms[this.loyaltyPrograms.length - 1].name);
+      
+
+
+      this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
+    }
+    _increaseIndex(index) {
+      var calIndex = index + 1;
+      return calIndex;
+    }
+    isValidGuest() {
+      var validData = [];
+      var valid;
+      var productLength = this.product.length;
+      for (var i = 0; i < productLength; i++) {
+        var roomsLength = this.product[i].rooms.length;
+        for (var j = 0; j < roomsLength; j++) {
+          validData[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).isValid();
+        }
+        for (var j = 0; j < roomsLength; j++) {
+          if (validData[j] === false) {
+            valid = false;
+          } else {
+            valid = true;
           }
         }
-        // console.log(loyaltyTotalData);
-        return totalData;
       }
-      _loyaltyProgramData() {
-        var loyaltyProgramObject = {};
-        var loyaltyProgramArrayData = [];
-        for (var i = 0; i < this.loyaltyPrograms.length; i++) {
-          var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (i + 1));
-          var loyaltyProgramArray = [];
-          loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
-          loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
-          loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
-          loyaltyProgramArrayData[i] = loyaltyProgramArray;
+      return valid;
+    }
+    isData() {
+      var totalData = [];
+      var totalProductPaxArray = [];
+      var prodLen = this.product.length;
+      for (var i = 0; i < prodLen; i++) {
+        var data = [];
+        var productPaxArray = [];
+        var roomLen = this.product[i].rooms.length;
+        for (var j = 0; j < roomLen; j++) {
+          var productPax = {};
+          productPax.ProductId = this.product[i].id;
+          productPax.subProductId = this.product[i].rooms[j].id;
+          data[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).getState(event);
+          // console.log(data[j]);
+          productPax.paxList = data[j];
+          var productPax1 = productPax;
+          productPaxArray[j] = productPax1;
         }
-        // console.log(loyaltyProgramArrayData);
-        loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
-        // console.log(loyaltyProgramObject);
-        return loyaltyProgramArrayData;
-      }
-      
-      ready() {
-        super.ready();
-        this.loyaltyPrograms = [];
-        this.push('loyaltyPrograms', {
-          loyaltyProgram: ""
-        });
-        if (this.paxlist.length === 0) {
-          this.paxlistAvailable = true;
-          this.paxList = [];
+        totalProductPaxArray[i] = productPaxArray;
+        totalData[i] = data;
+      };
+      console.log(totalProductPaxArray);
+      console.log(totalData);
+
+      var loyaltyTotalData = [];
+      for (var i = 0; i < prodLen; i++) {
+        if (this.product[i].allowLoyalty === true) {
+          loyaltyTotalData[i] = this._loyaltyProgramData();
         }
-        this.guestInfo = this;
       }
+      // console.log(loyaltyTotalData);
+      return totalData;
+    }
+    _loyaltyProgramData() {
+      var loyaltyProgramObject = {};
+      var loyaltyProgramArrayData = [];
+      for (var i = 0; i < this.loyaltyPrograms.length; i++) {
+        var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (i + 1));
+        var loyaltyProgramArray = [];
+        loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
+        loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
+        loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
+        loyaltyProgramArrayData[i] = loyaltyProgramArray;
+      }
+      // console.log(loyaltyProgramArrayData);
+      loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
+      // console.log(loyaltyProgramObject);
+      return loyaltyProgramArrayData;
+    }
+
+    ready() {
+      super.ready();
+      this.loyaltyPrograms = [];
+      var ind = this.push('loyaltyPrograms', {
+        loyaltyProgram: ""
+      });
+      setTimeout(() => {
+        var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
+        this.push('loyaltyProgramIds', loyaltyProgramID)
+      }, 1);
+      if (this.paxlist.length === 0) {
+        this.paxlistAvailable = true;
+        this.paxList = [];
+      }
+      this.guestInfo = this;
+    }
     }
 
     window.customElements.define(TGuestInfo.is, TGuestInfo);

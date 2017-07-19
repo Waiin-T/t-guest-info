@@ -121,21 +121,23 @@
 
       <div>
         <paper-dropdown-menu label="Guest name" id="guestName{{index}}" class="guestName">
-          <paper-listbox slot="dropdown-content">
+          <paper-listbox slot="dropdown-content" selected="[[guestNameValue]]">
             <template is="dom-repeat" items={{paxList}}>
               <paper-item>{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
+          <input is="iron-input" type="hidden" bind-value="[[guestNameValue]]">
       </div>
       <div>
         <paper-dropdown-menu label="Program name" id="programName{{index}}" class="programName">
-          <paper-listbox slot="dropdown-content">
+          <paper-listbox slot="dropdown-content"  selected="[[programNameValue]]">
             <template is="dom-repeat" items={{resource.fields.title.values}}>
             <paper-item>abc</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
+        <input is="iron-input" type="hidden" bind-value="[[programNameValue]]">
       </div>
       <div>
         <paper-input label="Program number" id="programNumber{{index}}" class="programNumber" value="{{_programNumber()}}"></paper-input>
@@ -160,6 +162,12 @@
       }
       static get properties() {
         return {
+          guestNameValue:{
+            type: String
+          },
+          programNameValue: {
+            type:String
+          },
           smallMobileView: {
             type: Boolean,
             value: false

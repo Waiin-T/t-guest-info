@@ -280,7 +280,7 @@
                     </div>
                 </template>
 
-                 <template is="dom-repeat" items="{{childPaxCountArray}}">
+                  <template is="dom-repeat" items="{{childPaxCountArray}}">
                     <div id="paxInfoTemp">
                         <pax-info id="childPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{paxListChild}}" option="[[option]]"
                             resources="{{resources}}" index-array="{{indexArrayChild}}" type="{{childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
@@ -289,7 +289,7 @@
                             <paper-icon-button icon="close" id="closeIconChild{{_increaseIndex(index)}}" class="closeIconChild" on-tap="_closePaxChildInfo"></paper-icon-button>
                         </div>
                     </div>
-                </template> 
+                </template>  
             </div>
             <!--<div id="extraSpace">
             </div>-->
