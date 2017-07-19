@@ -591,7 +591,7 @@
             _closePaxChildInfo(e) {
                 var childPaxInfoVar = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (e.model
                     .index + 1));
-                var firstName = childPaxInfoVar.shadowRoot.querySelector("#firstName").value;
+                var firstName = childPaxInfoVar.shadowRoot.querySelector("#adultFirstName").value;
                 var paxIndex = this.paxList.findIndex(x => x.firstName == firstName);
                 var indexOfPax = this.indexArrayChild.indexOf(paxIndex);
                 if (indexOfPax > -1) {

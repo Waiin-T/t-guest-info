@@ -228,7 +228,8 @@
             #inputForm2 {
                 margin-top: 15px;
             }
-            /* #adultEmail {} */
+
+            #adultEmail {}
 
             #adultEmailAndLabel {
                 margin-left: 10px;
@@ -285,8 +286,7 @@
                 </div>
                 <div id="paxInfoDiv{{index}}" hidden="{{showPaxInfoFields}}">
                     <div hidden$="{{showTitle}}">
-                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="adultPaxTitle" on-blur="_updatePaxList"
-                            required errorMessage="{{_resources.titleError}}">
+                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="adultPaxTitle"  on-blur="_updatePaxList" required errorMessage="{{_resources.titleError}}">
                             <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
                                 <template is="dom-repeat" items={{_resources.titleValues}}>
                                     <paper-item>{{item.key}}</paper-item>
@@ -297,35 +297,35 @@
                     </div>
 
                     <div>
-                        <paper-input label="{{_resources.firstNameTitle}}" class="inputAdultCount" id="adultFirstName"  on-blur="_updatePaxList"
-                            required errorMessage="{{_resources.firstNameError}}"></paper-input>
+                        <paper-input label="{{_resources.firstNameTitle}}" on-blur="_updatePaxList" class="inputAdultCount"  id="adultFirstName" required errorMessage="{{_resources.firstNameError}}"></paper-input>
                     </div>
                     <div>
-                        <paper-input label="{{_resources.lastNameTitle}}" on-blur="_updatePaxList" id="adultLastName" required
-                            errorMessage="{{_resources.lastNameError}}"></paper-input>
+                        <paper-input label="{{_resources.lastNameTitle}}" on-blur="_updatePaxList"  id="adultLastName" required errorMessage="{{_resources.lastNameError}}"></paper-input>
                     </div>
 
+                    <!--</div>-->
+                    <!--<div id="inputForm2">-->
                     <div id="adultEmailAndLabel">
-                        <paper-input label="{{_resources.emailTitle}}" error-message="{{_resources.emailError}}" on-keydown="_showEmailInfo"  on-blur="_updatePaxList" id="adultEmail" hidden$="{{showEmailAddress}}"
-                            required ></paper-input>
+                        <paper-input label="{{_resources.emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{showEmailAddress}}"
+                            required errorMessage="{{_resources.emailError}}"></paper-input>
                         <div id="adultEmailLabel" hidden$="{{showEmailAddressInfo}}">{{_resources.emailInfo}}</div>
                     </div>
                     <div hidden$="{{showContactNumber}}">
-                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}"id="adultCountryCode" errorMessage="{{_resources.countryCodeError}}" on-blur="_updatePaxList" required>
+                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="adultCountryCode" on-blur="_updatePaxList" required errorMessage="{{_resources.countryCodeError}}">
                             <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
-                                <template is="dom-repeat" items={{countryCodeValues}} as="countryCode">
-                                    <paper-item value="{{countryCode.value}}">{{countryCode.key}}</paper-item>
+                                <template is="dom-repeat" items={{_resources.countryCodeValues}}>
+                                    <paper-item value="{{item.value}}">{{item.key}}</paper-item>
                                 </template>
                             </paper-listbox>
                         </paper-dropdown-menu>
                         <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
                     </div>
                     <div>
-                        <paper-input label="{{_resources.contactNumberTitle}}" id="adultContactNo" on-blur="_updatePaxList"
-                            hidden$="{{showContactNumber}}" required errorMessage="{{_resources.contactNumberError}}"></paper-input>
+                        <paper-input label="{{_resources.contactNumberTitle}}" id="adultContactNo" on-blur="_updatePaxList" hidden$="{{showContactNumber}}"
+                            required errorMessage="{{_resources.contactNumberError}}"></paper-input>
                     </div>
                 </div>
-                <!-- </div> -->
+                <!--</div>-->
             </form>
         </div>
 
@@ -425,18 +425,6 @@
                             }
                         }
                     },
-                    countryCodeValues: {
-                        type: Array,
-                        value: [{
-                                "key": "India +91",
-                                "value": "+91"
-                            },
-                            {
-                                "key": "USA +1",
-                                "value": "+1"
-                            }
-                        ],
-                    },
                     _resources: {
                         type: Object,
                         value: function () {
@@ -535,14 +523,8 @@
                     },
                 }
             }
-            _showPaxList() {
-                var list = this._updatePaxList();
-                this.paxList.push(list);
-                //    return this.travelerInfo.guestInfo.paxlist;
-            }
 
             _updatePaxList(event) {
-                var event = event;
                 var adultData = {};
                 var adultFirstNameValidation = this.$.adultFirstName;
                 var adultLastNameValiadtion = this.$.adultLastName;
@@ -558,9 +540,8 @@
                         this.paxList.push(paxInfo);
                     }
                 }
-                // if(this.shadowRoot.querySelector()
                 if ((event.currentTarget.id === "adultFirstName" ||
-                       event.currentTarget.id === "adultLastName") &&
+                         event.currentTarget.id === "adultLastName") &&
                     (this.shadowRoot.querySelector("#adultFirstName").value != undefined ||
                         this.shadowRoot.querySelector("#adultLastName").value != undefined)) {
                     this.travelerInfo.getState();
@@ -572,7 +553,7 @@
                     this.shadowRoot.querySelector("#adultLastName").invalid = false;
                 }
 
-                if (event.currentTarget.id === "adultEmail") {                   
+                  if (event.currentTarget.id === "adultEmail") {                   
                     this._showInvalidEmail();
                 }
                 if (event.currentTarget.id === "adultContactNo") {
@@ -676,9 +657,9 @@
                 }
             }
             _showPaxInfoFields(e) {
-
+               
                 var paxIndex = e.model.index;
-                e.currentTarget.parentElement.parentElement.focus();
+                 e.currentTarget.parentElement.parentElement.focus();
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
                 if (flag == false) {
                     this.indexArray.push(paxIndex);
@@ -713,7 +694,7 @@
                     }
                     this.showChooseGuest = true;
                     this.showPaxInfoFields = false;
-                    this.shadowRoot.querySelector("#adultFirstName").focus();
+                    // this.shadowRoot.querySelector("#adultFirstName").focus();
                     // this.shadowRoot.querySelector("#adultLastName").focus();
 
                 } else {
@@ -722,14 +703,13 @@
                 }
 
             }
-
             _addNewGuest() {
-                this.$.adultFirstName.value = undefined;
-                this.$.adultLastName.value = undefined;
+                this.$.adultFirstName.value = '';
+                this.$.adultLastName.value = '';
                 this.$.adultPaxTitle.value = '';
-                this.$.adultEmail.value = undefined;
+                this.$.adultEmail.value = '';
                 this.$.adultCountryCode.value = '';
-                this.$.adultContactNo.value = undefined;
+                this.$.adultContactNo.value = '';
                 this.$.adultFirstName.invalid = false;
                 this.$.adultLastName.invalid = false;
                 this.$.adultPaxTitle.invalid = false;
@@ -1046,12 +1026,12 @@
                 }
             }
             _showEmailInfo() {
+                this.shadowRoot.querySelector("#adultEmailLabel").hidden = false;
                 this.shadowRoot.querySelector("#adultEmail").invalid = false;
-                this.shadowRoot.querySelector("#adultEmailLabel").hidden = false;                
             }
             _showInvalidEmail() {
-               var email = this.shadowRoot.querySelector("#adultEmail").value;
-               if(email != ""){
+                var email = this.shadowRoot.querySelector("#adultEmail").value;
+                 if(email != ""){
                    if(email != undefined){
                 var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
                 var emailElement = this.shadowRoot.querySelector("#adultEmail");
@@ -1064,12 +1044,12 @@
                 } else {
                     emailElement.invalid = false;
                 }
-               }
-               }
+                   }
+                 }
             }
             _showInvalidContact() {
                 var contactNumber = this.shadowRoot.querySelector("#adultContactNo").value;
-                 if(contactNumber != ""){
+                   if(contactNumber != ""){
                    if(contactNumber != undefined){
                 var filter = /^[0-9]+$/;
                 if (!filter.test(contactNumber)) {
@@ -1079,28 +1059,30 @@
                 } else {
                     this.shadowRoot.querySelector("#adultContactNo").invalid = false;
                 }
-                   }}
+                   }
+                   }
             }
-            connectedCallback() {
-                super.connectedCallback();
-                this.shadowRoot.querySelector("#adultEmail").addEventListener('blur', () =>{
-                   this._updatePaxList();
-                });
-                 this.shadowRoot.querySelector("#adultFirstName").addEventListener('blur', () =>{
-                   this._updatePaxList();
-                });
-                 this.shadowRoot.querySelector("#adultLastName").addEventListener('blur', () =>{
-                   this._updatePaxList();
-                });
-                 this.shadowRoot.querySelector("#adultContactNo").addEventListener('blur', () =>{
-                   this._updatePaxList();
-                });
-                //  this.shadowRoot.querySelector("#adultCountryCode").addEventListener('blur', () =>{
-                //    this._updatePaxList();
-                // });
-                
-                
-            }
+           connectedCallback() {
+                 super.connectedCallback();
+                 this.shadowRoot.querySelector("#adultEmail").addEventListener('blur', (event) =>{
+                     alert('hi');
+                    this._updatePaxList(event);
+                 });
+                  this.shadowRoot.querySelector("#adultFirstName").addEventListener('blur', (event) =>{
+                    this._updatePaxList(event);
+                 });
+                  this.shadowRoot.querySelector("#adultLastName").addEventListener('blur', (event) =>{
+                    this._updatePaxList(event);
+                 });
+                  this.shadowRoot.querySelector("#adultContactNo").addEventListener('blur', (event) =>{
+                    this._updatePaxList(event);
+                 });
+                 //  this.shadowRoot.querySelector("#adultCountryCode").addEventListener('blur', (event) =>{
+                 //    this._updatePaxList(event);
+                 // });
+                 
+                 
+              }
             ready() {
                 super.ready();
                 if (this.roomNumber === 1 && this.paxList.length === 0) {
@@ -1118,10 +1100,7 @@
                         "closeIconChild");
                     this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
                         "closeIconChooseGuest");
-                }
-                this.shadowRoot.querySelector("#adultFirstName").addEventListener('onblur', function () {
-                    alert('hi');
-                });
+                }               
                 this._defaultOptionValue();
                 this._defaultResourcesValue();
                 this._showAllowFieldsForLeadPax();
