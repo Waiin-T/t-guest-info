@@ -46,7 +46,7 @@
 
             .item[smallMobileView] .closeIconChild {
                 margin-top: 4%;
-                margin-left: -11px;
+                margin-left: -22px;
                 color: #A8A8A8;
             }
 
@@ -273,23 +273,23 @@
                     <div id="paxInfoTemp">
                         <pax-info id="adultPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{paxListAdult}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{indexArray}}" index="{{_increaseIndex(index)}}" traveler-info="{{travelerInfo}}" adult-pax-count="{{adultPaxCount}}"
-                            pax-list-available="{{paxListAvailable}}" room-number="{{roomNumber}}">{{item}}</pax-info>
+                            pax-list-available="{{paxListAvailable}}" type="{{adultPax}}" room-number="{{roomNumber}}"></pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
                             <paper-icon-button icon="close" id="closeIconAdult{{_increaseIndex(index)}}" class="closeIconAdult" on-tap="_closePaxAdultInfo"></paper-icon-button>
                         </div>
                     </div>
                 </template>
 
-                <template is="dom-repeat" items="{{childPaxCountArray}}">
+                 <template is="dom-repeat" items="{{childPaxCountArray}}">
                     <div id="paxInfoTemp">
-                        <pax-info-child id="childPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{paxListChild}}" option="[[option]]"
-                            resources="{{resources}}" index-array-child="{{indexArrayChild}}" traveler-info="{{travelerInfo}}"
-                            index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}"></pax-info-child>
+                        <pax-info id="childPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{paxListChild}}" option="[[option]]"
+                            resources="{{resources}}" index-array="{{indexArrayChild}}" type="{{childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
+                            index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}" pax-list-available="{{paxListAvailable}}"></pax-info>
                         <div hidden$=[[_isCloseButtonChildHidden]]>
                             <paper-icon-button icon="close" id="closeIconChild{{_increaseIndex(index)}}" class="closeIconChild" on-tap="_closePaxChildInfo"></paper-icon-button>
                         </div>
                     </div>
-                </template>
+                </template> 
             </div>
             <!--<div id="extraSpace">
             </div>-->
@@ -311,6 +311,14 @@
             }
             static get properties() {
                 return {
+                    adultPax: {
+                        type: String,
+                        value: 'Adult'
+                    },
+                    childPax: {
+                        type: String,
+                        value: 'Child'
+                    },
                     travelerInfo: {
                         type: Object,
                     },
@@ -452,7 +460,7 @@
                 var validData = true;
                 for (var i = 1; i <= this.childPaxCount; i++) {
                     childPaxInfoArray[i] = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (i))
-                        .isValidPaxInfoChild();
+                        .isValidPaxInfo();
                 }
                 for (var i = 1; i <= this.childPaxCount; i++) {
                     if (childPaxInfoArray[i] === true) {
@@ -466,22 +474,23 @@
                 }
             }
             getState(event) {
-                // console.log(this.id);
                 var adultPaxDataArray = [];
                 for (var i = 0; i < this.adultPaxCount; i++) {
                     var adultPax = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i + 1));
 
                     adultPaxDataArray[i] = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i +
-                        1)).adultData();
+                        1)).collectData();
                 }
                 for (var i = 0; i < adultPaxDataArray.length; i++) {
                     var adult = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i +
                         1));
-                    adult.shadowRoot.querySelector("#adultFirstName").invalid = false;
+                    if (adult.shadowRoot.querySelector("#adultFirstName") === undefined) {
+                        adult.shadowRoot.querySelector("#adultFirstName").invalid = false;
+                    }
                 }
                 for (var i = 0; i < adultPaxDataArray.length; i++) {
                     for (var j = i + 1; j < adultPaxDataArray.length; j++) {
-                        var adult = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i +
+                        var adult = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (j +
                             1));
                         if (adultPaxDataArray[i].FirstName === adultPaxDataArray[j].FirstName &&
                             adultPaxDataArray[i].LastName === adultPaxDataArray[j].LastName &&
@@ -491,51 +500,34 @@
                             adult.shadowRoot.querySelector("#adultFirstName").invalid = true;
                             adult.shadowRoot.querySelector("#adultFirstName").errorMessage =
                                 "Duplicate guest name";
-                        } 
-                     } 
-                }
-                for (var i = 0; i < adultPaxDataArray.length; i++) {
-                var adult = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i +
-                            1));
-                if (adultPaxDataArray[i].FirstName === undefined &&
-                            adultPaxDataArray[i].LastName === undefined) {
-                            adult.shadowRoot.querySelector("#adultFirstName").invalid = true;
-                        } else {
-                            adult.shadowRoot.querySelector("#adultFirstName").invalid = false;
                         }
-                    
+                    }
                 }
 
                 var childPaxDataArray = [];
                 for (var i = 0; i < this.childPaxCount; i++) {
                     childPaxDataArray[i] = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (i +
-                        1)).childData();
+                        1)).collectData();
                 }
                 for (var i = 0; i < childPaxDataArray.length; i++) {
                     var child = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (i +
                         1));
-                    child.shadowRoot.querySelector("#firstName").invalid = false;
+                    if (child.shadowRoot.querySelector("#adultFirstName") === undefined) {
+                        child.shadowRoot.querySelector("#adultFirstName").invalid = false;
+                    }
                 }
                 for (var i = 0; i < childPaxDataArray.length; i++) {
                     for (var j = i + 1; j < childPaxDataArray.length; j++) {
+                         var child = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (j +
+                            1));
                         if (childPaxDataArray[i].FirstName === childPaxDataArray[j].FirstName &&
-                            childPaxDataArray[i].LastName === childPaxDataArray[j].LastName && childPaxDataArray[i].FirstName != undefined &&
+                            childPaxDataArray[i].LastName === childPaxDataArray[j].LastName &&
+                            childPaxDataArray[i].FirstName != undefined &&
                             childPaxDataArray[i].LastName != undefined) {
-                            child.shadowRoot.querySelector("#firstName").invalid = true;
-                            child.shadowRoot.querySelector("#firstName").errorMessage = "Duplicate guest name";
-                        } 
-                    }
-                    }
-                for (var i = 0; i < childPaxDataArray.length; i++) {
-                  var child = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (i +
-                        1));   
-                    if (childPaxDataArray[i].FirstName === undefined &&
-                            childPaxDataArray[i].LastName === undefined) {
-                            child.shadowRoot.querySelector("#firstName").invalid = true;
-                        } else {
-                            child.shadowRoot.querySelector("#firstName").invalid = false;
+                            child.shadowRoot.querySelector("#adultFirstName").invalid = true;
+                            child.shadowRoot.querySelector("#adultFirstName").errorMessage = "Duplicate guest name";
                         }
-                    
+                    }
                 }
                 var paxListArray = adultPaxDataArray.concat(childPaxDataArray);
                 this.paxList = JSON.parse(JSON.stringify(paxListArray));

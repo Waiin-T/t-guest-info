@@ -131,14 +131,14 @@
       <div>
         <paper-dropdown-menu label="Program name" id="programName{{index}}" class="programName">
           <paper-listbox slot="dropdown-content">
-            <!--<template is="dom-repeat" items={{resource.fields.title.values}}>-->
+            <template is="dom-repeat" items={{resource.fields.title.values}}>
             <paper-item>abc</paper-item>
-            <!--</template>-->
+            </template>
           </paper-listbox>
         </paper-dropdown-menu>
       </div>
       <div>
-        <paper-input label="Program number" id="programNumber{{index}}" class="programNumber"></paper-input>
+        <paper-input label="Program number" id="programNumber{{index}}" class="programNumber" value="{{_programNumber()}}"></paper-input>
       </div>
 
     </div>
@@ -194,7 +194,12 @@
         };
       }
 
-      
+      // _programNumber(){
+        
+      //   var pName = this.shadowRoot.querySelector("#programName" + this.index);
+
+      //   return 12345;
+      // }
      
     }
 

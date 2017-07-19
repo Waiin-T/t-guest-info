@@ -194,7 +194,7 @@
 
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} Adults, {{room.criteria.traveler.child}} Child" policy-List="{{room.policies}}"
-            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}"
+            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{_updatePaxList(paxlist)}}" option="[[option]]" resources="{{resources}}"
             adult-pax-count="[[room.criteria.traveler.adult]]" child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}"
             only-lead-pax-info="{{room.onlyLeadPaxInfo}}" pax-list-available="{{paxlistAvailable}}">
           </t-traveler-info>
@@ -315,17 +315,18 @@
         };
       } //End of Properties.
 
-      // _updatePaxList(paxlist) {
-      //   console.log(paxlist);        
-      //   return paxlist;
-      // }
+      _updatePaxList(paxlist) {
+        console.log(paxlist);        
+        return paxlist;
+      }
       _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
         return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
       }
       _addProgramForOtherGuest(loyaltyProgram) {
-        this._loyaltyProgramData();
+        // this._loyaltyProgramData();
         // if(this.loyaltyPrograms.length < this.paxlist.length){
         this.push('loyaltyPrograms', {loyaltyProgram: "" });
+        this.push('loyaltyProgramsIds', {loyaltyProgramId: ""});
         // }
         // if(this.loyaltyPrograms.length === this.paxlist.length)
         // {
