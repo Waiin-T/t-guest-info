@@ -572,19 +572,19 @@
                 if (adultTitleValidation.value === undefined) {
                     adultTitleValidation.invalid = true;
                 }
-                if (adultFirstNameValidation.value === undefined) {
+                if (adultFirstNameValidation.value === undefined || adultFirstNameValidation.value === "") {
                     adultFirstNameValidation.invalid = true;
                 }
-                if (adultLastNameValiadtion.value === undefined) {
+                if (adultLastNameValiadtion.value === undefined || adultLastNameValiadtion.value === "") {
                     adultLastNameValiadtion.invalid = true;
                 }
-                if (adultEmailValidation.value === undefined) {
+                if (adultEmailValidation.value === undefined || adultEmailValidation.value === "") {
                     adultEmailValidation.invalid = true;
                 }
-                if (adultCountryCodeValidation.value === undefined) {
+                if (adultCountryCodeValidation.value === undefined || adultCountryCodeValidation.value === "") {
                     adultCountryCodeValidation.invalid = true;
                 }
-                if (adultContactNumberValidation.value === undefined) {
+                if (adultContactNumberValidation.value === undefined || adultContactNumberValidation.value === "") {
                     adultContactNumberValidation.invalid = true;
                 }
                 if (this.index === 1 && this.type === 'Adult') {
@@ -659,7 +659,7 @@
             _showPaxInfoFields(e) {
                
                 var paxIndex = e.model.index;
-                 e.currentTarget.parentElement.parentElement.focus();
+                
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
                 if (flag == false) {
                     this.indexArray.push(paxIndex);
@@ -682,6 +682,7 @@
                         paxListArray[paxIndex].countrycode);
                     adultCountryCodeData.contentElement.selected = countryCodeIndex;
                     adultContactNumberData.value = paxListArray[paxIndex].contact;
+                    this.shadowRoot.querySelector("#adultFirstName").invalid = false;
                     if (this.type === 'Adult') {
                         var closeIcon = this.parentElement.querySelector("#closeIconAdult" + (this.index));
                         closeIcon.classList.remove("closeIconChooseGuest");
@@ -701,7 +702,9 @@
                     this.shadowRoot.querySelector("#chooseGuest").invalid = true;
                     this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
                 }
-
+                var dropdown = e.currentTarget.parentElement.parentElement;
+                dropdown.shadowRoot.querySelector("#menuButton").querySelector("paper-input").shadowRoot.querySelector("#container").querySelector("#input").querySelector("#nativeInput")
+.focus();
             }
             _addNewGuest() {
                 this.$.adultFirstName.value = '';
@@ -1065,7 +1068,6 @@
            connectedCallback() {
                  super.connectedCallback();
                  this.shadowRoot.querySelector("#adultEmail").addEventListener('blur', (event) =>{
-                     alert('hi');
                     this._updatePaxList(event);
                  });
                   this.shadowRoot.querySelector("#adultFirstName").addEventListener('blur', (event) =>{

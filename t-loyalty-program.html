@@ -123,17 +123,17 @@
         <paper-dropdown-menu label="Guest name" id="guestName{{index}}" class="guestName">
           <paper-listbox slot="dropdown-content" selected="[[guestNameValue]]">
             <template is="dom-repeat" items={{paxList}}>
-              <paper-item>{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
+              <paper-item on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
-          <input is="iron-input" type="hidden" bind-value="[[guestNameValue]]">
+        <input is="iron-input" type="hidden" bind-value="[[guestNameValue]]">
       </div>
       <div>
         <paper-dropdown-menu label="Program name" id="programName{{index}}" class="programName">
-          <paper-listbox slot="dropdown-content"  selected="[[programNameValue]]">
-            <template is="dom-repeat" items={{resource.fields.title.values}}>
-            <paper-item>abc</paper-item>
+          <paper-listbox slot="dropdown-content" selected="[[programNameValue]]">
+            <template is="dom-repeat" items={{paxList}}>
+              <paper-item>{{item.membership.programName}}</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
@@ -162,11 +162,11 @@
       }
       static get properties() {
         return {
-          guestNameValue:{
+          guestNameValue: {
             type: String
           },
           programNameValue: {
-            type:String
+            type: String
           },
           smallMobileView: {
             type: Boolean,
@@ -188,7 +188,7 @@
             type: Boolean,
             value: false
           },
-          
+
           paxList: {
             type: Object,
           },
@@ -202,13 +202,15 @@
         };
       }
 
-      // _programNumber(){
-        
-      //   var pName = this.shadowRoot.querySelector("#programName" + this.index);
-
-      //   return 12345;
-      // }
-     
+      _showGuestProgramDetails(e) {
+        var paxIndex = e.model.index;
+        var paxListArray = this.paxList;
+        var programName = this.shadowRoot.querySelector("#programName" + this.index);
+        var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
+        programName.contentElement.selected = programNameIndex;
+        var programNumber = this.shadowRoot.querySelector("#programNumber" + this.index);
+        programNumber.value = paxListArray[paxIndex].membership.number;
+      }
     }
 
     window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);

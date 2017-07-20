@@ -187,9 +187,9 @@
     <iron-media-query query="(max-width: 600px)" query-matches="{{mediumTablet}}"></iron-media-query>
     <iron-media-query query="(max-width: 767px)" query-matches="{{mobilePhone}}"></iron-media-query>
     <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}">
-
+<!-- 
       <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
-      <br />
+      <br /> -->
 
       <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo">
         <template is="dom-repeat" items="{{product.rooms}}" as="room">
@@ -336,9 +336,7 @@
       _addProgramForOtherGuest(loyaltyProgram) {
         // this._loyaltyProgramData();
         // if(this.loyaltyPrograms.length < this.paxlist.length){
-        var copy = Object.assign({}, {
-          loyaltyProgram: ""
-        })
+        var copy = Object.assign({}, {loyaltyProgram: ""})
         var ind = this.push('loyaltyPrograms', copy);
         setTimeout(() => {
           var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
