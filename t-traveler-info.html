@@ -494,8 +494,8 @@
                             1));
                         if (adultPaxDataArray[i].FirstName === adultPaxDataArray[j].FirstName &&
                             adultPaxDataArray[i].LastName === adultPaxDataArray[j].LastName &&
-                            adultPaxDataArray[i].FirstName != undefined &&
-                            adultPaxDataArray[i].LastName != undefined) {
+                            adultPaxDataArray[i].FirstName != undefined && adultPaxDataArray[i].FirstName != "" &&
+                            adultPaxDataArray[i].LastName != undefined && adultPaxDataArray[i].LastName != "") {
 
                             adult.shadowRoot.querySelector("#adultFirstName").invalid = true;
                             adult.shadowRoot.querySelector("#adultFirstName").errorMessage =
@@ -522,8 +522,8 @@
                             1));
                         if (childPaxDataArray[i].FirstName === childPaxDataArray[j].FirstName &&
                             childPaxDataArray[i].LastName === childPaxDataArray[j].LastName &&
-                            childPaxDataArray[i].FirstName != undefined &&
-                            childPaxDataArray[i].LastName != undefined) {
+                            childPaxDataArray[i].FirstName != undefined && adultPaxDataArray[i].FirstName != "" &&
+                            childPaxDataArray[i].LastName != undefined  && adultPaxDataArray[i].LastName != "") {
                             child.shadowRoot.querySelector("#adultFirstName").invalid = true;
                             child.shadowRoot.querySelector("#adultFirstName").errorMessage = "Duplicate guest name";
                         }

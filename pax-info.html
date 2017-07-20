@@ -144,7 +144,7 @@
             }
 
             .item[tabletView] #adultEmailAndLabel {
-                width: 94%;
+                width: 92.5%;
                 margin-left: -5px;
             }
 
@@ -168,12 +168,12 @@
 
             .item[tabletView] #adultCountryCode {
                 margin-left: -5px;
-                width: 46%;
+                width: 45%;
             }
 
             .item[tabletView] #adultContactNo {
                 margin-left: 12px;
-                width: 46%;
+                width: 45%;
             }
 
             .item[tabletView] #chooseGuest {
@@ -233,7 +233,7 @@
 
             #adultEmailAndLabel {
                 margin-left: 10px;
-                width: 44.5%;
+                width: 44%;
             }
 
             #adultEmailLabel {
@@ -275,7 +275,7 @@
 
 
                 <div hidden$="{{showChooseGuest}}" id="chooseGuestPaxInfoDiv">
-                    <paper-dropdown-menu label="{{chooseGuest}}" id="chooseGuest" required>
+                    <paper-dropdown-menu label="{{chooseGuest}}" id="chooseGuest" required on-tap="_loadPaxList">
                         <paper-listbox slot="dropdown-content">
                             <template is="dom-repeat" items="{{paxList}}" id="paxListDomTemp">
                                 <paper-item on-tap="_showPaxInfoFields">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
@@ -311,7 +311,7 @@
                         <div id="adultEmailLabel" hidden$="{{showEmailAddressInfo}}">{{_resources.emailInfo}}</div>
                     </div>
                     <div hidden$="{{showContactNumber}}">
-                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="adultCountryCode" on-blur="_updatePaxList" required errorMessage="{{_resources.countryCodeError}}">
+                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="adultCountryCode" on-blur="_updatePaxList" required error-message="{{_resources.countryCodeError}}">
                             <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
                                 <template is="dom-repeat" items={{_resources.countryCodeValues}}>
                                     <paper-item value="{{item.value}}">{{item.key}}</paper-item>
@@ -321,7 +321,7 @@
                         <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
                     </div>
                     <div>
-                        <paper-input label="{{_resources.contactNumberTitle}}" id="adultContactNo" on-blur="_updatePaxList" hidden$="{{showContactNumber}}"
+                        <paper-input label="{{_resources.contactNumberTitle}}" id="adultContactNo" on-blur="_updatePaxList" error-message="{{_resources.countryCodeError}}" hidden$="{{showContactNumber}}"
                             required errorMessage="{{_resources.contactNumberError}}"></paper-input>
                     </div>
                 </div>
@@ -523,7 +523,10 @@
                     },
                 }
             }
+            _loadPaxList(){
+                this._updatePaxList(event);
 
+                            }
             _updatePaxList(event) {
                 var adultData = {};
                 var adultFirstNameValidation = this.$.adultFirstName;
@@ -537,19 +540,19 @@
                         undefined) {
                         var paxInfo = this.travelerInfo.getState();
                         this.travelerInfo.guestInfo.paxlist.push(paxInfo);
-                        this.paxList.push(paxInfo);
+                        // this.paxList.push(paxInfo);
                     }
                 }
-                if ((event.currentTarget.id === "adultFirstName" ||
-                         event.currentTarget.id === "adultLastName") &&
-                    (this.shadowRoot.querySelector("#adultFirstName").value != undefined ||
-                        this.shadowRoot.querySelector("#adultLastName").value != undefined)) {
-                    this.travelerInfo.getState();
-                }
+                // if ((event.currentTarget.id === "adultFirstName" ||
+                //          event.currentTarget.id === "adultLastName") &&
+                //     (this.shadowRoot.querySelector("#adultFirstName").value != undefined ||
+                //         this.shadowRoot.querySelector("#adultLastName").value != undefined)) {
+                //     this.travelerInfo.getState();
+                // }
                 if (event.currentTarget.id === "adultFirstName") {
                     this.shadowRoot.querySelector("#adultFirstName").invalid = false;
                 }
-                if (this.shadowRoot.querySelector("#adultLastName").focused) {
+                if (event.currentTarget.id === "adultLastName") {
                     this.shadowRoot.querySelector("#adultLastName").invalid = false;
                 }
 
@@ -672,6 +675,13 @@
                     var adultCountryCodeData = divPax.querySelector("#adultCountryCode");
                     var adultContactNumberData = divPax.querySelector("#adultContactNo");
 
+                    adultFirstNameData.invalid = false;
+                    adultLastNameData.invalid = false;
+                    adultTitleData.invalid = false;
+                    adultEmailData.invalid = false;
+                    adultCountryCodeData.invalid = false;
+                    adultContactNumberData.invalid = false;
+
                     adultFirstNameData.value = paxListArray[paxIndex].firstName;
                     adultLastNameData.value = paxListArray[paxIndex].lastName;
                     var titleIndex = this._resources.titleValues.findIndex(x => x.key == paxListArray[paxIndex]
@@ -704,7 +714,7 @@
                 }
                 var dropdown = e.currentTarget.parentElement.parentElement;
                 dropdown.shadowRoot.querySelector("#menuButton").querySelector("paper-input").shadowRoot.querySelector("#container").querySelector("#input").querySelector("#nativeInput")
-.focus();
+                    .focus();
             }
             _addNewGuest() {
                 this.$.adultFirstName.value = '';
@@ -1081,8 +1091,7 @@
                  });
                  //  this.shadowRoot.querySelector("#adultCountryCode").addEventListener('blur', (event) =>{
                  //    this._updatePaxList(event);
-                 // });
-                 
+                 // });                 
                  
               }
             ready() {

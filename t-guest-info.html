@@ -157,12 +157,12 @@
       }
 
       .item[smallMobileView] #buttonRemove {
-        margin-left: 40px;
+        margin-left: 10px;
         margin-top: 20px;
       }
 
       .item[mobileView] #buttonRemove {
-        margin-left: 55px;
+        margin-left: 15px;
         margin-top: 6%;
       }
 
@@ -196,7 +196,7 @@
 
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} Adults, {{room.criteria.traveler.child}} Child" policy-List="{{room.policies}}"
-            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{_updatePaxList(paxlist)}}" option="[[option]]"
+            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]"
             resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]" child-pax-count="[[room.criteria.traveler.child]]"
             guest-info="{{guestInfo}}" only-lead-pax-info="{{room.onlyLeadPaxInfo}}" pax-list-available="{{paxlistAvailable}}">
           </t-traveler-info>
@@ -341,7 +341,7 @@
         setTimeout(() => {
           var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
           // console.log(this.loyaltyProgramIds);
-          this.push('loyaltyProgramIds', loyaltyProgramID)
+          this.push('loyaltyProgramIds', loyaltyProgramID);
         }, 1);
 
         // }
@@ -355,9 +355,9 @@
         var index = e.model.index;
         var lp = this.loyaltyPrograms[index];
         // this.notifyPath('list.' + e.model.index + 1, 'changed');
-
-        // this.no('loyaltyProgramIds', index, 1);       
-
+        var idToDel = this.loyaltyProgramIds[index];
+        this.splice('loyaltyProgramIds', index, 1);       
+        var copy = Object.assign({}, {loyaltyProgram})
         // var path = this.notifyPath(this.loyaltyPrograms[index]);
         // console.log(path);
 
