@@ -51,53 +51,30 @@
         text-decoration: none;
         font-size: 16px;
       }
-
-
       .item[smallMobileView] #toolbarLotalty {
         background-color: var(--toolbar-background-color);
         width: 100%;
         height: 50px;
         margin-left: -14px;
       }
-
-      .item[smallMobileView] #loyaltyDiv {
+      .item[smallMobileView] .loyaltyDiv {
         width: 100%;
       }
-
-      .item[smallMobileView] #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: -13px;
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-      }
-
       .item[smallMobileView] #lineBreakBetweenProduct {
         margin-top: 74px;
         clear: both;
         margin-left: -4px;
       }
-
       .item[mobileView] #toolbarLotalty {
         background-color: var(--toolbar-background-color);
         width: 100%;
         height: 50px;
         margin-left: -14px;
       }
-
-      .item[mobileView] #loyaltyDiv {
+      .item[mobileView] .loyaltyDiv {
         width: 100%;
         margin-top: 10px;
       }
-
-      .item[mobileView] #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: -13px;
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-      }
-
       .item[mobileView] #tLoyaltyProgram {}
 
       .item[tabletView] #toolbarLotalty {
@@ -106,29 +83,17 @@
         height: 50px;
         margin-left: -5px;
       }
-
       .item[mobileView] #lineBreakBetweenProduct {
         margin-top: 74px;
         clear: both;
         margin-left: -4px;
       }
-
-      .item[tabletView] #loyaltyDiv {
+      .item[tabletView] .loyaltyDiv {
         width: 100%;
       }
-
-      .item[tabletView] #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: 50px;
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-      }
-
-      #loyaltyDiv {
+      .loyaltyDiv {
         width: 67%;
       }
-
       #toolbarLotalty {
         font-size: 16px;
         background-color: var(--toolbar-background-color);
@@ -137,46 +102,13 @@
         margin-top: 20px;
         height: 50px;
       }
-
       #tLoyaltyDatabase {
         margin-top: 2%;
       }
-
-      #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: 6px;
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-      }
-
       #lineBreakBetweenProduct {
         margin-top: 74px;
         clear: both;
         margin-left: 10px;
-      }
-
-      .item[smallMobileView] #buttonRemove {
-        margin-left: 10px;
-        margin-top: 20px;
-      }
-
-      .item[mobileView] #buttonRemove {
-        margin-left: 15px;
-        margin-top: 6%;
-      }
-
-      .item[tabletView] #buttonRemove {
-        margin-top: 5%;
-        margin-left: 20px;
-      }
-
-      #buttonRemove {
-        margin-top: 4%;
-        margin-left: 65px;
-        width: 60px;
-        color: var(--color-for-button-labels);
-        font-weight: 450;
       }
     </style>
     <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
@@ -191,31 +123,22 @@
       <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
       <br /> -->
 
-      <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo">
-        <template is="dom-repeat" items="{{product.rooms}}" as="room">
+      <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo" id="productTemplate"> 
+        <template is="dom-repeat" items="{{product.rooms}}" as="room" id="travelerTemplate">
 
-          <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" title="{{title}} {{_increaseIndex(index)}}"
+          <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" title="{{title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} Adults, {{room.criteria.traveler.child}} Child" policy-List="{{room.policies}}"
-            parent="{{product}}" room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}"
-            adult-pax-count="[[room.criteria.traveler.adult]]" child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}"
-            only-lead-pax-info="{{room.onlyLeadPaxInfo}}" pax-list-available="{{paxlistAvailable}}">
+            room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]"
+            child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}" only-lead-pax-info="{{room.onlyLeadPaxInfo}}"
+            pax-list-available="{{paxlistAvailable}}">
           </t-traveler-info>
           <br>
         </template>
 
-        <div id="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
+        <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
           <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
-          <template is="dom-repeat" items="{{loyaltyPrograms}}">
-            <div id="tLoyaltyProgram">
-              <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(index)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
-              <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
-                <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram">Remove</paper-button>
-              </div>
-            </div>
-          </template>
-          <div>
-            <paper-button id="addProgramForOtherGuestButton" on-tap="_addProgramForOtherGuest">Add program for other guest</paper-button>
-            <br />
+          <div id="tLoyaltyProgram">
+            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(index)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
           </div>
         </div>
         <hr id="lineBreakBetweenProduct">
@@ -240,23 +163,10 @@
       static get is() {
         return 't-guest-info';
       }
+
       static get properties() {
         return {
           guestInfo: Object,
-          loyaltyPrograms: {
-            type: Array,
-            notify: true,
-            value: []
-          },
-          loyaltyProgramIds: {
-
-            type: Array,
-            value: []
-          },
-          _isRemoveButtonHidden: {
-            type: Boolean,
-            computed: '_lte(loyaltyPrograms.length , 1)'
-          },
           onlyLeadPaxInfo: {
             type: Boolean,
             value: true
@@ -326,37 +236,6 @@
         };
       } //End of Properties.
 
-      _updatePaxList(paxlist) {
-        // console.log(paxlist);
-        return paxlist;
-      }
-      _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
-        return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
-      }
-      _addProgramForOtherGuest(loyaltyProgram) {
-
-        var copy = Object.assign({}, {
-          loyaltyProgram: ""
-        })
-        var ind = this.push('loyaltyPrograms', copy);
-        // setTimeout(() => {
-        //   var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
-
-        //   this.push('loyaltyProgramIds', loyaltyProgramID);
-        // }, 1);
-
-
-      }
-      _deleteLoyaltyProgram(e) {
-        var index = e.model.index;
-
-        // this.splice('loyaltyProgramIds', index, 1);       
-
-        this.splice('loyaltyPrograms', index, 1, );
-
-
-        this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
-      }
       _increaseIndex(index) {
         var calIndex = index + 1;
         return calIndex;
@@ -416,14 +295,14 @@
       _loyaltyProgramData() {
         var loyaltyProgramObject = {};
         var loyaltyProgramArrayData = [];
-        for (var i = 0; i < this.loyaltyPrograms.length; i++) {
-          var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (i + 1));
-          var loyaltyProgramArray = [];
-          loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
-          loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
-          loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
-          loyaltyProgramArrayData[i] = loyaltyProgramArray;
-        }
+        // for (var i = 0; i < this.loyaltyPrograms.length; i++) {
+        //   var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (i + 1));
+        //   var loyaltyProgramArray = [];
+        //   loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
+        //   loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
+        //   loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
+        //   loyaltyProgramArrayData[i] = loyaltyProgramArray;
+        // }
         // console.log(loyaltyProgramArrayData);
         loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
         // console.log(loyaltyProgramObject);
@@ -432,14 +311,11 @@
 
       ready() {
         super.ready();
-        this.loyaltyPrograms = [];
-        var ind = this.push('loyaltyPrograms', {
-          loyaltyProgram: ""
-        });
-        setTimeout(() => {
-          var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
-          this.push('loyaltyProgramIds', loyaltyProgramID)
-        }, 1);
+       
+        // setTimeout(() => {
+        //   var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
+        //   this.push('loyaltyProgramIds', loyaltyProgramID)
+        // }, 1);
         if (this.paxlist.length === 0) {
           this.paxlistAvailable = true;
           this.paxList = [];

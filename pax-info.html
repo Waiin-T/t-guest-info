@@ -286,7 +286,7 @@
                 </div>
                 <div id="paxInfoDiv{{index}}" hidden="{{showPaxInfoFields}}">
                     <div hidden$="{{showTitle}}">
-                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="adultPaxTitle"  on-blur="_updatePaxList" required errorMessage="{{_resources.titleError}}">
+                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="adultPaxTitle" on-blur="_updatePaxList" required errorMessage="{{_resources.titleError}}">
                             <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
                                 <template is="dom-repeat" items={{_resources.titleValues}}>
                                     <paper-item>{{item.key}}</paper-item>
@@ -297,10 +297,11 @@
                     </div>
 
                     <div>
-                        <paper-input label="{{_resources.firstNameTitle}}" on-blur="_updatePaxList" class="inputAdultCount"  id="adultFirstName" required errorMessage="{{_resources.firstNameError}}"></paper-input>
+                        <paper-input label="{{_resources.firstNameTitle}}" on-blur="_updatePaxList" class="inputAdultCount" id="adultFirstName" required
+                            errorMessage="{{_resources.firstNameError}}"></paper-input>
                     </div>
                     <div>
-                        <paper-input label="{{_resources.lastNameTitle}}" on-blur="_updatePaxList"  id="adultLastName" required errorMessage="{{_resources.lastNameError}}"></paper-input>
+                        <paper-input label="{{_resources.lastNameTitle}}" on-blur="_updatePaxList" id="adultLastName" required errorMessage="{{_resources.lastNameError}}"></paper-input>
                     </div>
 
                     <!--</div>-->
@@ -311,7 +312,7 @@
                         <div id="adultEmailLabel" hidden$="{{showEmailAddressInfo}}">{{_resources.emailInfo}}</div>
                     </div>
                     <div hidden$="{{showContactNumber}}">
-                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="adultCountryCode" on-blur="_updatePaxList" required error-message="{{_resources.countryCodeError}}">
+                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="adultCountryCode" on-blur="_updatePaxList" required>
                             <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
                                 <template is="dom-repeat" items={{_resources.countryCodeValues}}>
                                     <paper-item value="{{item.value}}">{{item.key}}</paper-item>
@@ -321,7 +322,7 @@
                         <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
                     </div>
                     <div>
-                        <paper-input label="{{_resources.contactNumberTitle}}" id="adultContactNo" on-blur="_updatePaxList" error-message="{{_resources.countryCodeError}}" hidden$="{{showContactNumber}}"
+                        <paper-input label="{{_resources.contactNumberTitle}}" id="adultContactNo" on-blur="_updatePaxList" hidden$="{{showContactNumber}}"
                             required errorMessage="{{_resources.contactNumberError}}"></paper-input>
                     </div>
                 </div>
@@ -523,10 +524,10 @@
                     },
                 }
             }
-            _loadPaxList(){
+            _loadPaxList() {
                 this._updatePaxList(event);
 
-                            }
+            }
             _updatePaxList(event) {
                 var adultData = {};
                 var adultFirstNameValidation = this.$.adultFirstName;
@@ -536,19 +537,20 @@
                 var adultCountryCodeValidation = this.$.adultCountryCode;
                 var adultContactNumberValidation = this.$.adultContactNo;
                 if (this.paxListAvailable === true) {
-                    if (adultFirstNameValidation.value != undefined && adultLastNameValiadtion.value !=
-                        undefined) {
-                        var paxInfo = this.travelerInfo.getState();
+                    // if (adultFirstNameValidation.value != undefined && adultLastNameValiadtion.value !=
+                    //     undefined) {
+                    //     var paxInfo = this.travelerInfo.getState();
+                    //     this.travelerInfo.guestInfo.paxlist.push(paxInfo);
+                    // }
+
+                    if ((event.currentTarget.id === "adultFirstName" ||
+                            event.currentTarget.id === "adultLastName") &&
+                        (this.shadowRoot.querySelector("#adultFirstName").value != undefined ||
+                            this.shadowRoot.querySelector("#adultLastName").value != undefined)) {
+                        var paxInfo = this.travelerInfo.guestInfo.isData();
                         this.travelerInfo.guestInfo.paxlist.push(paxInfo);
-                        // this.paxList.push(paxInfo);
                     }
                 }
-                // if ((event.currentTarget.id === "adultFirstName" ||
-                //          event.currentTarget.id === "adultLastName") &&
-                //     (this.shadowRoot.querySelector("#adultFirstName").value != undefined ||
-                //         this.shadowRoot.querySelector("#adultLastName").value != undefined)) {
-                //     this.travelerInfo.getState();
-                // }
                 if (event.currentTarget.id === "adultFirstName") {
                     this.shadowRoot.querySelector("#adultFirstName").invalid = false;
                 }
@@ -556,11 +558,11 @@
                     this.shadowRoot.querySelector("#adultLastName").invalid = false;
                 }
 
-                  if (event.currentTarget.id === "adultEmail") {                   
+                if (event.currentTarget.id === "adultEmail") {
                     this._showInvalidEmail();
                 }
                 if (event.currentTarget.id === "adultContactNo") {
-                    this._showInvalidContact();              
+                    this._showInvalidContact();
                 }
 
 
@@ -584,10 +586,11 @@
                 if (adultEmailValidation.value === undefined || adultEmailValidation.value === "") {
                     adultEmailValidation.invalid = true;
                 }
-                if (adultCountryCodeValidation.value === undefined || adultCountryCodeValidation.value === "") {
+                if (adultCountryCodeValidation.value === undefined) {
                     adultCountryCodeValidation.invalid = true;
                 }
-                if (adultContactNumberValidation.value === undefined || adultContactNumberValidation.value === "") {
+                if (adultContactNumberValidation.value === undefined || adultContactNumberValidation.value ===
+                    "") {
                     adultContactNumberValidation.invalid = true;
                 }
                 if (this.index === 1 && this.type === 'Adult') {
@@ -615,24 +618,24 @@
                     adultData.type = "Adult";
                     if (this.index === 1) {
                         if (this.allowTitleForLeadPax === true) {
-                            adultData.Title = titleData.value;
+                            adultData.Title = titleData.selectedItem.innerText;
                         }
                         if (this.allowEmailForLeadPax === true) {
                             adultData.Email = emailData.value;
                         }
                         if (this.allowContactNumberForLeadPax === true) {
-                            adultData.CountryCode = countryCodeData.value;
+                            adultData.CountryCode = countryCodeData.selectedItem.innerText;
                             adultData.ContactNumber = contactNumberData.value;
                         }
                     } else {
                         if (this.allowTitle === true) {
-                            adultData.Title = titleData.value;
+                            adultData.Title = titleData.selectedItem.innerText;
                         }
                         if (this.allowEmail === true) {
                             adultData.Email = emailData.value;
                         }
                         if (this.allowContactNumber === true) {
-                            adultData.CountryCode = countryCodeData.value;
+                            adultData.CountryCode = countryCodeData.selectedItem.innerText;
                             adultData.ContactNumber = contactNumberData.value;
                         }
                     }
@@ -647,22 +650,22 @@
                     childData.FirstName = firstNameData.value;
                     childData.LastName = lastNameData.value;
                     if (this.allowTitle === true) {
-                        childData.Title = titleData.value;
+                        childData.Title = titleData.selectedItem.innerText;
                     }
                     if (this.allowEmail === true) {
                         childData.Email = emailData.value;
                     }
                     if (this.allowContactNumber === true) {
-                        childData.CountryCode = countryCodeData.value;
+                        childData.CountryCode = countryCodeData.selectedItem.innerText;
                         childData.ContactNumber = contactNumberData.value;
                     }
                     return childData;
                 }
             }
             _showPaxInfoFields(e) {
-               
+
                 var paxIndex = e.model.index;
-                
+
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
                 if (flag == false) {
                     this.indexArray.push(paxIndex);
@@ -713,7 +716,8 @@
                     this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
                 }
                 var dropdown = e.currentTarget.parentElement.parentElement;
-                dropdown.shadowRoot.querySelector("#menuButton").querySelector("paper-input").shadowRoot.querySelector("#container").querySelector("#input").querySelector("#nativeInput")
+                dropdown.shadowRoot.querySelector("#menuButton").querySelector("paper-input").shadowRoot.querySelector(
+                        "#container").querySelector("#input").querySelector("#nativeInput")
                     .focus();
             }
             _addNewGuest() {
@@ -1044,56 +1048,56 @@
             }
             _showInvalidEmail() {
                 var email = this.shadowRoot.querySelector("#adultEmail").value;
-                 if(email != ""){
-                   if(email != undefined){
-                var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
-                var emailElement = this.shadowRoot.querySelector("#adultEmail");
-                if (!filter.test(email)) {
-                    emailElement.invalid = true;
-                    if (emailElement.invalid === true) {
-                        var PaxInfoEmailLabel = this.shadowRoot.querySelector("#adultEmailLabel");
-                        PaxInfoEmailLabel.hidden = true;
+                if (email != "") {
+                    if (email != undefined) {
+                        var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
+                        var emailElement = this.shadowRoot.querySelector("#adultEmail");
+                        if (!filter.test(email)) {
+                            emailElement.invalid = true;
+                            if (emailElement.invalid === true) {
+                                var PaxInfoEmailLabel = this.shadowRoot.querySelector("#adultEmailLabel");
+                                PaxInfoEmailLabel.hidden = true;
+                            }
+                        } else {
+                            emailElement.invalid = false;
+                        }
                     }
-                } else {
-                    emailElement.invalid = false;
                 }
-                   }
-                 }
             }
             _showInvalidContact() {
                 var contactNumber = this.shadowRoot.querySelector("#adultContactNo").value;
-                   if(contactNumber != ""){
-                   if(contactNumber != undefined){
-                var filter = /^[0-9]+$/;
-                if (!filter.test(contactNumber)) {
-                    var contactNoElement = this.shadowRoot.querySelector("#adultContactNo");
-                    contactNoElement.invalid = true;
-                    contactNoElement.errorMessage = "Contact Number is invalid"
-                } else {
-                    this.shadowRoot.querySelector("#adultContactNo").invalid = false;
+                if (contactNumber != "") {
+                    if (contactNumber != undefined) {
+                        var filter = /^[0-9]+$/;
+                        if (!filter.test(contactNumber)) {
+                            var contactNoElement = this.shadowRoot.querySelector("#adultContactNo");
+                            contactNoElement.invalid = true;
+                            contactNoElement.errorMessage = "Contact Number is invalid"
+                        } else {
+                            this.shadowRoot.querySelector("#adultContactNo").invalid = false;
+                        }
+                    }
                 }
-                   }
-                   }
             }
-           connectedCallback() {
-                 super.connectedCallback();
-                 this.shadowRoot.querySelector("#adultEmail").addEventListener('blur', (event) =>{
+            connectedCallback() {
+                super.connectedCallback();
+                this.shadowRoot.querySelector("#adultEmail").addEventListener('blur', (event) => {
                     this._updatePaxList(event);
-                 });
-                  this.shadowRoot.querySelector("#adultFirstName").addEventListener('blur', (event) =>{
+                });
+                this.shadowRoot.querySelector("#adultFirstName").addEventListener('blur', (event) => {
                     this._updatePaxList(event);
-                 });
-                  this.shadowRoot.querySelector("#adultLastName").addEventListener('blur', (event) =>{
+                });
+                this.shadowRoot.querySelector("#adultLastName").addEventListener('blur', (event) => {
                     this._updatePaxList(event);
-                 });
-                  this.shadowRoot.querySelector("#adultContactNo").addEventListener('blur', (event) =>{
+                });
+                this.shadowRoot.querySelector("#adultContactNo").addEventListener('blur', (event) => {
                     this._updatePaxList(event);
-                 });
-                 //  this.shadowRoot.querySelector("#adultCountryCode").addEventListener('blur', (event) =>{
-                 //    this._updatePaxList(event);
-                 // });                 
-                 
-              }
+                });
+                //  this.shadowRoot.querySelector("#adultCountryCode").addEventListener('blur', (event) =>{
+                //    this._updatePaxList(event);
+                // });                 
+
+            }
             ready() {
                 super.ready();
                 if (this.roomNumber === 1 && this.paxList.length === 0) {
@@ -1111,7 +1115,7 @@
                         "closeIconChild");
                     this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
                         "closeIconChooseGuest");
-                }               
+                }
                 this._defaultOptionValue();
                 this._defaultResourcesValue();
                 this._showAllowFieldsForLeadPax();

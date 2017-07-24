@@ -31,16 +31,6 @@
         margin-left: -5px;
       }
 
-
-
-      .item[smallMobileView] #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: -5px;
-        float: left;
-        margin-top: 3%;
-        visibility: hidden;
-      }
-
       .item[mobileView] .guestName {
         width: 45%;
         margin-left: -5px;
@@ -56,13 +46,6 @@
       }
 
 
-      .item[mobileView] #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: -5px;
-        float: left;
-        margin-top: 3%;
-        visibility: hidden;
-      }
 
       .item[tabletView] .guestName {
         width: 22%;
@@ -103,8 +86,61 @@
         float: left;
       }
 
+
+
+      .item[smallMobileView] #buttonRemove {
+        margin-left: 10px;
+        margin-top: 20px;
+      }
+
+      .item[mobileView] #buttonRemove {
+        margin-left: 15px;
+        margin-top: 6%;
+      }
+
+      .item[tabletView] #buttonRemove {
+        margin-top: 5%;
+        margin-left: 20px;
+      }
+
+      #buttonRemove {
+        margin-top: 4%;
+        margin-left: 65px;
+        width: 60px;
+        color: var(--color-for-button-labels);
+        font-weight: 450;
+      }
+
+      .item[smallMobileView] #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: -13px;
+        float: left;
+        margin-top: 3%;
+        padding-bottom: 30px;
+      }
+
+      .item[mobileView] #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: -13px;
+        float: left;
+        margin-top: 3%;
+        padding-bottom: 30px;
+      }
+
+      .item[tabletView] #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: 50px;
+        float: left;
+        margin-top: 3%;
+        padding-bottom: 30px;
+      }
+
       #addProgramForOtherGuestButton {
-        /*visibility: hidden;*/
+        color: var(--color-for-button-labels);
+        margin-left: 6px;
+        float: left;
+        margin-top: 3%;
+        padding-bottom: 30px;
       }
 
       .item {
@@ -119,30 +155,43 @@
 
     <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}">
 
-      <div>
-        <paper-dropdown-menu label="Guest name" id="guestName{{index}}" class="guestName">
-          <paper-listbox slot="dropdown-content" selected="[[guestNameValue]]">
-            <template is="dom-repeat" items={{paxList}}>
-              <paper-item on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
-            </template>
-          </paper-listbox>
-        </paper-dropdown-menu>
-        <input is="iron-input" type="hidden" bind-value="[[guestNameValue]]">
-      </div>
-      <div>
-        <paper-dropdown-menu label="Program name" id="programName{{index}}" class="programName">
-          <paper-listbox slot="dropdown-content" selected="[[programNameValue]]">
-            <template is="dom-repeat" items={{paxList}}>
-              <paper-item>{{item.membership.programName}}</paper-item>
-            </template>
-          </paper-listbox>
-        </paper-dropdown-menu>
-        <input is="iron-input" type="hidden" bind-value="[[programNameValue]]">
-      </div>
-      <div>
-        <paper-input label="Program number" id="programNumber{{index}}" class="programNumber" value="{{_programNumber()}}"></paper-input>
-      </div>
+      <template is="dom-repeat" items="{{loyaltyPrograms}}" index-as="loyaltyProgramNumber">
+         <div style="clear:both"> 
+          <div>
+            <paper-dropdown-menu label="Guest name" id="guestName{{loyaltyProgramNumber}}" class="guestName" required auto-validate>
+              <paper-listbox slot="dropdown-content" selected="[[guestNameValue]]">
+                <template is="dom-repeat" items={{paxList}}>
+                  <paper-item id="{{loyaltyProgramNumber}}" on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
+                </template>
+              </paper-listbox>
+            </paper-dropdown-menu>
+            <input is="iron-input" type="hidden" bind-value="[[guestNameValue]]">
+          </div>
+          <div>
+            <paper-dropdown-menu label="Program name" id="programName{{loyaltyProgramNumber}}" class="programName" required auto-validate>
+              <paper-listbox slot="dropdown-content" selected="[[programNameValue]]">
+                <template is="dom-repeat" items={{paxList}}>
+                  <paper-item>{{item.membership.programName}}</paper-item>
+                </template>
+              </paper-listbox>
+            </paper-dropdown-menu>
+            <input is="iron-input" type="hidden" bind-value="[[programNameValue]]">
+          </div>
+          <div>
+            <paper-input label="Program number" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-tap="_showValidation" required auto-validate></paper-input>
+          </div>
+          <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
+            <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram">Remove</paper-button>
+          </div>
+         </div> 
+      </template>
 
+
+      <div>
+        <br/>
+        <paper-button id="addProgramForOtherGuestButton" on-tap="_addProgramForOtherGuest">Add program for other guest</paper-button>
+        <br />
+      </div>
     </div>
   </template>
 
@@ -162,6 +211,15 @@
       }
       static get properties() {
         return {
+          loyaltyPrograms: {
+            type: Array,
+            notify: true,
+            value: []
+          },
+          _isRemoveButtonHidden: {
+            type: Boolean,
+            computed: '_lte(loyaltyPrograms.length , 1)'
+          },
           guestNameValue: {
             type: String
           },
@@ -188,12 +246,12 @@
             type: Boolean,
             value: false
           },
-
           paxList: {
             type: Object,
           },
-          loyaltyPrograms: {
+          loyaltyProgramIds: {
             type: Array,
+            value: []
           },
           loyaltyProgramsCount: {
             type: Number,
@@ -201,18 +259,57 @@
           },
         };
       }
-
+      _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
+        return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
+      }
+      _addProgramForOtherGuest(e) {
+        this.push('loyaltyPrograms', {
+          loyaltyProgram: ""
+        });
+      }
+      _deleteLoyaltyProgram(e) {
+        var index = e.model.index;
+        // this.splice('loyaltyProgramIds', index, 1);       
+        this.splice('loyaltyPrograms', index, 1, );
+        this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
+      }
       _showGuestProgramDetails(e) {
         var paxIndex = e.model.index;
         var paxListArray = this.paxList;
-        var programName = this.shadowRoot.querySelector("#programName" + this.index);
+        var guestName = this.shadowRoot.querySelector("#guestName" + e.currentTarget.id);
+        var programName = this.shadowRoot.querySelector("#programName" + e.currentTarget.id);
         var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
         programName.contentElement.selected = programNameIndex;
-        var programNumber = this.shadowRoot.querySelector("#programNumber" + this.index);
+        var programNumber = this.shadowRoot.querySelector("#programNumber" + e.currentTarget.id);
         programNumber.value = paxListArray[paxIndex].membership.number;
+        guestName.invalid = false;
+        programName.invalid = false;
       }
-    }
 
+      _showValidation(e) {
+        var id = e.currentTarget.id;
+        id = id.replace("programNumber", "")
+        var guestName = this.shadowRoot.querySelector("#guestName" + id);
+        var programName = this.shadowRoot.querySelector("#programName" + id);
+        if (guestName.value === undefined || guestName.value === "") {
+          guestName.invalid = true;
+        } else {
+          guestName.invalid = false;
+        }
+        if (programName.value === undefined || programName.value === "") {
+          programName.invalid = true;
+        } else {
+          programName.invalid = false;
+        }
+      }
+        // connectedCallback() {
+        //         super.connectedCallback();
+        //         this.shadowRoot.querySelector("programNumber1").addEventListener('blur', (event) => {
+        //            alert('hi');
+        //         });
+        // }
+    
+    }
     window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);
   </script>
 </dom-module>

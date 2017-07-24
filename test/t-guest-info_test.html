@@ -1,52 +1,344 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>t-guest-info test</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
+  <title>t-guest-info test</title>
 
-    <link rel="import" href="../t-guest-info.html">
-  </head>
-  <body>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
 
-    <test-fixture id="BasicTestFixture">
-      <template>
-        <t-guest-info></t-guest-info>
-      </template>
-    </test-fixture>
+  <link rel="import" href="../t-guest-info.html">
+</head>
 
-    <test-fixture id="ChangedPropertyTestFixture">
-      <template>
-        <t-guest-info prop1="new-prop1"></t-guest-info>
-      </template>
-    </test-fixture>
+<body>
 
-    <script>
-      suite('t-guest-info', function() {
+  <test-fixture id="BasicTestFixture">
+    <template>
+      <t-guest-info></t-guest-info>
+    </template>
+  </test-fixture>
 
-        test('instantiating the element with default properties works', function() {
-          var element = fixture('BasicTestFixture');
-          assert.equal(element.prop1, 't-guest-info');
-          var elementShadowRoot = element.shadowRoot;
-          var elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello t-guest-info!');
-        });
+  <test-fixture id="ChangedPropertyTestFixture">
+    <template>
+      <t-guest-info id="guestInfo" option='{
+                  "allowTitle": true,
+                  "allowTitleForLeadPax" : true,
+                  "allowContactNumber" : false,
+                  "allowContactNumberForLeadPax" : true,
+                  "allowEmail" : false,
+                  "allowEmailForLeadPax" : true,
+                  "requiredField" : [
+                      "firstname",
+                      "lastname"
+                      ],
+                  "requiredFieldForLeadPax" : [
+                      "contactNumber",
+                      "title",
+                      "email"
+                      ]
+                }' resources='{
+                  "icons": {
+                    "terms": "terms-ico"
+                    },
+                  "labels": {
+                    "adult": {
+                      "title": "Adult",
+                      "info": "(12+ years)"
+                      },
+                    "child": {
+                      "title": "Child",
+                      "info": "(upto 11 years)"
+                      }
+                    },
+                  "fields": {
+                    "title": {
+                      "values": [{
+                          "key": "Mr"
+                          },
+                          {
+                          "key": "Ms"
+                          }
+                          ],
+                      "selected": "Mr",
+                      "title": "Title",
+                      "errors": "Please select a title"
+                      },
+                    "firstName": {
+                      "value": "",
+                      "title": "First name",
+                      "errors": "Firstname is required"
+                      },
+                    "lastName": {
+                      "value": "",
+                      "title": "Last name",
+                      "errors": "Lastname is required"
+                      },
+                    "email": {
+                      "value": "",
+                      "info": "We will send you email confirmation on this address",
+                      "errors": "Please enter a valid email address"
+                      },
+                    "countryCode": {
+                      "values": [{
+                          "key": "India +91",
+                          "value": "+91"
+                          },
+                          {
+                          "key": "USA +1",
+                          "value": "+1"
+                          }
+                      ],
+                      "title": "Country code",
+                      "errors": "Countrycode is required"
+                      },
+                    "contactNumber": {
+                      "value": "",
+                      "title": "Contact number",
+                      "info": "In case of any notifications our agent will reach you on this number",
+                      "errors": "Contact number is required"
+                      }                     
+                   },
+                      "newGuest" : "Add New",
+                      "chooseGuest" : "Choose guest" 
+                  }' product=' [{
+        "id": "123123",
+        "name": "El Cortez Hotel &; Casino",
+        "type" : "hotel",
+        "allowLoyalty": true,
+        
+        "rooms": [
+            {
+                "id": "ypHtxnfawEWvbhtBo2ZKOw",
+                "name": "Strip View, 1 King Bed",
+                "onlyLeadPaxInfo": false,
+                "criteria": {
+                    "checkIn": "05/22/2017",
+                    "checkout": "05/28/2017",
+                    "stayDuration": 2,
+                    "traveler": {
+                        "adult": 3,
+                        "child": 1
+                    }
+                }
+                ,
+                 "policies": [
+                     "FREE cancellation before 11:59PM on April 25, 2017"
+                 ]
+            },
+                {
+                "id": "ypHtxnfawEWvbhtBo2ZKOw",
+                "name": "Strip View, 1 King Bed",
+                "onlyLeadPaxInfo": false,
+                "criteria": {
+                    "checkIn": "05/22/2017",
+                    "checkout": "05/28/2017",
+                    "stayDuration": 2,
+                    "traveler": {
+                        "adult": 1,
+                        "child": 1
+                    }
+                }
+                ,
+                 "policies": [
+                     "FREE cancellation before 11:59PM on April 25, 2017"
+                 ]
+            },{
+                "id": "ypHtxnfawEWvbhtBo2ZKOw",
+                "name": "Strip View, 1 King Bed",
+                "onlyLeadPaxInfo": false,
+                "criteria": {
+                    "checkIn": "05/22/2017",
+                    "checkout": "05/28/2017",
+                    "stayDuration": 2,
+                    "traveler": {
+                        "adult": 2,
+                        "child": 1
+                    }
+                }
+                ,
+                 "policies": [
+                     "FREE cancellation before 11:59PM on April 25, 2017"
+                 ]
+            }
+        ]
+    },{
+        "id": "123123",
+        "name": "El Cortez Hotel &; Casino",
+        "type" : "hotel",
+        "allowLoyalty": true,
+        
+        "rooms": [
+            {
+                "id": "ypHtxnfawEWvbhtBo2ZKOw",
+                "name": "Strip View, 1 King Bed",
+                "onlyLeadPaxInfo": false,
+                "criteria": {
+                    "checkIn": "05/22/2017",
+                    "checkout": "05/28/2017",
+                    "stayDuration": 2,
+                    "traveler": {
+                        "adult": 1,
+                        "child": 1
+                    }
+                }
+                ,
+                 "policies": [
+                     "FREE cancellation before 11:59PM on April 25, 2017"
+                 ]
+            }
+        ]
+    }]'></t-guest-info>
+    </template>
+  </test-fixture>
 
-        test('setting a property on the element works', function() {
-          // Create a test fixture
-          var element = fixture('ChangedPropertyTestFixture');
-          assert.equal(element.prop1, 'new-prop1');
-          var elementShadowRoot = element.shadowRoot;
-          var elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
-        });
+  <script>
+    suite('t-guest-info', function () {
 
+      // test('instantiating the element with default properties works', function() {
+      //   var element = fixture('BasicTestFixture');
+      //   assert.equal(element.prop1, 't-guest-info');
+      //   var elementShadowRoot = element.shadowRoot;
+      //   var elementHeader = elementShadowRoot.querySelector('h2');
+      //   assert.equal(elementHeader.innerHTML, 'Hello t-guest-info!');
+      // });
+
+      // test('setting a property on the element works', function() {
+      //   // Create a test fixture
+      //   var element = fixture('ChangedPropertyTestFixture');
+      //   assert.equal(element.prop1, 'new-prop1');
+      //   var elementShadowRoot = element.shadowRoot;
+      //   var elementHeader = elementShadowRoot.querySelector('h2');
+      //   assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
+      // });
+
+      /** T-GUEST-INFO**/
+
+      test('Increased Index', function () {
+        var element = fixture('BasicTestFixture');
+        var elementShadowRoot = element.shadowRoot;
+        var elementHeader = element._increaseIndex(1);
+        assert.equal(elementHeader, 2);
       });
-    </script>
 
-  </body>
+      test('isValidGuest', function () {
+        var element = fixture('BasicTestFixture');
+        var elementShadowRoot = element.shadowRoot;
+        var elementHeader = element.isValidGuest();
+        assert.equal(elementHeader, undefined);
+      });
+
+      /** T-TRAVELER-INFO**/
+
+
+      test('_increasedIndex', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        var result = traveler._increaseIndex(1);
+        assert.equal(result, 2);
+      });
+
+      test('isValid', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        var result = traveler.isValid();
+        assert.equal(result, false);
+      });
+
+      // test('getState', function() {
+      //   var element = fixture('ChangedPropertyTestFixture');
+      //   element.shadowRoot.querySelector("#productTemplate").render();
+      //   element.shadowRoot.querySelector("#travelerTemplate").render();
+      //   var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+      //   var result = traveler.getState();
+      //   assert.equal(result, element.paxList);
+      // });
+
+      test('_lte- if', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        traveler.roomNumber = 1;
+        traveler.paxList.length = 0;
+        var result = traveler._lte(1, 1);
+        assert.equal(result, true);
+      });
+
+      test('_lte- else', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        traveler.roomNumber = 2;
+        traveler.paxList.length = 0;
+        var result = traveler._lte(2, 1);
+        assert.equal(result, false);
+      });
+
+      test('_hideDashForMobileView - if', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        traveler.smallMobileView = true;
+        traveler._hideDashForMobileView();
+        assert.equal(traveler.hideDashForMobileView, true);
+      });
+
+      test('_hideDashForMobileView - else', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        traveler._hideDashForMobileView();
+        assert.equal(traveler.hideDashForMobileView, false);
+      });
+
+      test('_closeIconIfAdultIsOnlyOne', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        traveler.adultPaxCount = 1;
+        traveler._closeIconIfAdultIsOnlyOne();
+        assert.equal(traveler.showCloseButton, true);
+      });
+
+      test('_closePaxAdultInfo', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        traveler.adultPaxCount = 1;
+        traveler._closePaxAdultInfo();
+        assert.equal(traveler.showChooseGuest, false);
+      });
+
+      test('_closePaxChildInfo', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        traveler.adultPaxCount = 1;
+        traveler._closePaxChildInfo();
+        assert.equal(traveler.showChooseGuest, false);
+      });
+
+
+
+
+
+
+    });
+  </script>
+
+</body>
+
 </html>
