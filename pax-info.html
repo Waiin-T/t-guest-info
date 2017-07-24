@@ -537,12 +537,6 @@
                 var adultCountryCodeValidation = this.$.adultCountryCode;
                 var adultContactNumberValidation = this.$.adultContactNo;
                 if (this.paxListAvailable === true) {
-                    // if (adultFirstNameValidation.value != undefined && adultLastNameValiadtion.value !=
-                    //     undefined) {
-                    //     var paxInfo = this.travelerInfo.getState();
-                    //     this.travelerInfo.guestInfo.paxlist.push(paxInfo);
-                    // }
-
                     if ((event.currentTarget.id === "adultFirstName" ||
                             event.currentTarget.id === "adultLastName") &&
                         (this.shadowRoot.querySelector("#adultFirstName").value != undefined ||

@@ -649,6 +649,38 @@
         adultPaxInfo._showInvalidContact();
         assert.equal(contact.invalid, true);
       });
+      test('_updatePaxList', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+        var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+        var e = {
+          "currentTarget" :{
+            "id" : "adultFirstName"
+          }
+        }
+        var firstName = adultPaxInfo.shadowRoot.querySelector("#adultFirstName");
+        adultPaxInfo._updatePaxList(e);
+        assert.equal(firstName.invalid, false);
+      });
+      test('_updatePaxList', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        element.shadowRoot.querySelector("#travelerTemplate").render();
+        var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+        traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+        var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+        var e = {
+          "currentTarget" :{
+            "id" : "adultLastName"
+          }
+        }
+        var lastName = adultPaxInfo.shadowRoot.querySelector("#adultLastName");
+        adultPaxInfo._updatePaxList(e);
+        assert.equal(lastName.invalid, false);
+      });
 
     });
   </script>
