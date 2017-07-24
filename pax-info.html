@@ -564,8 +564,6 @@
                 if (event.currentTarget.id === "adultContactNo") {
                     this._showInvalidContact();
                 }
-
-
             }
             isValidPaxInfo() {
                 var adultFirstNameValidation = this.$.adultFirstName;
@@ -708,17 +706,15 @@
                     }
                     this.showChooseGuest = true;
                     this.showPaxInfoFields = false;
-                    // this.shadowRoot.querySelector("#adultFirstName").focus();
-                    // this.shadowRoot.querySelector("#adultLastName").focus();
 
                 } else {
                     this.shadowRoot.querySelector("#chooseGuest").invalid = true;
                     this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
                 }
-                var dropdown = e.currentTarget.parentElement.parentElement;
-                dropdown.shadowRoot.querySelector("#menuButton").querySelector("paper-input").shadowRoot.querySelector(
-                        "#container").querySelector("#input").querySelector("#nativeInput")
-                    .focus();
+                // var dropdown = e.currentTarget.parentElement.parentElement;
+                // dropdown.shadowRoot.querySelector("#menuButton").querySelector("paper-input").shadowRoot.querySelector(
+                //         "#container").querySelector("#input").querySelector("#nativeInput")
+                //     .focus();
             }
             _addNewGuest() {
                 this.$.adultFirstName.value = '';

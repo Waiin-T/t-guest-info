@@ -269,7 +269,7 @@
                         </div>
                     </template>
                 </div>
-                <template is="dom-repeat" items="{{adultPaxCountArray}}">
+                <template is="dom-repeat" items="{{adultPaxCountArray}}" id="adultPaxTemplate">
                     <div id="paxInfoTemp">
                         <pax-info id="adultPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{paxListAdult}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{indexArray}}" index="{{_increaseIndex(index)}}" traveler-info="{{travelerInfo}}" adult-pax-count="{{adultPaxCount}}"
@@ -280,7 +280,7 @@
                     </div>
                 </template>
 
-                  <template is="dom-repeat" items="{{childPaxCountArray}}">
+                  <template is="dom-repeat" items="{{childPaxCountArray}}" id="childPaxTemplate">
                     <div id="paxInfoTemp">
                         <pax-info id="childPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{paxListChild}}" option="[[option]]"
                             resources="{{resources}}" index-array="{{indexArrayChild}}" type="{{childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
@@ -645,9 +645,6 @@
                 // Internet Explorer 6-11
                 var isIE = /*@cc_on!@*/ false || !!document.documentMode;
                 return !isIE && largeDesktopView;
-            }
-            _getPaxList(index, arr) {
-                return arr[index];
             }
             ready() {
                 super.ready();
