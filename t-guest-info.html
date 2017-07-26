@@ -146,7 +146,8 @@
         <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
           <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
           <div id="tLoyaltyProgram">
-            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(index)}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
+            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(index)}}" pax-list-available="{{paxlistAvailable}}" guest-info="{{guestInfo}}"
+             pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
           </div>
         </div>
         <hr id="lineBreakBetweenProduct">
@@ -296,7 +297,7 @@
            **/
           paxlistAvailable: {
             type: Boolean,
-            value: false
+            value: true
           },
         };
       } //End of Properties.
@@ -394,7 +395,7 @@
         //   this.push('loyaltyProgramIds', loyaltyProgramID)
         // }, 1);
         if (this.paxlist.length === 0) {
-          this.paxlistAvailable = true;
+          this.paxlistAvailable = false;
           this.paxList = [];
         }
         this.guestInfo = this;

@@ -605,7 +605,7 @@
              **Function to load paxlist for choose guest dropdown when paxlist is not given.
              */
             _loadPaxList(e) {
-                if (this.paxListAvailable === true) {
+                if (this.paxListAvailable === false) {
                     var paxInfo = this.travelerInfo.guestInfo.isData();
                     var paxTempArray = [];
                     var prodLen = paxInfo.length;
@@ -620,15 +620,15 @@
                             }
                         }
                     }
-                     var paxList = paxTempArray;
-                     for (var i = 0; i < paxList.length; i++) {
-                    for (var j = i + 1; j < paxList.length; j++) {                       
-                        if (paxList[i].firstName === paxList[j].firstName &&
-                            paxList[i].lastName === paxList[j].lastName ) {
-                            paxList.splice(j, 1);
+                    var paxList = paxTempArray;
+                    for (var i = 0; i < paxList.length; i++) {
+                        for (var j = i + 1; j < paxList.length; j++) {
+                            if (paxList[i].firstName === paxList[j].firstName &&
+                                paxList[i].lastName === paxList[j].lastName) {
+                                paxList.splice(j, 1);
+                            }
                         }
                     }
-                }                   
                     if (this.type === 'Adult') {
                         var adults = paxList.filter(function (item) {
                             return item.type.toLowerCase() === 'adult';
@@ -718,25 +718,29 @@
                     var adultData = {};
                     adultData.type = "Adult";
                     if (this.index === 1) {
-                        if (this.allowTitleForLeadPax === true) {
-                            // adultData.Title = titleData.selectedItem.innerText;
+                        if (this.allowTitleForLeadPax === true && titleData.selectedItem != null) {
+                            adultData.title = titleData.selectedItem.innerText;
                         }
                         if (this.allowEmailForLeadPax === true) {
                             adultData.email = emailData.value;
                         }
                         if (this.allowContactNumberForLeadPax === true) {
-                            // adultData.CountryCode = countryCodeData.selectedItem.innerText;
+                            if (countryCodeData.selectedItem != null) {
+                                adultData.countrycode = countryCodeData.selectedItem.innerText;
+                            }
                             adultData.contact = contactNumberData.value;
                         }
                     } else {
-                        if (this.allowTitle === true) {
-                            // adultData.Title = titleData.selectedItem.innerText;
+                        if (this.allowTitle === true && titleData.selectedItem != null) {
+                            adultData.title = titleData.selectedItem.innerText;
                         }
                         if (this.allowEmail === true) {
                             adultData.email = emailData.value;
                         }
                         if (this.allowContactNumber === true) {
-                            // adultData.CountryCode = countryCodeData.selectedItem.innerText;
+                            if (countryCodeData.selectedItem != null) {
+                                adultData.countrycode = countryCodeData.selectedItem.innerText;
+                            }
                             adultData.contact = contactNumberData.value;
                         }
                     }
@@ -750,14 +754,16 @@
                     childData.type = "Child";
                     childData.firstName = firstNameData.value;
                     childData.lastName = lastNameData.value;
-                    if (this.allowTitle === true) {
-                        // childData.Title = titleData.selectedItem.innerText;
+                    if (this.allowTitle === true && titleData.selectedItem != null) {
+                        childData.title = titleData.selectedItem.innerText;
                     }
                     if (this.allowEmail === true) {
                         childData.email = emailData.value;
                     }
                     if (this.allowContactNumber === true) {
-                        // childData.CountryCode = countryCodeData.selectedItem.innerText;
+                        if (countryCodeData.selectedItem != null) {
+                            childData.countrycode = countryCodeData.selectedItem.innerText;
+                        }
                         childData.contact = contactNumberData.value;
                     }
                     return childData;
@@ -773,7 +779,7 @@
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
                 if (flag == false) {
                     this.indexArray.push(paxIndex);
-                    if (this.paxListAvailable === true) {
+                    if (this.paxListAvailable === false) {
                         var paxListArray = this.tempPaxArray;
                     } else {
                         var paxListArray = this.paxList
@@ -800,8 +806,13 @@
                         .title);
                     adultTitleData.contentElement.selected = titleIndex;
                     adultEmailData.value = paxListArray[paxIndex].email;
+                    if(this.paxListAvailable === false){
+                        var countryCodeIndex = this._resources.countryCodeValues.findIndex(x => x.key ==
+                        paxListArray[paxIndex].countrycode);
+                    }else{
                     var countryCodeIndex = this._resources.countryCodeValues.findIndex(x => x.value ==
                         paxListArray[paxIndex].countrycode);
+                    }
                     adultCountryCodeData.contentElement.selected = countryCodeIndex;
                     adultContactNumberData.value = paxListArray[paxIndex].contact;
                     this.shadowRoot.querySelector("#adultFirstName").invalid = false;
@@ -822,10 +833,6 @@
                     this.shadowRoot.querySelector("#chooseGuest").invalid = true;
                     this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
                 }
-                // var dropdown = e.currentTarget.parentElement.parentElement;
-                // dropdown.shadowRoot.querySelector("#menuButton").querySelector("paper-input").shadowRoot.querySelector(
-                //         "#container").querySelector("#input").querySelector("#nativeInput")
-                //     .focus();
             }
             /**
              *On-click of add new of choose guest.

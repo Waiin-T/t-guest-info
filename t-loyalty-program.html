@@ -156,11 +156,12 @@
     <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}">
 
       <template is="dom-repeat" items="{{loyaltyPrograms}}" index-as="loyaltyProgramNumber">
-         <div style="clear:both"> 
+        <div style="clear:both">
           <div>
-            <paper-dropdown-menu label="Guest name" id="guestName{{loyaltyProgramNumber}}" class="guestName" required auto-validate>
+            <paper-dropdown-menu label="Guest name" id="guestName{{loyaltyProgramNumber}}" class="guestName" on-tap="_updatePaxList"
+              required auto-validate>
               <paper-listbox slot="dropdown-content" selected="[[guestNameValue]]">
-                <template is="dom-repeat" items={{paxList}}>
+                <template is="dom-repeat" items={{tempPaxArray}}>
                   <paper-item id="{{loyaltyProgramNumber}}" on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
                 </template>
               </paper-listbox>
@@ -178,12 +179,13 @@
             <input is="iron-input" type="hidden" bind-value="[[programNameValue]]">
           </div>
           <div>
-            <paper-input label="Program number" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-tap="_showValidation" required auto-validate></paper-input>
+            <paper-input label="Program number" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-tap="_showValidation"
+              required auto-validate></paper-input>
           </div>
           <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
             <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram">Remove</paper-button>
           </div>
-         </div> 
+        </div>
       </template>
 
 
@@ -257,6 +259,13 @@
             type: Number,
             value: ''
           },
+          paxListAvailable: {
+            type: Boolean
+          },
+          tempPaxArray: {
+            type: Array,
+            value: []
+          },
         };
       }
       _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
@@ -274,16 +283,18 @@
         this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
       }
       _showGuestProgramDetails(e) {
-        var paxIndex = e.model.index;
-        var paxListArray = this.paxList;
-        var guestName = this.shadowRoot.querySelector("#guestName" + e.currentTarget.id);
-        var programName = this.shadowRoot.querySelector("#programName" + e.currentTarget.id);
-        var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
-        programName.contentElement.selected = programNameIndex;
-        var programNumber = this.shadowRoot.querySelector("#programNumber" + e.currentTarget.id);
-        programNumber.value = paxListArray[paxIndex].membership.number;
-        guestName.invalid = false;
-        programName.invalid = false;
+        if (this.paxListAvailable != false) {
+          var paxIndex = e.model.index;
+          var paxListArray = this.paxList;
+          var guestName = this.shadowRoot.querySelector("#guestName" + e.currentTarget.id);
+          var programName = this.shadowRoot.querySelector("#programName" + e.currentTarget.id);
+          var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
+          programName.contentElement.selected = programNameIndex;
+          var programNumber = this.shadowRoot.querySelector("#programNumber" + e.currentTarget.id);
+          programNumber.value = paxListArray[paxIndex].membership.number;
+          guestName.invalid = false;
+          programName.invalid = false;
+        }
       }
 
       _showValidation(e) {
@@ -302,13 +313,37 @@
           programName.invalid = false;
         }
       }
-        // connectedCallback() {
-        //         super.connectedCallback();
-        //         this.shadowRoot.querySelector("programNumber1").addEventListener('blur', (event) => {
-        //            alert('hi');
-        //         });
-        // }
-    
+      _updatePaxList() {
+        if (this.paxListAvailable === false) {
+          var paxInfo = this.guestInfo.isData();
+          var paxTempArray = [];
+          var prodLen = paxInfo.length;
+          for (var i = 0; i < prodLen; i++) {
+            var roomLen = paxInfo[i].length;
+            for (var j = 0; j < roomLen; j++) {
+              var paxLen = paxInfo[i][j].length;
+              for (var k = 0; k < paxLen; k++) {
+                if (paxInfo[i][j][k].firstName != null) {
+                  paxTempArray.push(paxInfo[i][j][k]);
+                }
+              }
+            }
+          }
+          var paxList = paxTempArray;
+          for (var i = 0; i < paxList.length; i++) {
+            for (var j = i + 1; j < paxList.length; j++) {
+              if (paxList[i].firstName === paxList[j].firstName &&
+                paxList[i].lastName === paxList[j].lastName) {
+                paxList.splice(j, 1);
+              }
+            }
+          }
+          this.tempPaxArray = paxList;
+        } else {
+          this.tempPaxArray = this.paxList;
+        }
+      }
+
     }
     window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);
   </script>
