@@ -621,8 +621,6 @@
                         }
                     }
                      var paxList = paxTempArray;
-
-                   
                      for (var i = 0; i < paxList.length; i++) {
                     for (var j = i + 1; j < paxList.length; j++) {                       
                         if (paxList[i].firstName === paxList[j].firstName &&
@@ -630,8 +628,7 @@
                             paxList.splice(j, 1);
                         }
                     }
-                }
-                   
+                }                   
                     if (this.type === 'Adult') {
                         var adults = paxList.filter(function (item) {
                             return item.type.toLowerCase() === 'adult';
@@ -648,16 +645,9 @@
                 }
             }
             /**
-             *To update paxlist and to do validation on blur of each input fields.
+             *To do validation on blur of each input fields.
              **/
             _updatePaxList(event) {
-                var adultData = {};
-                var adultFirstNameValidation = this.$.adultFirstName;
-                var adultLastNameValiadtion = this.$.adultLastName;
-                var adultTitleValidation = this.$.adultPaxTitle;
-                var adultEmailValidation = this.$.adultEmail;
-                var adultCountryCodeValidation = this.$.adultCountryCode;
-                var adultContactNumberValidation = this.$.adultContactNo;
                 if (event.currentTarget.id === "adultFirstName") {
                     this.shadowRoot.querySelector("#adultFirstName").invalid = false;
                 }
@@ -670,7 +660,6 @@
                 if (event.currentTarget.id === "adultContactNo") {
                     this._showInvalidContact();
                 }
-
             }
             /*
              **To check validation of a pax on fire of final validation.
