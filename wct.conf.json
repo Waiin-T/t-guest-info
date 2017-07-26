@@ -7,16 +7,15 @@
       "istanbul": {
           "dir": "./coverage",
           "reporters": ["text-summary", "lcov"],
-          "include": [              
+          "include": [
               "/t-guest-info.html",
               "/t-traveler-info.html",
               "/pax-info.html"
           ],
-          "exclude": [
-          ]
+            "exclude":[]
       },
       "local": {
-        "browsers": ["chrome"]
+        "browsers": ["chrome", "firefox"]
     }
   }
 }

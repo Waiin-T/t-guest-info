@@ -17,8 +17,6 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
-<!-- <link rel="import" href="../neon-animation/web-animations.html"> -->
-
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-button/paper-button.html">
@@ -51,31 +49,35 @@
         text-decoration: none;
         font-size: 16px;
       }
+
       .item[smallMobileView] #toolbarLotalty {
         background-color: var(--toolbar-background-color);
         width: 100%;
         height: 50px;
         margin-left: -14px;
       }
+
       .item[smallMobileView] .loyaltyDiv {
         width: 100%;
       }
+
       .item[smallMobileView] #lineBreakBetweenProduct {
         margin-top: 74px;
         clear: both;
         margin-left: -4px;
       }
+
       .item[mobileView] #toolbarLotalty {
         background-color: var(--toolbar-background-color);
         width: 100%;
         height: 50px;
         margin-left: -14px;
       }
+
       .item[mobileView] .loyaltyDiv {
         width: 100%;
         margin-top: 10px;
       }
-      .item[mobileView] #tLoyaltyProgram {}
 
       .item[tabletView] #toolbarLotalty {
         background-color: var(--toolbar-background-color);
@@ -83,17 +85,21 @@
         height: 50px;
         margin-left: -5px;
       }
+
       .item[mobileView] #lineBreakBetweenProduct {
         margin-top: 74px;
         clear: both;
         margin-left: -4px;
       }
+
       .item[tabletView] .loyaltyDiv {
         width: 100%;
       }
+
       .loyaltyDiv {
         width: 67%;
       }
+
       #toolbarLotalty {
         font-size: 16px;
         background-color: var(--toolbar-background-color);
@@ -102,9 +108,11 @@
         margin-top: 20px;
         height: 50px;
       }
+
       #tLoyaltyDatabase {
         margin-top: 2%;
       }
+
       #lineBreakBetweenProduct {
         margin-top: 74px;
         clear: both;
@@ -123,7 +131,7 @@
       <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
       <br /> -->
 
-      <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo" id="productTemplate"> 
+      <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo" id="productTemplate">
         <template is="dom-repeat" items="{{product.rooms}}" as="room" id="travelerTemplate">
 
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" title="{{title}} {{_increaseIndex(index)}}"
@@ -166,53 +174,102 @@
 
       static get properties() {
         return {
+          /**
+          *@private
+           *Object to get t-guest-info component.
+           **/
           guestInfo: Object,
+          /**
+           *Set the property for only lead pax info flag.
+           **/
           onlyLeadPaxInfo: {
             type: Boolean,
             value: true
           },
+          /**
+          *@private
+           *iron media query properties.
+           **/
           smallMobileView: {
             type: Boolean,
             value: false
           },
+           /**
+          *@private
+           *iron media query properties.
+           **/
           mobileView: {
             type: Boolean,
             value: false
           },
+           /**
+          *@private
+           *iron media query properties.
+           **/
           tabletView: {
             type: Boolean,
             value: false
           },
+           /**
+          *@private
+           *iron media query properties.
+           **/
           desktopView: {
             type: Boolean,
             value: false
           },
+           /**
+          *@private
+           *iron media query properties.
+           **/
           largeDesktopView: {
             type: Boolean,
             value: false
           },
+          /**
+          *@private
+           *To set title property for room.
+           **/
           title: {
             type: String,
             value: 'Room'
           },
+          /**
+          *@private
+           *To set subtitle property for room.
+           **/
           subTitle: {
             type: String,
           },
+          /**
+           *Adult pax count set for a room.
+           **/
           adultPaxCount: {
             type: Number
           },
+          /**
+           *Child pax count set for a room.
+           **/
           childPaxCount: {
             type: Number
           },
+          /**
+           *To set the paxList property
+           **/
           paxlist: {
             type: Array,
             value: [],
             notify: true
           },
+          /**
+           *To set the policy lis for a room.
+           **/
           policyList: {
             type: Array
           },
-
+          /**
+           *To set the option for a room.
+           **/
           option: {
             type: Object,
             value: {
@@ -220,15 +277,23 @@
               "requiredFieldForLeadPax": []
             }
           },
+          /**
+           *To set the resources.
+           **/
           resources: {
             type: Object
           },
+          /**
+           *To set the product property.
+           **/
           product: {
             type: Object,
-            value: {
-              "rooms": []
-            }
+            value: {}
           },
+          /**
+          *@private
+           *Set the flag wheather paxList is available or not.
+           **/
           paxlistAvailable: {
             type: Boolean,
             value: false
@@ -236,10 +301,16 @@
         };
       } //End of Properties.
 
+      /**
+       *To increase the index of template by 1.
+       **/
       _increaseIndex(index) {
         var calIndex = index + 1;
         return calIndex;
       }
+      /**
+       *Function to check validation of all fields for all rooms and products.
+       **/
       isValidGuest() {
         var validData = [];
         var valid;
@@ -259,6 +330,9 @@
         }
         return valid;
       }
+      /**
+       *Function to collect data for all rooms and products.
+       **/
       isData() {
         var totalData = [];
         var totalProductPaxArray = [];
@@ -292,6 +366,9 @@
         // console.log(loyaltyTotalData);
         return totalData;
       }
+      /**
+       *Function to collect loyalty program data for all products.
+       **/
       _loyaltyProgramData() {
         var loyaltyProgramObject = {};
         var loyaltyProgramArrayData = [];
@@ -311,7 +388,7 @@
 
       ready() {
         super.ready();
-       
+
         // setTimeout(() => {
         //   var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
         //   this.push('loyaltyProgramIds', loyaltyProgramID)

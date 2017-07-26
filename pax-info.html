@@ -229,8 +229,6 @@
                 margin-top: 15px;
             }
 
-            #adultEmail {}
-
             #adultEmailAndLabel {
                 margin-left: 10px;
                 width: 44%;
@@ -275,9 +273,9 @@
 
 
                 <div hidden$="{{showChooseGuest}}" id="chooseGuestPaxInfoDiv">
-                    <paper-dropdown-menu label="{{chooseGuest}}" id="chooseGuest" required on-tap="_loadPaxList">
+                    <paper-dropdown-menu label="{{_resources.chooseGuest}}" id="chooseGuest" required on-tap="_loadPaxList">
                         <paper-listbox slot="dropdown-content">
-                            <template is="dom-repeat" items="{{paxList}}" id="paxListDomTemp">
+                            <template is="dom-repeat" items="{{tempPaxArray}}" id="paxListDomTemp">
                                 <paper-item on-tap="_showPaxInfoFields">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
                             </template>
                             <paper-item on-tap="_addNewGuest">{{_resources.newGuest}}</paper-item>
@@ -347,41 +345,80 @@
             }
             static get properties() {
                 return {
+                    /**
+                     *@private
+                     *To set hidden property for choose guest dropdown.
+                     **/
                     showChooseGuest: {
                         type: Boolean,
                         value: false
                     },
+                    /**
+                     *@private
+                     *To set hidden property for All pax info fields.
+                     **/
                     showPaxInfoFields: {
                         type: Boolean,
                         value: true
                     },
+                    /**
+                     *@private
+                     *To set iron media queries.
+                     **/
                     smallMobileView: {
                         type: Boolean,
                         value: false
                     },
+                    /**
+                     *@private
+                     *iron media query properties.
+                     **/
                     mobileView: {
                         type: Boolean,
                         value: false
                     },
+                    /**
+                     *@private
+                     *iron media query properties.
+                     **/
                     tabletView: {
                         type: Boolean,
                         value: false
                     },
+                    /**
+                     *@private
+                     *iron media query properties.
+                     **/
                     desktopView: {
                         type: Boolean,
                         value: false
                     },
+                    /**
+                     *@private
+                     *iron media query properties.
+                     **/
                     largeDesktopView: {
                         type: Boolean,
                         value: false
                     },
+                    /**
+                     *@private
+                     *To set adult pax count.
+                     **/
                     adultPaxCount: {
                         type: Number,
                     },
+                    /**
+                     *@private
+                     *Toset the type for 
+                     **/
                     type: {
                         type: String,
                         value: 'Adult 1'
                     },
+                    /**
+                     *Property To set option.
+                     **/
                     option: {
                         type: Object,
                         value: function () {
@@ -404,6 +441,9 @@
                             }
                         }
                     },
+                    /**
+                     *Property to set title for pax.
+                     **/
                     title: {
                         type: String,
                         value: function () {
@@ -415,6 +455,9 @@
                             }
                         }
                     },
+                    /**
+                     *Property to set title info.
+                     **/
                     titleInfo: {
                         type: String,
                         value: function () {
@@ -426,6 +469,9 @@
                             }
                         }
                     },
+                    /**
+                     *Property to set resources default value.
+                     **/
                     _resources: {
                         type: Object,
                         value: function () {
@@ -472,62 +518,138 @@
                             }
                         },
                     },
-                    chooseGuest: {
-                        type: String,
-                        value: 'Choose guest'
-                    },
+                    /**
+                     *Property to set paxList.
+                     **/
                     paxList: {
                         type: Object,
                         value: [],
                         notify: true
                     },
-                    product: {
-                        type: Object,
-                        value: {
-                            "rooms": []
-                        }
-                    },
+                    /**
+                     *Selected value of country code dropdown.
+                     **/
                     countryCodeValue: {
                         type: String,
                         value: '0'
                     },
+                    /**
+                     *Selected value of title dropdown.
+                     **/
                     titleValue: {
                         type: String,
                         value: '0'
                     },
+                    /**
+                     *@private
+                     *Hidden values if user sets validity of following fields to false.
+                     **/
                     showTitle: {
                         type: Boolean,
                         value: true
                     },
+                    /**
+                     *@private
+                     **/
                     showContactNumber: {
                         type: Boolean,
                         value: true
                     },
+                    /**
+                     *@private
+                     **/
                     showEmailAddress: {
                         type: Boolean,
                         value: true
                     },
+                    /**
+                     *@private
+                     **/
                     showEmailAddressInfo: {
                         type: Boolean,
                         value: true
                     },
+                    /**
+                     *@private
+                     **/
                     showTypeLabel: {
                         type: Boolean,
                         value: false
                     },
+                    /**
+                     *@private
+                     *Flag to set wheather paxlist is available or not.
+                     **/
                     paxListAvailable: {
                         type: Boolean
                     },
+                    /**
+                     *@private
+                     *Array to store selected value of chooseguest dropdown for perticular room.
+                     *Used for duplicate guest name error message.
+                     **/
                     indexArray: {
+                        type: Array,
+                        value: []
+                    },
+                    /**
+                     *@private
+                     **/
+                    tempPaxArray: {
                         type: Array,
                         value: []
                     },
                 }
             }
-            _loadPaxList() {
-                this._updatePaxList(event);
+            /*
+             **Function to load paxlist for choose guest dropdown when paxlist is not given.
+             */
+            _loadPaxList(e) {
+                if (this.paxListAvailable === true) {
+                    var paxInfo = this.travelerInfo.guestInfo.isData();
+                    var paxTempArray = [];
+                    var prodLen = paxInfo.length;
+                    for (var i = 0; i < prodLen; i++) {
+                        var roomLen = paxInfo[i].length;
+                        for (var j = 0; j < roomLen; j++) {
+                            var paxLen = paxInfo[i][j].length;
+                            for (var k = 0; k < paxLen; k++) {
+                                if (paxInfo[i][j][k].firstName != null) {
+                                    paxTempArray.push(paxInfo[i][j][k]);
+                                }
+                            }
+                        }
+                    }
+                     var paxList = paxTempArray;
 
+                   
+                     for (var i = 0; i < paxList.length; i++) {
+                    for (var j = i + 1; j < paxList.length; j++) {                       
+                        if (paxList[i].firstName === paxList[j].firstName &&
+                            paxList[i].lastName === paxList[j].lastName ) {
+                            paxList.splice(j, 1);
+                        }
+                    }
+                }
+                   
+                    if (this.type === 'Adult') {
+                        var adults = paxList.filter(function (item) {
+                            return item.type.toLowerCase() === 'adult';
+                        });
+                        this.tempPaxArray = adults;
+                    } else if (this.type === 'Child') {
+                        var child = paxList.filter(function (item) {
+                            return item.type.toLowerCase() === 'child';
+                        });
+                        this.tempPaxArray = child;
+                    }
+                } else {
+                    this.tempPaxArray = this.paxList;
+                }
             }
+            /**
+             *To update paxlist and to do validation on blur of each input fields.
+             **/
             _updatePaxList(event) {
                 var adultData = {};
                 var adultFirstNameValidation = this.$.adultFirstName;
@@ -536,29 +658,23 @@
                 var adultEmailValidation = this.$.adultEmail;
                 var adultCountryCodeValidation = this.$.adultCountryCode;
                 var adultContactNumberValidation = this.$.adultContactNo;
-                if (this.paxListAvailable === true) {
-                    if ((event.currentTarget.id === "adultFirstName" ||
-                            event.currentTarget.id === "adultLastName") &&
-                        (this.shadowRoot.querySelector("#adultFirstName").value != undefined ||
-                            this.shadowRoot.querySelector("#adultLastName").value != undefined)) {
-                        var paxInfo = this.travelerInfo.guestInfo.isData();
-                        this.travelerInfo.guestInfo.paxlist.push(paxInfo);
-                    }
-                }
                 if (event.currentTarget.id === "adultFirstName") {
                     this.shadowRoot.querySelector("#adultFirstName").invalid = false;
                 }
                 if (event.currentTarget.id === "adultLastName") {
                     this.shadowRoot.querySelector("#adultLastName").invalid = false;
                 }
-
                 if (event.currentTarget.id === "adultEmail") {
                     this._showInvalidEmail();
                 }
                 if (event.currentTarget.id === "adultContactNo") {
                     this._showInvalidContact();
                 }
+
             }
+            /*
+             **To check validation of a pax on fire of final validation.
+             */
             isValidPaxInfo() {
                 var adultFirstNameValidation = this.$.adultFirstName;
                 var adultLastNameValiadtion = this.$.adultLastName;
@@ -569,7 +685,8 @@
                 if (adultTitleValidation.value === undefined) {
                     adultTitleValidation.invalid = true;
                 }
-                if (adultFirstNameValidation.value === undefined || adultFirstNameValidation.value === "") {
+                if (adultFirstNameValidation.value === undefined || adultFirstNameValidation.value ===
+                    "") {
                     adultFirstNameValidation.invalid = true;
                 }
                 if (adultLastNameValiadtion.value === undefined || adultLastNameValiadtion.value === "") {
@@ -597,6 +714,9 @@
                     }
                 }
             }
+            /**
+             *To collect data of a pax on fire of final button.
+             **/
             collectData() {
 
                 var firstNameData = this.$.adultFirstName;
@@ -610,50 +730,53 @@
                     adultData.type = "Adult";
                     if (this.index === 1) {
                         if (this.allowTitleForLeadPax === true) {
-                            adultData.Title = titleData.selectedItem.innerText;
+                            // adultData.Title = titleData.selectedItem.innerText;
                         }
                         if (this.allowEmailForLeadPax === true) {
-                            adultData.Email = emailData.value;
+                            adultData.email = emailData.value;
                         }
                         if (this.allowContactNumberForLeadPax === true) {
-                            adultData.CountryCode = countryCodeData.selectedItem.innerText;
-                            adultData.ContactNumber = contactNumberData.value;
+                            // adultData.CountryCode = countryCodeData.selectedItem.innerText;
+                            adultData.contact = contactNumberData.value;
                         }
                     } else {
                         if (this.allowTitle === true) {
-                            adultData.Title = titleData.selectedItem.innerText;
+                            // adultData.Title = titleData.selectedItem.innerText;
                         }
                         if (this.allowEmail === true) {
-                            adultData.Email = emailData.value;
+                            adultData.email = emailData.value;
                         }
                         if (this.allowContactNumber === true) {
-                            adultData.CountryCode = countryCodeData.selectedItem.innerText;
-                            adultData.ContactNumber = contactNumberData.value;
+                            // adultData.CountryCode = countryCodeData.selectedItem.innerText;
+                            adultData.contact = contactNumberData.value;
                         }
                     }
-                    adultData.FirstName = firstNameData.value;
-                    adultData.LastName = lastNameData.value;
+                    adultData.firstName = firstNameData.value;
+                    adultData.lastName = lastNameData.value;
                     return adultData;
                 }
                 if (this.type === 'Child') {
                     var childData = {};
 
                     childData.type = "Child";
-                    childData.FirstName = firstNameData.value;
-                    childData.LastName = lastNameData.value;
+                    childData.firstName = firstNameData.value;
+                    childData.lastName = lastNameData.value;
                     if (this.allowTitle === true) {
-                        childData.Title = titleData.selectedItem.innerText;
+                        // childData.Title = titleData.selectedItem.innerText;
                     }
                     if (this.allowEmail === true) {
-                        childData.Email = emailData.value;
+                        childData.email = emailData.value;
                     }
                     if (this.allowContactNumber === true) {
-                        childData.CountryCode = countryCodeData.selectedItem.innerText;
-                        childData.ContactNumber = contactNumberData.value;
+                        // childData.CountryCode = countryCodeData.selectedItem.innerText;
+                        childData.contact = contactNumberData.value;
                     }
                     return childData;
                 }
             }
+            /**
+             *To show the pax Info input fields on click of element of choose guest dropdown.
+             **/
             _showPaxInfoFields(e) {
 
                 var paxIndex = e.model.index;
@@ -661,7 +784,11 @@
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
                 if (flag == false) {
                     this.indexArray.push(paxIndex);
-                    var paxListArray = this.paxList;
+                    if (this.paxListAvailable === true) {
+                        var paxListArray = this.tempPaxArray;
+                    } else {
+                        var paxListArray = this.paxList
+                    }
                     var divPax = this.$.form.querySelector(("#paxInfoDiv" + (this.index)));
                     var adultFirstNameData = divPax.querySelector("#adultFirstName");
                     var adultLastNameData = divPax.querySelector("#adultLastName");
@@ -679,7 +806,8 @@
 
                     adultFirstNameData.value = paxListArray[paxIndex].firstName;
                     adultLastNameData.value = paxListArray[paxIndex].lastName;
-                    var titleIndex = this._resources.titleValues.findIndex(x => x.key == paxListArray[paxIndex]
+                    var titleIndex = this._resources.titleValues.findIndex(x => x.key == paxListArray[
+                            paxIndex]
                         .title);
                     adultTitleData.contentElement.selected = titleIndex;
                     adultEmailData.value = paxListArray[paxIndex].email;
@@ -710,6 +838,9 @@
                 //         "#container").querySelector("#input").querySelector("#nativeInput")
                 //     .focus();
             }
+            /**
+             *On-click of add new of choose guest.
+             **/
             _addNewGuest() {
                 this.$.adultFirstName.value = '';
                 this.$.adultLastName.value = '';
@@ -738,6 +869,9 @@
                         "closeIconAdult");
                 }
             }
+            /**
+             *Function to hide type lable if adult is only one.
+             **/
             _typeLabelIfAdultIsOnlyOne() {
                 if (this.type === 'Adult') {
                     var adultCount = this.adultPaxCount;
@@ -746,7 +880,9 @@
                     }
                 }
             }
-
+            /**
+             *To show lead pax fields which are allowed in option.
+             **/
             _showAllowFieldsForLeadPax() {
                 if (this.index === 1 && this.type === 'Adult') {
                     var checkLeadPax = this.option.allowContactNumberForLeadPax;
@@ -781,6 +917,9 @@
                 }
 
             }
+            /**
+             *To show input fields for other than lead pax.
+             **/
             _showAllowFields() {
                 var check = this.option.allowContactNumber;
                 if (check === true && this.index != 1) {
@@ -812,11 +951,18 @@
                 var isIE = /*@cc_on!@*/ false || !!document.documentMode;
                 return !isIE && largeDesktopView;
             }
+            /**
+             *To hide lable if adult is only one.
+             **/
             _lte(adultPaxCount, hiddenLabelAdultNumber) {
                 if (this.type === 'Adult') {
                     this.showTypeLabel = adultPaxCount <= hiddenLabelAdultNumber;
                 }
             }
+            /**
+             *To set the style for mobile and tablet view
+             *if user hide title field then firstname and lastname should equally distribute the space.
+             **/
             _dynamicStyle() {
                 if (this.showTitle === false) {
                     var divLen = 2 + 1;
@@ -852,6 +998,9 @@
                     }
                 }
             }
+            /**
+             *To set the default option value.
+             **/
             _defaultOptionValue() {
                 if (this.option === undefined) {
                     this.allowContactNumber;
@@ -889,13 +1038,17 @@
                     }
                 }
             }
+            /**
+             *To set the default reasources.
+             **/
             _defaultResourcesValue() {
                 if (this.resources.icons.terms === undefined) {
                     this._resources.terms;
                 } else {
                     this._resources.terms = this.resources.icons.terms;
                 }
-                if (this.resources.labels.adult === undefined || this.resources.labels.child === undefined) {
+                if (this.resources.labels.adult === undefined || this.resources.labels.child ===
+                    undefined) {
                     this.title;
                     this.titleInfo;
                 } else {
@@ -1032,10 +1185,16 @@
                     this.chooseGuest = this.resources.chooseGuest;
                 }
             }
+            /**
+             *To hide show email info while showing error message.
+             **/
             _showEmailInfo() {
                 this.shadowRoot.querySelector("#adultEmailLabel").hidden = false;
                 this.shadowRoot.querySelector("#adultEmail").invalid = false;
             }
+            /**
+             *To show email validation using filter.
+             **/
             _showInvalidEmail() {
                 var email = this.shadowRoot.querySelector("#adultEmail").value;
                 if (email != "") {
@@ -1045,7 +1204,8 @@
                         if (!filter.test(email)) {
                             emailElement.invalid = true;
                             if (emailElement.invalid === true) {
-                                var PaxInfoEmailLabel = this.shadowRoot.querySelector("#adultEmailLabel");
+                                var PaxInfoEmailLabel = this.shadowRoot.querySelector(
+                                    "#adultEmailLabel");
                                 PaxInfoEmailLabel.hidden = true;
                             }
                         } else {
@@ -1054,6 +1214,9 @@
                     }
                 }
             }
+            /**
+             *TO show contact number using filter.
+             **/
             _showInvalidContact() {
                 var contactNumber = this.shadowRoot.querySelector("#adultContactNo").value;
                 if (contactNumber != "") {
@@ -1069,6 +1232,7 @@
                     }
                 }
             }
+
             connectedCallback() {
                 super.connectedCallback();
                 this.shadowRoot.querySelector("#adultEmail").addEventListener('blur', (event) => {
