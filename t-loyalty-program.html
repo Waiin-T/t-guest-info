@@ -155,7 +155,7 @@
 
     <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}">
 
-      <template is="dom-repeat" items="{{loyaltyPrograms}}" index-as="loyaltyProgramNumber">
+      <template is="dom-repeat" items="{{loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
         <div style="clear:both">
           <div>
             <paper-dropdown-menu label="Guest name" id="guestName{{loyaltyProgramNumber}}" class="guestName" on-tap="_updatePaxList"
@@ -168,7 +168,10 @@
             </paper-dropdown-menu>
             <input is="iron-input" type="hidden" bind-value="[[guestNameValue]]">
           </div>
-          <div>
+          <div hidden$="{{showProgramNameInput}}">
+            <paper-input label="Program name" id="programNameInput{{loyaltyProgramNumber}}" class="programName" required auto-validate></paper-input>
+          </div>
+          <div hidden$="{{showProgramNameDropdown}}">
             <paper-dropdown-menu label="Program name" id="programName{{loyaltyProgramNumber}}" class="programName" required auto-validate>
               <paper-listbox slot="dropdown-content" selected="[[programNameValue]]">
                 <template is="dom-repeat" items={{paxList}}>
@@ -183,7 +186,7 @@
               required auto-validate></paper-input>
           </div>
           <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
-            <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram">Remove</paper-button>
+            <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="{{loyaltyProgramNumber}}">Remove</paper-button>
           </div>
         </div>
       </template>
@@ -266,6 +269,14 @@
             type: Array,
             value: []
           },
+          showProgramNameInput: {
+            type: Boolean,
+            value: true
+          },
+          showProgramNameDropdown: {
+            type: Boolean,
+            value: true
+          }
         };
       }
       _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
@@ -277,7 +288,7 @@
         });
       }
       _deleteLoyaltyProgram(e) {
-        var index = e.model.index;
+        var index = e.currentTarget.className;
         // this.splice('loyaltyProgramIds', index, 1);       
         this.splice('loyaltyPrograms', index, 1, );
         this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
@@ -299,9 +310,10 @@
 
       _showValidation(e) {
         var id = e.currentTarget.id;
-        id = id.replace("programNumber", "")
+        id = id.replace("programNumber", "");
         var guestName = this.shadowRoot.querySelector("#guestName" + id);
         var programName = this.shadowRoot.querySelector("#programName" + id);
+        var programName = this.shadowRoot.querySelector("#programNameInput" + id);
         if (guestName.value === undefined || guestName.value === "") {
           guestName.invalid = true;
         } else {
@@ -343,7 +355,18 @@
           this.tempPaxArray = this.paxList;
         }
       }
-
+      _showProgramName(){
+        if(this.paxListAvailable === false){
+          this.showProgramNameInput = false;
+        }
+        else{
+          this.showProgramNameDropdown = false;
+        }
+      }
+      ready(){
+        super.ready();
+        this._showProgramName();
+      }
     }
     window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);
   </script>

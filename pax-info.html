@@ -284,7 +284,7 @@
                 </div>
                 <div id="paxInfoDiv{{index}}" hidden="{{showPaxInfoFields}}">
                     <div hidden$="{{showTitle}}">
-                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="adultPaxTitle" on-blur="_updatePaxList" required errorMessage="{{_resources.titleError}}">
+                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="adultPaxTitle" on-blur="_updateValidation" required errorMessage="{{_resources.titleError}}">
                             <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
                                 <template is="dom-repeat" items={{_resources.titleValues}}>
                                     <paper-item>{{item.key}}</paper-item>
@@ -295,11 +295,11 @@
                     </div>
 
                     <div>
-                        <paper-input label="{{_resources.firstNameTitle}}" on-blur="_updatePaxList" class="inputAdultCount" id="adultFirstName" required
+                        <paper-input label="{{_resources.firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required
                             errorMessage="{{_resources.firstNameError}}"></paper-input>
                     </div>
                     <div>
-                        <paper-input label="{{_resources.lastNameTitle}}" on-blur="_updatePaxList" id="adultLastName" required errorMessage="{{_resources.lastNameError}}"></paper-input>
+                        <paper-input label="{{_resources.lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_resources.lastNameError}}"></paper-input>
                     </div>
 
                     <!--</div>-->
@@ -310,7 +310,7 @@
                         <div id="adultEmailLabel" hidden$="{{showEmailAddressInfo}}">{{_resources.emailInfo}}</div>
                     </div>
                     <div hidden$="{{showContactNumber}}">
-                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="adultCountryCode" on-blur="_updatePaxList" required>
+                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="adultCountryCode" on-blur="_updateValidation" required>
                             <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
                                 <template is="dom-repeat" items={{_resources.countryCodeValues}}>
                                     <paper-item value="{{item.value}}">{{item.key}}</paper-item>
@@ -320,7 +320,7 @@
                         <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
                     </div>
                     <div>
-                        <paper-input label="{{_resources.contactNumberTitle}}" id="adultContactNo" on-blur="_updatePaxList" hidden$="{{showContactNumber}}"
+                        <paper-input label="{{_resources.contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{showContactNumber}}"
                             required errorMessage="{{_resources.contactNumberError}}"></paper-input>
                     </div>
                 </div>
@@ -647,7 +647,7 @@
             /**
              *To do validation on blur of each input fields.
              **/
-            _updatePaxList(event) {
+            _updateValidation(event) {
                 if (event.currentTarget.id === "adultFirstName") {
                     this.shadowRoot.querySelector("#adultFirstName").invalid = false;
                 }
@@ -674,8 +674,7 @@
                 if (adultTitleValidation.value === undefined) {
                     adultTitleValidation.invalid = true;
                 }
-                if (adultFirstNameValidation.value === undefined || adultFirstNameValidation.value ===
-                    "") {
+                if (adultFirstNameValidation.value === undefined || adultFirstNameValidation.value === "") {
                     adultFirstNameValidation.invalid = true;
                 }
                 if (adultLastNameValiadtion.value === undefined || adultLastNameValiadtion.value === "") {
@@ -707,7 +706,6 @@
              *To collect data of a pax on fire of final button.
              **/
             collectData() {
-
                 var firstNameData = this.$.adultFirstName;
                 var lastNameData = this.$.adultLastName;
                 var titleData = this.$.adultPaxTitle;
@@ -808,7 +806,7 @@
                     adultEmailData.value = paxListArray[paxIndex].email;
                     if(this.paxListAvailable === false){
                         var countryCodeIndex = this._resources.countryCodeValues.findIndex(x => x.key ==
-                        paxListArray[paxIndex].countrycode);
+                        (paxListArray[paxIndex].countrycode).trim());
                     }else{
                     var countryCodeIndex = this._resources.countryCodeValues.findIndex(x => x.value ==
                         paxListArray[paxIndex].countrycode);
@@ -1232,19 +1230,19 @@
             connectedCallback() {
                 super.connectedCallback();
                 this.shadowRoot.querySelector("#adultEmail").addEventListener('blur', (event) => {
-                    this._updatePaxList(event);
+                    this._updateValidation(event);
                 });
                 this.shadowRoot.querySelector("#adultFirstName").addEventListener('blur', (event) => {
-                    this._updatePaxList(event);
+                    this._updateValidation(event);
                 });
                 this.shadowRoot.querySelector("#adultLastName").addEventListener('blur', (event) => {
-                    this._updatePaxList(event);
+                    this._updateValidation(event);
                 });
                 this.shadowRoot.querySelector("#adultContactNo").addEventListener('blur', (event) => {
-                    this._updatePaxList(event);
+                    this._updateValidation(event);
                 });
                 //  this.shadowRoot.querySelector("#adultCountryCode").addEventListener('blur', (event) =>{
-                //    this._updatePaxList(event);
+                //    this._updateValidation(event);
                 // });                 
 
             }

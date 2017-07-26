@@ -621,7 +621,7 @@
                             adult.shadowRoot.querySelector("#adultFirstName").errorMessage =
                                 "Duplicate guest name";
                         }
-                        else{
+                        else if(adult.shadowRoot.querySelector("#adultFirstName").value != undefined && adult.shadowRoot.querySelector("#adultFirstName").value != ""){
                             adult.shadowRoot.querySelector("#adultFirstName").invalid = false;                            
                         }
                     }
@@ -651,7 +651,8 @@
                             child.shadowRoot.querySelector("#adultFirstName").errorMessage =
                                 "Duplicate guest name";
                         }
-                        else{
+                        else
+                        if(child.shadowRoot.querySelector("#adultFirstName").value != undefined && child.shadowRoot.querySelector("#adultFirstName").value != ""){
                             child.shadowRoot.querySelector("#adultFirstName").invalid = false;                            
                         }
                     }

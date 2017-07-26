@@ -649,7 +649,7 @@
         adultPaxInfo._showInvalidContact();
         assert.equal(contact.invalid, true);
       });
-      test('_updatePaxList', function () {
+      test('_updateValidation', function () {
         var element = fixture('ChangedPropertyTestFixture');
         element.shadowRoot.querySelector("#productTemplate").render();
         element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -662,10 +662,10 @@
           }
         }
         var firstName = adultPaxInfo.shadowRoot.querySelector("#adultFirstName");
-        adultPaxInfo._updatePaxList(e);
+        adultPaxInfo._updateValidation(e);
         assert.equal(firstName.invalid, false);
       });
-      test('_updatePaxList', function () {
+      test('_updateValidation', function () {
         var element = fixture('ChangedPropertyTestFixture');
         element.shadowRoot.querySelector("#productTemplate").render();
         element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -678,10 +678,43 @@
           }
         }
         var lastName = adultPaxInfo.shadowRoot.querySelector("#adultLastName");
-        adultPaxInfo._updatePaxList(e);
+        adultPaxInfo._updateValidation(e);
         assert.equal(lastName.invalid, false);
       });
 
+
+      /**
+      *
+      *T-LOYALTY-PROGRAM
+      *
+      **/
+
+       test('_lte ', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        var loyalty = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
+        loyalty.shadowRoot.querySelector("#loyaltyTemp").render();
+        res = loyalty._lte(1,1);
+        assert.equal(res, true);
+      });
+      test('_showGuestProgramDetails ', function () {
+        var element = fixture('ChangedPropertyTestFixture');
+        element.shadowRoot.querySelector("#productTemplate").render();
+        var loyalty = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
+        loyalty.shadowRoot.querySelector("#loyaltyTemp").render();
+        // loyalty.paxListAvailable = false;
+        var e = {
+          "currentTarget" : {
+            "id" : 1
+          },
+          "model": {
+            "index" : 1
+          }
+        }
+       loyalty._showGuestProgramDetails(e);
+        assert.equal(loyalty.guestName, false);
+      });
+      
     });
   </script>
 

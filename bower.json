@@ -14,7 +14,8 @@
     "iron-media-query": "PolymerElements/iron-media-query#^2.0.0",
     "prism-element": "PolymerElements/prism-element#^2.0.1",
     "neon-animation": "PolymerElements/neon-animation#^2.0.1",
-    "iron-test-helpers": "PolymerElements/iron-test-helpers#^2.0.0"
+    "iron-test-helpers": "PolymerElements/iron-test-helpers#^2.0.0",
+    "paper-input": "PolymerElements/paper-input#^2.0.1"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",

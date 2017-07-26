@@ -146,7 +146,7 @@
         <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
           <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
           <div id="tLoyaltyProgram">
-            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(index)}}" pax-list-available="{{paxlistAvailable}}" guest-info="{{guestInfo}}"
+            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" pax-list-available="{{paxlistAvailable}}" guest-info="{{guestInfo}}"
              pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
           </div>
         </div>
@@ -377,7 +377,11 @@
         //   var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (i + 1));
         //   var loyaltyProgramArray = [];
         //   loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
+        // if(this.paxlistAvailable === false){
+        //      loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programNameInput" + (i + 1)).value;
+        // }else{
         //   loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
+        // }
         //   loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
         //   loyaltyProgramArrayData[i] = loyaltyProgramArray;
         // }
