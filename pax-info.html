@@ -643,6 +643,7 @@
                 } else {
                     this.tempPaxArray = this.paxList;
                 }
+                return this.tempPaxArray;
             }
             /**
              *To do validation on blur of each input fields.
@@ -804,7 +805,7 @@
                         .title);
                     adultTitleData.contentElement.selected = titleIndex;
                     adultEmailData.value = paxListArray[paxIndex].email;
-                    if(this.paxListAvailable === false){
+                    if(this.paxListAvailable === false && paxListArray[paxIndex].countrycode != undefined){
                         var countryCodeIndex = this._resources.countryCodeValues.findIndex(x => x.key ==
                         (paxListArray[paxIndex].countrycode).trim());
                     }else{

@@ -620,9 +620,9 @@
                             adult.shadowRoot.querySelector("#adultFirstName").invalid = true;
                             adult.shadowRoot.querySelector("#adultFirstName").errorMessage =
                                 "Duplicate guest name";
-                        }
-                        else if(adult.shadowRoot.querySelector("#adultFirstName").value != undefined && adult.shadowRoot.querySelector("#adultFirstName").value != ""){
-                            adult.shadowRoot.querySelector("#adultFirstName").invalid = false;                            
+                        } else if (adult.shadowRoot.querySelector("#adultFirstName").value != undefined &&
+                            adult.shadowRoot.querySelector("#adultFirstName").value != "") {
+                            adult.shadowRoot.querySelector("#adultFirstName").invalid = false;
                         }
                     }
                 }
@@ -650,10 +650,10 @@
                             child.shadowRoot.querySelector("#adultFirstName").invalid = true;
                             child.shadowRoot.querySelector("#adultFirstName").errorMessage =
                                 "Duplicate guest name";
-                        }
-                        else
-                        if(child.shadowRoot.querySelector("#adultFirstName").value != undefined && child.shadowRoot.querySelector("#adultFirstName").value != ""){
-                            child.shadowRoot.querySelector("#adultFirstName").invalid = false;                            
+                        } else
+                        if (child.shadowRoot.querySelector("#adultFirstName").value != undefined && child.shadowRoot
+                            .querySelector("#adultFirstName").value != "") {
+                            child.shadowRoot.querySelector("#adultFirstName").invalid = false;
                         }
                     }
                 }
@@ -715,7 +715,12 @@
                 var adultPaxInfoVar = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (e.model
                     .index + 1));
                 var firstName = adultPaxInfoVar.shadowRoot.querySelector("#adultFirstName").value;
-                var paxIndex = this.paxList.findIndex(x => x.firstName == firstName);
+                if (this.paxListAvailable === false) {
+                    var paxL = adultPaxInfoVar._loadPaxList(e);
+                    var paxIndex = paxL.findIndex(x => x.firstName == firstName);
+                } else {
+                    var paxIndex = this.paxList.findIndex(x => x.firstName == firstName);
+                }
                 var indexOfPax = this.indexArray.indexOf(paxIndex);
                 if (indexOfPax > -1) {
                     this.indexArray.splice(indexOfPax, 1);
@@ -737,7 +742,12 @@
                 var childPaxInfoVar = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (e.model
                     .index + 1));
                 var firstName = childPaxInfoVar.shadowRoot.querySelector("#adultFirstName").value;
-                var paxIndex = this.paxList.findIndex(x => x.firstName == firstName);
+                if (this.paxListAvailable === false) {
+                    var paxL = childPaxInfoVar._loadPaxList(e);
+                    var paxIndex = paxL.findIndex(x => x.firstName == firstName);
+                } else {
+                    var paxIndex = this.paxList.findIndex(x => x.firstName == firstName);
+                }
                 var indexOfPax = this.indexArrayChild.indexOf(paxIndex);
                 if (indexOfPax > -1) {
                     this.indexArrayChild.splice(indexOfPax, 1);
