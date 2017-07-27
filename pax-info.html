@@ -800,9 +800,14 @@
 
                     adultFirstNameData.value = paxListArray[paxIndex].firstName;
                     adultLastNameData.value = paxListArray[paxIndex].lastName;
-                    var titleIndex = this._resources.titleValues.findIndex(x => x.key == paxListArray[
-                            paxIndex]
-                        .title);
+                    if(this.paxListAvailable === false && paxListArray[paxIndex].title != undefined){
+                    var titleIndex = this._resources.titleValues.findIndex(x => x.key == (paxListArray[
+                            paxIndex].title).trim());
+                    }
+                    else{
+                        var titleIndex = this._resources.titleValues.findIndex(x => x.key == paxListArray[
+                            paxIndex].title);
+                    }
                     adultTitleData.contentElement.selected = titleIndex;
                     adultEmailData.value = paxListArray[paxIndex].email;
                     if(this.paxListAvailable === false && paxListArray[paxIndex].countrycode != undefined){
