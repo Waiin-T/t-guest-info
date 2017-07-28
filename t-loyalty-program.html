@@ -1,5 +1,5 @@
 <dom-module id="t-loyalty-program">
-  <template>
+    <template>
     <style>
        :host {
         display: block;
@@ -164,210 +164,294 @@
                 <template is="dom-repeat" items={{tempPaxArray}}>
                   <paper-item id="{{loyaltyProgramNumber}}" on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
                 </template>
-              </paper-listbox>
-            </paper-dropdown-menu>
-            <input is="iron-input" type="hidden" bind-value="[[guestNameValue]]">
-          </div>
-          <div hidden$="{{showProgramNameInput}}">
-            <paper-input label="Program name" id="programNameInput{{loyaltyProgramNumber}}" class="programName" required auto-validate></paper-input>
-          </div>
-          <div hidden$="{{showProgramNameDropdown}}">
-            <paper-dropdown-menu label="Program name" id="programName{{loyaltyProgramNumber}}" class="programName" required auto-validate>
-              <paper-listbox slot="dropdown-content" selected="[[programNameValue]]">
+    </paper-listbox>
+    </paper-dropdown-menu>
+    <input is="iron-input" type="hidden" bind-value="[[guestNameValue]]">
+    </div>
+    <div hidden$="{{showProgramNameInput}}">
+        <paper-input label="Program name" id="programNameInput{{loyaltyProgramNumber}}" class="programName" required auto-validate></paper-input>
+    </div>
+    <div hidden$="{{showProgramNameDropdown}}">
+        <paper-dropdown-menu label="Program name" id="programName{{loyaltyProgramNumber}}" class="programName" required auto-validate>
+            <paper-listbox slot="dropdown-content" selected="[[programNameValue]]">
                 <template is="dom-repeat" items={{paxList}}>
                   <paper-item>{{item.membership.programName}}</paper-item>
                 </template>
-              </paper-listbox>
-            </paper-dropdown-menu>
-            <input is="iron-input" type="hidden" bind-value="[[programNameValue]]">
-          </div>
-          <div>
-            <paper-input label="Program number" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-tap="_showValidation"
-              required auto-validate></paper-input>
-          </div>
-          <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
-            <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="{{loyaltyProgramNumber}}">Remove</paper-button>
-          </div>
-        </div>
-      </template>
+            </paper-listbox>
+        </paper-dropdown-menu>
+        <input is="iron-input" type="hidden" bind-value="[[programNameValue]]">
+    </div>
+    <div>
+        <paper-input label="Program number" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-tap="_showValidation" required auto-validate></paper-input>
+    </div>
+    <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
+        <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="{{loyaltyProgramNumber}}">Remove</paper-button>
+    </div>
+    </div>
+    </template>
 
 
-      <div>
+    <div>
         <br/>
         <paper-button id="addProgramForOtherGuestButton" on-tap="_addProgramForOtherGuest">Add program for other guest</paper-button>
         <br />
-      </div>
     </div>
-  </template>
+    </div>
+    </template>
 
 
-  <script>
-    /**
-     * `t-loyalty-program`
-     * 
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
-    class TLoyaltyProgram extends Polymer.Element {
-      static get is() {
-        return 't-loyalty-program';
-      }
-      static get properties() {
-        return {
-          loyaltyPrograms: {
-            type: Array,
-            notify: true,
-            value: []
-          },
-          _isRemoveButtonHidden: {
-            type: Boolean,
-            computed: '_lte(loyaltyPrograms.length , 1)'
-          },
-          guestNameValue: {
-            type: String
-          },
-          programNameValue: {
-            type: String
-          },
-          smallMobileView: {
-            type: Boolean,
-            value: false
-          },
-          mobileView: {
-            type: Boolean,
-            value: false
-          },
-          tabletView: {
-            type: Boolean,
-            value: false
-          },
-          desktopView: {
-            type: Boolean,
-            value: false
-          },
-          largeDesktopView: {
-            type: Boolean,
-            value: false
-          },
-          paxList: {
-            type: Object,
-          },
-          loyaltyProgramIds: {
-            type: Array,
-            value: []
-          },
-          loyaltyProgramsCount: {
-            type: Number,
-            value: ''
-          },
-          paxListAvailable: {
-            type: Boolean
-          },
-          tempPaxArray: {
-            type: Array,
-            value: []
-          },
-          showProgramNameInput: {
-            type: Boolean,
-            value: true
-          },
-          showProgramNameDropdown: {
-            type: Boolean,
-            value: true
-          }
-        };
-      }
-      _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
-        return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
-      }
-      _addProgramForOtherGuest(e) {
-        this.push('loyaltyPrograms', {
-          loyaltyProgram: ""
-        });
-      }
-      _deleteLoyaltyProgram(e) {
-        var index = e.currentTarget.className;
-        // this.splice('loyaltyProgramIds', index, 1);       
-        this.splice('loyaltyPrograms', index, 1, );
-        this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
-      }
-      _showGuestProgramDetails(e) {
-        if (this.paxListAvailable != false) {
-          var paxIndex = e.model.index;
-          var paxListArray = this.paxList;
-          var guestName = this.shadowRoot.querySelector("#guestName" + e.currentTarget.id);
-          var programName = this.shadowRoot.querySelector("#programName" + e.currentTarget.id);
-          var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
-          programName.contentElement.selected = programNameIndex;
-          var programNumber = this.shadowRoot.querySelector("#programNumber" + e.currentTarget.id);
-          programNumber.value = paxListArray[paxIndex].membership.number;
-          guestName.invalid = false;
-          programName.invalid = false;
-        }
-      }
-
-      _showValidation(e) {
-        var id = e.currentTarget.id;
-        id = id.replace("programNumber", "");
-        var guestName = this.shadowRoot.querySelector("#guestName" + id);
-        var programName = this.shadowRoot.querySelector("#programName" + id);
-        var programName = this.shadowRoot.querySelector("#programNameInput" + id);
-        if (guestName.value === undefined || guestName.value === "") {
-          guestName.invalid = true;
-        } else {
-          guestName.invalid = false;
-        }
-        if (programName.value === undefined || programName.value === "") {
-          programName.invalid = true;
-        } else {
-          programName.invalid = false;
-        }
-      }
-      _updatePaxList() {
-        if (this.paxListAvailable === false) {
-          var paxInfo = this.guestInfo.isData();
-          var paxTempArray = [];
-          var prodLen = paxInfo.length;
-          for (var i = 0; i < prodLen; i++) {
-            var roomLen = paxInfo[i].length;
-            for (var j = 0; j < roomLen; j++) {
-              var paxLen = paxInfo[i][j].length;
-              for (var k = 0; k < paxLen; k++) {
-                if (paxInfo[i][j][k].firstName != null) {
-                  paxTempArray.push(paxInfo[i][j][k]);
+    <script>
+        /**
+         * `t-loyalty-program`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class TLoyaltyProgram extends Polymer.Element {
+            static get is() {
+                return 't-loyalty-program';
+            }
+            static get properties() {
+                    return {
+                        /**
+                         * @private
+                         *Array for Loyalty Program. 
+                         **/
+                        loyaltyPrograms: {
+                            type: Array,
+                            notify: true,
+                            value: []
+                        },
+                        /**
+                         * @private
+                         * Property to hide remove button when loyalty program is only one.
+                         * */
+                        _isRemoveButtonHidden: {
+                            type: Boolean,
+                            computed: '_lte(loyaltyPrograms.length , 1)'
+                        },
+                        /**
+                         * @private
+                         * Selected value for guest name dropdown.
+                         * */
+                        guestNameValue: {
+                            type: String
+                        },
+                        /**
+                         * @private
+                         * Selected value for program name
+                         * */
+                        programNameValue: {
+                            type: String
+                        },
+                        /**
+                         * @private
+                         * used for iron media query
+                         * */
+                        smallMobileView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         * @private
+                         * used for iron media query
+                         * */
+                        mobileView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         * @private
+                         * used for iron media query
+                         * */
+                        tabletView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         * @private
+                         * used for iron media query
+                         * */
+                        desktopView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         * @private
+                         * used for iron media query
+                         * */
+                        largeDesktopView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         * Used for paxlist
+                         * */
+                        paxList: {
+                            type: Object,
+                        },
+                        /**
+                         * @private
+                         * Loyalty programs id array
+                         * */
+                        loyaltyProgramIds: {
+                            type: Array,
+                            value: []
+                        },
+                        /**
+                         * @private
+                         * This property is used for Loyalty program count.
+                         * */
+                        loyaltyProgramsCount: {
+                            type: Number,
+                            value: ''
+                        },
+                        /**
+                         * @private
+                         * This property set to false if paxlist is not available.
+                         * */
+                        paxListAvailable: {
+                            type: Boolean
+                        },
+                        /**
+                         * @private
+                         * To store temporary paxlist for dropdown.
+                         * */
+                        tempPaxArray: {
+                            type: Array,
+                            value: []
+                        },
+                        /**
+                         * @private
+                         * This is true if paxlist is not available.
+                         * */
+                        showProgramNameInput: {
+                            type: Boolean,
+                            value: true
+                        },
+                        /**
+                         * @private
+                         * This is true if paxlsit ia available.
+                         * */
+                        showProgramNameDropdown: {
+                            type: Boolean,
+                            value: true
+                        }
+                    };
                 }
-              }
+                /**
+                 * To set hidden property of remove button.
+                 * */
+            _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
+                    return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
+                }
+                /**
+                 * To add loyalty program on click of button 'Add Program For Other Button'.
+                 * */
+            _addProgramForOtherGuest(e) {
+                    this.push('loyaltyPrograms', {
+                        loyaltyProgram: ""
+                    });
+                }
+                /**
+                 * To delet loyalty profram on click of button 'Remove'.
+                 * */
+            _deleteLoyaltyProgram(e) {
+                    var index = e.currentTarget.className;
+                    // this.splice('loyaltyProgramIds', index, 1);       
+                    this.splice('loyaltyPrograms', index, 1, );
+                    this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
+                }
+                /**
+                 * Using this function on-tap of guest name.
+                 * Set the program name and program number if paxlist is available.
+                 * */
+            _showGuestProgramDetails(e) {
+                    if (this.paxListAvailable != false) {
+                        var paxIndex = e.model.index;
+                        var paxListArray = this.paxList;
+                        var guestName = this.shadowRoot.querySelector("#guestName" + e.currentTarget.id);
+                        var programName = this.shadowRoot.querySelector("#programName" + e.currentTarget.id);
+                        var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
+                        programName.contentElement.selected = programNameIndex;
+                        var programNumber = this.shadowRoot.querySelector("#programNumber" + e.currentTarget.id);
+                        programNumber.value = paxListArray[paxIndex].membership.number;
+                        guestName.invalid = false;
+                        programName.invalid = false;
+                    }
+                }
+                /**
+                 * To show validation on click of program number.
+                 * */
+            _showValidation(e) {
+                    var id = e.currentTarget.id;
+                    id = id.replace("programNumber", "");
+                    var guestName = this.shadowRoot.querySelector("#guestName" + id);
+                    var programName = this.shadowRoot.querySelector("#programName" + id);
+                    var programName = this.shadowRoot.querySelector("#programNameInput" + id);
+                    if (guestName.value === undefined || guestName.value === "") {
+                        guestName.invalid = true;
+                    } else {
+                        guestName.invalid = false;
+                    }
+                    if (programName.value === undefined || programName.value === "") {
+                        programName.invalid = true;
+                    } else {
+                        programName.invalid = false;
+                    }
+                }
+                /**
+                 * To update the paxlist according to rooms.
+                 * If paxList is not given.
+                 * */
+            _updatePaxList() {
+                    if (this.paxListAvailable === false) {
+                        var paxInfo = this.guestInfo.isData();
+                        var paxTempArray = [];
+                        var prodLen = paxInfo.length;
+                        for (var i = 0; i < prodLen; i++) {
+                            var roomLen = paxInfo[i].length;
+                            for (var j = 0; j < roomLen; j++) {
+                                var paxLen = paxInfo[i][j].length;
+                                for (var k = 0; k < paxLen; k++) {
+                                    if (paxInfo[i][j][k].firstName != null) {
+                                        paxTempArray.push(paxInfo[i][j][k]);
+                                    }
+                                }
+                            }
+                        }
+                        var paxList = paxTempArray;
+                        for (var i = 0; i < paxList.length; i++) {
+                            for (var j = i + 1; j < paxList.length; j++) {
+                                if (paxList[i].firstName === paxList[j].firstName &&
+                                    paxList[i].lastName === paxList[j].lastName) {
+                                    paxList.splice(j, 1);
+                                }
+                            }
+                        }
+                        this.tempPaxArray = paxList;
+                    } else {
+                        this.tempPaxArray = this.paxList;
+                    }
+                }
+                /**
+                 * Program name field if paxlist not given then paper-input.
+                 * Program name field if paxlist is given then paper-dropdown-menu.
+                 * */
+            _showProgramName() {
+                if (this.paxListAvailable === false) {
+                    this.showProgramNameInput = false;
+                } else {
+                    this.showProgramNameDropdown = false;
+                }
             }
-          }
-          var paxList = paxTempArray;
-          for (var i = 0; i < paxList.length; i++) {
-            for (var j = i + 1; j < paxList.length; j++) {
-              if (paxList[i].firstName === paxList[j].firstName &&
-                paxList[i].lastName === paxList[j].lastName) {
-                paxList.splice(j, 1);
-              }
+            ready() {
+                super.ready();
+                this._showProgramName();
             }
-          }
-          this.tempPaxArray = paxList;
-        } else {
-          this.tempPaxArray = this.paxList;
         }
-      }
-      _showProgramName(){
-        if(this.paxListAvailable === false){
-          this.showProgramNameInput = false;
-        }
-        else{
-          this.showProgramNameDropdown = false;
-        }
-      }
-      ready(){
-        super.ready();
-        this._showProgramName();
-      }
-    }
-    window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);
-  </script>
+        window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);
+    </script>
 </dom-module>

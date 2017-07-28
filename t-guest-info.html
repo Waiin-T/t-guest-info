@@ -25,7 +25,7 @@
 <link rel="import" href="t-loyalty-program.html">
 
 <dom-module id="t-guest-info">
-  <template>
+    <template>
     <style>
        :host {
         display: block;
@@ -133,7 +133,6 @@
 
       <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo" id="productTemplate">
         <template is="dom-repeat" items="{{product.rooms}}" as="room" id="travelerTemplate">
-
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" title="{{title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} Adults, {{room.criteria.traveler.child}} Child" policy-List="{{room.policies}}"
             room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]"
@@ -143,269 +142,268 @@
           <br>
         </template>
 
-        <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
-          <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
-          <div id="tLoyaltyProgram">
-            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" pax-list-available="{{paxlistAvailable}}" guest-info="{{guestInfo}}"
-             pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
-          </div>
+    <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
+        <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
+        <div id="tLoyaltyProgram">
+            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" pax-list-available="{{paxlistAvailable}}" guest-info="{{guestInfo}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
         </div>
-        <hr id="lineBreakBetweenProduct">
-      </template>
-
-      <br>
-      <br>
     </div>
-  </template>
+    <hr id="lineBreakBetweenProduct">
+    </template>
 
-  <script>
-    /**
-     * `t-guest-info`
-     * 
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
-    class TGuestInfo extends Polymer.Element {
+    <br>
+    <br>
+    </div>
+    </template>
 
-      static get is() {
-        return 't-guest-info';
-      }
+    <script>
+        /**
+         * `t-guest-info`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class TGuestInfo extends Polymer.Element {
 
-      static get properties() {
-        return {
-          /**
-          *@private
-           *Object to get t-guest-info component.
-           **/
-          guestInfo: Object,
-          /**
-           *Set the property for only lead pax info flag.
-           **/
-          onlyLeadPaxInfo: {
-            type: Boolean,
-            value: true
-          },
-          /**
-          *@private
-           *iron media query properties.
-           **/
-          smallMobileView: {
-            type: Boolean,
-            value: false
-          },
-           /**
-          *@private
-           *iron media query properties.
-           **/
-          mobileView: {
-            type: Boolean,
-            value: false
-          },
-           /**
-          *@private
-           *iron media query properties.
-           **/
-          tabletView: {
-            type: Boolean,
-            value: false
-          },
-           /**
-          *@private
-           *iron media query properties.
-           **/
-          desktopView: {
-            type: Boolean,
-            value: false
-          },
-           /**
-          *@private
-           *iron media query properties.
-           **/
-          largeDesktopView: {
-            type: Boolean,
-            value: false
-          },
-          /**
-          *@private
-           *To set title property for room.
-           **/
-          title: {
-            type: String,
-            value: 'Room'
-          },
-          /**
-          *@private
-           *To set subtitle property for room.
-           **/
-          subTitle: {
-            type: String,
-          },
-          /**
-           *Adult pax count set for a room.
-           **/
-          adultPaxCount: {
-            type: Number
-          },
-          /**
-           *Child pax count set for a room.
-           **/
-          childPaxCount: {
-            type: Number
-          },
-          /**
-           *To set the paxList property
-           **/
-          paxlist: {
-            type: Array,
-            value: [],
-            notify: true
-          },
-          /**
-           *To set the policy lis for a room.
-           **/
-          policyList: {
-            type: Array
-          },
-          /**
-           *To set the option for a room.
-           **/
-          option: {
-            type: Object,
-            value: {
-              "requiredField": [],
-              "requiredFieldForLeadPax": []
+            static get is() {
+                return 't-guest-info';
             }
-          },
-          /**
-           *To set the resources.
-           **/
-          resources: {
-            type: Object
-          },
-          /**
-           *To set the product property.
-           **/
-          product: {
-            type: Object,
-            value: {}
-          },
-          /**
-          *@private
-           *Set the flag wheather paxList is available or not.
-           **/
-          paxlistAvailable: {
-            type: Boolean,
-            value: true
-          },
-        };
-      } //End of Properties.
 
-      /**
-       *To increase the index of template by 1.
-       **/
-      _increaseIndex(index) {
-        var calIndex = index + 1;
-        return calIndex;
-      }
-      /**
-       *Function to check validation of all fields for all rooms and products.
-       **/
-      isValidGuest() {
-        var validData = [];
-        var valid;
-        var productLength = this.product.length;
-        for (var i = 0; i < productLength; i++) {
-          var roomsLength = this.product[i].rooms.length;
-          for (var j = 0; j < roomsLength; j++) {
-            validData[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).isValid();
-          }
-          for (var j = 0; j < roomsLength; j++) {
-            if (validData[j] === false) {
-              valid = false;
-            } else {
-              valid = true;
+            static get properties() {
+                    return {
+                        /**
+                         *@private
+                         *Object to get t-guest-info component.
+                         **/
+                        guestInfo: Object,
+                        /**
+                         *Set the property for only lead pax info flag.
+                         **/
+                        onlyLeadPaxInfo: {
+                            type: Boolean,
+                            value: true
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        smallMobileView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        mobileView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        tabletView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        desktopView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        largeDesktopView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *To set title property for room.
+                         **/
+                        title: {
+                            type: String,
+                            value: 'Room'
+                        },
+                        /**
+                         *@private
+                         *To set subtitle property for room.
+                         **/
+                        subTitle: {
+                            type: String,
+                        },
+                        /**
+                         *Adult pax count set for a room.
+                         **/
+                        adultPaxCount: {
+                            type: Number
+                        },
+                        /**
+                         *Child pax count set for a room.
+                         **/
+                        childPaxCount: {
+                            type: Number
+                        },
+                        /**
+                         *To set the paxList property
+                         **/
+                        paxlist: {
+                            type: Array,
+                            value: [],
+                            notify: true
+                        },
+                        /**
+                         *To set the policy lis for a room.
+                         **/
+                        policyList: {
+                            type: Array
+                        },
+                        /**
+                         *To set the option for a room.
+                         **/
+                        option: {
+                            type: Object,
+                            value: {
+                                "requiredField": [],
+                                "requiredFieldForLeadPax": []
+                            }
+                        },
+                        /**
+                         *To set the resources.
+                         **/
+                        resources: {
+                            type: Object
+                        },
+                        /**
+                         *To set the product property.
+                         **/
+                        product: {
+                            type: Object,
+                            value: {}
+                        },
+                        /**
+                         *@private
+                         *Set the flag wheather paxList is available or not.
+                         **/
+                        paxlistAvailable: {
+                            type: Boolean,
+                            value: true
+                        },
+                    };
+                } //End of Properties.
+
+            /**
+             *To increase the index of template by 1.
+             **/
+            _increaseIndex(index) {
+                    var calIndex = index + 1;
+                    return calIndex;
+                }
+                /**
+                 *Function to check validation of all fields for all rooms and products.
+                 **/
+            isValidGuest() {
+                    var validData = [];
+                    var valid;
+                    var productLength = this.product.length;
+                    for (var i = 0; i < productLength; i++) {
+                        var roomsLength = this.product[i].rooms.length;
+                        for (var j = 0; j < roomsLength; j++) {
+                            validData[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).isValid();
+                        }
+                        for (var j = 0; j < roomsLength; j++) {
+                            if (validData[j] === false) {
+                                valid = false;
+                            } else {
+                                valid = true;
+                            }
+                        }
+                    }
+                    return valid;
+                }
+                /**
+                 *Function to collect data for all rooms and products.
+                 **/
+            isData() {
+                    var totalData = [];
+                    var totalProductPaxArray = [];
+                    var prodLen = this.product.length;
+                    for (var i = 0; i < prodLen; i++) {
+                        var data = [];
+                        var productPaxArray = [];
+                        var roomLen = this.product[i].rooms.length;
+                        for (var j = 0; j < roomLen; j++) {
+                            var productPax = {};
+                            productPax.ProductId = this.product[i].id;
+                            productPax.subProductId = this.product[i].rooms[j].id;
+                            data[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).getState(event);
+                            // console.log(data[j]);
+                            productPax.paxList = data[j];
+                            var productPax1 = productPax;
+                            productPaxArray[j] = productPax1;
+                        }
+                        totalProductPaxArray[i] = productPaxArray;
+                        totalData[i] = data;
+                    };
+                    console.log(totalProductPaxArray);
+                    console.log(totalData);
+
+                    var loyaltyTotalData = [];
+                    for (var i = 0; i < prodLen; i++) {
+                        if (this.product[i].allowLoyalty === true) {
+                            loyaltyTotalData[i] = this._loyaltyProgramData();
+                        }
+                    }
+                    // console.log(loyaltyTotalData);
+                    return totalData;
+                }
+                /**
+                 *Function to collect loyalty program data for all products.
+                 **/
+            _loyaltyProgramData() {
+                var loyaltyProgramObject = {};
+                var loyaltyProgramArrayData = [];
+                // for (var i = 0; i < this.loyaltyPrograms.length; i++) {
+                //   var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (i + 1));
+                //   var loyaltyProgramArray = [];
+                //   loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
+                // if(this.paxlistAvailable === false){
+                //      loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programNameInput" + (i + 1)).value;
+                // }else{
+                //   loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
+                // }
+                //   loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
+                //   loyaltyProgramArrayData[i] = loyaltyProgramArray;
+                // }
+                // console.log(loyaltyProgramArrayData);
+                loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
+                // console.log(loyaltyProgramObject);
+                return loyaltyProgramArrayData;
             }
-          }
+
+            ready() {
+                super.ready();
+
+                // setTimeout(() => {
+                //   var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
+                //   this.push('loyaltyProgramIds', loyaltyProgramID)
+                // }, 1);
+                if (this.paxlist.length === 0) {
+                    this.paxlistAvailable = false;
+                    this.paxList = [];
+                }
+                this.guestInfo = this;
+            }
         }
-        return valid;
-      }
-      /**
-       *Function to collect data for all rooms and products.
-       **/
-      isData() {
-        var totalData = [];
-        var totalProductPaxArray = [];
-        var prodLen = this.product.length;
-        for (var i = 0; i < prodLen; i++) {
-          var data = [];
-          var productPaxArray = [];
-          var roomLen = this.product[i].rooms.length;
-          for (var j = 0; j < roomLen; j++) {
-            var productPax = {};
-            productPax.ProductId = this.product[i].id;
-            productPax.subProductId = this.product[i].rooms[j].id;
-            data[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).getState(event);
-            // console.log(data[j]);
-            productPax.paxList = data[j];
-            var productPax1 = productPax;
-            productPaxArray[j] = productPax1;
-          }
-          totalProductPaxArray[i] = productPaxArray;
-          totalData[i] = data;
-        };
-        console.log(totalProductPaxArray);
-        console.log(totalData);
 
-        var loyaltyTotalData = [];
-        for (var i = 0; i < prodLen; i++) {
-          if (this.product[i].allowLoyalty === true) {
-            loyaltyTotalData[i] = this._loyaltyProgramData();
-          }
-        }
-        // console.log(loyaltyTotalData);
-        return totalData;
-      }
-      /**
-       *Function to collect loyalty program data for all products.
-       **/
-      _loyaltyProgramData() {
-        var loyaltyProgramObject = {};
-        var loyaltyProgramArrayData = [];
-        // for (var i = 0; i < this.loyaltyPrograms.length; i++) {
-        //   var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (i + 1));
-        //   var loyaltyProgramArray = [];
-        //   loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
-        // if(this.paxlistAvailable === false){
-        //      loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programNameInput" + (i + 1)).value;
-        // }else{
-        //   loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
-        // }
-        //   loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
-        //   loyaltyProgramArrayData[i] = loyaltyProgramArray;
-        // }
-        // console.log(loyaltyProgramArrayData);
-        loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
-        // console.log(loyaltyProgramObject);
-        return loyaltyProgramArrayData;
-      }
-
-      ready() {
-        super.ready();
-
-        // setTimeout(() => {
-        //   var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
-        //   this.push('loyaltyProgramIds', loyaltyProgramID)
-        // }, 1);
-        if (this.paxlist.length === 0) {
-          this.paxlistAvailable = false;
-          this.paxList = [];
-        }
-        this.guestInfo = this;
-      }
-    }
-
-    window.customElements.define(TGuestInfo.is, TGuestInfo);
-  </script>
+        window.customElements.define(TGuestInfo.is, TGuestInfo);
+    </script>
 </dom-module>

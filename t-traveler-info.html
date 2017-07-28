@@ -1,5 +1,4 @@
 <link rel="import" href="pax-info.html">
-<link rel="import" href="pax-info-child.html">
 
 <dom-module id="t-traveler-info">
     <template>
@@ -268,8 +267,8 @@
                             <div style="margin-left:20px; margin-top:-11px"> {{item}}</div>
                         </div>
                     </template>
-                </div>
-                <template is="dom-repeat" items="{{adultPaxCountArray}}" id="adultPaxTemplate">
+    </div>
+    <template is="dom-repeat" items="{{adultPaxCountArray}}" id="adultPaxTemplate">
                     <div id="paxInfoTemp">
                         <pax-info id="adultPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{paxListAdult}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{indexArray}}" index="{{_increaseIndex(index)}}" traveler-info="{{travelerInfo}}" adult-pax-count="{{adultPaxCount}}"
@@ -280,7 +279,7 @@
                     </div>
                 </template>
 
-                <template is="dom-repeat" items="{{childPaxCountArray}}" id="childPaxTemplate">
+    <template is="dom-repeat" items="{{childPaxCountArray}}" id="childPaxTemplate">
                     <div id="paxInfoTemp">
                         <pax-info id="childPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{paxListChild}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{indexArrayChild}}" type="{{childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
@@ -290,10 +289,10 @@
                         </div>
                     </div>
                 </template>
-            </div>
-            <!--<div id="extraSpace">
+    </div>
+    <!--<div id="extraSpace">
             </div>-->
-        </div>
+    </div>
     </template>
 
     <script>
@@ -310,289 +309,289 @@
                 return 't-traveler-info';
             }
             static get properties() {
-                return {
-                    /**
-                     *@private
-                     *To set the type adult for pax-info.
-                     **/
-                    adultPax: {
-                        type: String,
-                        value: 'Adult'
-                    },
-                    /**
-                     *@private
-                     *To set the type child for pax-info.
-                     **/
-                    childPax: {
-                        type: String,
-                        value: 'Child'
-                    },
-                    /**
-                     *@private
-                     *Object to get t-traveler-info component.
-                     **/
-                    travelerInfo: {
-                        type: Object,
-                    },
-                    /**
-                     *@private
-                     *Object to get t-guest-info component.
-                     **/
-                    guestInfo: {
-                        type: Object,
-                    },
-                    /**
-                     *@private
-                     *Array to get indexes of selected adult paxList.
-                     *used for duplicate pax selected error message purpose.
-                     **/
-                    indexArray: {
-                        type: Array,
-                        value: []
-                    },
-                    /**
-                     *@private
-                     *Array to get indexes of selected child paxlist.
-                     *used for duplicate pax selected error message purpose.
-                     **/
-                    indexArrayChild: {
-                        type: Array,
-                        value: []
-                    },
-                    /**
-                     *@private
-                     *Pass the current roomNumber to pax-info.
-                     **/
-                    roomNumber: {
-                        type: Number
-                    },
-                    /**
-                     *@private
-                     *To set title property for room.
-                     **/
-                    title: {
-                        type: String,
-                        value: 'Room'
-                    },
-                    /**
-                     *@private
-                     *To set subtitle property for room.
-                     **/
-                    subTitle: {
-                        type: String,
-                    },
-                    /**
-                     *@private
-                     *To set the iron media queries.
-                     **/
-                    smallMobileView: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *iron media query properties.
-                     **/
-                    mobileView: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *iron media query properties.
-                     **/
-                    tabletView: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *iron media query properties.
-                     **/
-                    desktopView: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *iron media query properties.
-                     **/
-                    largeDesktopView: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *Boolean property to hide dash for mobile view.
-                     * which is present in between title and subtitle.
-                     **/
-                    hideDashForMobileView: {
-                        type: Boolean,
-                        value: false
-                        // computed: '_hideDashForMobileView()'
-                    },
-                    /**
-                     *To set the option property.
-                     **/
-                    option: {
-                        type: Object,
-                        value: {
-                            "requiredField": [],
-                            "requiredFieldForLeadPax": []
+                    return {
+                        /**
+                         *@private
+                         *To set the type adult for pax-info.
+                         **/
+                        adultPax: {
+                            type: String,
+                            value: 'Adult'
+                        },
+                        /**
+                         *@private
+                         *To set the type child for pax-info.
+                         **/
+                        childPax: {
+                            type: String,
+                            value: 'Child'
+                        },
+                        /**
+                         *@private
+                         *Object to get t-traveler-info component.
+                         **/
+                        travelerInfo: {
+                            type: Object,
+                        },
+                        /**
+                         *@private
+                         *Object to get t-guest-info component.
+                         **/
+                        guestInfo: {
+                            type: Object,
+                        },
+                        /**
+                         *@private
+                         *Array to get indexes of selected adult paxList.
+                         *used for duplicate pax selected error message purpose.
+                         **/
+                        indexArray: {
+                            type: Array,
+                            value: []
+                        },
+                        /**
+                         *@private
+                         *Array to get indexes of selected child paxlist.
+                         *used for duplicate pax selected error message purpose.
+                         **/
+                        indexArrayChild: {
+                            type: Array,
+                            value: []
+                        },
+                        /**
+                         *@private
+                         *Pass the current roomNumber to pax-info.
+                         **/
+                        roomNumber: {
+                            type: Number
+                        },
+                        /**
+                         *@private
+                         *To set title property for room.
+                         **/
+                        title: {
+                            type: String,
+                            value: 'Room'
+                        },
+                        /**
+                         *@private
+                         *To set subtitle property for room.
+                         **/
+                        subTitle: {
+                            type: String,
+                        },
+                        /**
+                         *@private
+                         *To set the iron media queries.
+                         **/
+                        smallMobileView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        mobileView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        tabletView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        desktopView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        largeDesktopView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *Boolean property to hide dash for mobile view.
+                         * which is present in between title and subtitle.
+                         **/
+                        hideDashForMobileView: {
+                            type: Boolean,
+                            value: false
+                                // computed: '_hideDashForMobileView()'
+                        },
+                        /**
+                         *To set the option property.
+                         **/
+                        option: {
+                            type: Object,
+                            value: {
+                                "requiredField": [],
+                                "requiredFieldForLeadPax": []
+                            }
+                        },
+                        /**
+                         *Adult pax count set for room.
+                         **/
+                        adultPaxCount: {
+                            type: Number,
+                            value: ''
+                        },
+                        /**
+                         *@private
+                         *Array used for adult pax info.
+                         **/
+                        adultPaxCountArray: {
+                            type: Array,
+                            value: ''
+                        },
+                        /**
+                         *Child pax count set for room.
+                         **/
+                        childPaxCount: {
+                            type: Number,
+                            value: ''
+                        },
+                        /**
+                         *@private
+                         *Array used for child pax info.
+                         **/
+                        childPaxCountArray: {
+                            type: Array,
+                            value: ''
+                        },
+                        /**
+                         *To set the paxlist.
+                         **/
+                        paxlist: {
+                            type: Array,
+                        },
+                        /**
+                         *@private
+                         *To set the sorted paxlist for adult.
+                         **/
+                        paxListAdult: {
+                            type: Array,
+                        },
+                        /**
+                         *@private
+                         *To set the sorted pax list for child.
+                         **/
+                        paxListChild: {
+                            type: Array,
+                        },
+                        /**
+                         *@private
+                         *Set the flag where paxlist is available or not.
+                         **/
+                        paxListAvailable: {
+                            type: Boolean,
+                        },
+                        /**
+                         *To set policy list for a room.
+                         **/
+                        policyList: {
+                            type: Array,
+                        },
+                        /**
+                         *To set the resources.
+                         **/
+                        resources: {
+                            type: Object
+                        },
+                        /**
+                         *@private
+                         *Boolean property to hide and show close button.
+                         **/
+                        showCloseButton: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *Computed property to hide and show close button for adult.
+                         **/
+                        _isCloseButtonHidden: {
+                            type: Boolean,
+                            computed: '_lte(adultPaxCountArray.length , 1)'
+                        },
+                        /**
+                         *@private
+                         *Computed property to hide and show close button for child.
+                         **/
+                        _isCloseButtonChildHidden: {
+                            type: Boolean,
+                            computed: '_lteChild()'
                         }
-                    },
-                    /**
-                     *Adult pax count set for room.
-                     **/
-                    adultPaxCount: {
-                        type: Number,
-                        value: ''
-                    },
-                    /**
-                     *@private
-                     *Array used for adult pax info.
-                     **/
-                    adultPaxCountArray: {
-                        type: Array,
-                        value: ''
-                    },
-                    /**
-                     *Child pax count set for room.
-                     **/
-                    childPaxCount: {
-                        type: Number,
-                        value: ''
-                    },
-                    /**
-                     *@private
-                     *Array used for child pax info.
-                     **/
-                    childPaxCountArray: {
-                        type: Array,
-                        value: ''
-                    },
-                    /**
-                     *To set the paxlist.
-                     **/
-                    paxlist: {
-                        type: Array,
-                    },
-                    /**
-                     *@private
-                     *To set the sorted paxlist for adult.
-                     **/
-                    paxListAdult: {
-                        type: Array,
-                    },
-                    /**
-                     *@private
-                     *To set the sorted pax list for child.
-                     **/
-                    paxListChild: {
-                        type: Array,
-                    },
-                    /**
-                     *@private
-                     *Set the flag where paxlist is available or not.
-                     **/
-                    paxListAvailable: {
-                        type: Boolean,
-                    },
-                    /**
-                     *To set policy list for a room.
-                     **/
-                    policyList: {
-                        type: Array,
-                    },
-                    /**
-                     *To set the resources.
-                     **/
-                    resources: {
-                        type: Object
-                    },
-                    /**
-                     *@private
-                     *Boolean property to hide and show close button.
-                     **/
-                    showCloseButton: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *Computed property to hide and show close button for adult.
-                     **/
-                    _isCloseButtonHidden: {
-                        type: Boolean,
-                        computed: '_lte(adultPaxCountArray.length , 1)'
-                    },
-                    /**
-                     *@private
-                     *Computed property to hide and show close button for child.
-                     **/
-                    _isCloseButtonChildHidden: {
-                        type: Boolean,
-                        computed: '_lteChild()'
-                    }
-                };
-            }
-            /**
-             *To fire valiadtion for a room.
-             **/
+                    };
+                }
+                /**
+                 *To fire valiadtion for a room.
+                 **/
             isValid() {
-                var adultValidation = this.isValidAdult();
-                var childValidation = this.isValidChild();
-                if (!(adultValidation && childValidation)) {
-                    return false;
-                } else {
-                    return true;
+                    var adultValidation = this.isValidAdult();
+                    var childValidation = this.isValidChild();
+                    if (!(adultValidation && childValidation)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
-            }
-            /**
-             *To fire validation for adult in a room.
-             **/
+                /**
+                 *To fire validation for adult in a room.
+                 **/
             isValidAdult() {
-                var adultPaxInfoArray = [];
-                var validData = true;
-                for (var i = 1; i <= this.adultPaxCount; i++) {
-                    adultPaxInfoArray[i] = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i))
-                        .isValidPaxInfo();
-                }
-                for (var i = 1; i <= this.adultPaxCount; i++) {
-                    if (adultPaxInfoArray[i] === true) {
-                        validData = false;
+                    var adultPaxInfoArray = [];
+                    var validData = true;
+                    for (var i = 1; i <= this.adultPaxCount; i++) {
+                        adultPaxInfoArray[i] = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i))
+                            .isValidPaxInfo();
+                    }
+                    for (var i = 1; i <= this.adultPaxCount; i++) {
+                        if (adultPaxInfoArray[i] === true) {
+                            validData = false;
+                        }
+                    }
+                    if (validData === true) {
+                        return true;
+                    } else {
+                        return false;
                     }
                 }
-                if (validData === true) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            /**
-             *To fire validation for child in a room.
-             **/
+                /**
+                 *To fire validation for child in a room.
+                 **/
             isValidChild() {
-                var childPaxInfoArray = [];
-                var validData = true;
-                for (var i = 1; i <= this.childPaxCount; i++) {
-                    childPaxInfoArray[i] = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (i))
-                        .isValidPaxInfo();
-                }
-                for (var i = 1; i <= this.childPaxCount; i++) {
-                    if (childPaxInfoArray[i] === true) {
-                        validData = false;
+                    var childPaxInfoArray = [];
+                    var validData = true;
+                    for (var i = 1; i <= this.childPaxCount; i++) {
+                        childPaxInfoArray[i] = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (i))
+                            .isValidPaxInfo();
+                    }
+                    for (var i = 1; i <= this.childPaxCount; i++) {
+                        if (childPaxInfoArray[i] === true) {
+                            validData = false;
+                        }
+                    }
+                    if (validData === true) {
+                        return true;
+                    } else {
+                        return false;
                     }
                 }
-                if (validData === true) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            /**
-             *TO collect data from a room.
-             **/
+                /**
+                 *TO collect data from a room.
+                 **/
             getState(event) {
                 var adultPaxDataArray = [];
                 for (var i = 0; i < this.adultPaxCount; i++) {
@@ -662,149 +661,148 @@
                 return this.paxList;
             }
             setState(paxList) {
-                var count = this.adultPaxCount + this.childPaxCount;
-                var finalData = [];
-                for (var i = 0; i < count; i++) {
-                    finalData[i] = paxList[i];
+                    var count = this.adultPaxCount + this.childPaxCount;
+                    var finalData = [];
+                    for (var i = 0; i < count; i++) {
+                        finalData[i] = paxList[i];
+                    }
                 }
-                // console.log(finalData);
-            }
-            /**
-             *To hide the close button if adult is only one.
-             **/
+                /**
+                 *To hide the close button if adult is only one.
+                 **/
             _lte(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
-                if (this.roomNumber === 1 && this.paxList.length === 0) {
-                    return true;
-                } else {
-                    return adultPaxCountArrayLength <= hiddenButtonAdultNumber;
+                    if (this.roomNumber === 1 && this.paxList.length === 0) {
+                        return true;
+                    } else {
+                        return adultPaxCountArrayLength <= hiddenButtonAdultNumber;
+                    }
                 }
-            }
-            /**
-             *To hide the close button for child pax.
-             **/
+                /**
+                 *To hide the close button for child pax.
+                 **/
             _lteChild() {
-                if (this.roomNumber === 1 && this.paxList.length === 0) {
-                    return true;
-                } else {
-                    return false;
+                    if (this.roomNumber === 1 && this.paxList.length === 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
-            }
-            /**
-             *To hide dash in between title and subtitle at mobileview.
-             **/
+                /**
+                 *To hide dash in between title and subtitle at mobileview.
+                 **/
             _hideDashForMobileView() {
-                if (this.smallMobileView === true || this.mobileView === true) {
-                    this.hideDashForMobileView = true;
-                } else {
-                    this.hideDashForMobileView = false;
+                    if (this.smallMobileView === true || this.mobileView === true) {
+                        this.hideDashForMobileView = true;
+                    } else {
+                        this.hideDashForMobileView = false;
+                    }
                 }
-            }
-            /**
-             *Hide close button if adult is one.
-             **/
+                /**
+                 *Hide close button if adult is one.
+                 **/
             _closeIconIfAdultIsOnlyOne() {
-                var adultCount = this.adultPaxCount;
-                if (adultCount === 1) {
-                    this.showCloseButton = true;
+                    var adultCount = this.adultPaxCount;
+                    if (adultCount === 1) {
+                        this.showCloseButton = true;
+                    }
                 }
-            }
-            /**
-             *on click of close button for adult pax.
-             **/
+                /**
+                 *on click of close button for adult pax.
+                 **/
             _closePaxAdultInfo(e) {
-                var adultPaxInfoVar = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (e.model
-                    .index + 1));
-                var firstName = adultPaxInfoVar.shadowRoot.querySelector("#adultFirstName").value;
-                if (this.paxListAvailable === false) {
-                    var paxL = adultPaxInfoVar._loadPaxList(e);
-                    var paxIndex = paxL.findIndex(x => x.firstName == firstName);
-                } else {
-                    var paxIndex = this.paxList.findIndex(x => x.firstName == firstName);
+                    var adultPaxInfoVar = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (e.model
+                        .index + 1));
+                    var firstName = adultPaxInfoVar.shadowRoot.querySelector("#adultFirstName").value;
+                    if (this.paxListAvailable === false) {
+                        var paxL = adultPaxInfoVar._loadPaxList(e);
+                        var paxIndex = paxL.findIndex(x => x.firstName == firstName);
+                    } else {
+                        var paxIndex = this.paxList.findIndex(x => x.firstName == firstName);
+                    }
+                    var indexOfPax = this.indexArray.indexOf(paxIndex);
+                    if (indexOfPax > -1) {
+                        this.indexArray.splice(indexOfPax, 1);
+                    }
+                    adultPaxInfoVar.showChooseGuest = false;
+                    adultPaxInfoVar.showPaxInfoFields = true;
+                    adultPaxInfoVar.shadowRoot.querySelector("#chooseGuest").invalid = false;
+                    var closeIconAdultVar = this.shadowRoot.querySelector("#closeIconAdult" + (e.model.index + 1))
+                    closeIconAdultVar.classList.add("closeIconChooseGuest");
+                    closeIconAdultVar.classList.remove("closeIconAdult");
+                    var paxInfo = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (e.model.index +
+                        1));
+                    paxInfo.shadowRoot.querySelector("#chooseGuest").contentElement.selected = -1;
                 }
-                var indexOfPax = this.indexArray.indexOf(paxIndex);
-                if (indexOfPax > -1) {
-                    this.indexArray.splice(indexOfPax, 1);
-                }
-                adultPaxInfoVar.showChooseGuest = false;
-                adultPaxInfoVar.showPaxInfoFields = true;
-                adultPaxInfoVar.shadowRoot.querySelector("#chooseGuest").invalid = false;
-                var closeIconAdultVar = this.shadowRoot.querySelector("#closeIconAdult" + (e.model.index + 1))
-                closeIconAdultVar.classList.add("closeIconChooseGuest");
-                closeIconAdultVar.classList.remove("closeIconAdult");
-                var paxInfo = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (e.model.index +
-                    1));
-                paxInfo.shadowRoot.querySelector("#chooseGuest").contentElement.selected = -1;
-            }
-            /**
-             *On click of close button of child pax.
-             **/
+                /**
+                 *On click of close button of child pax.
+                 **/
             _closePaxChildInfo(e) {
-                var childPaxInfoVar = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (e.model
-                    .index + 1));
-                var firstName = childPaxInfoVar.shadowRoot.querySelector("#adultFirstName").value;
-                if (this.paxListAvailable === false) {
-                    var paxL = childPaxInfoVar._loadPaxList(e);
-                    var paxIndex = paxL.findIndex(x => x.firstName == firstName);
-                } else {
-                    var paxIndex = this.paxList.findIndex(x => x.firstName == firstName);
+                    var childPaxInfoVar = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (e.model
+                        .index + 1));
+                    var firstName = childPaxInfoVar.shadowRoot.querySelector("#adultFirstName").value;
+                    if (this.paxListAvailable === false) {
+                        var paxL = childPaxInfoVar._loadPaxList(e);
+                        var paxIndex = paxL.findIndex(x => x.firstName == firstName);
+                    } else {
+                        var paxIndex = this.paxList.findIndex(x => x.firstName == firstName);
+                    }
+                    var indexOfPax = this.indexArrayChild.indexOf(paxIndex);
+                    if (indexOfPax > -1) {
+                        this.indexArrayChild.splice(indexOfPax, 1);
+                    }
+                    childPaxInfoVar.showChooseGuest = false;
+                    childPaxInfoVar.showPaxInfoFields = true;
+                    childPaxInfoVar.shadowRoot.querySelector("#chooseGuest").invalid = false;
+                    var closeIconchildVar = this.shadowRoot.querySelector("#closeIconChild" + (e.model.index +
+                        1))
+                    closeIconchildVar.classList.add("closeIconChooseGuest");
+                    closeIconchildVar.classList.remove("closeIconChild");
+                    var paxInfo = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (e.model.index +
+                        1));
+                    paxInfo.shadowRoot.querySelector("#chooseGuest").contentElement.selected = -1;
                 }
-                var indexOfPax = this.indexArrayChild.indexOf(paxIndex);
-                if (indexOfPax > -1) {
-                    this.indexArrayChild.splice(indexOfPax, 1);
-                }
-                childPaxInfoVar.showChooseGuest = false;
-                childPaxInfoVar.showPaxInfoFields = true;
-                childPaxInfoVar.shadowRoot.querySelector("#chooseGuest").invalid = false;
-                var closeIconchildVar = this.shadowRoot.querySelector("#closeIconChild" + (e.model.index +
-                    1))
-                closeIconchildVar.classList.add("closeIconChooseGuest");
-                closeIconchildVar.classList.remove("closeIconChild");
-                var paxInfo = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (e.model.index +
-                    1));
-                paxInfo.shadowRoot.querySelector("#chooseGuest").contentElement.selected = -1;
-            }
-            /**
-             *To increase the index of template by 1.
-             **/
+                /**
+                 *To increase the index of template by 1.
+                 **/
             _increaseIndex(index) {
-                var calIndex = index + 1;
-                return calIndex;
-            }
-            /**
-             *To sort provided paxList as type adult.
-             **/
+                    var calIndex = index + 1;
+                    return calIndex;
+                }
+                /**
+                 *To sort provided paxList as type adult.
+                 **/
             _getAdultPaxList() {
-                if (this.paxList) {
-                    var paxList = this.paxList;
-                    var adults = paxList.filter(function (item) {
-                        return item.type.toLowerCase() === 'adult';
-                    });
-                    this.paxListAdult = adults;
+                    if (this.paxList) {
+                        var paxList = this.paxList;
+                        var adults = paxList.filter(function(item) {
+                            return item.type.toLowerCase() === 'adult';
+                        });
+                        this.paxListAdult = adults;
+                    }
                 }
-            }
-            /**
-             *To sort provided paxList as type child.
-             **/
+                /**
+                 *To sort provided paxList as type child.
+                 **/
             _getChildPaxList() {
-                if (this.paxList) {
-                    var paxList = this.paxList;
-                    var children = paxList.filter(function (item) {
-                        return item.type.toLowerCase() === 'child';
-                    });
-                    this.paxListChild = children;
+                    if (this.paxList) {
+                        var paxList = this.paxList;
+                        var children = paxList.filter(function(item) {
+                            return item.type.toLowerCase() === 'child';
+                        });
+                        this.paxListChild = children;
+                    }
                 }
-            }
-            /**
-             * Function to set view of internet explorer.       
-             * */
+                /**
+                 * Function to set view of internet explorer.       
+                 * */
             _largeDesktopViewIE(largeDesktopView) {
-                // Internet Explorer 6-11
-                var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-                return isIE && largeDesktopView;
-            }
-            /**
-             * Function for desktop view for browsers other than internet explorer.
-             * */
+                    // Internet Explorer 6-11
+                    var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+                    return isIE && largeDesktopView;
+                }
+                /**
+                 * Function for desktop view for browsers other than internet explorer.
+                 * */
             _largeDesktopViewOther(largeDesktopView) {
                 // Internet Explorer 6-11
                 var isIE = /*@cc_on!@*/ false || !!document.documentMode;

@@ -321,7 +321,7 @@
  	}]
  }]'></t-guest-info>
   <br><br><br><br><br><br><br><br><br><br><br><br>
-  <button id="demoButton" style="color:darkblue; background-color:darkgrey" onclick="fireIsValidMethod()">Test Button</button>
+  <button id="demoButton" style="color:white; background-color:black" onclick="fireIsValidMethod()">Test Button</button>
 
 </body>
 <script>
@@ -330,29 +330,14 @@
     document.getElementById("guestInfo").isData();
 
     var totalData = [];
-    
-  //   var guestInfo = document.getElementById("guestInfo");
     var prodLen = guestInfo.product.length;
-  //   // if (valid === true) {}
-  //   for (var i = 0; i < prodLen; i++) {
-  //     var data = [];
-  //     var roomLen = guestInfo.product[i].rooms.length;
-  //     for (var j = 0; j < roomLen; j++) {
-  //       data[j] = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (j + 1)).getState(event);
-  //     }
-  //     totalData[i] = data;
-  //   }
-  
-  // guestInfo.paxlist = totalData;
-  
-  // console.log(guestInfo.paxlist);
   for (var i = 0; i < prodLen; i++) {
     var roomLen = guestInfo.product[i].rooms.length;
     for (var j = 0; j < roomLen; j++) {
       var traveler = Polymer.dom(guestInfo.root).querySelector("#travelerInfo" + (i + 1) + (j + 1));
       var adultCount = traveler.adultPaxCount;
       for (var k = 0; k < adultCount; k++) {
-        var paxInfoRoom = Polymer.dom(traveler.root).querySelector("#adultPaxInfo" + (k + 1));
+        var paxInfoRoom = Polymer.dom(traveler.root).querySelector("#adultPaxInfo" +(j + 1) +(k + 1));
         var paxInfoEmail = Polymer.dom(paxInfoRoom.root).querySelector("#adultEmail");
         if (paxInfoEmail.invalid === true) {
           var PaxInfoEmailLabel = Polymer.dom(paxInfoRoom.root).querySelector("#adultEmailLabel");

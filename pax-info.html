@@ -273,60 +273,57 @@
 
 
                 <div hidden$="{{showChooseGuest}}" id="chooseGuestPaxInfoDiv">
-                    <paper-dropdown-menu label="{{_resources.chooseGuest}}" id="chooseGuest" required on-tap="_loadPaxList">
+                    <paper-dropdown-menu label="{{chooseGuest}}" id="chooseGuest" required on-tap="_loadPaxList">
                         <paper-listbox slot="dropdown-content">
                             <template is="dom-repeat" items="{{tempPaxArray}}" id="paxListDomTemp">
                                 <paper-item on-tap="_showPaxInfoFields">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
                             </template>
-                            <paper-item on-tap="_addNewGuest">{{_resources.newGuest}}</paper-item>
-                        </paper-listbox>
-                    </paper-dropdown-menu>
-                </div>
-                <div id="paxInfoDiv{{index}}" hidden="{{showPaxInfoFields}}">
-                    <div hidden$="{{showTitle}}">
-                        <paper-dropdown-menu label="{{_resources.titleLabel}}" id="adultPaxTitle" on-blur="_updateValidation" required errorMessage="{{_resources.titleError}}">
-                            <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
-                                <template is="dom-repeat" items={{_resources.titleValues}}>
+    <paper-item on-tap="_addNewGuest">{{newGuest}}</paper-item>
+    </paper-listbox>
+    </paper-dropdown-menu>
+    </div>
+    <div id="paxInfoDiv{{index}}" hidden="{{showPaxInfoFields}}">
+        <div hidden$="{{showTitle}}">
+            <paper-dropdown-menu label="{{titleLabel}}" id="adultPaxTitle" on-blur="_updateValidation" required errorMessage="{{titleError}}">
+                <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
+                    <template is="dom-repeat" items={{titleValues}}>
                                     <paper-item>{{item.key}}</paper-item>
                                 </template>
-                            </paper-listbox>
-                        </paper-dropdown-menu>
-                        <input is="iron-input" type="hidden" bind-value="[[titleValue]]">
-                    </div>
+                </paper-listbox>
+            </paper-dropdown-menu>
+            <input is="iron-input" type="hidden" bind-value="[[titleValue]]">
+        </div>
 
-                    <div>
-                        <paper-input label="{{_resources.firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required
-                            errorMessage="{{_resources.firstNameError}}"></paper-input>
-                    </div>
-                    <div>
-                        <paper-input label="{{_resources.lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_resources.lastNameError}}"></paper-input>
-                    </div>
+        <div>
+            <paper-input label="{{firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{firstNameError}}"></paper-input>
+        </div>
+        <div>
+            <paper-input label="{{lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{lastNameError}}"></paper-input>
+        </div>
 
-                    <!--</div>-->
-                    <!--<div id="inputForm2">-->
-                    <div id="adultEmailAndLabel">
-                        <paper-input label="{{_resources.emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{showEmailAddress}}"
-                            required errorMessage="{{_resources.emailError}}"></paper-input>
-                        <div id="adultEmailLabel" hidden$="{{showEmailAddressInfo}}">{{_resources.emailInfo}}</div>
-                    </div>
-                    <div hidden$="{{showContactNumber}}">
-                        <paper-dropdown-menu label="{{_resources.countryCodeTitle}}" id="adultCountryCode" on-blur="_updateValidation" required>
-                            <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
-                                <template is="dom-repeat" items={{_resources.countryCodeValues}}>
+        <!--</div>-->
+        <!--<div id="inputForm2">-->
+        <div id="adultEmailAndLabel">
+            <paper-input label="{{emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{showEmailAddress}}" required errorMessage="{{emailError}}"></paper-input>
+            <div id="adultEmailLabel" hidden$="{{showEmailAddressInfo}}">{{emailInfo}}</div>
+        </div>
+        <div hidden$="{{showContactNumber}}">
+            <paper-dropdown-menu label="{{countryCodeTitle}}" id="adultCountryCode" on-blur="_updateValidation" required errorMessage="{{countryCodeError}}">
+                <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
+                    <template is="dom-repeat" items={{countryCodeValues}}>
                                     <paper-item value="{{item.value}}">{{item.key}}</paper-item>
                                 </template>
-                            </paper-listbox>
-                        </paper-dropdown-menu>
-                        <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
-                    </div>
-                    <div>
-                        <paper-input label="{{_resources.contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{showContactNumber}}"
-                            required errorMessage="{{_resources.contactNumberError}}"></paper-input>
-                    </div>
-                </div>
-                <!--</div>-->
-            </form>
+                </paper-listbox>
+            </paper-dropdown-menu>
+            <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
         </div>
+        <div>
+            <paper-input label="{{contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{showContactNumber}}" required errorMessage="{{contactNumberError}}"></paper-input>
+        </div>
+    </div>
+    <!--</div>-->
+    </form>
+    </div>
 
     </template>
 
@@ -344,879 +341,1053 @@
                 return 'pax-info';
             }
             static get properties() {
-                return {
-                    /**
-                     *@private
-                     *To set hidden property for choose guest dropdown.
-                     **/
-                    showChooseGuest: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *To set hidden property for All pax info fields.
-                     **/
-                    showPaxInfoFields: {
-                        type: Boolean,
-                        value: true
-                    },
-                    /**
-                     *@private
-                     *To set iron media queries.
-                     **/
-                    smallMobileView: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *iron media query properties.
-                     **/
-                    mobileView: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *iron media query properties.
-                     **/
-                    tabletView: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *iron media query properties.
-                     **/
-                    desktopView: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *iron media query properties.
-                     **/
-                    largeDesktopView: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *To set adult pax count.
-                     **/
-                    adultPaxCount: {
-                        type: Number,
-                    },
-                    /**
-                     *@private
-                     *Toset the type for 
-                     **/
-                    type: {
-                        type: String,
-                        value: 'Adult 1'
-                    },
-                    /**
-                     *Property To set option.
-                     **/
-                    option: {
-                        type: Object,
-                        value: function () {
-                            return {
-                                allowTitle: false,
-                                allowTitleForLeadPax: false,
-                                allowContactNumber: false,
-                                allowContactNumberForLeadPax: false,
-                                allowEmail: false,
-                                allowEmailForLeadPax: false,
-                                requiredField: [
-                                    "firstname",
-                                    "lastname"
-                                ],
-                                requiredFieldForLeadPax: [
-                                    "contactNumber",
-                                    "title",
-                                    "email"
-                                ]
-                            }
-                        }
-                    },
-                    /**
-                     *Property to set title for pax.
-                     **/
-                    title: {
-                        type: String,
-                        value: function () {
-                            if (this.type === 'Adult') {
-                                return 'Adult';
-                            }
-                            if (this.type === 'Child') {
-                                return 'Child';
-                            }
-                        }
-                    },
-                    /**
-                     *Property to set title info.
-                     **/
-                    titleInfo: {
-                        type: String,
-                        value: function () {
-                            if (this.type === 'Adult') {
-                                return '(12+ years)';
-                            }
-                            if (this.type === 'Child') {
-                                return '(upto 11 years)';
-                            }
-                        }
-                    },
-                    /**
-                     *Property to set resources default value.
-                     **/
-                    _resources: {
-                        type: Object,
-                        value: function () {
-                            return {
-                                terms: "terms-ico",
+                    return {
+                        /**
+                         *@private
+                         *To set hidden property for choose guest dropdown.
+                         **/
+                        showChooseGuest: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *To set hidden property for All pax info fields.
+                         **/
+                        showPaxInfoFields: {
+                            type: Boolean,
+                            value: true
+                        },
+                        /**
+                         *@private
+                         *To set iron media queries.
+                         **/
+                        smallMobileView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        mobileView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        tabletView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        desktopView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        largeDesktopView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *To set adult pax count.
+                         **/
+                        adultPaxCount: {
+                            type: Number,
+                        },
+                        /**
+                         *@private
+                         *Toset the type for 
+                         **/
+                        type: {
+                            type: String,
+                            value: 'Adult 1'
+                        },
+                        /**
+                         *Property To set option.
+                         **/
+                        allowTitle: {
+                            type: Boolean,
+                            value: false
+                        },
+                        allowTitleForLeadPax: {
+                            type: Boolean,
+                            value: false
+                        },
+                        allowContactNumber: {
+                            type: Boolean,
+                            value: false
+                        },
+                        allowContactNumberForLeadPax: {
+                            type: Boolean,
+                            value: false
+                        },
+                        allowEmail: {
+                            type: Boolean,
+                            value: false
+                        },
+                        allowEmailForLeadPax: {
+                            type: Boolean,
+                            value: false
+                        },
+                        requiredField: {
+                            type: Array,
+                            value: [
+                                "firstname",
+                                "lastname"
+                            ],
+                        },
+                        requiredFieldForLeadPax: {
+                            type: Array,
+                            value: [
+                                "contactNumber",
+                                "title",
+                                "email"
+                            ]
+                        },
 
-                                titleValues: [{
-                                        "key": "Mr"
-                                    },
-                                    {
-                                        "key": "Ms"
-                                    }
-                                ],
-                                titleSelected: 'Mr',
-                                titleLabel: 'Title',
-                                titleError: 'Please select a title',
-                                firstNameValue: '',
-                                firstNameTitle: 'First name',
-                                firstNameError: 'Firstname is required',
-                                lastNameValue: '',
-                                lastNameTitle: 'Last name',
-                                lastNameError: 'Lastname is required',
-                                emailValue: '',
-                                emailTitle: 'Email address',
-                                emailInfo: 'We will send you email confirmation on this address',
-                                emailError: 'Please enter a valid email address',
-                                countryCodeValues: [{
-                                        "key": "India +91",
-                                        "value": "+91"
-                                    },
-                                    {
-                                        "key": "USA +1",
-                                        "value": "+1"
-                                    }
-                                ],
-                                countryCodeTitle: 'Country code',
-                                countryCodeError: 'Countrycode is required',
-                                contactNumberValue: '',
-                                contactNumberTitle: 'Contact number',
-                                contactNumberInfo: 'In case of any notifications our agent will reach you on this number',
-                                contactNumberError: 'Contact number is required',
-                                newGuest: "New Guest",
-                                chooseGuest: "Choose guest",
+                        /**
+                         * @private
+                         *Property to set title for pax.
+                         **/
+                        title: {
+                            type: String,
+                            value: function() {
+                                if (this.type === 'Adult') {
+                                    return 'Adult';
+                                }
+                                if (this.type === 'Child') {
+                                    return 'Child';
+                                }
                             }
                         },
-                    },
-                    /**
-                     *Property to set paxList.
-                     **/
-                    paxList: {
-                        type: Object,
-                        value: [],
-                        notify: true
-                    },
-                    /**
-                     *Selected value of country code dropdown.
-                     **/
-                    countryCodeValue: {
-                        type: String,
-                        value: '0'
-                    },
-                    /**
-                     *Selected value of title dropdown.
-                     **/
-                    titleValue: {
-                        type: String,
-                        value: '0'
-                    },
-                    /**
-                     *@private
-                     *Hidden values if user sets validity of following fields to false.
-                     **/
-                    showTitle: {
-                        type: Boolean,
-                        value: true
-                    },
-                    /**
-                     *@private
-                     **/
-                    showContactNumber: {
-                        type: Boolean,
-                        value: true
-                    },
-                    /**
-                     *@private
-                     **/
-                    showEmailAddress: {
-                        type: Boolean,
-                        value: true
-                    },
-                    /**
-                     *@private
-                     **/
-                    showEmailAddressInfo: {
-                        type: Boolean,
-                        value: true
-                    },
-                    /**
-                     *@private
-                     **/
-                    showTypeLabel: {
-                        type: Boolean,
-                        value: false
-                    },
-                    /**
-                     *@private
-                     *Flag to set wheather paxlist is available or not.
-                     **/
-                    paxListAvailable: {
-                        type: Boolean
-                    },
-                    /**
-                     *@private
-                     *Array to store selected value of chooseguest dropdown for perticular room.
-                     *Used for duplicate guest name error message.
-                     **/
-                    indexArray: {
-                        type: Array,
-                        value: []
-                    },
-                    /**
-                     *@private
-                     **/
-                    tempPaxArray: {
-                        type: Array,
-                        value: []
-                    },
+                        /**
+                         * @private
+                         *Property to set title info.
+                         **/
+                        titleInfo: {
+                            type: String,
+                            value: function() {
+                                if (this.type === 'Adult') {
+                                    return '(12+ years)';
+                                }
+                                if (this.type === 'Child') {
+                                    return '(upto 11 years)';
+                                }
+                            }
+                        },
+                        /**
+                         * @private
+                         *Property to set resources default value.
+                         **/
+
+                        terms: {
+                            type: String,
+                            value: "terms-ico"
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        titleValues: {
+                            type: Array,
+                            value: [{
+                                "key": "Mr"
+                            }, {
+                                "key": "Ms"
+                            }]
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        titleSelected: {
+                            type: String,
+                            value: 'Mr'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        titleLabel: {
+                            type: String,
+                            value: 'Title'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        titleError: {
+                            type: String,
+                            value: 'Please select a title'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        firstNameValue: {
+                            type: String,
+                            value: ''
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        firstNameTitle: {
+                            type: String,
+                            value: 'First name'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        firstNameError: {
+                            type: String,
+                            value: 'Firstname is required'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        lastNameValue: {
+                            type: String,
+                            value: ''
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        lastNameTitle: {
+                            type: String,
+                            value: 'Last name'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        lastNameError: {
+                            type: String,
+                            value: 'Lastname is required'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        emailValue: {
+                            type: String,
+                            value: ''
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        emailTitle: {
+                            type: String,
+                            value: 'Email address'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        emailInfo: {
+                            type: String,
+                            value: 'We will send you email confirmation on this address'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        emailError: {
+                            type: String,
+                            value: 'Please enter a valid email address'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        countryCodeValues: {
+                            type: Array,
+                            value: [{
+                                "key": "India +91",
+                                "value": "+91"
+                            }, {
+                                "key": "USA +1",
+                                "value": "+1"
+                            }]
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        countryCodeTitle: {
+                            type: String,
+                            value: 'Country code'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        countryCodeError: {
+                            type: String,
+                            value: 'Countrycode is required'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        contactNumberValue: {
+                            type: String,
+                            value: ''
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        contactNumberTitle: {
+                            type: String,
+                            value: 'Contact number'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        contactNumberInfo: {
+                            type: String,
+                            value: 'In case of any notifications our agent will reach you on this number'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        contactNumberError: {
+                            type: String,
+                            value: 'Contact number is required'
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        newGuest: {
+                            type: String,
+                            value: "New Guest"
+                        },
+                        /**
+                         * @private
+                         * To set default resources.
+                         * */
+                        chooseGuest: {
+                            type: String,
+                            value: "Choose guest"
+                        },
+
+                        /**
+                         *Property to set paxList.
+                         **/
+                        paxList: {
+                            type: Object,
+                            value: [],
+                            notify: true
+                        },
+                        /**
+                         *Selected value of country code dropdown.
+                         **/
+                        countryCodeValue: {
+                            type: String,
+                            value: '0'
+                        },
+                        /**
+                         *Selected value of title dropdown.
+                         **/
+                        titleValue: {
+                            type: String,
+                            value: '0'
+                        },
+                        /**
+                         *@private
+                         *Hidden values if user sets validity of following fields to false.
+                         **/
+                        showTitle: {
+                            type: Boolean,
+                            value: true
+                        },
+                        /**
+                         *@private
+                         **/
+                        showContactNumber: {
+                            type: Boolean,
+                            value: true
+                        },
+                        /**
+                         *@private
+                         **/
+                        showEmailAddress: {
+                            type: Boolean,
+                            value: true
+                        },
+                        /**
+                         *@private
+                         **/
+                        showEmailAddressInfo: {
+                            type: Boolean,
+                            value: true
+                        },
+                        /**
+                         *@private
+                         **/
+                        showTypeLabel: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *Flag to set wheather paxlist is available or not.
+                         **/
+                        paxListAvailable: {
+                            type: Boolean
+                        },
+                        /**
+                         *@private
+                         *Array to store selected value of chooseguest dropdown for perticular room.
+                         *Used for duplicate guest name error message.
+                         **/
+                        indexArray: {
+                            type: Array,
+                            value: []
+                        },
+                        /**
+                         *@private
+                         **/
+                        tempPaxArray: {
+                            type: Array,
+                            value: []
+                        },
+                    }
                 }
-            }
-            /*
-             **Function to load paxlist for choose guest dropdown when paxlist is not given.
-             */
+                /*
+                 **Function to load paxlist for choose guest dropdown when paxlist is not given.
+                 */
             _loadPaxList(e) {
-                if (this.paxListAvailable === false) {
-                    var paxInfo = this.travelerInfo.guestInfo.isData();
-                    var paxTempArray = [];
-                    var prodLen = paxInfo.length;
-                    for (var i = 0; i < prodLen; i++) {
-                        var roomLen = paxInfo[i].length;
-                        for (var j = 0; j < roomLen; j++) {
-                            var paxLen = paxInfo[i][j].length;
-                            for (var k = 0; k < paxLen; k++) {
-                                if (paxInfo[i][j][k].firstName != null) {
-                                    paxTempArray.push(paxInfo[i][j][k]);
+                    if (this.paxListAvailable === false) {
+                        var paxInfo = this.travelerInfo.guestInfo.isData();
+                        var paxTempArray = [];
+                        var prodLen = paxInfo.length;
+                        for (var i = 0; i < prodLen; i++) {
+                            var roomLen = paxInfo[i].length;
+                            for (var j = 0; j < roomLen; j++) {
+                                var paxLen = paxInfo[i][j].length;
+                                for (var k = 0; k < paxLen; k++) {
+                                    if (paxInfo[i][j][k].firstName != null) {
+                                        paxTempArray.push(paxInfo[i][j][k]);
+                                    }
                                 }
                             }
                         }
-                    }
-                    var paxList = paxTempArray;
-                    for (var i = 0; i < paxList.length; i++) {
-                        for (var j = i + 1; j < paxList.length; j++) {
-                            if (paxList[i].firstName === paxList[j].firstName &&
-                                paxList[i].lastName === paxList[j].lastName) {
-                                paxList.splice(j, 1);
+                        var paxList = paxTempArray;
+                        for (var i = 0; i < paxList.length; i++) {
+                            for (var j = i + 1; j < paxList.length; j++) {
+                                if (paxList[i].firstName === paxList[j].firstName &&
+                                    paxList[i].lastName === paxList[j].lastName) {
+                                    paxList.splice(j, 1);
+                                }
                             }
                         }
-                    }
-                    if (this.type === 'Adult') {
-                        var adults = paxList.filter(function (item) {
-                            return item.type.toLowerCase() === 'adult';
-                        });
-                        this.tempPaxArray = adults;
-                    } else if (this.type === 'Child') {
-                        var child = paxList.filter(function (item) {
-                            return item.type.toLowerCase() === 'child';
-                        });
-                        this.tempPaxArray = child;
-                    }
-                } else {
-                    this.tempPaxArray = this.paxList;
-                }
-                return this.tempPaxArray;
-            }
-            /**
-             *To do validation on blur of each input fields.
-             **/
-            _updateValidation(event) {
-                if (event.currentTarget.id === "adultFirstName") {
-                    this.shadowRoot.querySelector("#adultFirstName").invalid = false;
-                }
-                if (event.currentTarget.id === "adultLastName") {
-                    this.shadowRoot.querySelector("#adultLastName").invalid = false;
-                }
-                if (event.currentTarget.id === "adultEmail") {
-                    this._showInvalidEmail();
-                }
-                if (event.currentTarget.id === "adultContactNo") {
-                    this._showInvalidContact();
-                }
-            }
-            /*
-             **To check validation of a pax on fire of final validation.
-             */
-            isValidPaxInfo() {
-                var adultFirstNameValidation = this.$.adultFirstName;
-                var adultLastNameValiadtion = this.$.adultLastName;
-                var adultTitleValidation = this.$.adultPaxTitle;
-                var adultEmailValidation = this.$.adultEmail;
-                var adultCountryCodeValidation = this.$.adultCountryCode;
-                var adultContactNumberValidation = this.$.adultContactNo;
-                if (adultTitleValidation.value === undefined) {
-                    adultTitleValidation.invalid = true;
-                }
-                if (adultFirstNameValidation.value === undefined || adultFirstNameValidation.value === "") {
-                    adultFirstNameValidation.invalid = true;
-                }
-                if (adultLastNameValiadtion.value === undefined || adultLastNameValiadtion.value === "") {
-                    adultLastNameValiadtion.invalid = true;
-                }
-                if (adultEmailValidation.value === undefined || adultEmailValidation.value === "") {
-                    adultEmailValidation.invalid = true;
-                }
-                if (adultCountryCodeValidation.value === undefined) {
-                    adultCountryCodeValidation.invalid = true;
-                }
-                if (adultContactNumberValidation.value === undefined || adultContactNumberValidation.value ===
-                    "") {
-                    adultContactNumberValidation.invalid = true;
-                }
-                if (this.index === 1 && this.type === 'Adult') {
-                    if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid ||
-                        adultContactNumberValidation.invalid || adultEmailValidation.invalid ||
-                        adultCountryCodeValidation.invalid || adultTitleValidation.invalid) {
-                        return true;
-                    }
-                } else {
-                    if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid) {
-                        return true;
-                    }
-                }
-            }
-            /**
-             *To collect data of a pax on fire of final button.
-             **/
-            collectData() {
-                var firstNameData = this.$.adultFirstName;
-                var lastNameData = this.$.adultLastName;
-                var titleData = this.$.adultPaxTitle;
-                var emailData = this.$.adultEmail;
-                var countryCodeData = this.$.adultCountryCode;
-                var contactNumberData = this.$.adultContactNo;
-                if (this.type === 'Adult') {
-                    var adultData = {};
-                    adultData.type = "Adult";
-                    if (this.index === 1) {
-                        if (this.allowTitleForLeadPax === true && titleData.selectedItem != null) {
-                            adultData.title = titleData.selectedItem.innerText;
-                        }
-                        if (this.allowEmailForLeadPax === true) {
-                            adultData.email = emailData.value;
-                        }
-                        if (this.allowContactNumberForLeadPax === true) {
-                            if (countryCodeData.selectedItem != null) {
-                                adultData.countrycode = countryCodeData.selectedItem.innerText;
-                            }
-                            adultData.contact = contactNumberData.value;
+                        if (this.type === 'Adult') {
+                            var adults = paxList.filter(function(item) {
+                                return item.type.toLowerCase() === 'adult';
+                            });
+                            this.tempPaxArray = adults;
+                        } else if (this.type === 'Child') {
+                            var child = paxList.filter(function(item) {
+                                return item.type.toLowerCase() === 'child';
+                            });
+                            this.tempPaxArray = child;
                         }
                     } else {
+                        this.tempPaxArray = this.paxList;
+                    }
+                    return this.tempPaxArray;
+                }
+                /**
+                 *To do validation on blur of each input fields.
+                 **/
+            _updateValidation(event) {
+                    if (event.currentTarget.id === "adultFirstName") {
+                        this.shadowRoot.querySelector("#adultFirstName").invalid = false;
+                    }
+                    if (event.currentTarget.id === "adultLastName") {
+                        this.shadowRoot.querySelector("#adultLastName").invalid = false;
+                    }
+                    if (event.currentTarget.id === "adultEmail") {
+                        this._showInvalidEmail();
+                    }
+                    if (event.currentTarget.id === "adultContactNo") {
+                        this._showInvalidContact();
+                    }
+                }
+                /*
+                 **To check validation of a pax on fire of final validation.
+                 */
+            isValidPaxInfo() {
+                    var adultFirstNameValidation = this.$.adultFirstName;
+                    var adultLastNameValiadtion = this.$.adultLastName;
+                    var adultTitleValidation = this.$.adultPaxTitle;
+                    var adultEmailValidation = this.$.adultEmail;
+                    var adultCountryCodeValidation = this.$.adultCountryCode;
+                    var adultContactNumberValidation = this.$.adultContactNo;
+                    if (adultTitleValidation.value === undefined) {
+                        adultTitleValidation.invalid = true;
+                    }
+                    if (adultFirstNameValidation.value === undefined || adultFirstNameValidation.value === "") {
+                        adultFirstNameValidation.invalid = true;
+                    }
+                    if (adultLastNameValiadtion.value === undefined || adultLastNameValiadtion.value === "") {
+                        adultLastNameValiadtion.invalid = true;
+                    }
+                    if (adultEmailValidation.value === undefined || adultEmailValidation.value === "") {
+                        adultEmailValidation.invalid = true;
+                    }
+                    if (adultCountryCodeValidation.value === undefined) {
+                        adultCountryCodeValidation.invalid = true;
+                    }
+                    if (adultContactNumberValidation.value === undefined || adultContactNumberValidation.value ===
+                        "") {
+                        adultContactNumberValidation.invalid = true;
+                    }
+                    if (this.index === 1 && this.type === 'Adult') {
+                        if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid ||
+                            adultContactNumberValidation.invalid || adultEmailValidation.invalid ||
+                            adultCountryCodeValidation.invalid || adultTitleValidation.invalid) {
+                            return true;
+                        }
+                    } else {
+                        if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid) {
+                            return true;
+                        }
+                    }
+                }
+                /**
+                 *To collect data of a pax on fire of final button.
+                 **/
+            collectData() {
+                    var firstNameData = this.$.adultFirstName;
+                    var lastNameData = this.$.adultLastName;
+                    var titleData = this.$.adultPaxTitle;
+                    var emailData = this.$.adultEmail;
+                    var countryCodeData = this.$.adultCountryCode;
+                    var contactNumberData = this.$.adultContactNo;
+                    if (this.type === 'Adult') {
+                        var adultData = {};
+                        adultData.type = "Adult";
+                        if (this.index === 1) {
+                            if (this.allowTitleForLeadPax === true && titleData.selectedItem != null) {
+                                adultData.title = titleData.selectedItem.innerText;
+                            }
+                            if (this.allowEmailForLeadPax === true) {
+                                adultData.email = emailData.value;
+                            }
+                            if (this.allowContactNumberForLeadPax === true) {
+                                if (countryCodeData.selectedItem != null) {
+                                    adultData.countrycode = countryCodeData.selectedItem.innerText;
+                                }
+                                adultData.contact = contactNumberData.value;
+                            }
+                        } else {
+                            if (this.allowTitle === true && titleData.selectedItem != null) {
+                                adultData.title = titleData.selectedItem.innerText;
+                            }
+                            if (this.allowEmail === true) {
+                                adultData.email = emailData.value;
+                            }
+                            if (this.allowContactNumber === true) {
+                                if (countryCodeData.selectedItem != null) {
+                                    adultData.countrycode = countryCodeData.selectedItem.innerText;
+                                }
+                                adultData.contact = contactNumberData.value;
+                            }
+                        }
+                        adultData.firstName = firstNameData.value;
+                        adultData.lastName = lastNameData.value;
+                        return adultData;
+                    }
+                    if (this.type === 'Child') {
+                        var childData = {};
+
+                        childData.type = "Child";
+                        childData.firstName = firstNameData.value;
+                        childData.lastName = lastNameData.value;
                         if (this.allowTitle === true && titleData.selectedItem != null) {
-                            adultData.title = titleData.selectedItem.innerText;
+                            childData.title = titleData.selectedItem.innerText;
                         }
                         if (this.allowEmail === true) {
-                            adultData.email = emailData.value;
+                            childData.email = emailData.value;
                         }
                         if (this.allowContactNumber === true) {
                             if (countryCodeData.selectedItem != null) {
-                                adultData.countrycode = countryCodeData.selectedItem.innerText;
+                                childData.countrycode = countryCodeData.selectedItem.innerText;
                             }
-                            adultData.contact = contactNumberData.value;
+                            childData.contact = contactNumberData.value;
                         }
+                        return childData;
                     }
-                    adultData.firstName = firstNameData.value;
-                    adultData.lastName = lastNameData.value;
-                    return adultData;
                 }
-                if (this.type === 'Child') {
-                    var childData = {};
-
-                    childData.type = "Child";
-                    childData.firstName = firstNameData.value;
-                    childData.lastName = lastNameData.value;
-                    if (this.allowTitle === true && titleData.selectedItem != null) {
-                        childData.title = titleData.selectedItem.innerText;
-                    }
-                    if (this.allowEmail === true) {
-                        childData.email = emailData.value;
-                    }
-                    if (this.allowContactNumber === true) {
-                        if (countryCodeData.selectedItem != null) {
-                            childData.countrycode = countryCodeData.selectedItem.innerText;
-                        }
-                        childData.contact = contactNumberData.value;
-                    }
-                    return childData;
-                }
-            }
-            /**
-             *To show the pax Info input fields on click of element of choose guest dropdown.
-             **/
+                /**
+                 *To show the pax Info input fields on click of element of choose guest dropdown.
+                 **/
             _showPaxInfoFields(e) {
 
-                var paxIndex = e.model.index;
+                    var paxIndex = e.model.index;
 
-                var flag = this.indexArray.indexOf(paxIndex) > -1;
-                if (flag == false) {
-                    this.indexArray.push(paxIndex);
-                    if (this.paxListAvailable === false) {
-                        var paxListArray = this.tempPaxArray;
+                    var flag = this.indexArray.indexOf(paxIndex) > -1;
+                    if (flag == false) {
+                        this.indexArray.push(paxIndex);
+                        if (this.paxListAvailable === false) {
+                            var paxListArray = this.tempPaxArray;
+                        } else {
+                            var paxListArray = this.paxList
+                        }
+                        var divPax = this.$.form.querySelector(("#paxInfoDiv" + (this.index)));
+                        var adultFirstNameData = divPax.querySelector("#adultFirstName");
+                        var adultLastNameData = divPax.querySelector("#adultLastName");
+                        var adultTitleData = divPax.querySelector("#adultPaxTitle");
+                        var adultEmailData = divPax.querySelector("#adultEmail");
+                        var adultCountryCodeData = divPax.querySelector("#adultCountryCode");
+                        var adultContactNumberData = divPax.querySelector("#adultContactNo");
+
+                        adultFirstNameData.invalid = false;
+                        adultLastNameData.invalid = false;
+                        adultTitleData.invalid = false;
+                        adultEmailData.invalid = false;
+                        adultCountryCodeData.invalid = false;
+                        adultContactNumberData.invalid = false;
+
+                        adultFirstNameData.value = paxListArray[paxIndex].firstName;
+                        adultLastNameData.value = paxListArray[paxIndex].lastName;
+                        if (this.paxListAvailable === false && paxListArray[paxIndex].title != undefined) {
+                            var titleIndex = this.titleValues.findIndex(x => x.key == (paxListArray[
+                                paxIndex].title).trim());
+                        } else {
+                            var titleIndex = this.titleValues.findIndex(x => x.key == paxListArray[
+                                paxIndex].title);
+                        }
+                        adultTitleData.contentElement.selected = titleIndex;
+                        adultEmailData.value = paxListArray[paxIndex].email;
+                        if (this.paxListAvailable === false && paxListArray[paxIndex].countrycode != undefined) {
+                            var countryCodeIndex = this.countryCodeValues.findIndex(x => x.key ==
+                                (paxListArray[paxIndex].countrycode).trim());
+                        } else {
+                            var countryCodeIndex = this.countryCodeValues.findIndex(x => x.value ==
+                                paxListArray[paxIndex].countrycode);
+                        }
+                        adultCountryCodeData.contentElement.selected = countryCodeIndex;
+                        adultContactNumberData.value = paxListArray[paxIndex].contact;
+                        this.shadowRoot.querySelector("#adultFirstName").invalid = false;
+                        if (this.type === 'Adult') {
+                            var closeIcon = this.parentElement.querySelector("#closeIconAdult" + (this.index));
+                            closeIcon.classList.remove("closeIconChooseGuest");
+                            closeIcon.classList.add("closeIconAdult");
+                        }
+                        if (this.type === 'Child') {
+                            var closeIconC = this.parentElement.querySelector("#closeIconChild" + (this.index));
+                            closeIconC.classList.remove("closeIconChooseGuest");
+                            closeIconC.classList.add("closeIconChild");
+                        }
+                        this.showChooseGuest = true;
+                        this.showPaxInfoFields = false;
+
                     } else {
-                        var paxListArray = this.paxList
+                        this.shadowRoot.querySelector("#chooseGuest").invalid = true;
+                        this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
                     }
-                    var divPax = this.$.form.querySelector(("#paxInfoDiv" + (this.index)));
-                    var adultFirstNameData = divPax.querySelector("#adultFirstName");
-                    var adultLastNameData = divPax.querySelector("#adultLastName");
-                    var adultTitleData = divPax.querySelector("#adultPaxTitle");
-                    var adultEmailData = divPax.querySelector("#adultEmail");
-                    var adultCountryCodeData = divPax.querySelector("#adultCountryCode");
-                    var adultContactNumberData = divPax.querySelector("#adultContactNo");
-
-                    adultFirstNameData.invalid = false;
-                    adultLastNameData.invalid = false;
-                    adultTitleData.invalid = false;
-                    adultEmailData.invalid = false;
-                    adultCountryCodeData.invalid = false;
-                    adultContactNumberData.invalid = false;
-
-                    adultFirstNameData.value = paxListArray[paxIndex].firstName;
-                    adultLastNameData.value = paxListArray[paxIndex].lastName;
-                    if(this.paxListAvailable === false && paxListArray[paxIndex].title != undefined){
-                    var titleIndex = this._resources.titleValues.findIndex(x => x.key == (paxListArray[
-                            paxIndex].title).trim());
-                    }
-                    else{
-                        var titleIndex = this._resources.titleValues.findIndex(x => x.key == paxListArray[
-                            paxIndex].title);
-                    }
-                    adultTitleData.contentElement.selected = titleIndex;
-                    adultEmailData.value = paxListArray[paxIndex].email;
-                    if(this.paxListAvailable === false && paxListArray[paxIndex].countrycode != undefined){
-                        var countryCodeIndex = this._resources.countryCodeValues.findIndex(x => x.key ==
-                        (paxListArray[paxIndex].countrycode).trim());
-                    }else{
-                    var countryCodeIndex = this._resources.countryCodeValues.findIndex(x => x.value ==
-                        paxListArray[paxIndex].countrycode);
-                    }
-                    adultCountryCodeData.contentElement.selected = countryCodeIndex;
-                    adultContactNumberData.value = paxListArray[paxIndex].contact;
-                    this.shadowRoot.querySelector("#adultFirstName").invalid = false;
-                    if (this.type === 'Adult') {
-                        var closeIcon = this.parentElement.querySelector("#closeIconAdult" + (this.index));
-                        closeIcon.classList.remove("closeIconChooseGuest");
-                        closeIcon.classList.add("closeIconAdult");
-                    }
-                    if (this.type === 'Child') {
-                        var closeIconC = this.parentElement.querySelector("#closeIconChild" + (this.index));
-                        closeIconC.classList.remove("closeIconChooseGuest");
-                        closeIconC.classList.add("closeIconChild");
-                    }
+                }
+                /**
+                 *On-click of add new of choose guest.
+                 **/
+            _addNewGuest() {
+                    this.$.adultFirstName.value = '';
+                    this.$.adultLastName.value = '';
+                    this.$.adultPaxTitle.value = '';
+                    this.$.adultEmail.value = '';
+                    this.$.adultCountryCode.value = '';
+                    this.$.adultContactNo.value = '';
+                    this.$.adultFirstName.invalid = false;
+                    this.$.adultLastName.invalid = false;
+                    this.$.adultPaxTitle.invalid = false;
+                    this.$.adultEmail.invalid = false;
+                    this.$.adultCountryCode.invalid = false;
+                    this.$.adultContactNo.invalid = false;
                     this.showChooseGuest = true;
                     this.showPaxInfoFields = false;
-
-                } else {
-                    this.shadowRoot.querySelector("#chooseGuest").invalid = true;
-                    this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
+                    if (this.type === 'Adult') {
+                        this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
+                            "closeIconChooseGuest");
+                        this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
+                            "closeIconAdult");
+                    }
+                    if (this.type === 'Child') {
+                        this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
+                            "closeIconChooseGuest");
+                        this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
+                            "closeIconAdult");
+                    }
                 }
-            }
-            /**
-             *On-click of add new of choose guest.
-             **/
-            _addNewGuest() {
-                this.$.adultFirstName.value = '';
-                this.$.adultLastName.value = '';
-                this.$.adultPaxTitle.value = '';
-                this.$.adultEmail.value = '';
-                this.$.adultCountryCode.value = '';
-                this.$.adultContactNo.value = '';
-                this.$.adultFirstName.invalid = false;
-                this.$.adultLastName.invalid = false;
-                this.$.adultPaxTitle.invalid = false;
-                this.$.adultEmail.invalid = false;
-                this.$.adultCountryCode.invalid = false;
-                this.$.adultContactNo.invalid = false;
-                this.showChooseGuest = true;
-                this.showPaxInfoFields = false;
-                if (this.type === 'Adult') {
-                    this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
-                        "closeIconChooseGuest");
-                    this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
-                        "closeIconAdult");
-                }
-                if (this.type === 'Child') {
-                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
-                        "closeIconChooseGuest");
-                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
-                        "closeIconAdult");
-                }
-            }
-            /**
-             *Function to hide type lable if adult is only one.
-             **/
+                /**
+                 *Function to hide type lable if adult is only one.
+                 **/
             _typeLabelIfAdultIsOnlyOne() {
-                if (this.type === 'Adult') {
-                    var adultCount = this.adultPaxCount;
-                    if (adultCount === 1) {
-                        this.showTypeLabel = true;
+                    if (this.type === 'Adult') {
+                        var adultCount = this.adultPaxCount;
+                        if (adultCount === 1) {
+                            this.showTypeLabel = true;
+                        }
                     }
                 }
-            }
-            /**
-             *To show lead pax fields which are allowed in option.
-             **/
+                /**
+                 *To show lead pax fields which are allowed in option.
+                 **/
             _showAllowFieldsForLeadPax() {
-                if (this.index === 1 && this.type === 'Adult') {
-                    var checkLeadPax = this.option.allowContactNumberForLeadPax;
-                    if (checkLeadPax === true) {
-                        this.showContactNumber = false;
+                    if (this.index === 1 && this.type === 'Adult') {
+                        var checkLeadPax = this.option.allowContactNumberForLeadPax;
+                        if (checkLeadPax === true) {
+                            this.showContactNumber = false;
+                        }
+                        var checkLeadPax = this.option.allowEmailForLeadPax;
+                        if (checkLeadPax === true) {
+                            this.showEmailAddress = false;
+                            this.showEmailAddressInfo = false;
+                        }
+                        var checkLeadPax = this.option.allowTitleForLeadPax;
+                        if (checkLeadPax === true) {
+                            this.showTitle = false;
+                        }
+                        this._dynamicStyle();
                     }
-                    var checkLeadPax = this.option.allowEmailForLeadPax;
-                    if (checkLeadPax === true) {
-                        this.showEmailAddress = false;
-                        this.showEmailAddressInfo = false;
+                    if (this.index === 1 && this.type === 'Child') {
+                        var check = this.option.allowContactNumber;
+                        if (check === true) {
+                            this.showContactNumber = false;
+                        }
+                        var check = this.option.allowEmail;
+                        if (check === true) {
+                            this.showEmailAddress = false;
+                            this.showEmailAddressInfo = false;
+                        }
+                        var check = this.option.allowTitle;
+                        if (check === true) {
+                            this.showTitle = false;
+                        }
                     }
-                    var checkLeadPax = this.option.allowTitleForLeadPax;
-                    if (checkLeadPax === true) {
-                        this.showTitle = false;
-                    }
-                    this._dynamicStyle();
+
                 }
-                if (this.index === 1 && this.type === 'Child') {
+                /**
+                 *To show input fields for other than lead pax.
+                 **/
+            _showAllowFields() {
                     var check = this.option.allowContactNumber;
-                    if (check === true) {
+                    if (check === true && this.index != 1) {
                         this.showContactNumber = false;
                     }
                     var check = this.option.allowEmail;
-                    if (check === true) {
+                    if (check === true && this.index != 1) {
                         this.showEmailAddress = false;
                         this.showEmailAddressInfo = false;
                     }
                     var check = this.option.allowTitle;
-                    if (check === true) {
+                    if (check === true && this.index != 1) {
                         this.showTitle = false;
                     }
                 }
-
-            }
-            /**
-             *To show input fields for other than lead pax.
-             **/
-            _showAllowFields() {
-                var check = this.option.allowContactNumber;
-                if (check === true && this.index != 1) {
-                    this.showContactNumber = false;
-                }
-                var check = this.option.allowEmail;
-                if (check === true && this.index != 1) {
-                    this.showEmailAddress = false;
-                    this.showEmailAddressInfo = false;
-                }
-                var check = this.option.allowTitle;
-                if (check === true && this.index != 1) {
-                    this.showTitle = false;
-                }
-            }
-            /**
-             * Function to set view of internet explorer.       
-             * */
+                /**
+                 * Function to set view of internet explorer.       
+                 * */
             _largeDesktopViewIE(largeDesktopView) {
-                // Internet Explorer 6-11
-                var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-                return isIE && largeDesktopView;
-            }
-            /**
-             * Function for desktop view for browsers other than internet explorer.
-             * */
+                    // Internet Explorer 6-11
+                    var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+                    return isIE && largeDesktopView;
+                }
+                /**
+                 * Function for desktop view for browsers other than internet explorer.
+                 * */
             _largeDesktopViewOther(largeDesktopView) {
-                // Internet Explorer 6-11
-                var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-                return !isIE && largeDesktopView;
-            }
-            /**
-             *To hide lable if adult is only one.
-             **/
+                    // Internet Explorer 6-11
+                    var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+                    return !isIE && largeDesktopView;
+                }
+                /**
+                 *To hide lable if adult is only one.
+                 **/
             _lte(adultPaxCount, hiddenLabelAdultNumber) {
-                if (this.type === 'Adult') {
-                    this.showTypeLabel = adultPaxCount <= hiddenLabelAdultNumber;
+                    if (this.type === 'Adult') {
+                        this.showTypeLabel = adultPaxCount <= hiddenLabelAdultNumber;
+                    }
                 }
-            }
-            /**
-             *To set the style for mobile and tablet view
-             *if user hide title field then firstname and lastname should equally distribute the space.
-             **/
+                /**
+                 *To set the style for mobile and tablet view
+                 *if user hide title field then firstname and lastname should equally distribute the space.
+                 **/
             _dynamicStyle() {
-                if (this.showTitle === false) {
-                    var divLen = 2 + 1;
-                } else {
-                    var divLen = 2;
-                }
-                var len = 100 / divLen - 4;
-                var lenTab = 100 / divLen - 5;
-                if (this.smallMobileView === true || this.mobileView === true) {
-                    this.shadowRoot.querySelector("#adultFirstName").style.width = len + "%";
-                    this.shadowRoot.querySelector("#adultLastName").style.width = len + "%";
-                    if (this.showTitle === true) {
-                        this.shadowRoot.querySelector("#adultFirstName").style.marginLeft = "-10px";
-                    } else {
-                        this.shadowRoot.querySelector("#adultFirstName").style.marginLeft = "12px";
-                    }
                     if (this.showTitle === false) {
-                        this.shadowRoot.querySelector("#adultPaxTitle").style.width = len + "%";
-                        this.shadowRoot.querySelector("#adultPaxTitle").style.marginLeft = "-10px";
-                    }
-                }
-                if (this.tabletView === true) {
-                    this.shadowRoot.querySelector("#adultFirstName").style.width = lenTab + "%";
-                    this.shadowRoot.querySelector("#adultLastName").style.width = lenTab + "%";
-                    if (this.showTitle === true) {
-                        this.shadowRoot.querySelector("#adultFirstName").style.marginLeft = "-7px";
+                        var divLen = 2 + 1;
                     } else {
-                        this.shadowRoot.querySelector("#adultFirstName").style.marginLeft = "15px";
+                        var divLen = 2;
                     }
-                    if (this.showTitle === false) {
-                        this.shadowRoot.querySelector("#adultPaxTitle").style.width = lenTab + "%";
-                        this.shadowRoot.querySelector("#adultPaxTitle").style.marginLeft = "-5px";
-                    }
-                }
-            }
-            /**
-             *To set the default option value.
-             **/
-            _defaultOptionValue() {
-                if (this.option === undefined) {
-                    this.allowContactNumber;
-                    this.allowContactNumberForLeadPax;
-                    this.allowTitle;
-                    this.allowTitleForLeadPax;
-                    this.allowEmail;
-                    this.allowEmailForLeadPax;
-                    this.requiredField;
-                    this.requiredFieldForLeadPax;
-                } else {
-                    if (this.option.allowTitleForLeadPax) {
-                        this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
-                    }
-                    if (this.option.allowTitle) {
-                        this.allowTitle = this.option.allowTitle;
-                    }
-                    if (this.option.allowContactNumber) {
-                        this.allowContactNumber = this.option.allowContactNumber;
-                    }
-                    if (this.option.allowContactNumberForLeadPax) {
-                        this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
-                    }
-                    if (this.option.allowEmail) {
-                        this.allowEmailt = this.option.allowEmail;
-                    }
-                    if (this.option.allowEmailForLeadPax) {
-                        this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
-                    }
-                    if (this.option.requiredField) {
-                        this.requiredField = this.option.requiredField;
-                    }
-                    if (this.option.requiredFieldForLeadPax) {
-                        this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
-                    }
-                }
-            }
-            /**
-             *To set the default reasources.
-             **/
-            _defaultResourcesValue() {
-                if (this.resources.icons.terms === undefined) {
-                    this._resources.terms;
-                } else {
-                    this._resources.terms = this.resources.icons.terms;
-                }
-                if (this.resources.labels.adult === undefined || this.resources.labels.child ===
-                    undefined) {
-                    this.title;
-                    this.titleInfo;
-                } else {
-                    if (this.resources.labels.adult.title && this.type === 'Adult') {
-                        this.title = this.resources.labels.adult.title;
-                    }
-                    if (this.resources.labels.child.title && this.type === 'Child') {
-                        this.title = this.resources.labels.child.title;
-                    }
-                    if (this.resources.labels.adult.info && this.type === 'Adult') {
-                        this.titleInfo = this.resources.labels.adult.info;
-                    }
-                    if (this.resources.labels.child.info && this.type === 'Child') {
-                        this.titleInfo = this.resources.labels.child.info;
-                    }
-                }
-                if (this.resources.labels.child === undefined) {
-                    this._resources.childTitle;
-                    this._resources.childInfo;
-                } else {
-                    if (this.resources.labels.child.title) {
-                        this._resources.childTitle = this.resources.labels.child.title;
-                    }
-                    if (this.resources.labels.child.info) {
-                        this._resources.childInfo = this.resources.labels.child.info;
-                    }
-                }
-                if (this.resources.fields.title === undefined) {
-                    this._resources.titleValues;
-                    this._resources.titleSelected;
-                    this._resources.titleLabel;
-                    this._resources.titleError;
-                } else {
-                    if (this.resources.fields.title.values) {
-                        this._resources.titleValues = this.resources.fields.title.values;
-                    }
-                    if (this.resources.fields.title.selected) {
-                        this._resources.titleSelected = this.resources.fields.title.selected;
-                    }
-                    if (this.resources.fields.title.title) {
-                        this._resources.titleLabel = this.resources.fields.title.title;
-                    }
-                    if (this.resources.fields.title.errors) {
-                        this._resources.titleError = this.resources.fields.title.errors;
-                    }
-                }
-                if (this.resources.fields.firstName === undefined) {
-                    this._resources.firstNameValue;
-                    this._resources.firstNameTitle;
-                    this._resources.firstNameError;
-                } else {
-                    if (this.resources.fields.firstName.value) {
-                        this._resources.firstNameValue = this.resources.fields.firstName.value;
-                    }
-                    if (this.resources.fields.firstName.title) {
-                        this._resources.firstNameTitle = this.resources.fields.firstName.title;
-                    }
-                    if (this.resources.fields.firstName.errors) {
-                        this._resources.firstNameError = this.resources.fields.firstName.errors;
-                    }
-                }
-                if (this.resources.fields.lastName === undefined) {
-                    this._resources.lastNameValue;
-                    this._resources.lastNameTitle;
-                    this._resources.lastNameError;
-                } else {
-                    if (this.resources.fields.lastName.value) {
-                        this._resources.lastNameValue = this.resources.fields.lastName.value;
-                    }
-                    if (this.resources.fields.lastName.title) {
-                        this._resources.lastNameTitle = this.resources.fields.lastName.title;
-                    }
-                    if (this.resources.fields.lastName.errors) {
-                        this._resources.lastNameError = this.resources.fields.lastName.errors;
-                    }
-                }
-                if (this.resources.fields.email === undefined) {
-                    this._resources.emailValue;
-                    this._resources.emailTitle;
-                    this._resources.emailInfo;
-                    this._resources.emailError;
-                } else {
-                    if (this.resources.fields.email.value) {
-                        this._resources.emailValue = this.resources.fields.email.value;
-                    }
-                    if (this.resources.fields.email.title) {
-                        this._resources.emailTitle = this.resources.fields.email.title;
-                    }
-                    if (this.resources.fields.email.info) {
-                        this._resources.emailInfo = this.resources.fields.email.info;
-                    }
-                    if (this.resources.fields.email.errors) {
-                        this._resources.emailError = this.resources.fields.email.errors;
-                    }
-                }
-                if (this.resources.fields.countryCode === undefined) {
-                    this._resources.countryCodeValues;
-                    this._resources.countryCodeTitle;
-                    this._resources.countryCodeError;
-                } else {
-                    if (this.resources.fields.countryCode.values) {
-                        this._resources.countryCodeValues = this.resources.fields.countryCode.values;
-                    }
-                    if (this.resources.fields.countryCode.title) {
-                        this._resources.countryCodeTitle = this.resources.fields.countryCode.title;
-                    }
-                    if (this.resources.fields.countryCode.errors) {
-                        this._resources.countryCodeError = this.resources.fields.countryCode.errors;
-                    }
-                }
-                if (this.resources.fields.contactNumber === undefined) {
-                    this._resources.contactNumberValue;
-                    this._resources.contactNumberTitle;
-                    this._resources.contactNumberInfo;
-                    this._resources.contactNumberError;
-                } else {
-                    if (this.resources.fields.contactNumber.value) {
-                        this._resources.contactNumberValue = this.resources.fields.contactNumber.value;
-                    }
-                    if (this.resources.fields.contactNumber.title) {
-                        this._resources.contactNumberTitle = this.resources.fields.contactNumber.title;
-                    }
-                    if (this.resources.fields.contactNumber.errors) {
-                        this._resources.contactNumberInfo = this.resources.fields.contactNumber.errors;
-                    }
-                    if (this.resources.fields.contactNumber.errors) {
-                        this._resources.contactNumberError = this.resources.fields.contactNumber.errors;
-                    }
-                }
-                if (this.resources.newGuest) {
-                    this._resources.newGuest = this.resources.newGuest;
-                }
-                if (this.resources.chooseGuest) {
-                    this.chooseGuest = this.resources.chooseGuest;
-                }
-            }
-            /**
-             *To hide show email info while showing error message.
-             **/
-            _showEmailInfo() {
-                this.shadowRoot.querySelector("#adultEmailLabel").hidden = false;
-                this.shadowRoot.querySelector("#adultEmail").invalid = false;
-            }
-            /**
-             *To show email validation using filter.
-             **/
-            _showInvalidEmail() {
-                var email = this.shadowRoot.querySelector("#adultEmail").value;
-                if (email != "") {
-                    if (email != undefined) {
-                        var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
-                        var emailElement = this.shadowRoot.querySelector("#adultEmail");
-                        if (!filter.test(email)) {
-                            emailElement.invalid = true;
-                            if (emailElement.invalid === true) {
-                                var PaxInfoEmailLabel = this.shadowRoot.querySelector(
-                                    "#adultEmailLabel");
-                                PaxInfoEmailLabel.hidden = true;
-                            }
+                    var len = 100 / divLen - 4;
+                    var lenTab = 100 / divLen - 5;
+                    if (this.smallMobileView === true || this.mobileView === true) {
+                        this.shadowRoot.querySelector("#adultFirstName").style.width = len + "%";
+                        this.shadowRoot.querySelector("#adultLastName").style.width = len + "%";
+                        if (this.showTitle === true) {
+                            this.shadowRoot.querySelector("#adultFirstName").style.marginLeft = "-10px";
                         } else {
-                            emailElement.invalid = false;
+                            this.shadowRoot.querySelector("#adultFirstName").style.marginLeft = "12px";
+                        }
+                        if (this.showTitle === false) {
+                            this.shadowRoot.querySelector("#adultPaxTitle").style.width = len + "%";
+                            this.shadowRoot.querySelector("#adultPaxTitle").style.marginLeft = "-10px";
+                        }
+                    }
+                    if (this.tabletView === true) {
+                        this.shadowRoot.querySelector("#adultFirstName").style.width = lenTab + "%";
+                        this.shadowRoot.querySelector("#adultLastName").style.width = lenTab + "%";
+                        if (this.showTitle === true) {
+                            this.shadowRoot.querySelector("#adultFirstName").style.marginLeft = "-7px";
+                        } else {
+                            this.shadowRoot.querySelector("#adultFirstName").style.marginLeft = "15px";
+                        }
+                        if (this.showTitle === false) {
+                            this.shadowRoot.querySelector("#adultPaxTitle").style.width = lenTab + "%";
+                            this.shadowRoot.querySelector("#adultPaxTitle").style.marginLeft = "-5px";
                         }
                     }
                 }
-            }
-            /**
-             *TO show contact number using filter.
-             **/
+                /**
+                 *To set the default option value.
+                 **/
+            _defaultOptionValue() {
+                    if (this.option === undefined) {
+                        this.allowContactNumber;
+                        this.allowContactNumberForLeadPax;
+                        this.allowTitle;
+                        this.allowTitleForLeadPax;
+                        this.allowEmail;
+                        this.allowEmailForLeadPax;
+                        this.requiredField;
+                        this.requiredFieldForLeadPax;
+                    } else {
+                        if (this.option.allowTitleForLeadPax) {
+                            this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
+                        }
+                        if (this.option.allowTitle) {
+                            this.allowTitle = this.option.allowTitle;
+                        }
+                        if (this.option.allowContactNumber) {
+                            this.allowContactNumber = this.option.allowContactNumber;
+                        }
+                        if (this.option.allowContactNumberForLeadPax) {
+                            this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
+                        }
+                        if (this.option.allowEmail) {
+                            this.allowEmailt = this.option.allowEmail;
+                        }
+                        if (this.option.allowEmailForLeadPax) {
+                            this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
+                        }
+                        if (this.option.requiredField) {
+                            this.requiredField = this.option.requiredField;
+                        }
+                        if (this.option.requiredFieldForLeadPax) {
+                            this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
+                        }
+                    }
+                }
+                /**
+                 *To set the default reasources.
+                 **/
+            _defaultResourcesValue() {
+                    if (this.resources.icons.terms === undefined) {
+                        this.terms;
+                    } else {
+                        this.terms = this.resources.icons.terms;
+                    }
+                    if (this.resources.labels.adult === undefined || this.resources.labels.child ===
+                        undefined) {
+                        this.title;
+                        this.titleInfo;
+                    } else {
+                        if (this.resources.labels.adult.title && this.type === 'Adult') {
+                            this.title = this.resources.labels.adult.title;
+                        }
+                        if (this.resources.labels.child.title && this.type === 'Child') {
+                            this.title = this.resources.labels.child.title;
+                        }
+                        if (this.resources.labels.adult.info && this.type === 'Adult') {
+                            this.titleInfo = this.resources.labels.adult.info;
+                        }
+                        if (this.resources.labels.child.info && this.type === 'Child') {
+                            this.titleInfo = this.resources.labels.child.info;
+                        }
+                    }
+                    if (this.resources.labels.child === undefined) {
+                        this.childTitle;
+                        this.childInfo;
+                    } else {
+                        if (this.resources.labels.child.title) {
+                            this.childTitle = this.resources.labels.child.title;
+                        }
+                        if (this.resources.labels.child.info) {
+                            this.childInfo = this.resources.labels.child.info;
+                        }
+                    }
+                    if (this.resources.fields.title === undefined) {
+                        this.titleValues;
+                        this.titleSelected;
+                        this.titleLabel;
+                        this.titleError;
+                    } else {
+                        if (this.resources.fields.title.values) {
+                            this.titleValues = this.resources.fields.title.values;
+                        }
+                        if (this.resources.fields.title.selected) {
+                            this.titleSelected = this.resources.fields.title.selected;
+                        }
+                        if (this.resources.fields.title.title) {
+                            this.titleLabel = this.resources.fields.title.title;
+                        }
+                        if (this.resources.fields.title.errors) {
+                            this.titleError = this.resources.fields.title.errors;
+                        }
+                    }
+                    if (this.resources.fields.firstName === undefined) {
+                        this.firstNameValue;
+                        this.firstNameTitle;
+                        this.firstNameError;
+                    } else {
+                        if (this.resources.fields.firstName.value) {
+                            this.firstNameValue = this.resources.fields.firstName.value;
+                        }
+                        if (this.resources.fields.firstName.title) {
+                            this.firstNameTitle = this.resources.fields.firstName.title;
+                        }
+                        if (this.resources.fields.firstName.errors) {
+                            this.firstNameError = this.resources.fields.firstName.errors;
+                        }
+                    }
+                    if (this.resources.fields.lastName === undefined) {
+                        this.lastNameValue;
+                        this.lastNameTitle;
+                        this.lastNameError;
+                    } else {
+                        if (this.resources.fields.lastName.value) {
+                            this.lastNameValue = this.resources.fields.lastName.value;
+                        }
+                        if (this.resources.fields.lastName.title) {
+                            this.lastNameTitle = this.resources.fields.lastName.title;
+                        }
+                        if (this.resources.fields.lastName.errors) {
+                            this.lastNameError = this.resources.fields.lastName.errors;
+                        }
+                    }
+                    if (this.resources.fields.email === undefined) {
+                        this.emailValue;
+                        this.emailTitle;
+                        this.emailInfo;
+                        this.emailError;
+                    } else {
+                        if (this.resources.fields.email.value) {
+                            this.emailValue = this.resources.fields.email.value;
+                        }
+                        if (this.resources.fields.email.title) {
+                            this.emailTitle = this.resources.fields.email.title;
+                        }
+                        if (this.resources.fields.email.info) {
+                            this.emailInfo = this.resources.fields.email.info;
+                        }
+                        if (this.resources.fields.email.errors) {
+                            this.emailError = this.resources.fields.email.errors;
+                        }
+                    }
+                    if (this.resources.fields.countryCode === undefined) {
+                        this.countryCodeValues;
+                        this.countryCodeTitle;
+                        this.countryCodeError;
+                    } else {
+                        if (this.resources.fields.countryCode.values) {
+                            this.countryCodeValues = this.resources.fields.countryCode.values;
+                        }
+                        if (this.resources.fields.countryCode.title) {
+                            this.countryCodeTitle = this.resources.fields.countryCode.title;
+                        }
+                        if (this.resources.fields.countryCode.errors) {
+                            this.countryCodeError = this.resources.fields.countryCode.errors;
+                        }
+                    }
+                    if (this.resources.fields.contactNumber === undefined) {
+                        this.contactNumberValue;
+                        this.contactNumberTitle;
+                        this.contactNumberInfo;
+                        this.contactNumberError;
+                    } else {
+                        if (this.resources.fields.contactNumber.value) {
+                            this.contactNumberValue = this.resources.fields.contactNumber.value;
+                        }
+                        if (this.resources.fields.contactNumber.title) {
+                            this.contactNumberTitle = this.resources.fields.contactNumber.title;
+                        }
+                        if (this.resources.fields.contactNumber.errors) {
+                            this.contactNumberInfo = this.resources.fields.contactNumber.errors;
+                        }
+                        if (this.resources.fields.contactNumber.errors) {
+                            this.contactNumberError = this.resources.fields.contactNumber.errors;
+                        }
+                    }
+                    if (this.resources.newGuest) {
+                        this.newGuest = this.resources.newGuest;
+                    }
+                    if (this.resources.chooseGuest) {
+                        this.chooseGuest = this.resources.chooseGuest;
+                    }
+                }
+                /**
+                 *To hide show email info while showing error message.
+                 **/
+            _showEmailInfo() {
+                    this.shadowRoot.querySelector("#adultEmailLabel").hidden = false;
+                    this.shadowRoot.querySelector("#adultEmail").invalid = false;
+                }
+                /**
+                 *To show email validation using filter.
+                 **/
+            _showInvalidEmail() {
+                    var email = this.shadowRoot.querySelector("#adultEmail").value;
+                    if (email != "") {
+                        if (email != undefined) {
+                            var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
+                            var emailElement = this.shadowRoot.querySelector("#adultEmail");
+                            if (!filter.test(email)) {
+                                emailElement.invalid = true;
+                                if (emailElement.invalid === true) {
+                                    var PaxInfoEmailLabel = this.shadowRoot.querySelector(
+                                        "#adultEmailLabel");
+                                    PaxInfoEmailLabel.hidden = true;
+                                }
+                            } else {
+                                emailElement.invalid = false;
+                            }
+                        }
+                    }
+                }
+                /**
+                 *TO show contact number using filter.
+                 **/
             _showInvalidContact() {
                 var contactNumber = this.shadowRoot.querySelector("#adultContactNo").value;
                 if (contactNumber != "") {
