@@ -9,6 +9,7 @@ before_install:
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
   - rm google-chrome-stable_current_amd64.deb
+before_script:
   - "npm install -g bower"
   - "bower install"
   - "npm i -g web-component-tester@4.3.1 istanbul https://github.com/t2ym/web-component-tester-istanbul/tarball/0.10.1"
