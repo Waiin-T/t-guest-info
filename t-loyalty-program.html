@@ -154,9 +154,9 @@
     <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query>
 
     <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}">
-
+        <div id="contentDiv">
       <template is="dom-repeat" items="{{loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
-        <div style="clear:both">
+        <div style="clear:both" id="div{{loyaltyProgramNumber}}">
           <div>
             <paper-dropdown-menu label="Guest name" id="guestName{{loyaltyProgramNumber}}" class="guestName" on-tap="_updatePaxList"
               required auto-validate>
@@ -182,7 +182,7 @@
         <input is="iron-input" type="hidden" bind-value="[[programNameValue]]">
     </div>
     <div>
-        <paper-input label="Program number" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-tap="_showValidation" required auto-validate></paper-input>
+        <paper-input label="Program number" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-click="_showValidation" required auto-validate></paper-input>
     </div>
     <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
         <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="{{loyaltyProgramNumber}}">Remove</paper-button>
@@ -190,7 +190,7 @@
     </div>
     </template>
 
-
+    </div>
     <div>
         <br/>
         <paper-button id="addProgramForOtherGuestButton" on-tap="_addProgramForOtherGuest">Add program for other guest</paper-button>
@@ -351,18 +351,30 @@
                  * To add loyalty program on click of button 'Add Program For Other Button'.
                  * */
             _addProgramForOtherGuest(e) {
-                    this.push('loyaltyPrograms', {
-                        loyaltyProgram: ""
-                    });
-                }
-                /**
-                 * To delet loyalty profram on click of button 'Remove'.
-                 * */
+                var loyaltyProgram = {};
+                loyaltyProgram.guestName = "";
+                loyaltyProgram.programName = "";
+                loyaltyProgram.programNumber = "";
+                this.push('loyaltyPrograms', {
+                    loyaltyProgram
+                });
+
+            }
+
+            /**
+             * To delet loyalty profram on click of button 'Remove'.
+             **/
             _deleteLoyaltyProgram(e) {
                     var index = e.currentTarget.className;
-                    // this.splice('loyaltyProgramIds', index, 1);       
-                    this.splice('loyaltyPrograms', index, 1, );
+                    var array = this.loyaltyPrograms;
+                    if (index > -1) {
+                        array.splice(index, 1);
+                    }
+                    // // this.splice('loyaltyProgramIds', index, 1);       
+                    // this.splice('loyaltyPrograms', index, 1, );
+
                     this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
+                    this.shadowRoot.querySelector("#div" + index).hidden = true;
                 }
                 /**
                  * Using this function on-tap of guest name.
@@ -381,6 +393,8 @@
                         guestName.invalid = false;
                         programName.invalid = false;
                     }
+                    var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
+                    this.loyaltyPrograms[ind].loyaltyProgram.guestName = this.paxList[e.model.index].firstName + ' ' + this.paxList[e.model.index].lastName
                 }
                 /**
                  * To show validation on click of program number.
@@ -435,6 +449,7 @@
                     } else {
                         this.tempPaxArray = this.paxList;
                     }
+
                 }
                 /**
                  * Program name field if paxlist not given then paper-input.

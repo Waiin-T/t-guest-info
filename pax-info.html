@@ -4,251 +4,205 @@
              :host {
                 display: block;
             }
-
             paper-dropdown-menu {
                 --paper-input-container-underline-focus: #4CB050;
                 --paper-input-container-focus-color: #4CB050;
                 --paper-input-container-label-focus: lightgray;
             }
-
             paper-item {
                 cursor: default;
             }
-
             paper-input {
                 --paper-input-container-underline-focus: #4CB050;
                 --paper-input-container-focus-color: #4CB050;
                 --paper-input-container-label-focus: lightgray;
                 /* --paper-input-container-invalid-color: #4CB050;      */
             }
-
             .item[smallMobileView] #typeAndLabel {
                 margin-left: -10px;
                 width: 100%;
             }
-
             .item[smallMobileView] #adultEmailAndLabel {
                 width: 94%;
                 margin-left: -10px;
             }
-
             .item[smallMobileView] .inputForm #adultPaxTitle,
             #adultFirstName,
             #adultLastName {
                 float: left;
                 margin-left: -10px;
             }
-
             .item[smallMobileView] #adultPaxTitle {
                 float: left;
                 width: 26%;
                 margin-left: -10px;
             }
-
             .item[smallMobileView] #adultFirstName {
                 float: left;
                 /*width: 28%;*/
                 /*margin-left: -10px;*/
             }
-
             .item[smallMobileView] #adultLastName {
                 float: left;
                 /*width: 28%;*/
                 margin-left: 12px;
             }
-
             .item[smallMobileView]#adultCountryCode,
             #adultContactNo {
                 float: left;
                 margin-left: -10px;
             }
-
             .item[smallMobileView] #adultCountryCode {
                 margin-left: -10px;
                 width: 45%;
             }
-
             .item[smallMobileView] #adultContactNo {
                 margin-left: 12px;
                 width: 45%;
             }
-
             .item[smallMobileView] #chooseGuest {
                 margin-left: -7px;
             }
-
             .item[mobileView] #typeAndLabel {
                 margin-left: -10px;
                 width: 100%;
             }
-
             .item[mobileView] #adultEmailAndLabel {
                 width: 94%;
                 margin-left: -10px;
             }
-
             .item[mobileView] .inputForm #adultPaxTitle,
             #adultFirstName,
             #adultLastName {
                 float: left;
                 margin-left: -10px;
             }
-
             .item[mobileView] #adultPaxTitle {
                 float: left;
                 width: 26%;
                 margin-left: -10px;
             }
-
             .item[mobileView] #adultFirstName {
                 float: left;
                 width: 28%;
                 /*margin-left: 10px;*/
             }
-
             .item[mobileView] #adultLastName {
                 float: left;
                 width: 28%;
                 margin-left: 12px;
             }
-
             .item[mobileView]#adultPaxTitle {
                 float: left;
                 width: 100%;
                 margin-left: -10px;
             }
-
             .item[mobileView]#adultCountryCode,
             #adultContactNo {
                 float: left;
                 margin-left: -10px;
             }
-
             .item[mobileView] #adultCountryCode {
                 margin-left: -10px;
                 width: 46%;
             }
-
             .item[mobileView] #adultContactNo {
                 margin-left: 12px;
                 width: 46%;
             }
-
             .item[mobileView] #chooseGuest {
                 margin-left: -7px;
             }
-
             .item[tabletView] #typeAndLabel {
                 margin-left: -5px;
                 width: 100%;
             }
-
             .item[tabletView] #adultEmailAndLabel {
                 width: 92.5%;
                 margin-left: -5px;
             }
-
             .item[tabletView] .inputForm #adultPaxTitle,
             #adultFirstName,
             #adultLastName {
                 float: left;
                 margin-left: -5px;
             }
-
             .item[tabletView]#adultPaxTitle {
                 float: left;
                 margin-left: -5px;
             }
-
             .item[tabletView]#adultCountryCode,
             #adultContactNo {
                 float: left;
                 margin-left: -5px;
             }
-
             .item[tabletView] #adultCountryCode {
                 margin-left: -5px;
                 width: 45%;
             }
-
             .item[tabletView] #adultContactNo {
                 margin-left: 12px;
                 width: 45%;
             }
-
             .item[tabletView] #chooseGuest {
                 margin-left: -5px;
             }
-
             #adultPaxTitle,
             #adultFirstName,
             #adultLastName {
                 float: left;
             }
-
             #adultEmailAndLabel,
             #adultCountryCode,
             #adultContactNo {
                 float: left;
             }
-
             #typeAndLabel {
                 width: 22%;
                 float: left;
                 margin-top: 4%;
                 margin-left: 10px;
             }
-
             #typeLabel,
             #typeSubLabel {
                 float: left;
             }
-
             #typeSubLabel {
                 margin-left: 5px;
                 font-size: smaller;
                 color: #BDBDBD;
             }
-
             #adultPaxTitle {
                 width: 21%;
                 margin-left: 10px;
             }
-
             #adultFirstName {
                 width: 21%;
                 margin-left: 20px;
             }
-
             #adultLastName {
                 width: 21%;
                 margin-left: 20px;
             }
-
             #inputForm2 {
                 margin-top: 15px;
             }
-
             #adultEmailAndLabel {
                 margin-left: 10px;
                 width: 44%;
             }
-
             #adultEmailLabel {
                 font-size: smaller;
                 color: #BDBDBD;
             }
-
             #adultCountryCode {
                 width: 21%;
                 margin-left: 20px;
             }
-
             #adultContactNo {
                 width: 21%;
                 margin-left: 20px;
             }
-
             #chooseGuest {
                 margin-left: 12px;
             }
@@ -336,7 +290,7 @@
          * @polymer
          * @demo demo/index.html
          */
-        class PaxInfo extends Polymer.Element {
+        class PaxInfo extends Polymer.GestureEventListeners(Polymer.Element) {
             static get is() {
                 return 'pax-info';
             }
@@ -455,7 +409,6 @@
                                 "email"
                             ]
                         },
-
                         /**
                          * @private
                          *Property to set title for pax.
@@ -490,7 +443,6 @@
                          * @private
                          *Property to set resources default value.
                          **/
-
                         terms: {
                             type: String,
                             value: "terms-ico"
@@ -689,7 +641,6 @@
                             type: String,
                             value: "Choose guest"
                         },
-
                         /**
                          *Property to set paxList.
                          **/
@@ -820,18 +771,43 @@
                 /**
                  *To do validation on blur of each input fields.
                  **/
+
             _updateValidation(event) {
                     if (event.currentTarget.id === "adultFirstName") {
-                        this.shadowRoot.querySelector("#adultFirstName").invalid = false;
+                        var firstName = this.shadowRoot.querySelector("#adultFirstName");
+                        if (firstName.value === undefined || firstName.value === "") {
+                            firstName.invalid = true;
+                            firstName.errorMessage = this.firstNameError;
+                        } else {
+                            firstName.invalid = false;
+                        }
                     }
                     if (event.currentTarget.id === "adultLastName") {
-                        this.shadowRoot.querySelector("#adultLastName").invalid = false;
+                        var lastName = this.shadowRoot.querySelector("#adultLastName");
+                        if (lastName.value === undefined || lastName.value === "") {
+                            lastName.invalid = true;
+                            lastName.errorMessage = this.lastNameError;
+                        } else {
+                            lastName.invalid = false;
+                        }
                     }
                     if (event.currentTarget.id === "adultEmail") {
-                        this._showInvalidEmail();
+                        var email = this.shadowRoot.querySelector("#adultEmail");
+                        if (email.value === undefined || email.value === "") {
+                            email.invalid = true;
+                            email.errorMessage = this.emailError;
+                        } else {
+                            this._showInvalidEmail();
+                        }
                     }
                     if (event.currentTarget.id === "adultContactNo") {
-                        this._showInvalidContact();
+                        var contactNumber = this.shadowRoot.querySelector("#adultContactNo");
+                        if (contactNumber.value === undefined || contactNumber.value === "") {
+                            contactNumber.invalid = true;
+                            contactNumber.errorMessage = this.contactNumberError;
+                        } else {
+                            this._showInvalidContact();
+                        }
                     }
                 }
                 /*
@@ -846,22 +822,28 @@
                     var adultContactNumberValidation = this.$.adultContactNo;
                     if (adultTitleValidation.value === undefined) {
                         adultTitleValidation.invalid = true;
+                        adultTitleValidation.errorMessage = this.titleError;
                     }
                     if (adultFirstNameValidation.value === undefined || adultFirstNameValidation.value === "") {
                         adultFirstNameValidation.invalid = true;
+                        adultFirstNameValidation.errorMessage = this.firstNameError;
                     }
                     if (adultLastNameValiadtion.value === undefined || adultLastNameValiadtion.value === "") {
                         adultLastNameValiadtion.invalid = true;
+                        adultLastNameValiadtion.errorMessage = this.lastNameError;
                     }
                     if (adultEmailValidation.value === undefined || adultEmailValidation.value === "") {
                         adultEmailValidation.invalid = true;
+                        adultEmailValidation.errorMessage = this.emailError;
                     }
                     if (adultCountryCodeValidation.value === undefined) {
                         adultCountryCodeValidation.invalid = true;
+                        adultCountryCodeValidation.errorMessage = this.countryCodeError;
                     }
                     if (adultContactNumberValidation.value === undefined || adultContactNumberValidation.value ===
                         "") {
                         adultContactNumberValidation.invalid = true;
+                        adultContactNumberValidation.errorMessage = this.contactNumberError;
                     }
                     if (this.index === 1 && this.type === 'Adult') {
                         if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid ||
@@ -921,7 +903,6 @@
                     }
                     if (this.type === 'Child') {
                         var childData = {};
-
                         childData.type = "Child";
                         childData.firstName = firstNameData.value;
                         childData.lastName = lastNameData.value;
@@ -944,9 +925,7 @@
                  *To show the pax Info input fields on click of element of choose guest dropdown.
                  **/
             _showPaxInfoFields(e) {
-
                     var paxIndex = e.model.index;
-
                     var flag = this.indexArray.indexOf(paxIndex) > -1;
                     if (flag == false) {
                         this.indexArray.push(paxIndex);
@@ -962,14 +941,12 @@
                         var adultEmailData = divPax.querySelector("#adultEmail");
                         var adultCountryCodeData = divPax.querySelector("#adultCountryCode");
                         var adultContactNumberData = divPax.querySelector("#adultContactNo");
-
                         adultFirstNameData.invalid = false;
                         adultLastNameData.invalid = false;
                         adultTitleData.invalid = false;
                         adultEmailData.invalid = false;
                         adultCountryCodeData.invalid = false;
                         adultContactNumberData.invalid = false;
-
                         adultFirstNameData.value = paxListArray[paxIndex].firstName;
                         adultLastNameData.value = paxListArray[paxIndex].lastName;
                         if (this.paxListAvailable === false && paxListArray[paxIndex].title != undefined) {
@@ -1003,7 +980,6 @@
                         }
                         this.showChooseGuest = true;
                         this.showPaxInfoFields = false;
-
                     } else {
                         this.shadowRoot.querySelector("#chooseGuest").invalid = true;
                         this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
@@ -1086,7 +1062,6 @@
                             this.showTitle = false;
                         }
                     }
-
                 }
                 /**
                  *To show input fields for other than lead pax.
@@ -1374,6 +1349,7 @@
                             var emailElement = this.shadowRoot.querySelector("#adultEmail");
                             if (!filter.test(email)) {
                                 emailElement.invalid = true;
+                                emailElement.errorMessage = this.emailError;
                                 if (emailElement.invalid === true) {
                                     var PaxInfoEmailLabel = this.shadowRoot.querySelector(
                                         "#adultEmailLabel");
@@ -1403,7 +1379,6 @@
                     }
                 }
             }
-
             connectedCallback() {
                 super.connectedCallback();
                 this.shadowRoot.querySelector("#adultEmail").addEventListener('blur', (event) => {
@@ -1421,7 +1396,6 @@
                 //  this.shadowRoot.querySelector("#adultCountryCode").addEventListener('blur', (event) =>{
                 //    this._updateValidation(event);
                 // });                 
-
             }
             ready() {
                 super.ready();
@@ -1447,11 +1421,8 @@
                 this._showAllowFields();
                 this._typeLabelIfAdultIsOnlyOne();
                 this._dynamicStyle();
-
             }
-
         }
-
         window.customElements.define(PaxInfo.is, PaxInfo);
     </script>
 </dom-module>

@@ -165,7 +165,7 @@
          * @polymer
          * @demo demo/index.html
          */
-        class TGuestInfo extends Polymer.Element {
+        class TGuestInfo extends Polymer.GestureEventListeners(Polymer.Element) {
 
             static get is() {
                 return 't-guest-info';
@@ -311,11 +311,12 @@
                  *Function to check validation of all fields for all rooms and products.
                  **/
             isValidGuest() {
-                    var validData = [];
+                    var validRoomData = [];
                     var valid;
                     var productLength = this.product.length;
                     for (var i = 0; i < productLength; i++) {
                         var roomsLength = this.product[i].rooms.length;
+                        var validData = [];
                         for (var j = 0; j < roomsLength; j++) {
                             validData[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).isValid();
                         }
@@ -326,6 +327,7 @@
                                 valid = true;
                             }
                         }
+                        validRoomData[i] = validData;
                     }
                     return valid;
                 }
@@ -359,7 +361,7 @@
                     var loyaltyTotalData = [];
                     for (var i = 0; i < prodLen; i++) {
                         if (this.product[i].allowLoyalty === true) {
-                            loyaltyTotalData[i] = this._loyaltyProgramData();
+                            loyaltyTotalData[i] = this._loyaltyProgramData(i);
                         }
                     }
                     // console.log(loyaltyTotalData);
@@ -368,22 +370,22 @@
                 /**
                  *Function to collect loyalty program data for all products.
                  **/
-            _loyaltyProgramData() {
+            _loyaltyProgramData(ind) {
                 var loyaltyProgramObject = {};
                 var loyaltyProgramArrayData = [];
-                // for (var i = 0; i < this.loyaltyPrograms.length; i++) {
-                //   var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (i + 1));
-                //   var loyaltyProgramArray = [];
-                //   loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
-                // if(this.paxlistAvailable === false){
-                //      loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programNameInput" + (i + 1)).value;
-                // }else{
-                //   loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
-                // }
-                //   loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
-                //   loyaltyProgramArrayData[i] = loyaltyProgramArray;
-                // }
-                // console.log(loyaltyProgramArrayData);
+                var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (ind + 1))
+                for (var i = 0; i < loyaltyProgram.loyaltyPrograms.length; i++) {
+                    var loyaltyProgramArray = [];
+                    loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
+                    if (this.paxlistAvailable === false) {
+                        loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programNameInput" + (i + 1)).value;
+                    } else {
+                        loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
+                    }
+                    loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
+                    loyaltyProgramArrayData[i] = loyaltyProgramArray;
+                }
+                console.log(loyaltyProgramArrayData);
                 loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
                 // console.log(loyaltyProgramObject);
                 return loyaltyProgramArrayData;

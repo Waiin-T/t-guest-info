@@ -304,7 +304,7 @@
          * @polymer
          * @demo demo/index.html
          */
-        class TTravelerInfo extends Polymer.Element {
+        class TTravelerInfo extends Polymer.GestureEventListeners(Polymer.Element) {
             static get is() {
                 return 't-traveler-info';
             }
