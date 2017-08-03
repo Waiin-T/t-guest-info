@@ -412,6 +412,28 @@
              *PAX-INFO
              *
              **/
+            test('_typeAndLabel -if', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                element.shadowRoot.querySelector("#productTemplate").render();
+                element.shadowRoot.querySelector("#travelerTemplate").render();
+                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+                adultPaxInfo.adultPaxCount = 1;
+                result = adultPaxInfo._typeAndLabel(1);
+                assert.equal(result, "");
+            })
+            test('_typeAndLabel -else', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                element.shadowRoot.querySelector("#productTemplate").render();
+                element.shadowRoot.querySelector("#travelerTemplate").render();
+                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+                adultPaxInfo.adultPaxCount = 2;
+                result = adultPaxInfo._typeAndLabel(1);
+                assert.equal(result, 1);
+            })
 
             test('isValidPaxInfo', function() {
                 var element = fixture('ChangedPropertyTestFixture');
@@ -475,17 +497,6 @@
                 childPaxInfo._addNewGuest();
                 assert.equal(childPaxInfo.showChooseGuest, true);
             });
-            test('_typeLabelIfAdultIsOnlyOne', function() {
-                var element = fixture('ChangedPropertyTestFixture');
-                element.shadowRoot.querySelector("#productTemplate").render();
-                element.shadowRoot.querySelector("#travelerTemplate").render();
-                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
-                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
-                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
-                adultPaxInfo.adultPaxCount = 1;
-                adultPaxInfo._typeLabelIfAdultIsOnlyOne();
-                assert.equal(adultPaxInfo.showTypeLabel, true);
-            });
             test('_showAllowFieldsForLeadPax type=Adult', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
@@ -515,16 +526,6 @@
                 var childPaxInfo = traveler.shadowRoot.querySelector("#childPaxInfo11");
                 childPaxInfo._showAllowFieldsForLeadPax();
                 assert.equal(childPaxInfo.showTitle, false);
-            });
-            test('_lte ', function() {
-                var element = fixture('ChangedPropertyTestFixture');
-                element.shadowRoot.querySelector("#productTemplate").render();
-                element.shadowRoot.querySelector("#travelerTemplate").render();
-                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
-                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
-                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
-                adultPaxInfo._lte(1, 1);
-                assert.equal(adultPaxInfo.showTypeLabel, true);
             });
             test('_defaultOptionValue- if ', function() {
                 var element = fixture('ChangedPropertyTestFixture');
@@ -632,7 +633,7 @@
                 adultPaxInfo._showInvalidContact();
                 assert.equal(contact.invalid, true);
             });
-            test('_updateValidation', function() {
+            test('_updateValidation firstname invalid', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -646,9 +647,26 @@
                 }
                 var firstName = adultPaxInfo.shadowRoot.querySelector("#adultFirstName");
                 adultPaxInfo._updateValidation(e);
+                assert.equal(firstName.invalid, true);
+            });
+            test('_updateValidation firstname valid', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                element.shadowRoot.querySelector("#productTemplate").render();
+                element.shadowRoot.querySelector("#travelerTemplate").render();
+                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+                var e = {
+                    "currentTarget": {
+                        "id": "adultFirstName"
+                    }
+                }
+                var firstName = adultPaxInfo.shadowRoot.querySelector("#adultFirstName");
+                firstName.value = "John";
+                adultPaxInfo._updateValidation(e);
                 assert.equal(firstName.invalid, false);
             });
-            test('_updateValidation', function() {
+            test('_updateValidation lastname invalid', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -662,7 +680,90 @@
                 }
                 var lastName = adultPaxInfo.shadowRoot.querySelector("#adultLastName");
                 adultPaxInfo._updateValidation(e);
+                assert.equal(lastName.invalid, true);
+            });
+            test('_updateValidation lastname valid', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                element.shadowRoot.querySelector("#productTemplate").render();
+                element.shadowRoot.querySelector("#travelerTemplate").render();
+                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+                var e = {
+                    "currentTarget": {
+                        "id": "adultLastName"
+                    }
+                }
+                var lastName = adultPaxInfo.shadowRoot.querySelector("#adultLastName");
+                lastName.value = "Doe"
+                adultPaxInfo._updateValidation(e);
                 assert.equal(lastName.invalid, false);
+            });
+            test('_updateValidation email invalid', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                element.shadowRoot.querySelector("#productTemplate").render();
+                element.shadowRoot.querySelector("#travelerTemplate").render();
+                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+                var e = {
+                    "currentTarget": {
+                        "id": "adultEmail"
+                    }
+                }
+                var email = adultPaxInfo.shadowRoot.querySelector("#adultEmail");
+                adultPaxInfo._updateValidation(e);
+                assert.equal(email.invalid, true);
+            });
+            test('_updateValidation email valid', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                element.shadowRoot.querySelector("#productTemplate").render();
+                element.shadowRoot.querySelector("#travelerTemplate").render();
+                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+                var e = {
+                    "currentTarget": {
+                        "id": "adultEmail"
+                    }
+                }
+                var email = adultPaxInfo.shadowRoot.querySelector("#adultEmail");
+                email.value = "john.doe@example.com"
+                adultPaxInfo._updateValidation(e);
+                assert.equal(email.invalid, false);
+            });
+            test('_updateValidation contact number invalid', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                element.shadowRoot.querySelector("#productTemplate").render();
+                element.shadowRoot.querySelector("#travelerTemplate").render();
+                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+                var e = {
+                    "currentTarget": {
+                        "id": "adultContactNo"
+                    }
+                }
+                var contact = adultPaxInfo.shadowRoot.querySelector("#adultContactNo");
+                adultPaxInfo._updateValidation(e);
+                assert.equal(contact.invalid, true);
+            });
+            test('_updateValidation contact number valid', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                element.shadowRoot.querySelector("#productTemplate").render();
+                element.shadowRoot.querySelector("#travelerTemplate").render();
+                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+                var e = {
+                    "currentTarget": {
+                        "id": "adultContactNo"
+                    }
+                }
+                var contact = adultPaxInfo.shadowRoot.querySelector("#adultContactNo");
+                contact.value = "9876554"
+                adultPaxInfo._updateValidation(e);
+                assert.equal(contact.invalid, false);
             });
 
 
@@ -697,22 +798,22 @@
             //  loyalty._showGuestProgramDetails(e);
             //   assert.equal(loyalty.guestName, false);
             // });
-            test('_showValidation', function() {
-                var element = fixture('ChangedPropertyTestFixture');
-                element.shadowRoot.querySelector("#productTemplate").render();
-                var loyalty = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
-                loyalty.shadowRoot.querySelector("#loyaltyTemp").render();
-                var e = {
-                    "currentTarget": {
-                        "id": "programNumber1"
-                    },
-                    "model": {
-                        "index": 1
-                    }
-                }
-                loyalty._showValidation(e);
-                assert.equal(loyalty.guestname, false);
-            })
+            // test('_showValidation', function() {
+            //     var element = fixture('ChangedPropertyTestFixture');
+            //     element.shadowRoot.querySelector("#productTemplate").render();
+            //     var loyalty = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
+            //     loyalty.shadowRoot.querySelector("#loyaltyTemp").render();
+            //     var e = {
+            //         "currentTarget": {
+            //             "id": "programNumber1"
+            //         },
+            //         "model": {
+            //             "index": 1
+            //         }
+            //     }
+            //     loyalty._showValidation(e);
+            //     assert.equal(loyalty.guestname, false);
+            // })
         });
     </script>
 

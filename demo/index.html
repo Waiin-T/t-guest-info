@@ -6,28 +6,25 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>t-guest-info demo</title>
-
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../t-guest-info.html">
 
-    <custom-style>
-        <style is="custom-style" include="demo-pages-shared-styles">
-            body {
-                background-color: white;
-                font-family: 'Roboto';
-            }
-            
-            t-guest-info {
-                --toolbar-background-color: #eee;
-                --color-for-subTitle: gray;
-                --color-for-policies: #4CB050;
-                --color-for-button-labels: #478BD7;
-            }
-        </style>
-    </custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+        body {
+            background-color: white;
+            font-family: 'Roboto';
+        }
+        
+        t-guest-info {
+            --toolbar-background-color: #eee;
+            --color-for-subTitle: gray;
+            --color-for-policies: #4CB050;
+            --color-for-button-labels: #478BD7;
+        }
+    </style>
 </head>
 
-<body>
+<body unresolved>
 
     <t-guest-info id="guestInfo" option='{
                   "allowTitle": true,

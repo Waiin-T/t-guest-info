@@ -1,26 +1,28 @@
 <!--<link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/polymer/polymer-element.html">
-<link rel="import" href="bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="bower_components/paper-item/paper-item.html">
 <link rel="import" href="bower_components/paper-input/paper-input.html">
+<link rel="import" href="bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="bower_components/paper-button/paper-button.html">
-<link rel="import" href="bower_components/iron-media-query/iron-media-query.html">-->
+-->
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="../iron-media-query/iron-media-query.html">
+
 <link rel="import" href="t-traveler-info.html">
 <link rel="import" href="t-loyalty-program.html">
 
@@ -134,7 +136,7 @@
       <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo" id="productTemplate">
         <template is="dom-repeat" items="{{product.rooms}}" as="room" id="travelerTemplate">
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" title="{{title}} {{_increaseIndex(index)}}"
-            sub-title="{{room.name}} | {{room.criteria.traveler.adult}} Adults, {{room.criteria.traveler.child}} Child" policy-List="{{room.policies}}"
+            sub-title="{{room.name}} | {{room.criteria.traveler.adult}} {{_adultLabel(room.criteria.traveler.adult)}}, {{room.criteria.traveler.child}} {{_childLabel(room.criteria.traveler.child)}}" policy-List="{{room.policies}}"
             room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]"
             child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}" only-lead-pax-info="{{room.onlyLeadPaxInfo}}"
             pax-list-available="{{paxlistAvailable}}">
@@ -299,10 +301,23 @@
                         },
                     };
                 } //End of Properties.
-
-            /**
-             *To increase the index of template by 1.
-             **/
+            _adultLabel(count) {
+                if (count === 1) {
+                    return 'Adult'
+                } else {
+                    return 'Adults'
+                }
+            }
+            _childLabel(count) {
+                    if (count === 1) {
+                        return 'Child'
+                    } else {
+                        return 'Children'
+                    }
+                }
+                /**
+                 *To increase the index of template by 1.
+                 **/
             _increaseIndex(index) {
                     var calIndex = index + 1;
                     return calIndex;

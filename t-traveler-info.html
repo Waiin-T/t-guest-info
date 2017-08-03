@@ -264,7 +264,7 @@
                             <div style="float:left">
                                 <img id="checkIcon" src="checkImage.svg" height="10" width="10">
                             </div>
-                            <div style="margin-left:20px; margin-top:-11px"> {{item}}</div>
+                            <div style="margin-left:20px; margin-top:-11px">&nbsp {{item}}</div>
                         </div>
                     </template>
     </div>
@@ -664,8 +664,9 @@
                     var count = this.adultPaxCount + this.childPaxCount;
                     var finalData = [];
                     for (var i = 0; i < count; i++) {
-                        finalData[i] = paxList[i];
+                        finalData[i] = this.paxList[i];
                     }
+                    return finalData;
                 }
                 /**
                  *To hide the close button if adult is only one.

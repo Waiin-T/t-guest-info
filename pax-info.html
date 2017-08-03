@@ -983,6 +983,12 @@
                         this.shadowRoot.querySelector("#chooseGuest").invalid = true;
                         this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
                     }
+                    /**To maintain focus on selected pax */
+                    var sc = window.pageYOffset;
+                    setTimeout(function() {
+                        window.scrollTo(0, sc);
+                    }, 0);
+
                 }
                 /**
                  *On-click of add new of choose guest.
