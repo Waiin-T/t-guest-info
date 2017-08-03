@@ -32,6 +32,8 @@
        :host {
         display: block;
         background-color: white;
+        margin-left: 10px;
+        margin-right: 10px;
       }
 
       #travelerInfo {
@@ -50,6 +52,12 @@
         color: #478BD7;
         text-decoration: none;
         font-size: 16px;
+      }
+      .item[smallMobileView]  :host {
+        display: block;
+        background-color: white;
+        margin-left: 10px;
+        margin-right: 10px;
       }
 
       .item[smallMobileView] #toolbarLotalty {
@@ -301,13 +309,19 @@
                         },
                     };
                 } //End of Properties.
+                /**
+                 *To handle puralization for subtitle.
+                 **/
             _adultLabel(count) {
-                if (count === 1) {
-                    return 'Adult'
-                } else {
-                    return 'Adults'
+                    if (count === 1) {
+                        return 'Adult'
+                    } else {
+                        return 'Adults'
+                    }
                 }
-            }
+                /**
+                 *To handle the puralization for subtitle.
+                 **/
             _childLabel(count) {
                     if (count === 1) {
                         return 'Child'
@@ -408,11 +422,6 @@
 
             ready() {
                 super.ready();
-
-                // setTimeout(() => {
-                //   var loyaltyProgramID = this.shadowRoot.querySelector("#tLoyaltyDatabase" + ind).id;
-                //   this.push('loyaltyProgramIds', loyaltyProgramID)
-                // }, 1);
                 if (this.paxlist.length === 0) {
                     this.paxlistAvailable = false;
                     this.paxList = [];

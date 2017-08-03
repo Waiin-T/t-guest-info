@@ -243,6 +243,31 @@
                 assert.equal(elementHeader, undefined);
             });
 
+            test('_adultLabel -if', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                var elementShadowRoot = element.shadowRoot;
+                var elementHeader = element._adultLabel(1);
+                assert.equal(elementHeader, 'Adult');
+            })
+            test('_adultLabel -else', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                var elementShadowRoot = element.shadowRoot;
+                var elementHeader = element._adultLabel(2);
+                assert.equal(elementHeader, 'Adults');
+            })
+            test('_childLabel -if', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                var elementShadowRoot = element.shadowRoot;
+                var elementHeader = element._childLabel(1);
+                assert.equal(elementHeader, 'Child');
+            })
+            test('_childLabel -else', function() {
+                var element = fixture('ChangedPropertyTestFixture');
+                var elementShadowRoot = element.shadowRoot;
+                var elementHeader = element._childLabel(2);
+                assert.equal(elementHeader, 'Children');
+            })
+
             /** 
              *
              *T-TRAVELER-INFO
