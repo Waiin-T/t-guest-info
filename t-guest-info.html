@@ -73,7 +73,7 @@
       }
 
       .item[smallMobileView] #lineBreakBetweenProduct {
-        margin-top: 74px;
+        margin-top: 50px;
         clear: both;
         margin-left: -4px;
       }
@@ -99,7 +99,7 @@
       }
 
       .item[mobileView] #lineBreakBetweenProduct {
-        margin-top: 74px;
+        margin-top: 50px;
         clear: both;
         margin-left: -4px;
       }
@@ -126,7 +126,7 @@
       }
 
       #lineBreakBetweenProduct {
-        margin-top: 74px;
+        margin-top: 50px;
         clear: both;
         margin-left: 10px;
       }
@@ -404,18 +404,23 @@
             _loyaltyProgramData(ind) {
                 var loyaltyProgramObject = {};
                 var loyaltyProgramArrayData = [];
-                var loyaltyProgram = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (ind + 1))
-                for (var i = 0; i < loyaltyProgram.loyaltyPrograms.length; i++) {
-                    var loyaltyProgramArray = [];
-                    loyaltyProgramArray[0] = loyaltyProgram.shadowRoot.querySelector("#guestName" + (i + 1)).value;
-                    if (this.paxlistAvailable === false) {
-                        loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programNameInput" + (i + 1)).value;
-                    } else {
-                        loyaltyProgramArray[1] = loyaltyProgram.shadowRoot.querySelector("#programName" + (i + 1)).value;
+                var loyaltyProgramEle = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (ind + 1))
+                    // if (loyaltyProgramEle.loyaltyPrograms.length >= 2) {
+                for (var i = 0; i < loyaltyProgramEle.loyaltyPrograms.length; i++) {
+                    var loyaltyProgram = {};
+                    if (loyaltyProgramEle.shadowRoot.querySelector("#guestName" + i) != null) {
+                        loyaltyProgram.GuestName = loyaltyProgramEle.shadowRoot.querySelector("#guestName" + i).value;
+
+                        if (this.paxlistAvailable === false) {
+                            loyaltyProgram.ProgramName = loyaltyProgramEle.shadowRoot.querySelector("#programNameInput" + i).value;
+                        } else {
+                            loyaltyProgram.ProgramName = loyaltyProgramEle.shadowRoot.querySelector("#programName" + i).value;
+                        }
+                        loyaltyProgram.ProgramNumber = loyaltyProgramEle.shadowRoot.querySelector("#programNumber" + i).value;
                     }
-                    loyaltyProgramArray[2] = loyaltyProgram.shadowRoot.querySelector("#programNumber" + (i + 1)).value;
-                    loyaltyProgramArrayData[i] = loyaltyProgramArray;
+                    loyaltyProgramArrayData[i] = loyaltyProgram;
                 }
+                // }
                 console.log(loyaltyProgramArrayData);
                 loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
                 // console.log(loyaltyProgramObject);
