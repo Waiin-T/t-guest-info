@@ -319,6 +319,9 @@
             #chooseGuest {
                 margin-left: 12px;
             }
+            #hrLineNewGuest{
+                color: #BDBDBD;
+            }
         </style>
         <iron-media-query query="(min-width: 320px) and (max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
         <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
@@ -344,6 +347,7 @@
                             <template is="dom-repeat" items="{{tempPaxArray}}" id="paxListDomTemp">
                                 <paper-item on-tap="_showPaxInfoFields">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
                             </template>
+    <hr id="hrLineNewGuest">
     <paper-item on-tap="_addNewGuest">{{newGuest}}</paper-item>
     </paper-listbox>
     </paper-dropdown-menu>
@@ -387,6 +391,7 @@
         <div id="adultContactNumberDiv">
             <paper-input label="{{contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{showContactNumber}}" required errorMessage="{{contactNumberError}}"></paper-input>
             <div id="adultContactNumberError" hidden$="{{showContactNumberError}}">{{contactNumberError}}</div>
+            <div id="adultContactNumberError" hidden$="{{showContactNumberInvalidError}}">Contact Number is invalid</div>
         </div>
     </div>
     </form>
@@ -409,6 +414,10 @@
             }
             static get properties() {
                     return {
+                        showContactNumberInvalidError: {
+                            type: Boolean,
+                            value: true
+                        },
                         showFirstNameError: {
                             type: Boolean,
                             value: true
@@ -1075,6 +1084,11 @@
                         } else {
                             var paxListArray = this.paxList
                         }
+                        this.showFirstNameError = true;
+                        this.showLastNameError = true;
+                        this.showEmailError = true;
+                        this.showContactNumberError = true;
+                        this.showContactNumberInvalidError = true;
                         var divPax = this.$.form.querySelector(("#paxInfoDiv" + (this.index)));
                         var adultFirstNameData = divPax.querySelector("#adultFirstName");
                         var adultLastNameData = divPax.querySelector("#adultLastName");
@@ -1139,6 +1153,11 @@
                  *On-click of add new of choose guest.
                  **/
             _addNewGuest() {
+                    this.showFirstNameError = true;
+                    this.showLastNameError = true;
+                    this.showEmailError = true;
+                    this.showContactNumberError = true;
+                    this.showContactNumberInvalidError = true;
                     this.$.adultFirstName.value = '';
                     this.$.adultLastName.value = '';
                     this.$.adultPaxTitle.value = '';
@@ -1534,10 +1553,12 @@
                         if (!filter.test(contactNumber)) {
                             var contactNoElement = this.shadowRoot.querySelector("#adultContactNo");
                             contactNoElement.invalid = true;
-                            contactNoElement.errorMessage = "Contact Number is invalid"
+                            this.showContactNumberError = true;
+                            this.showContactNumberInvalidError = false;
                         } else {
                             this.shadowRoot.querySelector("#adultContactNo").invalid = false;
                             this.showContactNumberError = true;
+                            this.showContactNumberInvalidError = true;
                         }
                     }
                 }
