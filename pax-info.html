@@ -90,6 +90,13 @@
             .item[smallMobileView] #chooseGuest {
                 margin-left: -7px;
             }
+             .item[smallMobileView] #chooseGuestError {
+                 font-size: var(--paper-font-caption_-_font-size);
+                margin-top: -6px;
+                margin-left: 1px;
+                position: absolute;
+                color: var(--paper-deep-orange-a700);
+            }
             .item[mobileView] #typeAndLabel {
                 margin-left: -10px;
                 width: 100%;
@@ -162,6 +169,13 @@
             .item[mobileView] #chooseGuest {
                 margin-left: -7px;
             }
+             .item[mobileView] #chooseGuestError {
+                 font-size: var(--paper-font-caption_-_font-size);
+                margin-top: -6px;
+                margin-left: 1px;
+                position: absolute;
+                color: var(--paper-deep-orange-a700);
+            }
             .item[tabletView] #typeAndLabel {
                 margin-left: -5px;
                 width: 100%;
@@ -218,6 +232,13 @@
             }
             .item[tabletView] #chooseGuest {
                 margin-left: -5px;
+            }
+            .item[tabletView] #chooseGuestError {
+                 font-size: var(--paper-font-caption_-_font-size);
+                margin-top: -6px;
+                margin-left: 1px;
+                position: absolute;
+                color: var(--paper-deep-orange-a700);
             }
             #adultPaxTitle,
             #adultFirstNamediv,
@@ -316,8 +337,15 @@
                 margin-left: 20px;
             }
             
-            #chooseGuest {
+            #chooseGuestPaxInfoDiv {
                 margin-left: 12px;
+            }
+            #chooseGuestError {
+                 font-size: var(--paper-font-caption_-_font-size);
+                margin-top: -6px;
+                margin-left: 198px;
+                position: absolute;
+                color: var(--paper-deep-orange-a700);
             }
             #hrLineNewGuest{
                 color: #BDBDBD;
@@ -351,6 +379,7 @@
     <paper-item on-tap="_addNewGuest">{{newGuest}}</paper-item>
     </paper-listbox>
     </paper-dropdown-menu>
+    <div id="chooseGuestError" hidden$="{{showChooseGuestError}}">choose guesy is required </div>
     </div>
     <div id="paxInfoDiv{{index}}" hidden="{{showPaxInfoFields}}">
         <div hidden$="{{showTitle}}">
@@ -414,6 +443,10 @@
             }
             static get properties() {
                     return {
+                        showChooseGuestError: {
+                            type: Boolean,
+                            value: true
+                        },
                         showContactNumberInvalidError: {
                             type: Boolean,
                             value: true
@@ -912,7 +945,7 @@
             _updateValidation(event) {
                     if (event.currentTarget.id === "adultFirstName") {
                         var firstName = this.shadowRoot.querySelector("#adultFirstName");
-                        if (firstName.value === undefined || firstName.value === "") {
+                        if ((firstName.value === undefined || firstName.value === "") && this.option.requiredField.includes("firstname") === true) {
                             firstName.invalid = true;
                             this.showFirstNameError = false;
                         } else {
@@ -922,7 +955,7 @@
                     }
                     if (event.currentTarget.id === "adultLastName") {
                         var lastName = this.shadowRoot.querySelector("#adultLastName");
-                        if (lastName.value === undefined || lastName.value === "") {
+                        if ((lastName.value === undefined || lastName.value === "") && this.option.requiredField.includes("lastname") === true) {
                             lastName.invalid = true;
                             this.showLastNameError = false;
                         } else {
@@ -932,7 +965,8 @@
                     }
                     if (event.currentTarget.id === "adultEmail") {
                         var email = this.shadowRoot.querySelector("#adultEmail");
-                        if (email.value === undefined || email.value === "") {
+                        if ((email.value === undefined || email.value === "") && (this.option.requiredField.includes("email") === true ||
+                                (this.option.requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
                             email.invalid = true;
                             this.showEmailError = false;
                             this.showEmailAddressInfo = true;
@@ -942,7 +976,8 @@
                     }
                     if (event.currentTarget.id === "adultContactNo") {
                         var contactNumber = this.shadowRoot.querySelector("#adultContactNo");
-                        if (contactNumber.value === undefined || contactNumber.value === "") {
+                        if ((contactNumber.value === undefined || contactNumber.value === "") && (this.option.requiredField.includes("contactNumber") === true ||
+                                (this.option.requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
                             contactNumber.invalid = true;
                             this.showContactNumberError = false;
                         } else {
@@ -954,6 +989,10 @@
                  **To check validation of a pax on fire of final validation.
                  */
             isValidPaxInfo() {
+                    var chooseGuest = this.shadowRoot.querySelector("#chooseGuest");
+                    if (chooseGuest.contentElement.selected = -1) {
+                        this.showChooseGuestError = false;
+                    }
                     var adultFirstNameValidation = this.$.adultFirstName;
                     var adultLastNameValiadtion = this.$.adultLastName;
                     var adultTitleValidation = this.$.adultPaxTitle;
