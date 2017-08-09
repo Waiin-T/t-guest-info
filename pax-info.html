@@ -379,7 +379,7 @@
     <paper-item on-tap="_addNewGuest">{{newGuest}}</paper-item>
     </paper-listbox>
     </paper-dropdown-menu>
-    <div id="chooseGuestError" hidden$="{{showChooseGuestError}}">choose guesy is required </div>
+    <div id="chooseGuestError" hidden$="{{showChooseGuestError}}">choose guest is required </div>
     </div>
     <div id="paxInfoDiv{{index}}" hidden="{{showPaxInfoFields}}">
         <div hidden$="{{showTitle}}">
@@ -420,7 +420,7 @@
         <div id="adultContactNumberDiv">
             <paper-input label="{{contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{showContactNumber}}" required errorMessage="{{contactNumberError}}"></paper-input>
             <div id="adultContactNumberError" hidden$="{{showContactNumberError}}">{{contactNumberError}}</div>
-            <div id="adultContactNumberError" hidden$="{{showContactNumberInvalidError}}">Contact Number is invalid</div>
+            <div id="adultContactNumberError" hidden$="{{showContactNumberInvalidError}}">{{contactNumberInvalidError}}</div>
         </div>
     </div>
     </form>
@@ -794,6 +794,10 @@
                         contactNumberError: {
                             type: String,
                             value: 'Contact number is required'
+                        },
+                        contactNumberInvalidError: {
+                            type: String,
+                            value: "Contact number is invalid"
                         },
                         /**
                          * @private
@@ -1365,181 +1369,121 @@
                  *To set the default option value.
                  **/
             _defaultOptionValue() {
-                    if (this.option === undefined) {
-                        this.allowContactNumber;
-                        this.allowContactNumberForLeadPax;
-                        this.allowTitle;
-                        this.allowTitleForLeadPax;
-                        this.allowEmail;
-                        this.allowEmailForLeadPax;
-                        this.requiredField;
-                        this.requiredFieldForLeadPax;
-                    } else {
-                        if (this.option.allowTitleForLeadPax) {
-                            this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
-                        }
-                        if (this.option.allowTitle) {
-                            this.allowTitle = this.option.allowTitle;
-                        }
-                        if (this.option.allowContactNumber) {
-                            this.allowContactNumber = this.option.allowContactNumber;
-                        }
-                        if (this.option.allowContactNumberForLeadPax) {
-                            this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
-                        }
-                        if (this.option.allowEmail) {
-                            this.allowEmailt = this.option.allowEmail;
-                        }
-                        if (this.option.allowEmailForLeadPax) {
-                            this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
-                        }
-                        if (this.option.requiredField) {
-                            this.requiredField = this.option.requiredField;
-                        }
-                        if (this.option.requiredFieldForLeadPax) {
-                            this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
-                        }
+                    if (this.option.allowTitleForLeadPax) {
+                        this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
+                    }
+                    if (this.option.allowTitle) {
+                        this.allowTitle = this.option.allowTitle;
+                    }
+                    if (this.option.allowContactNumber) {
+                        this.allowContactNumber = this.option.allowContactNumber;
+                    }
+                    if (this.option.allowContactNumberForLeadPax) {
+                        this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
+                    }
+                    if (this.option.allowEmail) {
+                        this.allowEmailt = this.option.allowEmail;
+                    }
+                    if (this.option.allowEmailForLeadPax) {
+                        this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
+                    }
+                    if (this.option.requiredField) {
+                        this.requiredField = this.option.requiredField;
+                    }
+                    if (this.option.requiredFieldForLeadPax) {
+                        this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
                     }
                 }
                 /**
                  *To set the default reasources.
                  **/
             _defaultResourcesValue() {
-                    if (this.resources.icons.terms === undefined) {
-                        this.terms;
-                    } else {
+                    if (this.resources.icons.terms) {
                         this.terms = this.resources.icons.terms;
                     }
-                    if (this.resources.labels.adult === undefined || this.resources.labels.child ===
-                        undefined) {
-                        this.title;
-                        this.titleInfo;
-                    } else {
-                        if (this.resources.labels.adult.title && this.type === 'Adult') {
-                            this.title = this.resources.labels.adult.title;
-                        }
-                        if (this.resources.labels.child.title && this.type === 'Child') {
-                            this.title = this.resources.labels.child.title;
-                        }
-                        if (this.resources.labels.adult.info && this.type === 'Adult') {
-                            this.titleInfo = this.resources.labels.adult.info;
-                        }
-                        if (this.resources.labels.child.info && this.type === 'Child') {
-                            this.titleInfo = this.resources.labels.child.info;
-                        }
+                    if (this.resources.labels.adult.title && this.type === 'Adult') {
+                        this.title = this.resources.labels.adult.title;
                     }
-                    if (this.resources.labels.child === undefined) {
-                        this.childTitle;
-                        this.childInfo;
-                    } else {
-                        if (this.resources.labels.child.title) {
-                            this.childTitle = this.resources.labels.child.title;
-                        }
-                        if (this.resources.labels.child.info) {
-                            this.childInfo = this.resources.labels.child.info;
-                        }
+                    if (this.resources.labels.child.title && this.type === 'Child') {
+                        this.title = this.resources.labels.child.title;
                     }
-                    if (this.resources.fields.title === undefined) {
-                        this.titleValues;
-                        this.titleSelected;
-                        this.titleLabel;
-                        this.titleError;
-                    } else {
-                        if (this.resources.fields.title.values) {
-                            this.titleValues = this.resources.fields.title.values;
-                        }
-                        if (this.resources.fields.title.selected) {
-                            this.titleSelected = this.resources.fields.title.selected;
-                        }
-                        if (this.resources.fields.title.title) {
-                            this.titleLabel = this.resources.fields.title.title;
-                        }
-                        if (this.resources.fields.title.errors) {
-                            this.titleError = this.resources.fields.title.errors;
-                        }
+                    if (this.resources.labels.adult.info && this.type === 'Adult') {
+                        this.titleInfo = this.resources.labels.adult.info;
                     }
-                    if (this.resources.fields.firstName === undefined) {
-                        this.firstNameValue;
-                        this.firstNameTitle;
-                        this.firstNameError;
-                    } else {
-                        if (this.resources.fields.firstName.value) {
-                            this.firstNameValue = this.resources.fields.firstName.value;
-                        }
-                        if (this.resources.fields.firstName.title) {
-                            this.firstNameTitle = this.resources.fields.firstName.title;
-                        }
-                        if (this.resources.fields.firstName.errors) {
-                            this.firstNameError = this.resources.fields.firstName.errors;
-                        }
+                    if (this.resources.labels.child.info && this.type === 'Child') {
+                        this.titleInfo = this.resources.labels.child.info;
                     }
-                    if (this.resources.fields.lastName === undefined) {
-                        this.lastNameValue;
-                        this.lastNameTitle;
-                        this.lastNameError;
-                    } else {
-                        if (this.resources.fields.lastName.value) {
-                            this.lastNameValue = this.resources.fields.lastName.value;
-                        }
-                        if (this.resources.fields.lastName.title) {
-                            this.lastNameTitle = this.resources.fields.lastName.title;
-                        }
-                        if (this.resources.fields.lastName.errors) {
-                            this.lastNameError = this.resources.fields.lastName.errors;
-                        }
+                    if (this.resources.labels.child.title) {
+                        this.childTitle = this.resources.labels.child.title;
                     }
-                    if (this.resources.fields.email === undefined) {
-                        this.emailValue;
-                        this.emailTitle;
-                        this.emailInfo;
-                        this.emailError;
-                    } else {
-                        if (this.resources.fields.email.value) {
-                            this.emailValue = this.resources.fields.email.value;
-                        }
-                        if (this.resources.fields.email.title) {
-                            this.emailTitle = this.resources.fields.email.title;
-                        }
-                        if (this.resources.fields.email.info) {
-                            this.emailInfo = this.resources.fields.email.info;
-                        }
-                        if (this.resources.fields.email.errors) {
-                            this.emailError = this.resources.fields.email.errors;
-                        }
+                    if (this.resources.labels.child.info) {
+                        this.childInfo = this.resources.labels.child.info;
                     }
-                    if (this.resources.fields.countryCode === undefined) {
-                        this.countryCodeValues;
-                        this.countryCodeTitle;
-                        this.countryCodeError;
-                    } else {
-                        if (this.resources.fields.countryCode.values) {
-                            this.countryCodeValues = this.resources.fields.countryCode.values;
-                        }
-                        if (this.resources.fields.countryCode.title) {
-                            this.countryCodeTitle = this.resources.fields.countryCode.title;
-                        }
-                        if (this.resources.fields.countryCode.errors) {
-                            this.countryCodeError = this.resources.fields.countryCode.errors;
-                        }
+                    if (this.resources.fields.title.values) {
+                        this.titleValues = this.resources.fields.title.values;
                     }
-                    if (this.resources.fields.contactNumber === undefined) {
-                        this.contactNumberValue;
-                        this.contactNumberTitle;
-                        this.contactNumberInfo;
-                        this.contactNumberError;
-                    } else {
-                        if (this.resources.fields.contactNumber.value) {
-                            this.contactNumberValue = this.resources.fields.contactNumber.value;
-                        }
-                        if (this.resources.fields.contactNumber.title) {
-                            this.contactNumberTitle = this.resources.fields.contactNumber.title;
-                        }
-                        if (this.resources.fields.contactNumber.errors) {
-                            this.contactNumberInfo = this.resources.fields.contactNumber.errors;
-                        }
-                        if (this.resources.fields.contactNumber.errors) {
-                            this.contactNumberError = this.resources.fields.contactNumber.errors;
-                        }
+                    if (this.resources.fields.title.selected) {
+                        this.titleSelected = this.resources.fields.title.selected;
+                    }
+                    if (this.resources.fields.title.title) {
+                        this.titleLabel = this.resources.fields.title.title;
+                    }
+                    if (this.resources.fields.title.errors) {
+                        this.titleError = this.resources.fields.title.errors;
+                    }
+                    if (this.resources.fields.firstName.value) {
+                        this.firstNameValue = this.resources.fields.firstName.value;
+                    }
+                    if (this.resources.fields.firstName.title) {
+                        this.firstNameTitle = this.resources.fields.firstName.title;
+                    }
+                    if (this.resources.fields.firstName.errors) {
+                        this.firstNameError = this.resources.fields.firstName.errors;
+                    }
+                    if (this.resources.fields.lastName.value) {
+                        this.lastNameValue = this.resources.fields.lastName.value;
+                    }
+                    if (this.resources.fields.lastName.title) {
+                        this.lastNameTitle = this.resources.fields.lastName.title;
+                    }
+                    if (this.resources.fields.lastName.errors) {
+                        this.lastNameError = this.resources.fields.lastName.errors;
+                    }
+                    if (this.resources.fields.email.value) {
+                        this.emailValue = this.resources.fields.email.value;
+                    }
+                    if (this.resources.fields.email.title) {
+                        this.emailTitle = this.resources.fields.email.title;
+                    }
+                    if (this.resources.fields.email.info) {
+                        this.emailInfo = this.resources.fields.email.info;
+                    }
+                    if (this.resources.fields.email.errors) {
+                        this.emailError = this.resources.fields.email.errors;
+                    }
+                    if (this.resources.fields.countryCode.values) {
+                        this.countryCodeValues = this.resources.fields.countryCode.values;
+                    }
+                    if (this.resources.fields.countryCode.title) {
+                        this.countryCodeTitle = this.resources.fields.countryCode.title;
+                    }
+                    if (this.resources.fields.countryCode.errors) {
+                        this.countryCodeError = this.resources.fields.countryCode.errors;
+                    }
+                    if (this.resources.fields.contactNumber.value) {
+                        this.contactNumberValue = this.resources.fields.contactNumber.value;
+                    }
+                    if (this.resources.fields.contactNumber.title) {
+                        this.contactNumberTitle = this.resources.fields.contactNumber.title;
+                    }
+                    if (this.resources.fields.contactNumber.errors) {
+                        this.contactNumberInfo = this.resources.fields.contactNumber.errors;
+                    }
+                    if (this.resources.fields.contactNumber.errors) {
+                        this.contactNumberError = this.resources.fields.contactNumber.errors;
+                    }
+                    if (this.resources.fields.contactNumber.invalidError) {
+                        this.contactNumberInvalidError = this.resources.fields.contactNumber.invalidError;
                     }
                     if (this.resources.newGuest) {
                         this.newGuest = this.resources.newGuest;

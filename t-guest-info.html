@@ -145,7 +145,7 @@
 
       <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo" id="productTemplate">
         <template is="dom-repeat" items="{{product.rooms}}" as="room" id="travelerTemplate">
-          <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" title="{{title}} {{_increaseIndex(index)}}"
+          <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" title="{{product.title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} {{_adultLabel(room.criteria.traveler.adult)}}, {{room.criteria.traveler.child}} {{_childLabel(room.criteria.traveler.child)}}" policy-List="{{room.policies}}"
             room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]"
             child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}" only-lead-pax-info="{{room.onlyLeadPaxInfo}}"
@@ -157,7 +157,7 @@
     <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
         <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
         <div id="tLoyaltyProgram">
-            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" pax-list-available="{{paxlistAvailable}}" guest-info="{{guestInfo}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
+            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" resources="{{resources}}" pax-list-available="{{paxlistAvailable}}" guest-info="{{guestInfo}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
         </div>
     </div>
     <hr id="lineBreakBetweenProduct">
@@ -294,6 +294,22 @@
                         resources: {
                             type: Object
                         },
+                        adultTitle: {
+                            type: String,
+                            value: 'Adult'
+                        },
+                        adultPluralTitle: {
+                            type: String,
+                            value: 'Adults'
+                        },
+                        childTitle: {
+                            type: String,
+                            value: 'Child'
+                        },
+                        childPluralTitle: {
+                            type: String,
+                            value: 'Children'
+                        },
                         /**
                          *To set the product property.
                          **/
@@ -316,9 +332,9 @@
                  **/
             _adultLabel(count) {
                     if (count === 1) {
-                        return 'Adult'
+                        return this.adultTitle;
                     } else {
-                        return 'Adults'
+                        return this.adultPluralTitle;
                     }
                 }
                 /**
@@ -326,9 +342,9 @@
                  **/
             _childLabel(count) {
                     if (count === 1) {
-                        return 'Child'
+                        return this.childTitle;
                     } else {
-                        return 'Children'
+                        return this.childPluralTitle;
                     }
                 }
                 /**
@@ -426,9 +442,23 @@
                 // console.log(loyaltyProgramObject);
                 return loyaltyProgramArrayData;
             }
-
+            _defaultResourcesvalue() {
+                if (this.resources.labels.adult.title) {
+                    this.adultTitle = this.resources.labels.adult.title;
+                }
+                if (this.resources.labels.adult.titlep) {
+                    this.adultPluralTitle = this.resources.labels.adult.titlep;
+                }
+                if (this.resources.labels.child.title) {
+                    this.childTitle = this.resources.labels.child.title;
+                }
+                if (this.resources.labels.child.titlep) {
+                    this.childPluralTitle = this.resources.labels.child.titlep;
+                }
+            }
             ready() {
                 super.ready();
+                this._defaultResourcesvalue();
                 if (this.paxlist.length === 0) {
                     this.paxlistAvailable = false;
                     this.paxList = [];
