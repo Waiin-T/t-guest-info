@@ -170,11 +170,11 @@
         clear: both;
       }
     </style>
-    <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
+     <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
     <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
     <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{tabletView}}"></iron-media-query>
     <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
-    <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query> 
 
     <!-- <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"> -->
         <div id="contentDiv">
@@ -451,7 +451,6 @@
                     this._loyaltyPrograms[ind].loyaltyProgram.guestName = this.paxList[e.model.index].firstName + ' ' + this.paxList[e.model.index].lastName;
                 } else {
                     var list = this._updatePaxList();
-
                     var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
                     this._loyaltyPrograms[ind].loyaltyProgram.guestName = list[e.model.index].firstName + ' ' + list[e.model.index].lastName;
                 }
@@ -531,18 +530,12 @@
                  * Program name field if paxlist is given then paper-dropdown-menu.
                  * */
             _showProgramName() {
-                    if (this.paxListAvailable === false) {
-                        this._showProgramNameInput = false;
-                    } else {
-                        this._showProgramNameDropdown = false;
-                    }
+                if (this.paxListAvailable === false) {
+                    this._showProgramNameInput = false;
+                } else {
+                    this._showProgramNameDropdown = false;
                 }
-                // connectedCallback() {
-                //     super.connectedCallback();
-                //     this.shadowRoot.querySelector(".guestName").addEventListener('blur', (event) => {
-                //         this._updateLoyaltyData(event);
-                //     });
-                // }
+            }
             _showReadMoreDots() {
                 var len = this.shadowRoot.querySelector("#guestNameDiv").offsetWidth;
                 var l = len / 6.2;

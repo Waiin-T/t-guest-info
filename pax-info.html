@@ -430,7 +430,7 @@
                 </div>
 
 
-                <div hidden$="{{showChooseGuest}}" id="chooseGuestPaxInfoDiv">
+                <div hidden$="{{_showChooseGuest}}" id="chooseGuestPaxInfoDiv">
                     <paper-dropdown-menu label="{{_chooseGuestLabel}}" id="chooseGuest" required on-tap="_loadPaxList">
                         <paper-listbox slot="dropdown-content">
                             <template is="dom-repeat" items="{{_tempPaxArray}}" id="paxListDomTemp">
@@ -442,7 +442,7 @@
     </paper-dropdown-menu>
     <div id="chooseGuestError" hidden$="{{_showChooseGuestError}}">choose guest is required </div>
     </div>
-    <div id="paxInfoDiv{{index}}" hidden="{{showPaxInfoFields}}">
+    <div id="paxInfoDiv{{index}}" hidden="{{_showPaxInfoFields}}">
         <div hidden$="{{_showTitle}}">
             <paper-dropdown-menu label="{{_titleLabel}}" id="adultPaxTitle" on-blur="_updateValidation" required errorMessage="{{_titleError}}">
                 <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
@@ -557,7 +557,7 @@
                          *@private
                          *To set hidden property for choose guest dropdown.
                          **/
-                        showChooseGuest: {
+                        _showChooseGuest: {
                             type: Boolean,
                             value: false
                         },
@@ -565,7 +565,7 @@
                          *@private
                          *To set hidden property for All pax info fields.
                          **/
-                        showPaxInfoFields: {
+                        _showPaxInfoFields: {
                             type: Boolean,
                             value: true
                         },
@@ -1263,8 +1263,8 @@
                             closeIconC.classList.remove("closeIconChooseGuest");
                             closeIconC.classList.add("closeIconChild");
                         }
-                        this.showChooseGuest = true;
-                        this.showPaxInfoFields = false;
+                        this._showChooseGuest = true;
+                        this._showPaxInfoFields = false;
                     } else {
                         this.shadowRoot.querySelector("#chooseGuest").invalid = true;
                         this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
@@ -1297,8 +1297,8 @@
                     this.$.adultEmail.invalid = false;
                     this.$.adultCountryCode.invalid = false;
                     this.$.adultContactNo.invalid = false;
-                    this.showChooseGuest = true;
-                    this.showPaxInfoFields = false;
+                    this._showChooseGuest = true;
+                    this._showPaxInfoFields = false;
                     if (this.type === 'Adult') {
                         this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
                             "closeIconChooseGuest");
@@ -1659,16 +1659,16 @@
             ready() {
                 super.ready();
                 if (this.roomNumber === 1 && this.paxList.length === 0) {
-                    this.showChooseGuest = true;
-                    this.showPaxInfoFields = false;
+                    this._showChooseGuest = true;
+                    this._showPaxInfoFields = false;
                 }
-                if (this.showChooseGuest === false && this.type === 'Adult') {
+                if (this._showChooseGuest === false && this.type === 'Adult') {
                     this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
                         "closeIconAdult");
                     this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
                         "closeIconChooseGuest");
                 }
-                if (this.showChooseGuest === false && this.type === 'Child') {
+                if (this._showChooseGuest === false && this.type === 'Child') {
                     this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
                         "closeIconChild");
                     this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
