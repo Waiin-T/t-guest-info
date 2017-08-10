@@ -28,109 +28,129 @@
 
 <dom-module id="t-guest-info">
     <template>
-    <style>
-       :host {
+  <style>
+     :host {
         display: block;
         background-color: white;
         margin-left: 10px;
         margin-right: 10px;
-      }
-
-      #travelerInfo {
+    }
+    
+    #travelerInfo {
         margin-top: 40px;
-      }
-
-      #toolbar1 {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    #toolbar1 {
         background-color: transparent;
         border: 1px solid lightgray;
         margin: 10px;
         color: #478BD7;
         height: 60px;
-      }
-
-      #signInLink {
+    }
+    
+    #signInLink {
         color: #478BD7;
         text-decoration: none;
         font-size: 16px;
-      }
-      .item[smallMobileView]  :host {
-        display: block;
-        background-color: white;
-        margin-left: 10px;
-        margin-right: 10px;
-      }
-
-      .item[smallMobileView] #toolbarLotalty {
-        background-color: var(--toolbar-background-color);
-        width: 100%;
-        height: 50px;
-        margin-left: -11px;
-        padding-right: 5px;
-      }
-
-      .item[smallMobileView] .loyaltyDiv {
-        width: 100%;
-      }
-
-      .item[smallMobileView] #lineBreakBetweenProduct {
-        margin-top: 50px;
-        clear: both;
-        margin-left: -4px;
-      }
-
-      .item[mobileView] #toolbarLotalty {
-        background-color: var(--toolbar-background-color);
-        width: 100%;
-        height: 50px;
-        margin-left: -11px;
-         padding-right: 5px;
-      }
-
-      .item[mobileView] .loyaltyDiv {
-        width: 100%;
-        margin-top: 10px;
-      }
-
-      .item[tabletView] #toolbarLotalty {
-        background-color: var(--toolbar-background-color);
-        width: 97%;
-        height: 50px;
-        margin-left: -5px;
-      }
-
-      .item[mobileView] #lineBreakBetweenProduct {
-        margin-top: 50px;
-        clear: both;
-        margin-left: -4px;
-      }
-
-      .item[tabletView] .loyaltyDiv {
-        width: 100%;
-      }
-
-      .loyaltyDiv {
-        width: 67%;
-      }
-
-      #toolbarLotalty {
-        font-size: 16px;
-        background-color: var(--toolbar-background-color);
-        width: 97%;
-        margin-left: 10px;
-        margin-top: 20px;
-        height: 50px;
-      }
-
-      #tLoyaltyDatabase {
+    }
+    
+    #tLoyaltyDatabase {
         margin-top: 2%;
-      }
-
-      #lineBreakBetweenProduct {
-        margin-top: 50px;
-        clear: both;
-        margin-left: 10px;
-      }
-    </style>
+    }
+    
+    @media (min-width: 320px) and (max-width: 380px) {
+         /* :host {
+            display: block;
+            background-color: white;
+            margin-left: 10px;
+            margin-right: 10px;
+        } */
+        #travelerInfo {
+        margin-top: 40px;
+        }
+    
+        #toolbarLotalty {
+            background-color: var(--toolbar-background-color);
+            width: 100%;
+            height: 50px;
+            margin-left: -11px;
+            padding-right: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .loyaltyDiv {
+            width: 100%;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        #lineBreakBetweenProduct {
+            margin-top: 50px;
+            clear: both;
+            margin-left: -4px;
+        }
+    }
+    
+    @media (min-width: 380px) and (max-width:767px) {
+        #toolbarLotalty {
+            background-color: var(--toolbar-background-color);
+            width: 95%;
+            height: 50px;
+            margin-left: -11px;
+            padding-right: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .loyaltyDiv {
+            width: 100%;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        #lineBreakBetweenProduct {
+            margin-top: 50px;
+            clear: both;
+            margin-left: -4px;
+        }
+    }
+    
+    @media (min-width: 768px) and (max-width:1023px) {
+        #toolbarLotalty {
+            background-color: var(--toolbar-background-color);
+            width: 97%;
+            height: 50px;
+            margin-left: -5px;
+        }
+        .loyaltyDiv {
+            width: 100%;
+            margin-left: 10px;
+        }
+        #lineBreakBetweenProduct {
+            margin-top: 50px;
+            clear: both;
+            margin-left: 10px;
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .loyaltyDiv {
+            width: 67%;
+        }
+        #toolbarLotalty {
+            font-size: 16px;
+            background-color: var(--toolbar-background-color);
+            width: 97%;
+            margin-left: 10px;
+            margin-top: 20px;
+            height: 50px;
+        }
+        #lineBreakBetweenProduct {
+            margin-top: 50px;
+            clear: both;
+            margin-left: 10px;
+        }
+    }
+</style>
     <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
     <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
     <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{tabletView}}"></iron-media-query>
@@ -138,7 +158,7 @@
     <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query>
     <iron-media-query query="(max-width: 600px)" query-matches="{{mediumTablet}}"></iron-media-query>
     <iron-media-query query="(max-width: 767px)" query-matches="{{mobilePhone}}"></iron-media-query>
-    <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}">
+    <!-- <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"> -->
       <!-- 
       <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
       <br /> -->
@@ -155,7 +175,7 @@
         </template>
 
     <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
-        <app-toolbar id="toolbarLotalty">Loyalty program</app-toolbar>
+        <app-toolbar id="toolbarLotalty">{{_loyaltyProgram}}</app-toolbar>
         <div id="tLoyaltyProgram">
             <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" resources="{{resources}}" pax-list-available="{{paxlistAvailable}}" guest-info="{{guestInfo}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
         </div>
@@ -165,7 +185,7 @@
 
     <br>
     <br>
-    </div>
+    <!-- </div> -->
     </template>
 
     <script>
@@ -186,7 +206,6 @@
             static get properties() {
                     return {
                         /**
-                         *@private
                          *Object to get t-guest-info component.
                          **/
                         guestInfo: Object,
@@ -238,7 +257,6 @@
                             value: false
                         },
                         /**
-                         *@private
                          *To set title property for room.
                          **/
                         title: {
@@ -246,7 +264,6 @@
                             value: 'Room'
                         },
                         /**
-                         *@private
                          *To set subtitle property for room.
                          **/
                         subTitle: {
@@ -294,21 +311,40 @@
                         resources: {
                             type: Object
                         },
-                        adultTitle: {
+                        /**
+                         *@private
+                         **/
+                        _adultTitle: {
                             type: String,
                             value: 'Adult'
                         },
-                        adultPluralTitle: {
+                        /**
+                         *@private
+                         **/
+                        _adultPluralTitle: {
                             type: String,
                             value: 'Adults'
                         },
-                        childTitle: {
+                        /**
+                         *@private
+                         **/
+                        _childTitle: {
                             type: String,
                             value: 'Child'
                         },
-                        childPluralTitle: {
+                        /**
+                         *@private
+                         **/
+                        _childPluralTitle: {
                             type: String,
                             value: 'Children'
+                        },
+                        /**
+                         *@private
+                         **/
+                        _loyaltyProgram: {
+                            type: String,
+                            value: "Loyalty program"
                         },
                         /**
                          *To set the product property.
@@ -318,7 +354,6 @@
                             value: {}
                         },
                         /**
-                         *@private
                          *Set the flag wheather paxList is available or not.
                          **/
                         paxlistAvailable: {
@@ -332,9 +367,9 @@
                  **/
             _adultLabel(count) {
                     if (count === 1) {
-                        return this.adultTitle;
+                        return this._adultTitle;
                     } else {
-                        return this.adultPluralTitle;
+                        return this._adultPluralTitle;
                     }
                 }
                 /**
@@ -342,9 +377,9 @@
                  **/
             _childLabel(count) {
                     if (count === 1) {
-                        return this.childTitle;
+                        return this._childTitle;
                     } else {
-                        return this.childPluralTitle;
+                        return this._childPluralTitle;
                     }
                 }
                 /**
@@ -422,7 +457,7 @@
                 var loyaltyProgramArrayData = [];
                 var loyaltyProgramEle = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (ind + 1))
                     // if (loyaltyProgramEle.loyaltyPrograms.length >= 2) {
-                for (var i = 0; i < loyaltyProgramEle.loyaltyPrograms.length; i++) {
+                for (var i = 0; i < loyaltyProgramEle._loyaltyPrograms.length; i++) {
                     var loyaltyProgram = {};
                     if (loyaltyProgramEle.shadowRoot.querySelector("#guestName" + i) != null) {
                         loyaltyProgram.GuestName = loyaltyProgramEle.shadowRoot.querySelector("#guestName" + i).value;
@@ -444,16 +479,19 @@
             }
             _defaultResourcesvalue() {
                 if (this.resources.labels.adult.title) {
-                    this.adultTitle = this.resources.labels.adult.title;
+                    this._adultTitle = this.resources.labels.adult.title;
                 }
                 if (this.resources.labels.adult.titlep) {
-                    this.adultPluralTitle = this.resources.labels.adult.titlep;
+                    this._adultPluralTitle = this.resources.labels.adult.titlep;
                 }
                 if (this.resources.labels.child.title) {
-                    this.childTitle = this.resources.labels.child.title;
+                    this._childTitle = this.resources.labels.child.title;
                 }
                 if (this.resources.labels.child.titlep) {
-                    this.childPluralTitle = this.resources.labels.child.titlep;
+                    this._childPluralTitle = this.resources.labels.child.titlep;
+                }
+                if (this.resources.loyaltyProgram.loyaltyProgram) {
+                    this._loyaltyProgram = this.resources.loyaltyProgram.loyaltyProgram;
                 }
             }
             ready() {

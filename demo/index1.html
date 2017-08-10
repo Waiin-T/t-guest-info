@@ -47,70 +47,83 @@
                       "email"
                       ]
                 }' resources='{
-                  "icons": {
-                    "terms": "terms-ico"
-                    },
-                  "labels": {
-                    "adult": {
-                      "title": "Adult",
-                      "info": "(12+ years)"
-                      },
-                    "child": {
-                      "title": "Child",
-                      "info": "(upto 12 years)"
-                      }
-                    },
-                  "fields": {
-                    "title": {
-                      "values": [{
-                          "key": "Mr"
-                          },
-                          {
-                          "key": "Ms"
-                          }
-                          ],
-                      "selected": "Mr",
-                      "title": "Title",
-                      "errors": "Please select a title"
-                      },
-                    "firstName": {
-                      "value": "",
-                      "title": "First name",
-                      "errors": "Firstname is required"
-                      },
-                    "lastName": {
-                      "value": "",
-                      "title": "Last name",
-                      "errors": "Lastname is required"
-                      },
-                    "email": {
-                      "value": "",
-                      "info": "We will send you email confirmation on this address",
-                      "errors": "Please enter a valid email address"
-                      },
-                    "countryCode": {
-                      "values": [{
-                          "key": "India +91",
-                          "value": "+91"
-                          },
-                          {
-                          "key": "USA +1",
-                          "value": "+1"
-                          }
-                      ],
-                      "title": "Country code",
-                      "errors": "Countrycode is required"
-                      },
-                    "contactNumber": {
-                      "value": "",
-                      "title": "Contact number",
-                      "info": "In case of any notifications our agent will reach you on this number",
-                      "errors": "Contact number is required"
-                      }                     
-                   },
-                      "newGuest" : "Add New",
-                      "chooseGuest" : "Choose guest" 
-                  }' paxlist='[{
+	"icons": {
+		"terms": "terms-ico"
+	},
+	"labels": {
+		"adult": {
+            "title": "Adult",
+            "titlep": "Adults",
+			"info": "(12+ years)"
+		},
+		"child": {
+            "title": "Child",
+            "titlep": "Children",
+			"info": "(upto 11 years)"
+		}
+	},
+	"fields": {
+		"title": {
+			"values": [{
+					"key": "Mr"
+				},
+				{
+					"key": "Ms"
+				}
+			],
+			"selected": "Mr",
+			"title": "Title",
+			"errors": "Please select a title"
+		},
+		"firstName": {
+			"value": "",
+			"title": "First name",
+			"errors": "Firstname is required"
+		},
+		"lastName": {
+			"value": "",
+			"title": "Last name",
+			"errors": "Lastname is required"
+		},
+		"email": {
+			"value": "",
+			"info": "We will send you email confirmation on this address",
+			"errors": "Please enter a valid email address"
+		},
+		"countryCode": {
+			"values": [{
+					"key": "India +91",
+					"value": "+91"
+				},
+				{
+					"key": "USA +1",
+					"value": "+1"
+				}
+			],
+			"title": "Country code",
+			"errors": "Countrycode is required"
+		},
+		"contactNumber": {
+			"value": "",
+			"title": "Contact number",
+			"info": "In case of any notifications our agent will reach you on this number",
+            "errors": "Contact number is required",
+            "invalidError": "Contact number is invalid"
+		}
+	},
+	"loyaltyProgram": {
+		"remove": "Remove",
+		"addNewGuest": "Add program for other guest",
+		"guestNameError": "Please enter guest deails first",
+		"label": {
+			"guestName": "Guest name",
+			"programName": "Program name",
+			"programNumber": "Program number"
+		}
+	},
+	"newGuest": "Add New",
+	"chooseGuest": "Choose guest"
+}' paxlist='[{
                         "type": "Adult",
                         "title": "Mr",
                         "firstName": "John",

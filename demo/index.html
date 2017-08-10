@@ -13,9 +13,13 @@
         body {
             background-color: white;
             font-family: 'Roboto';
+            padding-left: 0px;
+            padding-right: 0px;
         }
         
         t-guest-info {
+            margin: 0px;
+            padding: 0px;
             --toolbar-background-color: #eee;
             --color-for-subTitle: gray;
             --color-for-policies: #4CB050;
@@ -108,6 +112,7 @@
 		}
 	},
 	"loyaltyProgram": {
+        "loyaltyProgram" : "Loyalty program",
 		"remove": "Remove",
 		"addNewGuest": "Add program for other guest",
 		"guestNameError": "Please enter guest deails first",
@@ -235,8 +240,6 @@
 
         var totalData = [];
         var prodLen = guestInfo.product.length;
-
-        // console.log(guestInfo.paxlist);
         for (var i = 0; i < prodLen; i++) {
             var roomLen = guestInfo.product[i].rooms.length;
             for (var j = 0; j < roomLen; j++) {

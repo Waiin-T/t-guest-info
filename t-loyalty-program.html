@@ -17,51 +17,106 @@
         --paper-input-container-label-focus: lightgray;
       }
 
-      .item[smallMobileView] .guestName {
+      @media (min-width: 320px) and (max-width:380px) {
+       .guestName {
         width: 45%;
         margin-left: -5px;
       }
 
-      .item[smallMobileView] .programName {
+      .programName {
         width: 45%;
+        margin-left: 11px;
       }
 
-      .item[smallMobileView] .programNumber {
-        width: 45%;
-        margin-left: -5px;
-      }
-
-      .item[mobileView] .guestName {
+      .programNumber {
         width: 45%;
         margin-left: -5px;
       }
 
-      .item[mobileView] .programName {
-        width: 45%;
+      #buttonRemove {
+        margin-left: 10px;
+        margin-top: 20px;
+        width: 60px;
+        color: var(--color-for-button-labels);
+        font-weight: 450;
+        text-transform: capitalize;
       }
-
-      .item[mobileView] .programNumber {
+       #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: -13px;
+        float: left;
+        margin-top: 3%;
+        padding-bottom: 30px;
+        text-transform: capitalize;
+      }
+      }
+      
+      @media (min-width: 380px) and (max-width:767px) {
+      .guestName {
         width: 45%;
         margin-left: -5px;
       }
 
+      .programName {
+        width: 45%;
+        margin-left: 11px;
+      }
 
+      .programNumber {
+        width: 45%;
+        margin-left: -5px;
+      }
 
-      .item[tabletView] .guestName {
+       #buttonRemove {
+        margin-left: 15px;
+        margin-top: 6%;
+        width: 60px;
+        color: var(--color-for-button-labels);
+        font-weight: 450;
+        text-transform: capitalize;
+      }
+
+      #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: -9px;
+        float: left;
+        margin-top: 3%;
+        padding-bottom: 30px;
+        text-transform: capitalize;
+      }
+      }
+
+      @media (min-width: 768px) and (max-width:1023px) {
+      .guestName {
         width: 22%;
       }
 
-      .item[tabletView] .programName {
+      .programName {
         width: 22%;
       }
 
-      .item[tabletView] .programNumber {
+      .programNumber {
         width: 22%;
         margin-left: 10px;
       }
+      #buttonRemove {
+        margin-top: 5%;
+        margin-left: 20px;
+        width: 60px;
+        color: var(--color-for-button-labels);
+        font-weight: 450;
+        text-transform: capitalize;
+      }
+      #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        float: left;
+        margin-top: 3%;
+        padding-bottom: 30px;
+        text-transform: capitalize;
+      }
+      }
 
-
-
+      @media (min-width: 1024px){
       .guestName {
         width: 23%;
         margin-left: 10px;
@@ -76,7 +131,23 @@
         width: 23%;
         margin-left: 25px;
       }
-
+       #addProgramForOtherGuestButton {
+        color: var(--color-for-button-labels);
+        margin-left: 6px;
+        float: left;
+        margin-top: 3%;
+        padding-bottom: 30px;
+        text-transform: capitalize;
+      }
+       #buttonRemove {
+        margin-top: 4%;
+        margin-left: 65px;
+        width: 60px;
+        color: var(--color-for-button-labels);
+        font-weight: 450;
+        text-transform: capitalize;
+      }
+      }
 
 
       .guestName,
@@ -86,63 +157,8 @@
         float: left;
       }
 
+     
 
-
-      .item[smallMobileView] #buttonRemove {
-        margin-left: 10px;
-        margin-top: 20px;
-      }
-
-      .item[mobileView] #buttonRemove {
-        margin-left: 15px;
-        margin-top: 6%;
-      }
-
-      .item[tabletView] #buttonRemove {
-        margin-top: 5%;
-        margin-left: 20px;
-      }
-
-      #buttonRemove {
-        margin-top: 4%;
-        margin-left: 65px;
-        width: 60px;
-        color: var(--color-for-button-labels);
-        font-weight: 450;
-        text-transform: capitalize;
-      }
-
-      .item[smallMobileView] #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: -13px;
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-      }
-
-      .item[mobileView] #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: -13px;
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-      }
-
-      .item[tabletView] #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-      }
-
-      #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: 6px;
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-        text-transform: capitalize;
-      }
       #guestNameError {
       font-size: var(--paper-font-caption_-_font-size);
                 /* margin-top: -6px;
@@ -160,40 +176,40 @@
     <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
     <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query>
 
-    <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}">
+    <!-- <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"> -->
         <div id="contentDiv">
             
-        <template is="dom-repeat" items="{{loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
+        <template is="dom-repeat" items="{{_loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
         <div style="clear:both" id="div{{loyaltyProgramNumber}}">
           <div class="guestName" id="guestNameDiv">
-            <paper-dropdown-menu label="{{guestName}}" id="guestName{{loyaltyProgramNumber}}" on-tap="_updatePaxList" required auto-validate>
-                <paper-listbox slot="dropdown-content" selected="[[guestNameValue]]">
-                    <template is="dom-repeat" items={{tempPaxArray}}>
+            <paper-dropdown-menu label="{{_guestName}}" id="guestName{{loyaltyProgramNumber}}" on-tap="_updatePaxList" required auto-validate>
+                <paper-listbox slot="dropdown-content" selected="{{_guestNameValue}}">
+                    <template is="dom-repeat" items={{_tempPaxArray}}>
                         <paper-item id="{{loyaltyProgramNumber}}" on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
                     </template>
     </paper-listbox>
     </paper-dropdown-menu>
-    <input is="iron-input" type="hidden" bind-value="[[guestNameValue]]">
-    <div id="guestNameError" hidden$="{{showGuestNameError}}">{{guestNameError}}</div>
+    <input is="iron-input" type="hidden" bind-value="[[_guestNameValue]]">
+    <div id="guestNameError" hidden$="{{_showGuestNameError}}">{{_guestNameError}}</div>
     </div>
-    <div hidden$="{{showProgramNameInput}}">
-        <paper-input label="{{programName}}" id="programNameInput{{loyaltyProgramNumber}}" class="programName" required></paper-input>
+    <div hidden$="{{_showProgramNameInput}}">
+        <paper-input label="{{_programName}}" id="programNameInput{{loyaltyProgramNumber}}" class="programName" required></paper-input>
     </div>
-    <div hidden$="{{showProgramNameDropdown}}">
-        <paper-dropdown-menu label="{{programName}}" id="programName{{loyaltyProgramNumber}}" class="programName" required auto-validate>
-            <paper-listbox slot="dropdown-content" selected="[[programNameValue]]">
+    <div hidden$="{{_showProgramNameDropdown}}">
+        <paper-dropdown-menu label="{{_programName}}" id="programName{{loyaltyProgramNumber}}" class="programName" required auto-validate>
+            <paper-listbox slot="dropdown-content" selected="{{_programNameValue}}">
                 <template is="dom-repeat" items={{paxList}}>
                   <paper-item>{{item.membership.programName}}</paper-item>
                 </template>
             </paper-listbox>
         </paper-dropdown-menu>
-        <input is="iron-input" type="hidden" bind-value="[[programNameValue]]">
+        <input is="iron-input" type="hidden" bind-value="[[_programNameValue]]">
     </div>
     <div>
-        <paper-input label="{{programNumber}}" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-click="_showValidation" required auto-validate></paper-input>
+        <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-click="_showValidation" required auto-validate></paper-input>
     </div>
     <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
-        <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">{{remove}}</paper-button>
+        <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">{{_remove}}</paper-button>
     </div>
     </div>
     </template>
@@ -202,10 +218,10 @@
     <br />
     <!-- <div> -->
 
-    <paper-button id="addProgramForOtherGuestButton" on-tap="_addProgramForOtherGuest">{{addNewGuest}}</paper-button>
+    <paper-button id="addProgramForOtherGuestButton" on-tap="_addProgramForOtherGuest">{{_addNewGuest}}</paper-button>
 
     <!-- </div> -->
-    </div>
+    <!-- </div> -->
     </template>
 
 
@@ -224,7 +240,7 @@
             }
             static get properties() {
                     return {
-                        showGuestNameError: {
+                        _showGuestNameError: {
                             type: Boolean,
                             value: true
                         },
@@ -232,7 +248,7 @@
                          * @private
                          *Array for Loyalty Program. 
                          **/
-                        loyaltyPrograms: {
+                        _loyaltyPrograms: {
                             type: Array,
                             notify: true,
                             value: []
@@ -243,20 +259,20 @@
                          * */
                         _isRemoveButtonHidden: {
                             type: Boolean,
-                            computed: '_lte(loyaltyProgramsCount , 1)'
+                            computed: '_lte(_loyaltyProgramsCount , 1)'
                         },
                         /**
                          * @private
                          * Selected value for guest name dropdown.
                          * */
-                        guestNameValue: {
+                        _guestNameValue: {
                             type: String
                         },
                         /**
                          * @private
                          * Selected value for program name
                          * */
-                        programNameValue: {
+                        _programNameValue: {
                             type: String
                         },
                         /**
@@ -309,12 +325,11 @@
                          * @private
                          * This property is used for Loyalty program count.
                          * */
-                        loyaltyProgramsCount: {
+                        _loyaltyProgramsCount: {
                             type: Number,
                             value: ''
                         },
                         /**
-                         * @private
                          * This property set to false if paxlist is not available.
                          * */
                         paxListAvailable: {
@@ -324,7 +339,7 @@
                          * @private
                          * To store temporary paxlist for dropdown.
                          * */
-                        tempPaxArray: {
+                        _tempPaxArray: {
                             type: Array,
                             value: []
                         },
@@ -332,7 +347,7 @@
                          * @private
                          * This is true if paxlist is not available.
                          * */
-                        showProgramNameInput: {
+                        _showProgramNameInput: {
                             type: Boolean,
                             value: true
                         },
@@ -340,31 +355,31 @@
                          * @private
                          * This is true if paxlsit ia available.
                          * */
-                        showProgramNameDropdown: {
+                        _showProgramNameDropdown: {
                             type: Boolean,
                             value: true
                         },
-                        remove: {
+                        _remove: {
                             type: String,
                             value: "Remove"
                         },
-                        addNewGuest: {
+                        _addNewGuest: {
                             type: String,
                             value: "Add program for other guest"
                         },
-                        guestNameError: {
+                        _guestNameError: {
                             type: String,
                             value: "Please enter guest details first"
                         },
-                        guestName: {
+                        _guestName: {
                             type: String,
                             value: "Guest name"
                         },
-                        programName: {
+                        _programName: {
                             type: String,
                             value: "Program name"
                         },
-                        programNumber: {
+                        _programNumber: {
                             typr: String,
                             value: "Program number"
                         }
@@ -384,10 +399,10 @@
                 loyaltyProgram.guestName = "";
                 loyaltyProgram.programName = "";
                 loyaltyProgram.programNumber = "";
-                this.push('loyaltyPrograms', {
+                this.push('_loyaltyPrograms', {
                     loyaltyProgram
                 });
-                this.loyaltyProgramsCount = +this.loyaltyProgramsCount + +1;
+                this._loyaltyProgramsCount = +this._loyaltyProgramsCount + +1;
                 // this.shadowRoot.querySelector("#div" + index).hidden = false;
             }
 
@@ -396,16 +411,16 @@
              **/
             _deleteLoyaltyProgram(e) {
                     var index = parseInt(e.currentTarget.className.replace("c", ""));
-                    // var array = this.loyaltyPrograms;
+                    // var array = this._loyaltyPrograms;
                     if (index > -1) {
-                        this.splice('loyaltyPrograms', index, 0);
+                        this.splice('_loyaltyPrograms', index, 0);
                     }
-                    this.loyaltyProgramsCount = this.loyaltyProgramsCount - 1;
+                    this._loyaltyProgramsCount = this._loyaltyProgramsCount - 1;
                     var ele = this.shadowRoot.querySelector("#div" + index);
                     var parent = ele.parentElement;
                     parent.removeChild(ele);
 
-                    for (var i = index; i < this.loyaltyProgramsCount; i++) {
+                    for (var i = index; i < this._loyaltyProgramsCount; i++) {
                         this.shadowRoot.querySelector("#div" + (+i + +1)).id = "div" + i;
                         this.shadowRoot.querySelector("#guestName" + (+i + +1)).id = "guestName" + i;
                         this.shadowRoot.querySelector("#programName" + (+i + +1)).id = "programName" + i;
@@ -433,12 +448,12 @@
                     programName.invalid = false;
 
                     var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
-                    this.loyaltyPrograms[ind].loyaltyProgram.guestName = this.paxList[e.model.index].firstName + ' ' + this.paxList[e.model.index].lastName;
+                    this._loyaltyPrograms[ind].loyaltyProgram.guestName = this.paxList[e.model.index].firstName + ' ' + this.paxList[e.model.index].lastName;
                 } else {
                     var list = this._updatePaxList();
 
                     var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
-                    this.loyaltyPrograms[ind].loyaltyProgram.guestName = list[e.model.index].firstName + ' ' + list[e.model.index].lastName;
+                    this._loyaltyPrograms[ind].loyaltyProgram.guestName = list[e.model.index].firstName + ' ' + list[e.model.index].lastName;
                 }
             }
 
@@ -491,22 +506,25 @@
                                 }
                             }
                         }
-                        this.tempPaxArray = paxList;
+                        this._tempPaxArray = paxList;
                     } else {
-                        this.tempPaxArray = this.paxList;
+                        this._tempPaxArray = this.paxList;
                     }
-                    if (this.tempPaxArray.length === 0) {
-                        this.showGuestNameError = false;
-                        if (this.smallMobileView === true || this.mobileView === true) {
-                            this.shadowRoot.querySelector(".programNumber").style.clear = "both";
+                    if (this._tempPaxArray.length === 0) {
+                        this._showGuestNameError = false;
+                        var len = this._loyaltyPrograms.length;
+                        for (var i = 0; i < len; i++) {
+                            if (this.smallMobileView === true || this.mobileView === true) {
+                                this.shadowRoot.querySelector("#programNumber" + i).style.clear = "both";
+                            }
                         }
                         if (this.largeDesktopView === true || this.desktopView === true || this.tabletView === true) {
                             this.shadowRoot.querySelector("#addProgramForOtherGuestButton").style.clear = "both";
                         }
                     } else {
-                        this.showGuestNameError = true;
+                        this._showGuestNameError = true;
                     }
-                    return this.tempPaxArray;
+                    return this._tempPaxArray;
                 }
                 /**
                  * Program name field if paxlist not given then paper-input.
@@ -514,9 +532,9 @@
                  * */
             _showProgramName() {
                     if (this.paxListAvailable === false) {
-                        this.showProgramNameInput = false;
+                        this._showProgramNameInput = false;
                     } else {
-                        this.showProgramNameDropdown = false;
+                        this._showProgramNameDropdown = false;
                     }
                 }
                 // connectedCallback() {
@@ -535,29 +553,29 @@
             }
             _defaultRsourcesValue() {
                 if (this.resources.loyaltyProgram.remove) {
-                    this.remove = this.resources.loyaltyProgram.remove;
+                    this._remove = this.resources.loyaltyProgram.remove;
                 }
                 if (this.resources.loyaltyProgram.addNewGuest) {
-                    this.addNewGuest = this.resources.loyaltyProgram.addNewGuest;
+                    this._addNewGuest = this.resources.loyaltyProgram.addNewGuest;
                 }
                 if (this.resources.loyaltyProgram.guestNameError) {
-                    this.guestNameError = this.resources.loyaltyProgram.guestNameError;
+                    this._guestNameError = this.resources.loyaltyProgram.guestNameError;
                 }
                 if (this.resources.loyaltyProgram.label.guestName) {
-                    this.guestName = this.resources.loyaltyProgram.label.guestName;
+                    this._guestName = this.resources.loyaltyProgram.label.guestName;
                 }
                 if (this.resources.loyaltyProgram.label.programName) {
-                    this.programName = this.resources.loyaltyProgram.label.programName;
+                    this._programName = this.resources.loyaltyProgram.label.programName;
                 }
                 if (this.resources.loyaltyProgram.label.programNumber) {
-                    this.programNumber = this.resources.loyaltyProgram.label.programNumber;
+                    this._programNumber = this.resources.loyaltyProgram.label.programNumber;
                 }
             }
             ready() {
                 super.ready();
                 this._defaultRsourcesValue();
                 this._showProgramName();
-                this.loyaltyPrograms = [];
+                this._loyaltyPrograms = [];
                 this._addProgramForOtherGuest();
 
             }
