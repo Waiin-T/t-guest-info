@@ -672,6 +672,7 @@
                         this._indexArray.splice(indexOfPax, 1);
                     }
                     adultPaxInfoVar._showChooseGuest = false;
+                    adultPaxInfoVar._showChooseGuestDuplicateError = true;
                     adultPaxInfoVar._showPaxInfoFields = true;
                     adultPaxInfoVar.shadowRoot.querySelector("#chooseGuest").invalid = false;
                     var closeIconAdultVar = this.shadowRoot.querySelector("#closeIconAdult" + (e.model.index + 1))
