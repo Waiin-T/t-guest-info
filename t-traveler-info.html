@@ -97,7 +97,7 @@
         }
         .closeIconAdult {
             margin-top: 3%;
-            margin-left: -14px;
+            margin-left: -26px;
             color: #A8A8A8;
         }
         .closeIconChild {
@@ -193,7 +193,7 @@
         .closeIconAdult,
         .closeIconChild {
             margin-top: 3%;
-            margin-left: 18px;
+            margin-left: 6px;
             color: #A8A8A8;
         }
         .closeIconChooseGuest {
@@ -247,7 +247,7 @@
                     <div id="paxInfoTemp">
                         <pax-info id="adultPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{_paxListAdult}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{_indexArray}}" index="{{_increaseIndex(index)}}" traveler-info="{{travelerInfo}}" adult-pax-count="{{adultPaxCount}}"
-                            pax-list-available="{{paxListAvailable}}" type="{{adultPax}}" room-number="{{roomNumber}}"></pax-info>
+                            pax-list-available="{{paxListAvailable}}" type="{{adultPax}}"room-number="{{roomNumber}}"></pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
                             <paper-icon-button icon="close" id="closeIconAdult{{_increaseIndex(index)}}" class="closeIconAdult" on-tap="_closePaxAdultInfo"></paper-icon-button>
                         </div>
@@ -256,7 +256,7 @@
 
     <template is="dom-repeat" items="{{_childPaxCountArray}}" id="childPaxTemplate">
                     <div id="paxInfoTemp">
-                        <pax-info id="childPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{_paxListChild}}" option="[[option]]" resources="{{resources}}"
+                        <pax-info id="childPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{_paxListChild}}" adult-pax-list="" option="[[option]]" resources="{{resources}}"
                             index-array="{{_indexArrayChild}}" type="{{childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
                             index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}" pax-list-available="{{paxListAvailable}}"></pax-info>
                         <div hidden$=[[_isCloseButtonChildHidden]]>
@@ -552,7 +552,6 @@
                 var adultPaxDataArray = [];
                 for (var i = 0; i < this.adultPaxCount; i++) {
                     var adultPax = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i + 1));
-
                     adultPaxDataArray[i] = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i +
                         1)).collectData();
                 }

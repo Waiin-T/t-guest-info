@@ -458,6 +458,7 @@
         <div id="adultFirstNamediv">
             <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}"></paper-input>
             <div id="adultFirstNameError" hidden$="{{_showFirstNameError}}">{{_firstNameError}}</div>
+            <div id="adultFirstNameError" hidden$="{{_ShowDuplicateGuest}}">Duplicate guest name</div>
         </div>
         <div id="adultLastNamediv">
             <paper-input label="{{_lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_lastNameError}}"></paper-input>
@@ -505,6 +506,13 @@
             }
             static get properties() {
                     return {
+                        /**
+                         *@private
+                         **/
+                        _ShowDuplicateGuest: {
+                            type: Boolean,
+                            value: true
+                        },
                         /**
                          *@private
                          **/
@@ -983,6 +991,10 @@
                             type: Array,
                             value: []
                         },
+                        _paxTempArray: {
+                            type: Array,
+                            value: []
+                        },
                     }
                 }
                 /*
@@ -1000,24 +1012,27 @@
                 }
                 return false;
             }
-            _loadPaxList(e) {
-                    if (this.paxListAvailable === false) {
-                        var paxInfo = this.travelerInfo.guestInfo.isData();
-                        var paxTempArray = [];
-                        var prodLen = paxInfo.length;
-                        for (var i = 0; i < prodLen; i++) {
-                            var roomLen = paxInfo[i].length;
-                            for (var j = 0; j < roomLen; j++) {
-                                var paxLen = paxInfo[i][j].length;
-                                for (var k = 0; k < paxLen; k++) {
-                                    if (paxInfo[i][j][k].firstName != null && paxInfo[i][j][k].firstName != "") {
-                                        if (!this._isDuplicatePax(paxTempArray, paxInfo[i][j][k].firstName, paxInfo[i][j][k].lastName))
-                                            paxTempArray.push(paxInfo[i][j][k]);
-                                    }
-                                }
+            _totalPaxList() {
+                var paxInfo = this.travelerInfo.guestInfo.isData();
+                this._paxTempArray = [];
+                var prodLen = paxInfo.length;
+                for (var i = 0; i < prodLen; i++) {
+                    var roomLen = paxInfo[i].length;
+                    for (var j = 0; j < roomLen; j++) {
+                        var paxLen = paxInfo[i][j].length;
+                        for (var k = 0; k < paxLen; k++) {
+                            if (paxInfo[i][j][k].firstName != null && paxInfo[i][j][k].firstName != "") {
+                                if (!this._isDuplicatePax(this._paxTempArray, paxInfo[i][j][k].firstName, paxInfo[i][j][k].lastName))
+                                    this._paxTempArray.push(paxInfo[i][j][k]);
                             }
                         }
-                        var paxList = paxTempArray;
+                    }
+                }
+                return this._paxTempArray;
+            }
+            _loadPaxList(e) {
+                    if (this.paxListAvailable === false) {
+                        var paxList = this._totalPaxList();
                         if (this.type === 'Adult') {
                             var adults = paxList.filter(function(item) {
                                 return item.type.toLowerCase() === 'adult';
@@ -1053,6 +1068,7 @@
                         } else {
                             firstName.invalid = false;
                             this._showFirstNameError = true;
+                            this._ShowDuplicateGuest = true;
                         }
                     }
                     if (event.currentTarget.id === "adultLastName") {
@@ -1063,6 +1079,19 @@
                         } else {
                             lastName.invalid = false;
                             this._showLastNameError = true;
+                        }
+                        if (this.type === "Child") {
+                            var paxList = this._totalPaxList();
+                            var totalPaxList = paxList.filter(function(item) {
+                                return item.type.toLowerCase() === 'adult';
+                            });
+                            for (var i = 0; i < totalPaxList.length; i++) {
+                                if (totalPaxList[i].firstName === this.shadowRoot.querySelector("#adultFirstName").value &&
+                                    totalPaxList[i].lastName === this.shadowRoot.querySelector("#adultLastName").value) {
+                                    this.shadowRoot.querySelector("#adultFirstName").invalid = true;
+                                    this._ShowDuplicateGuest = false;
+                                }
+                            }
                         }
                     }
                     if (event.currentTarget.id === "adultEmail") {

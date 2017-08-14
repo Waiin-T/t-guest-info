@@ -459,7 +459,6 @@
                 var loyaltyProgramObject = {};
                 var loyaltyProgramArrayData = [];
                 var loyaltyProgramEle = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (ind + 1))
-                    // if (loyaltyProgramEle.loyaltyPrograms.length >= 2) {
                 for (var i = 0; i < loyaltyProgramEle._loyaltyPrograms.length; i++) {
                     var loyaltyProgram = {};
                     if (loyaltyProgramEle.shadowRoot.querySelector("#guestName" + i) != null) {
@@ -474,10 +473,7 @@
                     }
                     loyaltyProgramArrayData[i] = loyaltyProgram;
                 }
-                // }
                 console.log(loyaltyProgramArrayData);
-                loyaltyProgramObject = JSON.stringify(loyaltyProgramArrayData);
-                // console.log(loyaltyProgramObject);
                 return loyaltyProgramArrayData;
             }
             _defaultResourcesvalue() {

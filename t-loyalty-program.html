@@ -78,7 +78,7 @@
 
       #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
-        margin-left: -9px;
+        margin-left: -8px;
         float: left;
         margin-top: 3%;
         padding-bottom: 30px;
@@ -456,11 +456,28 @@
                     var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
                     this._loyaltyPrograms[ind].loyaltyProgram.guestName = list[e.model.index].firstName + ' ' + list[e.model.index].lastName;
                 }
-            }
 
-            /**
-             * To show validation on click of program number.
-             * */
+            }
+            _ShowDuplicateProgram() {
+                    var loyaltyProgramArrayData = this.guestInfo._loyaltyProgramData();
+                    for (var i = 0; i < loyaltyProgramArrayData.length; i++) {
+                        for (var j = 0; j < loyaltyProgramArrayData.length; j++) {
+                            if (loyaltyProgramArrayData[i].GuestName != undefined && loyaltyProgramArrayData[i].GuestName != "") {
+                                if (loyaltyProgramArrayData[i].GuestName === loyaltyProgramArrayData[j].GuestName && loyaltyProgramArrayData[i].ProgramName ===
+                                    loyaltyProgramArrayData[j].ProgramName && loyaltyProgramArrayData[i].ProgramNumber === loyaltyProgramArrayData[j].ProgramNumber &&
+                                    i != j) {
+                                    this.shadowRoot.querySelector("#guestName" + i).invalid = true;
+                                    this.shadowRoot.querySelector("#guestName" + i).errorMessage = "Duplicate program";
+                                } else {
+                                    this.shadowRoot.querySelector("#guestName" + i).invalid = false;
+                                }
+                            }
+                        }
+                    }
+                }
+                /**
+                 * To show validation on click of program number.
+                 * */
             _showValidation(e) {
                     var id = e.currentTarget.id;
                     id = id.replace("programNumber", "");
