@@ -377,7 +377,7 @@
         #chooseGuestError {
             font-size: var(--paper-font-caption_-_font-size);
             margin-top: -6px;
-            margin-left: 198px;
+            margin-left: 202px;
             position: absolute;
             color: var(--paper-deep-orange-a700);
         }
@@ -398,8 +398,6 @@
     #hrLineNewGuest {
         color: #BDBDBD;
     }
-    
-   
     
     #adultEmailError {
         font-size: var(--paper-font-caption_-_font-size);
@@ -990,6 +988,18 @@
                 /*
                  **Function to load paxlist for choose guest dropdown when paxlist is not given.
                  */
+            _isDuplicatePax(paxList, firstName, lastName) {
+                if (paxList.length == 0) {
+                    return false;
+                }
+                for (var i = 0; i < paxList.length; i++) {
+                    if ((paxList[i].firstName === firstName &&
+                            paxList[i].lastName === lastName)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
             _loadPaxList(e) {
                     if (this.paxListAvailable === false) {
                         var paxInfo = this.travelerInfo.guestInfo.isData();
@@ -1001,22 +1011,13 @@
                                 var paxLen = paxInfo[i][j].length;
                                 for (var k = 0; k < paxLen; k++) {
                                     if (paxInfo[i][j][k].firstName != null && paxInfo[i][j][k].firstName != "") {
-                                        paxTempArray.push(paxInfo[i][j][k]);
+                                        if (!this._isDuplicatePax(paxTempArray, paxInfo[i][j][k].firstName, paxInfo[i][j][k].lastName))
+                                            paxTempArray.push(paxInfo[i][j][k]);
                                     }
                                 }
                             }
                         }
                         var paxList = paxTempArray;
-                        for (var i = 0; i < paxList.length; i++) {
-                            // for (var j = i + 1; j < paxList.length; j++) {
-                            var j = 1;
-                            while (j < paxList.length) {
-                                if ((paxList[i].firstName === paxList[j].firstName &&
-                                        paxList[i].lastName === paxList[j].lastName)) {
-                                    paxList.splice(j, 1);
-                                }
-                            }
-                        }
                         if (this.type === 'Adult') {
                             var adults = paxList.filter(function(item) {
                                 return item.type.toLowerCase() === 'adult';
@@ -1072,9 +1073,12 @@
                                 email.invalid = true;
                                 this._showEmailError = false;
                                 this._showEmailAddressInfo = true;
-                            } else {
-                                this._showInvalidEmail();
                             }
+                        } else {
+                            this._showInvalidEmail();
+                        }
+                        if (email.value === "") {
+                            this._showEmailAddressInfo = true;
                         }
                     }
                     if (event.currentTarget.id === "adultContactNo") {
@@ -1084,10 +1088,11 @@
                             if (this.type != "Child") {
                                 contactNumber.invalid = true;
                                 this._showContactNumberError = false;
-                            } else {
-                                this._showInvalidContact();
                             }
+                        } else {
+                            this._showInvalidContact();
                         }
+
                     }
                 }
                 /*
@@ -1339,6 +1344,7 @@
                         this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
                             "closeIconAdult");
                     }
+                    var len = this.indexArray.length;
                     var sc = window.pageYOffset;
                     setTimeout(function() {
                         window.scrollTo(0, sc);

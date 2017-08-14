@@ -120,22 +120,22 @@
 
       @media (min-width: 1024px){
       .guestName {
-        width: 23%;
+        width: 21%;
         margin-left: 10px;
       }
 
       .programName {
-        width: 23%;
+        width: 21%;
         margin-left: 25px;
       }
 
       .programNumber {
-        width: 23%;
+        width: 21%;
         margin-left: 25px;
       }
        #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
-        margin-left: 6px;
+        margin-left: 33px;
         float: left;
         margin-top: 3%;
         padding-bottom: 30px;
@@ -185,13 +185,13 @@
         <div style="clear:both" id="div{{loyaltyProgramNumber}}">
           <div class="guestName" id="guestNameDiv">
             <paper-dropdown-menu label="{{_guestName}}" id="guestName{{loyaltyProgramNumber}}" on-tap="_updatePaxList" required auto-validate>
-                <paper-listbox slot="dropdown-content" selected="{{_guestNameValue}}">
+                <paper-listbox slot="dropdown-content" >
                     <template is="dom-repeat" items={{_tempPaxArray}}>
                         <paper-item id="{{loyaltyProgramNumber}}" on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
                     </template>
     </paper-listbox>
     </paper-dropdown-menu>
-    <input is="iron-input" type="hidden" bind-value="[[_guestNameValue]]">
+    <!-- <input is="iron-input" type="hidden" bind-value="[[_guestNameValue]]"> -->
     <div id="guestNameError" hidden$="{{_showGuestNameError}}">{{_guestNameError}}</div>
     </div>
     <div hidden$="{{_showProgramNameInput}}">

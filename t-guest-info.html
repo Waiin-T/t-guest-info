@@ -168,7 +168,7 @@
 
       <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo" id="productTemplate">
         <template is="dom-repeat" items="{{product.rooms}}" as="room" id="travelerTemplate">
-          <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" title="{{product.title}} {{_increaseIndex(index)}}"
+          <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" product-title="{{product.title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} {{_adultLabel(room.criteria.traveler.adult)}}, {{room.criteria.traveler.child}} {{_childLabel(room.criteria.traveler.child)}}" policy-List="{{room.policies}}"
             room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]"
             child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}" only-lead-pax-info="{{room.onlyLeadPaxInfo}}"
@@ -262,7 +262,7 @@
                         /**
                          *To set title property for room.
                          **/
-                        title: {
+                        productTitle: {
                             type: String,
                             value: 'Room'
                         },
