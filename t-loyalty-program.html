@@ -199,13 +199,12 @@
     </div>
     <div hidden$="{{_showProgramNameDropdown}}">
         <paper-dropdown-menu label="{{_programName}}" id="programName{{loyaltyProgramNumber}}" class="programName" required auto-validate>
-            <paper-listbox slot="dropdown-content" selected="{{_programNameValue}}">
+            <paper-listbox slot="dropdown-content">
                 <template is="dom-repeat" items={{paxList}}>
                   <paper-item>{{item.membership.programName}}</paper-item>
                 </template>
             </paper-listbox>
         </paper-dropdown-menu>
-        <input is="iron-input" type="hidden" bind-value="[[_programNameValue]]">
     </div>
     <div>
         <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-click="_showValidation" required auto-validate></paper-input>
@@ -382,9 +381,13 @@
                             value: "Program name"
                         },
                         _programNumber: {
-                            typr: String,
+                            type: String,
                             value: "Program number"
-                        }
+                        },
+                        _usedIndexArray: {
+                            type: Array,
+                            value: []
+                        },
                     };
                 }
                 /**
@@ -437,43 +440,23 @@
                  * Set the program name and program number if paxlist is available.
                  * */
             _showGuestProgramDetails(e) {
-                if (this.paxListAvailable != false) {
-                    var paxIndex = e.model.index;
-                    var paxListArray = this.paxList;
-                    var guestName = this.shadowRoot.querySelector("#guestName" + e.currentTarget.id);
-                    var programName = this.shadowRoot.querySelector("#programName" + e.currentTarget.id);
-                    var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
-                    programName.contentElement.selected = programNameIndex;
-                    var programNumber = this.shadowRoot.querySelector("#programNumber" + e.currentTarget.id);
-                    programNumber.value = paxListArray[paxIndex].membership.number;
-                    guestName.invalid = false;
-                    programName.invalid = false;
-
-                    var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
-                    this._loyaltyPrograms[ind].loyaltyProgram.guestName = this.paxList[e.model.index].firstName + ' ' + this.paxList[e.model.index].lastName;
-                } else {
-                    var list = this._updatePaxList();
-                    var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
-                    this._loyaltyPrograms[ind].loyaltyProgram.guestName = list[e.model.index].firstName + ' ' + list[e.model.index].lastName;
-                }
-
-            }
-            _ShowDuplicateProgram() {
-                    var loyaltyProgramArrayData = this.guestInfo._loyaltyProgramData();
-                    for (var i = 0; i < loyaltyProgramArrayData.length; i++) {
-                        for (var j = 0; j < loyaltyProgramArrayData.length; j++) {
-                            if (loyaltyProgramArrayData[i].GuestName != undefined && loyaltyProgramArrayData[i].GuestName != "") {
-                                if (loyaltyProgramArrayData[i].GuestName === loyaltyProgramArrayData[j].GuestName && loyaltyProgramArrayData[i].ProgramName ===
-                                    loyaltyProgramArrayData[j].ProgramName && loyaltyProgramArrayData[i].ProgramNumber === loyaltyProgramArrayData[j].ProgramNumber &&
-                                    i != j) {
-                                    this.shadowRoot.querySelector("#guestName" + i).invalid = true;
-                                    this.shadowRoot.querySelector("#guestName" + i).errorMessage = "Duplicate program";
-                                } else {
-                                    this.shadowRoot.querySelector("#guestName" + i).invalid = false;
-                                }
-                            }
-                        }
+                    if (this.paxListAvailable != false) {
+                        var paxIndex = e.model.index;
+                        var paxListArray = this.paxList;
+                        var guestName = this.shadowRoot.querySelector("#guestName" + e.currentTarget.id);
+                        var programName = this.shadowRoot.querySelector("#programName" + e.currentTarget.id);
+                        var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
+                        programName.contentElement.selected = programNameIndex;
+                        var programNumber = this.shadowRoot.querySelector("#programNumber" + e.currentTarget.id);
+                        programNumber.value = paxListArray[paxIndex].membership.number;
+                        guestName.invalid = false;
+                        programName.invalid = false;
+                    } else {
+                        var paxListArray = this._updatePaxList();
                     }
+                    var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
+                    this._loyaltyPrograms[ind].loyaltyProgram.guestName = paxListArray[e.model.index].firstName + ' ' + paxListArray[e.model.index].lastName;
+                    this._usedIndexArray.push(e.model.index);
                 }
                 /**
                  * To show validation on click of program number.
@@ -541,6 +524,10 @@
                         }
                     } else {
                         this._showGuestNameError = true;
+                    }
+                    for (var i = 0; i < this._usedIndexArray.length; i++) {
+                        var ind = this._usedIndexArray[i];
+                        this._tempPaxArray.splice(ind, 1);
                     }
                     return this._tempPaxArray;
                 }

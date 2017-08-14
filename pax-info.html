@@ -108,7 +108,7 @@
         #chooseGuestError {
             font-size: var(--paper-font-caption_-_font-size);
             margin-top: -6px;
-            margin-left: 1px;
+            margin-left: -9px;
             position: absolute;
             color: var(--paper-deep-orange-a700);
         }
@@ -448,7 +448,7 @@
             <paper-dropdown-menu label="{{_titleLabel}}" id="adultPaxTitle" on-blur="_updateValidation" required errorMessage="{{_titleError}}">
                 <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
                     <template is="dom-repeat" items={{_titleValues}}>
-                                    <paper-item>{{item.key}}</paper-item>
+                                    <paper-item on-tap="_resizeWindow">{{item.key}}</paper-item>
                                 </template>
                 </paper-listbox>
             </paper-dropdown-menu>
@@ -474,7 +474,7 @@
             <paper-dropdown-menu label="{{_countryCodeTitle}}" id="adultCountryCode" on-blur="_updateValidation" required errorMessage="{{_countryCodeError}}">
                 <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
                     <template is="dom-repeat" items={{_countryCodeValues}}>
-                                    <paper-item value="{{item.value}}">{{item.key}}</paper-item>
+                                    <paper-item value="{{item.value}}" on-tap="_resizeWindow">{{item.key}}</paper-item>
                                 </template>
                 </paper-listbox>
             </paper-dropdown-menu>
@@ -1262,81 +1262,87 @@
                  *To show the pax Info input fields on click of element of choose guest dropdown.
                  **/
             _showPaxInfoFieldsMethod(e) {
-                    var paxIndex = e.model.index;
-                    var flag = this.indexArray.indexOf(paxIndex) > -1;
-                    if (flag == false) {
-                        this.indexArray.push(paxIndex);
-                        if (this.paxListAvailable === false) {
-                            var paxListArray = this._tempPaxArray;
-                        } else {
-                            var paxListArray = this.paxList
-                        }
-                        this._showFirstNameError = true;
-                        this._showLastNameError = true;
-                        this._showEmailError = true;
-                        this._showContactNumberError = true;
-                        this._showContactNumberInvalidError = true;
-                        var divPax = this.$.form.querySelector(("#paxInfoDiv" + (this.index)));
-                        var adultFirstNameData = divPax.querySelector("#adultFirstName");
-                        var adultLastNameData = divPax.querySelector("#adultLastName");
-                        var adultTitleData = divPax.querySelector("#adultPaxTitle");
-                        var adultEmailData = divPax.querySelector("#adultEmail");
-                        var adultCountryCodeData = divPax.querySelector("#adultCountryCode");
-                        var adultContactNumberData = divPax.querySelector("#adultContactNo");
-                        adultFirstNameData.invalid = false;
-                        adultLastNameData.invalid = false;
-                        adultTitleData.invalid = false;
-                        adultEmailData.invalid = false;
-                        adultCountryCodeData.invalid = false;
-                        adultContactNumberData.invalid = false;
-                        adultFirstNameData.value = paxListArray[paxIndex].firstName;
-                        adultLastNameData.value = paxListArray[paxIndex].lastName;
-                        if (this.paxListAvailable === false && paxListArray[paxIndex].title != undefined) {
-                            var titleIndex = this._titleValues.findIndex(x => x.key == (paxListArray[
-                                paxIndex].title).trim());
-                        } else {
-                            var titleIndex = this._titleValues.findIndex(x => x.key == paxListArray[
-                                paxIndex].title);
-                        }
-                        adultTitleData.contentElement.selected = titleIndex;
-                        adultEmailData.value = paxListArray[paxIndex].email;
-                        if (this.paxListAvailable === false && paxListArray[paxIndex].countrycode != undefined) {
-                            var countryCodeIndex = this._countryCodeValues.findIndex(x => x.key ==
-                                (paxListArray[paxIndex].countrycode).trim());
-                        } else {
-                            var countryCodeIndex = this._countryCodeValues.findIndex(x => x.value ==
-                                paxListArray[paxIndex].countrycode);
-                        }
-                        if (paxListArray[paxIndex].countryCode === undefined) {
-                            var countryCodeIndex = 0;
-                        }
-                        adultCountryCodeData.contentElement.selected = countryCodeIndex;
-                        adultContactNumberData.value = paxListArray[paxIndex].contact;
-                        this.shadowRoot.querySelector("#adultFirstName").invalid = false;
-                        if (this.type === 'Adult') {
-                            var closeIcon = this.parentElement.querySelector("#closeIconAdult" + (this.index));
-                            closeIcon.classList.remove("closeIconChooseGuest");
-                            closeIcon.classList.add("closeIconAdult");
-                        }
-                        if (this.type === 'Child') {
-                            var closeIconC = this.parentElement.querySelector("#closeIconChild" + (this.index));
-                            closeIconC.classList.remove("closeIconChooseGuest");
-                            closeIconC.classList.add("closeIconChild");
-                        }
-                        this._showChooseGuest = true;
-                        this._showPaxInfoFields = false;
+                var paxIndex = e.model.index;
+                var flag = this.indexArray.indexOf(paxIndex) > -1;
+                if (flag == false) {
+                    this.indexArray.push(paxIndex);
+                    if (this.paxListAvailable === false) {
+                        var paxListArray = this._tempPaxArray;
                     } else {
-                        this.shadowRoot.querySelector("#chooseGuest").invalid = true;
-                        this._showChooseGuestDuplicateError = false;
-                        this._showChooseGuestError = true;
-                        // this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
+                        var paxListArray = this.paxList
                     }
-                    /**To maintain focus on selected pax */
+                    this._showFirstNameError = true;
+                    this._showLastNameError = true;
+                    this._showEmailError = true;
+                    this._showContactNumberError = true;
+                    this._showContactNumberInvalidError = true;
+                    var divPax = this.$.form.querySelector(("#paxInfoDiv" + (this.index)));
+                    var adultFirstNameData = divPax.querySelector("#adultFirstName");
+                    var adultLastNameData = divPax.querySelector("#adultLastName");
+                    var adultTitleData = divPax.querySelector("#adultPaxTitle");
+                    var adultEmailData = divPax.querySelector("#adultEmail");
+                    var adultCountryCodeData = divPax.querySelector("#adultCountryCode");
+                    var adultContactNumberData = divPax.querySelector("#adultContactNo");
+                    adultFirstNameData.invalid = false;
+                    adultLastNameData.invalid = false;
+                    adultTitleData.invalid = false;
+                    adultEmailData.invalid = false;
+                    adultCountryCodeData.invalid = false;
+                    adultContactNumberData.invalid = false;
+                    adultFirstNameData.value = paxListArray[paxIndex].firstName;
+                    adultLastNameData.value = paxListArray[paxIndex].lastName;
+                    if (this.paxListAvailable === false && paxListArray[paxIndex].title != undefined) {
+                        var titleIndex = this._titleValues.findIndex(x => x.key == (paxListArray[
+                            paxIndex].title).trim());
+                    } else {
+                        var titleIndex = this._titleValues.findIndex(x => x.key == paxListArray[
+                            paxIndex].title);
+                    }
+                    adultTitleData.contentElement.selected = titleIndex;
+                    adultEmailData.value = paxListArray[paxIndex].email;
+                    if (this.paxListAvailable === false && paxListArray[paxIndex].countrycode != undefined) {
+                        var countryCodeIndex = this._countryCodeValues.findIndex(x => x.key ==
+                            (paxListArray[paxIndex].countrycode).trim());
+                    } else {
+                        var countryCodeIndex = this._countryCodeValues.findIndex(x => x.value ==
+                            paxListArray[paxIndex].countrycode);
+                    }
+                    if (paxListArray[paxIndex].countryCode === undefined) {
+                        var countryCodeIndex = 0;
+                    }
+                    adultCountryCodeData.contentElement.selected = countryCodeIndex;
+                    adultContactNumberData.value = paxListArray[paxIndex].contact;
+                    this.shadowRoot.querySelector("#adultFirstName").invalid = false;
+                    if (this.type === 'Adult') {
+                        var closeIcon = this.parentElement.querySelector("#closeIconAdult" + (this.index));
+                        closeIcon.classList.remove("closeIconChooseGuest");
+                        closeIcon.classList.add("closeIconAdult");
+                    }
+                    if (this.type === 'Child') {
+                        var closeIconC = this.parentElement.querySelector("#closeIconChild" + (this.index));
+                        closeIconC.classList.remove("closeIconChooseGuest");
+                        closeIconC.classList.add("closeIconChild");
+                    }
+                    this._showChooseGuest = true;
+                    this._showPaxInfoFields = false;
+                } else {
+                    this.shadowRoot.querySelector("#chooseGuest").invalid = true;
+                    this._showChooseGuestDuplicateError = false;
+                    this._showChooseGuestError = true;
+                    // this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
+                }
+                /**To maintain focus on selected pax */
+                var sc = window.pageYOffset;
+                setTimeout(function() {
+                    window.scrollTo(0, sc);
+                }, 0);
+
+            }
+            _resizeWindow() {
                     var sc = window.pageYOffset;
                     setTimeout(function() {
                         window.scrollTo(0, sc);
                     }, 0);
-
                 }
                 /**
                  *On-click of add new of choose guest.
