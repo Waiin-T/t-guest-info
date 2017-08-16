@@ -135,7 +135,7 @@
       }
        #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
-        margin-left: 33px;
+        margin-left: 40px;
         float: left;
         margin-top: 3%;
         padding-bottom: 30px;
@@ -150,16 +150,12 @@
         text-transform: capitalize;
       }
       }
-
-
       .guestName,
       .programName,
       .programNumber,
       #buttonRemove {
         float: left;
       }
-
-     
 
       #guestNameError {
       font-size: var(--paper-font-caption_-_font-size);
@@ -184,7 +180,7 @@
         <template is="dom-repeat" items="{{_loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
         <div style="clear:both" id="div{{loyaltyProgramNumber}}">
           <div class="guestName" id="guestNameDiv">
-            <paper-dropdown-menu label="{{_guestName}}" id="guestName{{loyaltyProgramNumber}}" on-tap="_updatePaxList" required auto-validate>
+            <paper-dropdown-menu label="{{_guestName}}" id="guestName{{loyaltyProgramNumber}}" on-blur="_isValid" on-tap="_updatePaxList" required auto-validate>
                 <paper-listbox slot="dropdown-content" >
                     <template is="dom-repeat" items={{_tempPaxArray}}>
                         <paper-item id="{{loyaltyProgramNumber}}" on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
@@ -195,10 +191,10 @@
     <div id="guestNameError" hidden$="{{_showGuestNameError}}">{{_guestNameError}}</div>
     </div>
     <div hidden$="{{_showProgramNameInput}}">
-        <paper-input label="{{_programName}}" id="programNameInput{{loyaltyProgramNumber}}" class="programName" required></paper-input>
+        <paper-input label="{{_programName}}" id="programNameInput{{loyaltyProgramNumber}}" on-blur="_isValid" class="programName" required></paper-input>
     </div>
     <div hidden$="{{_showProgramNameDropdown}}">
-        <paper-dropdown-menu label="{{_programName}}" id="programName{{loyaltyProgramNumber}}" class="programName" required auto-validate>
+        <paper-dropdown-menu label="{{_programName}}" id="programName{{loyaltyProgramNumber}}" on-blur="_isValid" class="programName" required auto-validate>
             <paper-listbox slot="dropdown-content">
                 <template is="dom-repeat" items={{paxList}}>
                   <paper-item>{{item.membership.programName}}</paper-item>
@@ -207,7 +203,7 @@
         </paper-dropdown-menu>
     </div>
     <div>
-        <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-click="_showValidation" required auto-validate></paper-input>
+        <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-blur="_isValid" on-click="_showValidation" required auto-validate></paper-input>
     </div>
     <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
         <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">{{_remove}}</paper-button>
@@ -240,159 +236,156 @@
                 return 't-loyalty-program';
             }
             static get properties() {
-                    return {
-                        _showGuestNameError: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         * @private
-                         *Array for Loyalty Program. 
-                         **/
-                        _loyaltyPrograms: {
-                            type: Array,
-                            notify: true,
-                            value: []
-                        },
-                        /**
-                         * @private
-                         * Property to hide remove button when loyalty program is only one.
-                         * */
-                        _isRemoveButtonHidden: {
-                            type: Boolean,
-                            computed: '_lte(_loyaltyProgramsCount , 1)'
-                        },
-                        /**
-                         * @private
-                         * Selected value for guest name dropdown.
-                         * */
-                        _guestNameValue: {
-                            type: String
-                        },
-                        /**
-                         * @private
-                         * Selected value for program name
-                         * */
-                        _programNameValue: {
-                            type: String
-                        },
-                        /**
-                         * @private
-                         * used for iron media query
-                         * */
-                        smallMobileView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         * @private
-                         * used for iron media query
-                         * */
-                        mobileView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         * @private
-                         * used for iron media query
-                         * */
-                        tabletView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         * @private
-                         * used for iron media query
-                         * */
-                        desktopView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         * @private
-                         * used for iron media query
-                         * */
-                        largeDesktopView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         * Used for paxlist
-                         * */
-                        paxList: {
-                            type: Object,
-                        },
-                        /**
-                         * @private
-                         * This property is used for Loyalty program count.
-                         * */
-                        _loyaltyProgramsCount: {
-                            type: Number,
-                            value: ''
-                        },
-                        /**
-                         * This property set to false if paxlist is not available.
-                         * */
-                        paxListAvailable: {
-                            type: Boolean
-                        },
-                        /**
-                         * @private
-                         * To store temporary paxlist for dropdown.
-                         * */
-                        _tempPaxArray: {
-                            type: Array,
-                            value: []
-                        },
-                        /**
-                         * @private
-                         * This is true if paxlist is not available.
-                         * */
-                        _showProgramNameInput: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         * @private
-                         * This is true if paxlsit ia available.
-                         * */
-                        _showProgramNameDropdown: {
-                            type: Boolean,
-                            value: true
-                        },
-                        _remove: {
-                            type: String,
-                            value: "Remove"
-                        },
-                        _addNewGuest: {
-                            type: String,
-                            value: "Add program for other guest"
-                        },
-                        _guestNameError: {
-                            type: String,
-                            value: "Please enter guest details first"
-                        },
-                        _guestName: {
-                            type: String,
-                            value: "Guest name"
-                        },
-                        _programName: {
-                            type: String,
-                            value: "Program name"
-                        },
-                        _programNumber: {
-                            type: String,
-                            value: "Program number"
-                        },
-                        _usedIndexArray: {
-                            type: Array,
-                            value: []
-                        },
-                    };
-                }
-                /**
-                 * To set hidden property of remove button.
-                 * */
+                return {
+                    _showGuestNameError: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     * @private
+                     *Array for Loyalty Program. 
+                     **/
+                    _loyaltyPrograms: {
+                        type: Array,
+                        notify: true,
+                        value: []
+                    },
+                    /**
+                     * @private
+                     * Property to hide remove button when loyalty program is only one.
+                     * */
+                    _isRemoveButtonHidden: {
+                        type: Boolean,
+                        computed: '_lte(_loyaltyProgramsCount , 1)'
+                    },
+                    /**
+                     * @private
+                     * Selected value for guest name dropdown.
+                     * */
+                    _guestNameValue: {
+                        type: String
+                    },
+                    /**
+                     * @private
+                     * Selected value for program name
+                     * */
+                    _programNameValue: {
+                        type: String
+                    },
+                    /**
+                     * @private
+                     * used for iron media query
+                     * */
+                    smallMobileView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
+                     * used for iron media query
+                     * */
+                    mobileView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
+                     * used for iron media query
+                     * */
+                    tabletView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
+                     * used for iron media query
+                     * */
+                    desktopView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
+                     * used for iron media query
+                     * */
+                    largeDesktopView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * Used for paxlist
+                     * */
+                    paxList: {
+                        type: Object,
+                    },
+                    /**
+                     * @private
+                     * This property is used for Loyalty program count.
+                     * */
+                    _loyaltyProgramsCount: {
+                        type: Number,
+                        value: ''
+                    },
+                    /**
+                     * This property set to false if paxlist is not available.
+                     * */
+                    paxListAvailable: {
+                        type: Boolean
+                    },
+                    /**
+                     * @private
+                     * To store temporary paxlist for dropdown.
+                     * */
+                    _tempPaxArray: {
+                        type: Array,
+                        value: []
+                    },
+                    /**
+                     * @private
+                     * This is true if paxlist is not available.
+                     * */
+                    _showProgramNameInput: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     * @private
+                     * This is true if paxlsit ia available.
+                     * */
+                    _showProgramNameDropdown: {
+                        type: Boolean,
+                        value: true
+                    },
+                    _remove: {
+                        type: String,
+                        value: "Remove"
+                    },
+                    _addNewGuest: {
+                        type: String,
+                        value: "Add program for other guest"
+                    },
+                    _guestNameError: {
+                        type: String,
+                        value: "Please enter guest details first"
+                    },
+                    _guestName: {
+                        type: String,
+                        value: "Guest name"
+                    },
+                    _programName: {
+                        type: String,
+                        value: "Program name"
+                    },
+                    _programNumber: {
+                        type: String,
+                        value: "Program number"
+                    },
+                };
+            }
+
+            /**
+             * To set hidden property of remove button.
+             * */
             _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
                     return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
                 }
@@ -456,7 +449,7 @@
                     }
                     var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
                     this._loyaltyPrograms[ind].loyaltyProgram.guestName = paxListArray[e.model.index].firstName + ' ' + paxListArray[e.model.index].lastName;
-                    this._usedIndexArray.push(e.model.index);
+
                 }
                 /**
                  * To show validation on click of program number.
@@ -512,6 +505,7 @@
                         this._tempPaxArray = this.paxList;
                     }
                     if (this._tempPaxArray.length === 0) {
+
                         this._showGuestNameError = false;
                         var len = this._loyaltyPrograms.length;
                         for (var i = 0; i < len; i++) {
@@ -524,10 +518,6 @@
                         }
                     } else {
                         this._showGuestNameError = true;
-                    }
-                    for (var i = 0; i < this._usedIndexArray.length; i++) {
-                        var ind = this._usedIndexArray[i];
-                        this._tempPaxArray.splice(ind, 1);
                     }
                     return this._tempPaxArray;
                 }
@@ -570,6 +560,37 @@
                     this._programNumber = this.resources.loyaltyProgram.label.programNumber;
                 }
             }
+            _isValid(e) {
+                    // alert('hi');
+                    var ind = e.currentTarget.id.replace("programNumber", "");
+                    var guest = this.shadowRoot.querySelector("#guestName" + ind);
+                    var programNumber = e.currentTarget;
+                    if (this.paxListAvailable === false) {
+                        var programName = this.shadowRoot.querySelector("#programName" + ind);
+                    } else {
+                        var programName = this.shadowRoot.querySelector("#programNameInput" + ind);
+                    }
+                    for (var i = 0; i < this._loyaltyPrograms.length; i++) {
+                        var loyaltyGuest = this.shadowRoot.querySelector("#guestName" + i);
+                        var loyaltyProgramName = this.shadowRoot.querySelector("#programName" + i);
+                        var loyaltyProgramNumber = this.shadowRoot.querySelector("#programNumber" + i);
+                        if (guest.value === loyaltyGuest.value && programName.value === loyaltyProgramName.value &&
+                            programNumber.value === loyaltyProgramNumber.value && ind != i) {
+                            guest.invalid = true;
+                            programName.invalid = true;
+                            programNumber.invalid = true;
+                            guest.errorMessage = "duplicate record";
+                        }
+                    }
+                }
+                // connectedCallback() {
+                //     super.connectedCallback();
+                //     for (var i = 0; i < this._loyaltyPrograms.length; i++) {
+                //         this.shadowRoot.querySelector("#programNumber" + i).addEventListener('blur', (event) => {
+                //             this._updateValidation(event);
+                //         });
+                //     }
+                // }
             ready() {
                 super.ready();
                 this._defaultRsourcesValue();
