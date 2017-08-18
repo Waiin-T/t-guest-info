@@ -1,0 +1,38 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="t-product-summary">
+    <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+    <script>
+        /**
+         * `t-product-summary`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class TProductSummary extends Polymer.Element {
+            static get is() {
+                return 't-product-summary';
+            }
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 't-product-summary'
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(TProductSummary.is, TProductSummary);
+    </script>
+</dom-module>

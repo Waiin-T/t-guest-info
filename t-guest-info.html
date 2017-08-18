@@ -25,6 +25,7 @@
 
 <link rel="import" href="t-traveler-info.html">
 <link rel="import" href="t-loyalty-program.html">
+<link rel="import" href="t-product-summary.html">
 
 <dom-module id="t-guest-info">
     <template>
@@ -90,6 +91,23 @@
             clear: both;
             margin-left: -4px;
         }
+        #productSummaryDiv {
+            border: black solid 2px;
+            height:500px;
+            width: 100%;
+            float: left;
+            /* margin-left: 55px; */
+            /* margin-top: 20px */
+        }
+        #templateDiv {
+            border: red solid 2px;
+            width: 50%;
+            float: left;
+        }
+        #roomTemplateDiv {
+            float:left;
+            width:100%;
+        }
     }
     
     @media (min-width: 380px) and (max-width:767px) {
@@ -112,6 +130,23 @@
             clear: both;
             margin-left: -4px;
         }
+        #productSummaryDiv {
+            border: black solid 2px;
+            height:500px;
+            width: 100%;
+            float: left;
+            /* margin-left: 55px; */
+            /* margin-top: 20px */
+        }
+        #templateDiv {
+            border: red solid 2px;
+            width: 50%;
+            float: left;
+        }
+        #roomTemplateDiv {
+            float:left;
+            width:100%;
+        }
     }
     
     @media (min-width: 768px) and (max-width:1023px) {
@@ -133,6 +168,23 @@
             clear: both;
             margin-left: 10px;
         }
+        #productSummaryDiv {
+            border: black solid 2px;
+            height:500px;
+            width: 30%;
+            float: left;
+            margin-left: 32px;
+            margin-top: 5px
+        }
+        #templateDiv {
+            border: red solid 2px;
+            width: 50%;
+            float: left;
+        }
+        #roomTemplateDiv {
+            float:left;
+            width:65%;
+        }
     }
     
     @media (min-width: 1024px) {
@@ -152,6 +204,26 @@
             clear: both;
             margin-left: 10px;
         }
+        #productSummary{
+            
+        }
+        #productSummaryDiv {
+            border: black solid 2px;
+            height:500px;
+            width: 30%;
+            float: left;
+            margin-left: 55px;
+            margin-top: 20px
+        }
+        #templateDiv {
+            border: red solid 2px;
+            width: 50%;
+            float: left;
+        }
+        #roomTemplateDiv {
+            float:left;
+            width:65%;
+        }
     }
 </style>
     <!-- <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
@@ -162,11 +234,13 @@
     <iron-media-query query="(max-width: 600px)" query-matches="{{mediumTablet}}"></iron-media-query>
     <iron-media-query query="(max-width: 767px)" query-matches="{{mobilePhone}}"></iron-media-query> -->
     <!-- <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"> -->
-      <!-- 
+      
       <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
-      <br /> -->
+      <br />
 
       <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo" id="productTemplate">
+          <div style="float:left;">
+        <div id="roomTemplateDiv">
         <template is="dom-repeat" items="{{product.rooms}}" as="room" id="travelerTemplate">
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" product-title="{{product.title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} {{_adultLabel(room.criteria.traveler.adult)}}, {{room.criteria.traveler.child}} {{_childLabel(room.criteria.traveler.child)}}" policy-List="{{room.policies}}"
@@ -176,7 +250,11 @@
           </t-traveler-info>
           <br>
         </template>
-
+    </div>
+    <div id="productSummaryDiv">
+        <t-product-summary id="productSummary"></t-product-summary>
+    </div>
+    </div>
     <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
         <app-toolbar id="toolbarLotalty">{{_loyaltyProgram}}</app-toolbar>
         <div id="tLoyaltyProgram">

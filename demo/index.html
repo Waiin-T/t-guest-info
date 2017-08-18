@@ -8,6 +8,7 @@
     <title>t-guest-info demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../t-guest-info.html">
+    <link rel="import" href="../t-product-summary.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
         body {
@@ -33,9 +34,9 @@
     <t-guest-info id="guestInfo" option='{
                   "allowTitle": true,
                   "allowTitleForLeadPax" : true,
-                  "allowContactNumber" : false,
+                  "allowContactNumber" : true,
                   "allowContactNumberForLeadPax" : true,
-                  "allowEmail" : false,
+                  "allowEmail" : true,
                   "allowEmailForLeadPax" : true,
                   "requiredField" : [
                       "firstname",
@@ -228,7 +229,9 @@
                  ]
             }
         ]
-    }]'></t-guest-info>
+    }]'>
+
+    </t-guest-info>
     <br /><br /><br />
     <button id="demoButton" style="color:white; background-color:black" onclick="fireIsValidMethod()">Test Button</button>
 
