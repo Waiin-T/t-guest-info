@@ -100,7 +100,6 @@
             /* margin-top: 20px */
         }
         #templateDiv {
-            border: red solid 2px;
             width: 50%;
             float: left;
         }
@@ -108,6 +107,7 @@
             float:left;
             width:100%;
         }
+
     }
     
     @media (min-width: 380px) and (max-width:767px) {
@@ -139,7 +139,6 @@
             /* margin-top: 20px */
         }
         #templateDiv {
-            border: red solid 2px;
             width: 50%;
             float: left;
         }
@@ -177,7 +176,6 @@
             margin-top: 5px
         }
         #templateDiv {
-            border: red solid 2px;
             width: 50%;
             float: left;
         }
@@ -216,7 +214,6 @@
             margin-top: 20px
         }
         #templateDiv {
-            border: red solid 2px;
             width: 50%;
             float: left;
         }
@@ -239,7 +236,7 @@
       <br />
 
       <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo" id="productTemplate">
-          <div style="float:left;">
+          <div style="float:left;" class="both">
         <div id="roomTemplateDiv">
         <template is="dom-repeat" items="{{product.rooms}}" as="room" id="travelerTemplate">
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" product-title="{{product.title}} {{_increaseIndex(index)}}"
