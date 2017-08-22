@@ -15,7 +15,65 @@
                         margin-left: -5px;
                     }
             }
-    @media (min-width: 320px) and (max-width: 380px) {
+    @media (max-width:320px){
+        :host {
+            display: block;
+            background-color: white;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        #toolbarRoom {
+            background-color: var(--toolbar-background-color);
+            width: 100%;
+            height: 50px;
+            margin-left: -14px;
+            padding-right: 5px;
+        }
+        #productPassengers {
+            width: 100%;
+            margin-left: 3px;
+        }
+        #title {
+            font-size: 14px;
+            width: 100%;
+            margin-top: 3px;
+            position: absolute;
+            margin-left: -5px;
+        }
+        #subTitle {
+            font-size: 13px;
+            color: var(--color-for-subTitle);
+            width: 100%;
+            margin-top: 15px;
+            margin-left: -6px;
+        }
+        #policyList {
+            font-size: 13px;
+            margin-left: -18px;
+             color: var(--color-for-policies);
+            margin-top: 10px;
+            font-family: roboto;
+        }
+        .closeIconAdult {
+            margin-top: 13%;
+            margin-left: -25px;
+            color: #A8A8A8;
+        }
+        .closeIconChild {
+            margin-top: 4%;
+            margin-left: -22px;
+            color: #A8A8A8;
+        }
+        .closeIconChooseGuest {
+            float: left;
+            position: absolute;
+            margin-top: -39px;
+            margin-left: 205px;
+            color: #A8A8A8;
+            visibility: hidden;
+        }
+            }
+    @media (min-width: 321px) and (max-width: 380px) {
          :host {
             display: block;
             background-color: white;

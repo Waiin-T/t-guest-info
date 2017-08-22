@@ -62,12 +62,6 @@
     }
     
     @media (min-width: 320px) and (max-width: 380px) {
-         /* :host {
-            display: block;
-            background-color: white;
-            margin-left: 10px;
-            margin-right: 10px;
-        } */
         #travelerInfo {
         margin-top: 40px;
         }
@@ -218,9 +212,6 @@
             clear: both;
             margin-left: 10px;
         }
-        #productSummary{
-            
-        }
         #productSummaryDiv {
             border: black solid 2px;
             height:500px;
@@ -265,7 +256,8 @@
         </template>
     </div>
     <div id="productSummaryDiv">
-        <t-product-summary id="productSummary"></t-product-summary>
+        <slot name="tripSummary"></slot>
+        </t-product-summary>
     </div>
     </div>
     <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
