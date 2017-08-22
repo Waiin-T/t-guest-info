@@ -769,6 +769,7 @@
                         this._indexArrayChild.splice(indexOfPax, 1);
                     }
                     childPaxInfoVar._showChooseGuest = false;
+                    childPaxInfoVar._showChooseGuestDuplicateError = true;
                     childPaxInfoVar._showPaxInfoFields = true;
                     childPaxInfoVar.shadowRoot.querySelector("#chooseGuest").invalid = false;
                     var closeIconchildVar = this.shadowRoot.querySelector("#closeIconChild" + (e.model.index +
