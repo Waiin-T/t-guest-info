@@ -1,3 +1,4 @@
+<link rel="import" href="t-loyalty-program-data.html">
 <dom-module id="t-loyalty-program">
     <template>
     <style>
@@ -179,37 +180,10 @@
             
         <template is="dom-repeat" items="{{_loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
         <div style="clear:both" id="div{{loyaltyProgramNumber}}">
-          <div class="guestName" id="guestNameDiv">
-            <paper-dropdown-menu label="{{_guestName}}" id="guestName{{loyaltyProgramNumber}}" on-blur="_isValid" on-tap="_updatePaxList" required auto-validate>
-                <paper-listbox slot="dropdown-content" >
-                    <template is="dom-repeat" items={{_tempPaxArray}}>
-                        <paper-item id="{{loyaltyProgramNumber}}" on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
-                    </template>
-    </paper-listbox>
-    </paper-dropdown-menu>
-    <!-- <input is="iron-input" type="hidden" bind-value="[[_guestNameValue]]"> -->
-    <div id="guestNameError" hidden$="{{_showGuestNameError}}">{{_guestNameError}}</div>
-    </div>
-    <div hidden$="{{_showProgramNameInput}}">
-        <paper-input label="{{_programName}}" id="programNameInput{{loyaltyProgramNumber}}" on-blur="_isValid" class="programName" required></paper-input>
-    </div>
-    <div hidden$="{{_showProgramNameDropdown}}">
-        <paper-dropdown-menu label="{{_programName}}" id="programName{{loyaltyProgramNumber}}" on-blur="_isValid" class="programName" required auto-validate>
-            <paper-listbox slot="dropdown-content">
-                <template is="dom-repeat" items={{paxList}}>
-                  <paper-item>{{item.membership.programName}}</paper-item>
-                </template>
-            </paper-listbox>
-        </paper-dropdown-menu>
-    </div>
-    <div>
-        <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" class="programNumber" on-blur="_isValid" on-click="_showValidation" required auto-validate></paper-input>
-    </div>
-    <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
-        <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">{{_remove}}</paper-button>
-    </div>
-    </div>
-    </template>
+            <t-loyalty-program-data id="tLoyaltyProgramDataID" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}" 
+            t-loyalty-program="{{tLoyaltyProgram}}" pax-list="{{paxlist}}" loyalty-program-number="{{loyaltyProgramNumber}}"></t-loyalty-program-data>
+        </div>
+        </template>
 
     </div>
     <br />
@@ -237,6 +211,8 @@
             }
             static get properties() {
                 return {
+                    tLoyaltyProgram: Object,
+                    guestInfo: Object,
                     /**
                      * Used for paxlist
                      * */
@@ -248,6 +224,9 @@
                      * */
                     paxListAvailable: {
                         type: Boolean
+                    },
+                    resources: {
+                        type: Object,
                     },
                     /**
                      * @private
@@ -289,10 +268,6 @@
                         type: Boolean,
                         value: false
                     },
-                    _showGuestNameError: {
-                        type: Boolean,
-                        value: true
-                    },
                     /**
                      * @private
                      *Array for Loyalty Program. 
@@ -301,14 +276,6 @@
                         type: Array,
                         notify: true,
                         value: []
-                    },
-                    /**
-                     * @private
-                     * Property to hide remove button when loyalty program is only one.
-                     * */
-                    _isRemoveButtonHidden: {
-                        type: Boolean,
-                        computed: '_lessThanEqualToOne(_loyaltyProgramsCount , 1)'
                     },
                     /**
                      * @private
@@ -330,74 +297,24 @@
                      * */
                     _loyaltyProgramsCount: {
                         type: Number,
+                        value: 0
                     },
-                    /**
-                     * @private
-                     * To store temporary paxlist for dropdown.
-                     * */
-                    _tempPaxArray: {
-                        type: Array,
-                        value: []
-                    },
-                    /**
-                     * @private
-                     * This is true if paxlist is not available.
-                     * */
-                    _showProgramNameInput: {
-                        type: Boolean,
-                        value: true
-                    },
-                    /**
-                     * @private
-                     * This is true if paxlsit ia available.
-                     * */
-                    _showProgramNameDropdown: {
-                        type: Boolean,
-                        value: true
-                    },
-                    _remove: {
-                        type: String,
-                        value: "Remove"
-                    },
-                    _addNewGuest: {
-                        type: String,
-                        value: "Add program for other guest"
-                    },
-                    _guestNameError: {
-                        type: String,
-                        value: "Please enter guest details first"
-                    },
-                    _guestName: {
-                        type: String,
-                        value: "Guest name"
-                    },
-                    _programName: {
-                        type: String,
-                        value: "Program name"
-                    },
-                    _programNumber: {
-                        type: String,
-                        value: "Program number"
-                    },
+
+                    _addNewGuest: String,
+
                 };
             }
             ready() {
-                    super.ready();
-                    this._setDefaultRsourcesValue();
-                    this._showProgramName();
-                    this._loyaltyPrograms = [];
-                    this._addProgramForOtherGuest();
+                super.ready();
+                this._setDefaultRsourcesValue();
+                this._loyaltyPrograms = [];
+                this._addProgramForOtherGuest();
+                this.tLoyaltyProgram = this;
+            }
 
-                }
-                /**
-                 * To set hidden property of remove button.
-                 * */
-            _lessThanEqualToOne(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
-                    return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
-                }
-                /**
-                 * To add loyalty program on click of button 'Add Program For Other Button'.
-                 * */
+            /**
+             * To add loyalty program on click of button 'Add Program For Other Button'.
+             * */
             _addProgramForOtherGuest(e) {
                 var loyaltyProgram = {};
                 loyaltyProgram.guestName = "";
@@ -407,59 +324,12 @@
                     loyaltyProgram
                 });
                 this._loyaltyProgramsCount = +this._loyaltyProgramsCount + +1;
-                // this.shadowRoot.querySelector("#div" + index).hidden = false;
             }
 
+
             /**
-             * To delet loyalty profram on click of button 'Remove'.
-             **/
-            _deleteLoyaltyProgram(e) {
-                    var index = parseInt(e.currentTarget.className.replace("c", ""));
-                    // var array = this._loyaltyPrograms;
-                    if (index > -1) {
-                        this.splice('_loyaltyPrograms', index, 0);
-                    }
-                    this._loyaltyProgramsCount = this._loyaltyProgramsCount - 1;
-                    var ele = this.shadowRoot.querySelector("#div" + index);
-                    var parent = ele.parentElement;
-                    parent.removeChild(ele);
-
-                    for (var i = index; i < this._loyaltyProgramsCount; i++) {
-                        this.shadowRoot.querySelector("#div" + (+i + +1)).id = "div" + i;
-                        this.shadowRoot.querySelector("#guestName" + (+i + +1)).id = "guestName" + i;
-                        this.shadowRoot.querySelector("#programName" + (+i + +1)).id = "programName" + i;
-                        this.shadowRoot.querySelector("#programNameInput" + (+i + +1)).id = "programNameInput" + i;
-                        this.shadowRoot.querySelector("#programNumber" + (+i + +1)).id = "programNumber" + i;
-                        this.shadowRoot.querySelector(".c" + (+i + +1)).className = "c" + i;
-                    }
-                    // this.shadowRoot.querySelector("#div" + index).hidden = true;
-                }
-                /**
-                 * Using this function on-tap of guest name.
-                 * Set the program name and program number if paxlist is available.
-                 * */
-            _showGuestProgramDetails(e) {
-                    if (this.paxListAvailable != false) {
-                        var paxIndex = e.model.index;
-                        var paxListArray = this.paxList;
-                        var guestName = this.shadowRoot.querySelector("#guestName" + e.currentTarget.id);
-                        var programName = this.shadowRoot.querySelector("#programName" + e.currentTarget.id);
-                        var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
-                        programName.contentElement.selected = programNameIndex;
-                        var programNumber = this.shadowRoot.querySelector("#programNumber" + e.currentTarget.id);
-                        programNumber.value = paxListArray[paxIndex].membership.number;
-                        guestName.invalid = false;
-                        programName.invalid = false;
-                    } else {
-                        var paxListArray = this._updatePaxList();
-                    }
-                    var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
-                    this._loyaltyPrograms[ind].loyaltyProgram.guestName = paxListArray[e.model.index].firstName + ' ' + paxListArray[e.model.index].lastName;
-
-                }
-                /**
-                 * To show validation on click of program number.
-                 * */
+             * To show validation on click of program number.
+             * */
             _showValidation(e) {
                     var id = e.currentTarget.id;
                     id = id.replace("programNumber", "");
@@ -481,63 +351,7 @@
                  * To update the paxlist according to rooms.
                  * If paxList is not given.
                  * */
-            _updatePaxList() {
-                    if (this.paxListAvailable === false) {
-                        var paxInfo = this.guestInfo.isData();
-                        var paxTempArray = [];
-                        var prodLen = paxInfo.length;
-                        for (var i = 0; i < prodLen; i++) {
-                            var roomLen = paxInfo[i].length;
-                            for (var j = 0; j < roomLen; j++) {
-                                var paxLen = paxInfo[i][j].length;
-                                for (var k = 0; k < paxLen; k++) {
-                                    if (paxInfo[i][j][k].firstName != null) {
-                                        paxTempArray.push(paxInfo[i][j][k]);
-                                    }
-                                }
-                            }
-                        }
-                        var paxList = paxTempArray;
-                        for (var i = 0; i < paxList.length; i++) {
-                            for (var j = i + 1; j < paxList.length; j++) {
-                                if (paxList[i].firstName === paxList[j].firstName &&
-                                    paxList[i].lastName === paxList[j].lastName) {
-                                    paxList.splice(j, 1);
-                                }
-                            }
-                        }
-                        this._tempPaxArray = paxList;
-                    } else {
-                        this._tempPaxArray = this.paxList;
-                    }
-                    if (this._tempPaxArray.length === 0) {
 
-                        this._showGuestNameError = false;
-                        var len = this._loyaltyPrograms.length;
-                        for (var i = 0; i < len; i++) {
-                            if (this.smallMobileView === true || this.mobileView === true) {
-                                this.shadowRoot.querySelector("#programNumber" + i).style.clear = "both";
-                            }
-                        }
-                        if (this.largeDesktopView === true || this.desktopView === true || this.tabletView === true) {
-                            this.shadowRoot.querySelector("#addProgramForOtherGuestButton").style.clear = "both";
-                        }
-                    } else {
-                        this._showGuestNameError = true;
-                    }
-                    return this._tempPaxArray;
-                }
-                /**
-                 * Program name field if paxlist not given then paper-input.
-                 * Program name field if paxlist is given then paper-dropdown-menu.
-                 * */
-            _showProgramName() {
-                if (this.paxListAvailable === false) {
-                    this._showProgramNameInput = false;
-                } else {
-                    this._showProgramNameDropdown = false;
-                }
-            }
             _showReadMoreDots() {
                 var len = this.shadowRoot.querySelector("#guestNameDiv").offsetWidth;
                 var l = len / 6.2;
@@ -547,48 +361,9 @@
                 }
             }
             _setDefaultRsourcesValue() {
-                if (this.resources.loyaltyProgram.remove) {
-                    this._remove = this.resources.loyaltyProgram.remove;
-                }
-                if (this.resources.loyaltyProgram.addNewGuest) {
-                    this._addNewGuest = this.resources.loyaltyProgram.addNewGuest;
-                }
-                if (this.resources.loyaltyProgram.guestNameError) {
-                    this._guestNameError = this.resources.loyaltyProgram.guestNameError;
-                }
-                if (this.resources.loyaltyProgram.label.guestName) {
-                    this._guestName = this.resources.loyaltyProgram.label.guestName;
-                }
-                if (this.resources.loyaltyProgram.label.programName) {
-                    this._programName = this.resources.loyaltyProgram.label.programName;
-                }
-                if (this.resources.loyaltyProgram.label.programNumber) {
-                    this._programNumber = this.resources.loyaltyProgram.label.programNumber;
-                }
+                this._addNewGuest = this.resources.loyaltyProgram.addNewGuest ? this.resources.loyaltyProgram.addNewGuest : "Add program for other guest";
             }
-            _isValid(e) {
-                // alert('hi');
-                var ind = e.currentTarget.id.replace("programNumber", "");
-                var guest = this.shadowRoot.querySelector("#guestName" + ind);
-                var programNumber = e.currentTarget;
-                if (this.paxListAvailable === false) {
-                    var programName = this.shadowRoot.querySelector("#programName" + ind);
-                } else {
-                    var programName = this.shadowRoot.querySelector("#programNameInput" + ind);
-                }
-                for (var i = 0; i < this._loyaltyPrograms.length; i++) {
-                    var loyaltyGuest = this.shadowRoot.querySelector("#guestName" + i);
-                    var loyaltyProgramName = this.shadowRoot.querySelector("#programName" + i);
-                    var loyaltyProgramNumber = this.shadowRoot.querySelector("#programNumber" + i);
-                    if (guest.value === loyaltyGuest.value && programName.value === loyaltyProgramName.value &&
-                        programNumber.value === loyaltyProgramNumber.value && ind != i) {
-                        guest.invalid = true;
-                        programName.invalid = true;
-                        programNumber.invalid = true;
-                        guest.errorMessage = "duplicate record";
-                    }
-                }
-            }
+
 
         }
         window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);

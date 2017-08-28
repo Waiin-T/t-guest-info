@@ -550,17 +550,19 @@
                 var loyaltyProgramObject = {};
                 var loyaltyProgramArrayData = [];
                 var loyaltyProgramEle = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (index + 1))
+
                 for (var i = 0; i < loyaltyProgramEle._loyaltyPrograms.length; i++) {
+                    var tLoyalty = loyaltyProgramEle.shadowRoot.querySelector("#div" + i).querySelector("#tLoyaltyProgramDataID");
                     var loyaltyProgram = {};
-                    if (loyaltyProgramEle.shadowRoot.querySelector("#guestName" + i) != null) {
-                        loyaltyProgram.GuestName = loyaltyProgramEle.shadowRoot.querySelector("#guestName" + i).value;
+                    if (tLoyalty.shadowRoot.querySelector("#guestName" + i) != null) {
+                        loyaltyProgram.GuestName = tLoyalty.shadowRoot.querySelector("#guestName" + i).value;
 
                         if (this.paxlistAvailable === false) {
-                            loyaltyProgram.ProgramName = loyaltyProgramEle.shadowRoot.querySelector("#programNameInput" + i).value;
+                            loyaltyProgram.ProgramName = tLoyalty.shadowRoot.querySelector("#programNameInput" + i).value;
                         } else {
-                            loyaltyProgram.ProgramName = loyaltyProgramEle.shadowRoot.querySelector("#programName" + i).value;
+                            loyaltyProgram.ProgramName = tLoyalty.shadowRoot.querySelector("#programName" + i).value;
                         }
-                        loyaltyProgram.ProgramNumber = loyaltyProgramEle.shadowRoot.querySelector("#programNumber" + i).value;
+                        loyaltyProgram.ProgramNumber = tLoyalty.shadowRoot.querySelector("#programNumber" + i).value;
                     }
                     loyaltyProgramArrayData[i] = loyaltyProgram;
                 }

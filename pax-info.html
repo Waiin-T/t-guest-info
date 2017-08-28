@@ -440,7 +440,7 @@
     </paper-listbox>
     </paper-dropdown-menu>
     <div id="chooseGuestError" hidden$="{{_showChooseGuestError}}">choose guest is required </div>
-    <div id="chooseGuestError" hidden$="{{_showChooseGuestDuplicateError}}">Dupliate guest name</div>
+    <div id="chooseGuestError" hidden$="{{_showChooseGuestDuplicateError}}">Duplicate guest name</div>
 
     </div>
     <div id="paxInfoDiv{{index}}" hidden="{{_showPaxInfoFields}}">
@@ -585,30 +585,12 @@
                     /**
                      *Property To set option.
                      **/
-                    _allowTitle: {
-                        type: Boolean,
-                        value: false
-                    },
-                    _allowTitleForLeadPax: {
-                        type: Boolean,
-                        value: false
-                    },
-                    _allowContactNumber: {
-                        type: Boolean,
-                        value: false
-                    },
-                    _allowContactNumberForLeadPax: {
-                        type: Boolean,
-                        value: false
-                    },
-                    _allowEmail: {
-                        type: Boolean,
-                        value: false
-                    },
-                    _allowEmailForLeadPax: {
-                        type: Boolean,
-                        value: false
-                    },
+                    _allowTitle: Boolean,
+                    _allowTitleForLeadPax: Boolean,
+                    _allowContactNumber: Boolean,
+                    _allowContactNumberForLeadPax: Boolean,
+                    _allowEmail: Boolean,
+                    _allowEmailForLeadPax: Boolean,
                     _requiredField: {
                         type: Array,
                         value: [
@@ -751,10 +733,7 @@
                      * @private
                      *Property to set resources default value.
                      **/
-                    _terms: {
-                        type: String,
-                        value: "terms-ico"
-                    },
+                    _terms: String,
                     /**
                      * @private
                      * To set default resources.
@@ -771,106 +750,67 @@
                      * @private
                      * To set default resources.
                      * */
-                    _titleSelected: {
-                        type: String,
-                        value: 'Mr'
-                    },
+                    _titleSelected: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _titleLabel: {
-                        type: String,
-                        value: 'Title'
-                    },
+                    _titleLabel: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _titleError: {
-                        type: String,
-                        value: 'Please select a title'
-                    },
+                    _titleError: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _firstNameValue: {
-                        type: String,
-                        value: ''
-                    },
+                    _firstNameValue: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _firstNameTitle: {
-                        type: String,
-                        value: 'First name'
-                    },
+                    _firstNameTitle: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _firstNameError: {
-                        type: String,
-                        value: 'Firstname is required'
-                    },
+                    _firstNameError: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _lastNameValue: {
-                        type: String,
-                        value: ''
-                    },
+                    _lastNameValue: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _lastNameTitle: {
-                        type: String,
-                        value: 'Last name'
-                    },
+                    _lastNameTitle: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _lastNameError: {
-                        type: String,
-                        value: 'Lastname is required'
-                    },
+                    _lastNameError: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _emailValue: {
-                        type: String,
-                        value: ''
-                    },
+                    _emailValue: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _emailTitle: {
-                        type: String,
-                        value: 'Email address'
-                    },
+                    _emailTitle: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _emailInfo: {
-                        type: String,
-                        value: 'We will send you email confirmation on this address'
-                    },
+                    _emailInfo: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _emailError: {
-                        type: String,
-                        value: 'Please enter a valid email address'
-                    },
+                    _emailError: String,
                     /**
                      * @private
                      * To set default resources.
@@ -889,70 +829,43 @@
                      * @private
                      * To set default resources.
                      * */
-                    _countryCodeTitle: {
-                        type: String,
-                        value: 'Country code'
-                    },
+                    _countryCodeTitle: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _countryCodeError: {
-                        type: String,
-                        value: 'Countrycode is required'
-                    },
+                    _countryCodeError: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _contactNumberValue: {
-                        type: String,
-                        value: ''
-                    },
+                    _contactNumberValue: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _contactNumberTitle: {
-                        type: String,
-                        value: 'Contact number'
-                    },
+                    _contactNumberTitle: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _contactNumberInfo: {
-                        type: String,
-                        value: 'In case of any notifications our agent will reach you on this number'
-                    },
+                    _contactNumberInfo: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _contactNumberError: {
-                        type: String,
-                        value: 'Contact number is required'
-                    },
-                    _contactNumberInvalidError: {
-                        type: String,
-                        value: "Contact number is invalid"
-                    },
+                    _contactNumberError: String,
+                    _contactNumberInvalidError: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _newGuest: {
-                        type: String,
-                        value: "New Guest"
-                    },
+                    _newGuest: String,
                     /**
                      * @private
                      * To set default resources.
                      * */
-                    _chooseGuestLabel: {
-                        type: String,
-                        value: "Choose guest"
-                    },
+                    _chooseGuestLabel: String,
 
                     /**
                      *@private
@@ -1054,19 +967,19 @@
                         adultTitleValidation.errorMessage = this._titleError;
                     }
                     if ((adultFirstNameValidation.value === undefined || adultFirstNameValidation.value === "") &&
-                        this.requiredField.includes("firstname") === true) {
+                        this._requiredField.includes("firstname") === true) {
                         adultFirstNameValidation.invalid = true;
                         this._showFirstNameError = false;
                         // adultFirstNameValidation.errorMessage = this._firstNameError;
                     }
                     if ((adultLastNameValiadtion.value === undefined || adultLastNameValiadtion.value === "") &&
-                        this.requiredField.includes("lastname") === true) {
+                        this._requiredField.includes("lastname") === true) {
                         adultLastNameValiadtion.invalid = true;
                         this._showLastNameError = false;
                         // adultLastNameValiadtion.errorMessage = this._lastNameError;
                     }
-                    if ((adultEmailValidation.value === undefined || adultEmailValidation.value === "") && (this.requiredField.includes("email") === true ||
-                            (this.requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
+                    if ((adultEmailValidation.value === undefined || adultEmailValidation.value === "") && (this._requiredField.includes("email") === true ||
+                            (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
                         if (this.type != "Child") {
                             adultEmailValidation.invalid = true;
                             // adultEmailValidation.errorMessage = this._emailError;
@@ -1080,8 +993,8 @@
                         adultCountryCodeValidation.invalid = true;
                         adultCountryCodeValidation.errorMessage = this._countryCodeError;
                     }
-                    if ((adultContactNumberValidation.value === undefined || adultContactNumberValidation.value === "") && (this.requiredField.includes("contactNumber") === true ||
-                            (this.requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
+                    if ((adultContactNumberValidation.value === undefined || adultContactNumberValidation.value === "") && (this._requiredField.includes("contactNumber") === true ||
+                            (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
                         if (this.type != "Child") {
                             adultContactNumberValidation.invalid = true;
                             // adultContactNumberValidation.errorMessage = this._contactNumberError;
@@ -1232,7 +1145,7 @@
             _updateValidation(event) {
                     if (event.currentTarget.id === "adultFirstName") {
                         var firstName = this.shadowRoot.querySelector("#adultFirstName");
-                        if ((firstName.value === undefined || firstName.value === "") && this.requiredField.includes("firstname") === true) {
+                        if ((firstName.value === undefined || firstName.value === "") && this._requiredField.includes("firstname") === true) {
                             firstName.invalid = true;
                             this._showFirstNameError = false;
                         } else {
@@ -1243,31 +1156,31 @@
                     }
                     if (event.currentTarget.id === "adultLastName") {
                         var lastName = this.shadowRoot.querySelector("#adultLastName");
-                        if ((lastName.value === undefined || lastName.value === "") && this.requiredField.includes("lastname") === true) {
+                        if ((lastName.value === undefined || lastName.value === "") && this._requiredField.includes("lastname") === true) {
                             lastName.invalid = true;
                             this._showLastNameError = false;
                         } else {
                             lastName.invalid = false;
                             this._showLastNameError = true;
                         }
-                        if (this.type === "Child") {
-                            var paxList = this._totalPaxList();
-                            var totalPaxList = paxList.filter(function(item) {
-                                return item.type.toLowerCase() === 'adult';
-                            });
-                            for (var i = 0; i < totalPaxList.length; i++) {
-                                if (totalPaxList[i].firstName === this.shadowRoot.querySelector("#adultFirstName").value &&
-                                    totalPaxList[i].lastName === this.shadowRoot.querySelector("#adultLastName").value) {
-                                    this.shadowRoot.querySelector("#adultFirstName").invalid = true;
-                                    this._ShowDuplicateGuest = false;
-                                }
-                            }
-                        }
+                        // if (this.type === "Child") {
+                        //     var paxList = this._totalPaxList();
+                        //     var totalPaxList = paxList.filter(function(item) {
+                        //         return item.type.toLowerCase() === 'adult';
+                        //     });
+                        //     for (var i = 0; i < totalPaxList.length; i++) {
+                        //         if (totalPaxList[i].firstName.toLowerCase() === this.shadowRoot.querySelector("#adultFirstName").value.toLowerCase() &&
+                        //             totalPaxList[i].lastName.toLowerCase() === this.shadowRoot.querySelector("#adultLastName").value.toLowerCase()) {
+                        //             this.shadowRoot.querySelector("#adultFirstName").invalid = true;
+                        //             this._ShowDuplicateGuest = false;
+                        //         }
+                        //     }
+                        // }
                     }
                     if (event.currentTarget.id === "adultEmail") {
                         var email = this.shadowRoot.querySelector("#adultEmail");
-                        if ((email.value === undefined || email.value === "") && (this.requiredField.includes("email") === true ||
-                                (this.requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
+                        if ((email.value === undefined || email.value === "") && (this._requiredField.includes("email") === true ||
+                                (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
                             if (this.type != "Child") {
                                 email.invalid = true;
                                 this._showEmailError = false;
@@ -1282,8 +1195,8 @@
                     }
                     if (event.currentTarget.id === "adultContactNo") {
                         var contactNumber = this.shadowRoot.querySelector("#adultContactNo");
-                        if ((contactNumber.value === undefined || contactNumber.value === "") && (this.requiredField.includes("contactNumber") === true ||
-                                (this.requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
+                        if ((contactNumber.value === undefined || contactNumber.value === "") && (this._requiredField.includes("contactNumber") === true ||
+                                (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
                             if (this.type != "Child") {
                                 contactNumber.invalid = true;
                                 this._showContactNumberError = false;
@@ -1568,128 +1481,60 @@
                  *To set the default option value.
                  **/
             _setDefaultOptionValue() {
-                    if (this.option.allowTitleForLeadPax) {
-                        this._allowTitleForLeadPax = this.option.allowTitleForLeadPax;
-                    }
-                    if (this.option.allowTitle) {
-                        this._allowTitle = this.option.allowTitle;
-                    }
-                    if (this.option.allowContactNumber) {
-                        this._allowContactNumber = this.option.allowContactNumber;
-                    }
-                    if (this.option.allowContactNumberForLeadPax) {
-                        this._allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
-                    }
-                    if (this.option.allowEmail) {
-                        this._allowEmail = this.option.allowEmail;
-                    }
-                    if (this.option.allowEmailForLeadPax) {
-                        this._allowEmailForLeadPax = this.option.allowEmailForLeadPax;
-                    }
-                    if (this.option.requiredField) {
-                        this._requiredField = this.option.requiredField;
-                    }
-                    if (this.option.requiredFieldForLeadPax) {
-                        this._requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
-                    }
+                    this._allowTitleForLeadPax = this.option.allowTitleForLeadPax ? this.option.allowTitleForLeadPax : false;
+                    this._allowTitle = this.option.allowTitle ? this.option.allowTitle : false;
+                    this._allowContactNumber = this.option.allowContactNumber ? this.option.allowContactNumber : false;
+                    this._allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax ? this.option.allowContactNumberForLeadPax : false;
+                    this._allowEmail = this.option.allowEmail ? this.option.allowEmail : false;
+                    this._allowEmailForLeadPax = this.option.allowEmailForLeadPax ? this.option.allowEmailForLeadPax : false;
+                    this._requiredField = this.option.requiredField ? this.option.requiredField : "";
+                    this._requiredFieldForLeadPax = this.option.requiredFieldForLeadPax ? this.option.requiredFieldForLeadPax : " ";
                 }
                 /**
                  *To set the default reasources.
                  **/
             _setDefaultResourcesValue() {
-                    if (this.resources.icons.terms) {
-                        this._terms = this.resources.icons.terms;
-                    }
                     if (this.resources.labels.adult.title && this.type === 'Adult') {
                         this._title = this.resources.labels.adult.title;
-                    }
-                    if (this.resources.labels.child.title && this.type === 'Child') {
+                    } else if (this.resources.labels.child.title && this.type === 'Child') {
                         this._title = this.resources.labels.child.title;
                     }
                     if (this.resources.labels.adult.info && this.type === 'Adult') {
                         this._titleInfo = this.resources.labels.adult.info;
-                    }
-                    if (this.resources.labels.child.info && this.type === 'Child') {
+                    } else if (this.resources.labels.child.info && this.type === 'Child') {
                         this._titleInfo = this.resources.labels.child.info;
                     }
-                    if (this.resources.labels.child.title) {
-                        this.childTitle = this.resources.labels.child.title;
-                    }
-                    if (this.resources.labels.child.info) {
-                        this.childInfo = this.resources.labels.child.info;
-                    }
-                    if (this.resources.fields.title.values) {
-                        this._titleValues = this.resources.fields.title.values;
-                    }
-                    if (this.resources.fields.title.selected) {
-                        this._titleSelected = this.resources.fields.title.selected;
-                    }
-                    if (this.resources.fields.title.title) {
-                        this._titleLabel = this.resources.fields.title.title;
-                    }
-                    if (this.resources.fields.title.errors) {
-                        this._titleError = this.resources.fields.title.errors;
-                    }
-                    if (this.resources.fields.firstName.value) {
-                        this._firstNameValue = this.resources.fields.firstName.value;
-                    }
-                    if (this.resources.fields.firstName.title) {
-                        this._firstNameTitle = this.resources.fields.firstName.title;
-                    }
-                    if (this.resources.fields.firstName.errors) {
-                        this._firstNameError = this.resources.fields.firstName.errors;
-                    }
-                    if (this.resources.fields.lastName.value) {
-                        this._lastNameValue = this.resources.fields.lastName.value;
-                    }
-                    if (this.resources.fields.lastName.title) {
-                        this._lastNameTitle = this.resources.fields.lastName.title;
-                    }
-                    if (this.resources.fields.lastName.errors) {
-                        this._lastNameError = this.resources.fields.lastName.errors;
-                    }
-                    if (this.resources.fields.email.value) {
-                        this._emailValue = this.resources.fields.email.value;
-                    }
-                    if (this.resources.fields.email.title) {
-                        this._emailTitle = this.resources.fields.email.title;
-                    }
-                    if (this.resources.fields.email.info) {
-                        this._emailInfo = this.resources.fields.email.info;
-                    }
-                    if (this.resources.fields.email.errors) {
-                        this._emailError = this.resources.fields.email.errors;
-                    }
-                    if (this.resources.fields.countryCode.values) {
-                        this._countryCodeValues = this.resources.fields.countryCode.values;
-                    }
-                    if (this.resources.fields.countryCode.title) {
-                        this._countryCodeTitle = this.resources.fields.countryCode.title;
-                    }
-                    if (this.resources.fields.countryCode.errors) {
-                        this._countryCodeError = this.resources.fields.countryCode.errors;
-                    }
-                    if (this.resources.fields.contactNumber.value) {
-                        this._contactNumberValue = this.resources.fields.contactNumber.value;
-                    }
-                    if (this.resources.fields.contactNumber.title) {
-                        this._contactNumberTitle = this.resources.fields.contactNumber.title;
-                    }
-                    if (this.resources.fields.contactNumber.errors) {
-                        this._contactNumberInfo = this.resources.fields.contactNumber.errors;
-                    }
-                    if (this.resources.fields.contactNumber.errors) {
-                        this._contactNumberError = this.resources.fields.contactNumber.errors;
-                    }
-                    if (this.resources.fields.contactNumber.invalidError) {
-                        this._contactNumberInvalidError = this.resources.fields.contactNumber.invalidError;
-                    }
-                    if (this.resources.newGuest) {
-                        this._newGuest = this.resources.newGuest;
-                    }
-                    if (this.resources.chooseGuest) {
-                        this._chooseGuestLabel = this.resources.chooseGuest;
-                    }
+
+                    this._terms = this.resources.icons.terms ? this.resources.icons.terms : "terms-ico";
+                    // this._title = this.resources.labels.adult.title && this.type === 'Adult' ? this.resources.labels.adult.title : "Adult";
+                    // this._title = (this.resources.labels.child.title && this.type === 'Child') ? this.resources.labels.child.title : "Child";
+                    // this._titleInfo = this.resources.labels.adult.info && this.type === 'Adult' ? this.resources.labels.adult.info : "(12+ years)";
+                    // this._titleInfo = this.resources.labels.child.info && this.type === 'Child' ? this.resources.labels.child.info : "(upto 12 years)";
+                    this._titleValues = this.resources.fields.title.values ? this.resources.fields.title.values : "";
+                    this._titleSelected = this.resources.fields.title.selected ? this.resources.fields.title.selected : "Mr";
+                    this._titleLabel = this.resources.fields.title.title ? this.resources.fields.title.title : "Title";
+                    this._titleError = this.resources.fields.title.errors ? this.resources.fields.title.errors : "Please select a title";
+                    this._firstNameValue = this.resources.fields.firstName.value ? this.resources.fields.firstName.value : "";
+                    this._firstNameTitle = this.resources.fields.firstName.title ? this.resources.fields.firstName.title : "First name";
+                    this._firstNameError = this.resources.fields.firstName.errors ? this.resources.fields.firstName.errors : "Firstname is required";
+                    this._lastNameValue = this.resources.fields.lastName.value ? this.resources.fields.lastName.value : "";
+                    this._lastNameTitle = this.resources.fields.lastName.title ? this.resources.fields.lastName.title : "Last name";
+                    this._lastNameError = this.resources.fields.lastName.errors ? this.resources.fields.lastName.errors : "Lastname is required";
+                    this._emailValue = this.resources.fields.email.value ? this.resources.fields.email.value : "";
+                    this._emailTitle = this.resources.fields.email.title ? this.resources.fields.email.title : "Email address";
+                    this._emailInfo = this.resources.fields.email.info ? this.resources.fields.email.info : "We will send you email confirmation on this address";
+                    this._emailError = this.resources.fields.email.errors ? this.resources.fields.email.errors : "Please enter a valid email address";
+                    this._countryCodeValues = this.resources.fields.countryCode.values ? this.resources.fields.countryCode.values : "";
+                    this._countryCodeTitle = this.resources.fields.countryCode.title ? this.resources.fields.countryCode.title : "Country code";
+                    this._countryCodeError = this.resources.fields.countryCode.errors ? this.resources.fields.countryCode.errors : "Countrycode is required";
+                    this._contactNumberValue = this.resources.fields.contactNumber.value ? this.resources.fields.contactNumber.value : "";
+                    this._contactNumberTitle = this.resources.fields.contactNumber.title ? this.resources.fields.contactNumber.title : "Contact number";
+                    this._contactNumberInfo = this.resources.fields.contactNumber.errors ? this.resources.fields.contactNumber.errors : "In case of any notifications our agent will reach you on this number";
+                    this._contactNumberError = this.resources.fields.contactNumber.errors ? this.resources.fields.contactNumber.errors : "Contact number is required";
+                    this._contactNumberInvalidError = this.resources.fields.contactNumber.invalidError ? this.resources.fields.contactNumber.invalidError : "Contact number is invalid";
+                    this._newGuest = this.resources.newGuest ? this.resources.newGuest : this._newGuest = "Add New";
+                    this._chooseGuestLabel = this.resources.chooseGuest ? this.resources.chooseGuest : "Choose guest";
+
                 }
                 /**
                  *To hide show email info while showing error message.
