@@ -2,291 +2,291 @@
 
 <dom-module id="t-traveler-info">
     <template>
-     <style>
-         @media only screen 
-            and (min-device-width: 320px) 
-            and (max-device-width: 568px)
-            and (-webkit-min-device-pixel-ratio: 2) {
-            #title {
+        <style>
+                @media only screen 
+                        and (min-device-width: 320px) 
+                        and (max-device-width: 568px)
+                        and (-webkit-min-device-pixel-ratio: 2) {
+                        #title {
+                                    font-size: 14px;
+                                    width: 100%;
+                                    margin-top: -7px;
+                                    position: absolute;
+                                    margin-left: -5px;
+                                }
+                        }
+                @media (max-width:320px){
+                    :host {
+                        display: block;
+                        background-color: white;
+                        margin-left: 10px;
+                        margin-right: 10px;
+                    }
+                    #toolbarRoom {
+                        background-color: var(--toolbar-background-color);
+                        width: 100%;
+                        height: 50px;
+                        margin-left: -14px;
+                        padding-right: 5px;
+                    }
+                    #productPassengers {
+                        width: 100%;
+                        margin-left: 3px;
+                    }
+                    #title {
                         font-size: 14px;
                         width: 100%;
-                        margin-top: -7px;
+                        margin-top: 3px;
                         position: absolute;
                         margin-left: -5px;
                     }
-            }
-    @media (max-width:320px){
-        :host {
-            display: block;
-            background-color: white;
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-        #toolbarRoom {
-            background-color: var(--toolbar-background-color);
-            width: 100%;
-            height: 50px;
-            margin-left: -14px;
-            padding-right: 5px;
-        }
-        #productPassengers {
-            width: 100%;
-            margin-left: 3px;
-        }
-        #title {
-            font-size: 14px;
-            width: 100%;
-            margin-top: 3px;
-            position: absolute;
-            margin-left: -5px;
-        }
-        #subTitle {
-            font-size: 13px;
-            color: var(--color-for-subTitle);
-            width: 100%;
-            margin-top: 15px;
-            margin-left: -6px;
-        }
-        #policyList {
-            font-size: 13px;
-            margin-left: -18px;
-             color: var(--color-for-policies);
-            margin-top: 10px;
-            font-family: roboto;
-        }
-        .closeIconAdult {
-            margin-top: 13%;
-            margin-left: -25px;
-            color: #A8A8A8;
-        }
-        .closeIconChild {
-            margin-top: 4%;
-            margin-left: -22px;
-            color: #A8A8A8;
-        }
-        .closeIconChooseGuest {
-            float: left;
-            position: absolute;
-            margin-top: -39px;
-            margin-left: 205px;
-            color: #A8A8A8;
-            visibility: hidden;
-        }
-            }
-    @media (min-width: 321px) and (max-width: 380px) {
-         :host {
-            display: block;
-            background-color: white;
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-        #toolbarRoom {
-            background-color: var(--toolbar-background-color);
-            width: 100%;
-            height: 50px;
-            margin-left: -14px;
-            padding-right: 5px;
-        }
-        #productPassengers {
-            width: 100%;
-            margin-left: 3px;
-        }
-        #title {
-            font-size: 14px;
-            width: 100%;
-            margin-top: -11px;
-            position: absolute;
-            margin-left: -5px;
-        }
-        #subTitle {
-            font-size: 13px;
-            color: var(--color-for-subTitle);
-            width: 100%;
-            margin-top: 15px;
-            margin-left: -6px;
-        }
-        #policyList {
-            font-size: 13px;
-            margin-left: -18px;
-             color: var(--color-for-policies);
-            margin-top: 10px;
-            font-family: roboto;
-        }
-        .closeIconAdult {
-            margin-top: 13%;
-            margin-left: -25px;
-            color: #A8A8A8;
-        }
-        .closeIconChild {
-            margin-top: 4%;
-            margin-left: -22px;
-            color: #A8A8A8;
-        }
-        .closeIconChooseGuest {
-            float: left;
-            position: absolute;
-            margin-top: -39px;
-            margin-left: 205px;
-            color: #A8A8A8;
-            visibility: hidden;
-        }
-    }
-    
-    @media (min-width: 380px) and (max-width:767px) {
-        #toolbarRoom {
-            background-color: var(--toolbar-background-color);
-            width: 95%;
-            height: 50px;
-            margin-left: -14px;
-            padding-right: 5px;
-        }
-        #productPassengers {
-            width: 100%;
-            margin-left: 10px;
-        }
-        #title {
-            font-size: 14px;
-            width: 100%;
-            margin-top: -12px;
-            position: absolute;
-            margin-left: -5px;
-        }
-        #subTitle {
-            font-size: 13px;
-            color: var(--color-for-subTitle);
-            width: 100%;
-            margin-top: 15px;
-            margin-left: -6px;
-        }
-        #policyList {
-            font-size: 13px;
-            margin-left: -18px;
-             color: var(--color-for-policies);
-            margin-top: 10px;
-            font-family: roboto;
-        }
-        .closeIconAdult {
-            margin-top: 3%;
-            margin-left: -26px;
-            color: #A8A8A8;
-        }
-        .closeIconChild {
-            margin-top: 4%;
-            margin-left: -14px;
-            color: #A8A8A8;
-        }
-        .closeIconChooseGuest {
-            float: left;
-            position: absolute;
-            margin-top: -39px;
-            margin-left: 205px;
-            color: #A8A8A8;
-            visibility: hidden;
-        }
-    }
-    
-    @media (min-width: 768px) and (max-width:1023px) {
-        #toolbarRoom {
-            background-color: var(--toolbar-background-color);
-            width: 100%;
-            height: 50px;
-            margin-left: -6px;
-        }
-        #productPassengers {
-            width: 100%;
-        }
-        #title {
-            font-size: 14px;
-            padding: 5px;
-        }
-        #subTitle {
-            font-size: 13px;
-            color: var(--color-for-subTitle);
-        }
-        #policyList {
-            font-size: 14px;
-            margin-left: -13px;
-            width: 100%;
-             color: var(--color-for-policies);
-            margin-top: 10px;
-            font-family: roboto;
-        }
-        .closeIconAdult {
-            margin-top: 4%;
-            margin-left: -15px;
-            color: #A8A8A8;
-        }
-        .closeIconChild {
-            margin-top: 4%;
-            margin-left: -15px;
-            color: #A8A8A8;
-        }
-        .closeIconChooseGuest {
-            float: left;
-            position: absolute;
-            margin-top: -39px;
-            margin-left: 205px;
-            color: #A8A8A8;
-            visibility: hidden;
-        }
-    }
-    
-    @media (min-width: 1024px) {
-        #toolbarRoom {
-            background-color: var(--toolbar-background-color);
-            width: 100%;
-            margin-left: 10px;
-            margin-top: 20px;
-            height: 50px;
-            clear: both;
-        }
-        #productPassengers {
-            width: 100%;
-        }
-        #subTitle {
-            color: var(--color-for-subTitle);
-            font-size: 14px;
-            padding: 5px;
-        }
-        #title {
-            font-size: 16px;
-            padding: 5px;
-        }
-        #policyList {
-            color: var(--color-for-policies);
-            margin-top: 10px;
-            font-family: roboto;
-        }
-        /*#paxInfo, #closeIcon{
-                float: left;
-            }*/
-        .closeIconAdult,
-        .closeIconChild {
-            margin-top: 3%;
-            margin-left: 6px;
-            color: #A8A8A8;
-        }
-        .closeIconChooseGuest {
-            float: left;
-            position: absolute;
-            margin-top: -39px;
-            margin-left: 420px;
-            color: #A8A8A8;
-            visibility: hidden;
-        }
-    }
-    
-    #paxInfoTemp {
-        padding-bottom: 15px;
-        float: left;
-        width: 108%;
-    }
-    
-    #checkIcon {
-        margin-left: 10px;
-    }
-</style>
-         <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
+                    #subTitle {
+                        font-size: 13px;
+                        color: var(--color-for-subTitle);
+                        width: 100%;
+                        margin-top: 15px;
+                        margin-left: -6px;
+                    }
+                    #policyList {
+                        font-size: 13px;
+                        margin-left: -18px;
+                        color: var(--color-for-policies);
+                        margin-top: 10px;
+                        font-family: roboto;
+                    }
+                    .closeIconAdult {
+                        margin-top: 13%;
+                        margin-left: -25px;
+                        color: #A8A8A8;
+                    }
+                    .closeIconChild {
+                        margin-top: 4%;
+                        margin-left: -22px;
+                        color: #A8A8A8;
+                    }
+                    .closeIconChooseGuest {
+                        float: left;
+                        position: absolute;
+                        margin-top: -39px;
+                        margin-left: 205px;
+                        color: #A8A8A8;
+                        visibility: hidden;
+                    }
+                        }
+                @media (min-width: 321px) and (max-width: 380px) {
+                    :host {
+                        display: block;
+                        background-color: white;
+                        margin-left: 10px;
+                        margin-right: 10px;
+                    }
+                    #toolbarRoom {
+                        background-color: var(--toolbar-background-color);
+                        width: 100%;
+                        height: 50px;
+                        margin-left: -14px;
+                        padding-right: 5px;
+                    }
+                    #productPassengers {
+                        width: 100%;
+                        margin-left: 3px;
+                    }
+                    #title {
+                        font-size: 14px;
+                        width: 100%;
+                        margin-top: -11px;
+                        position: absolute;
+                        margin-left: -5px;
+                    }
+                    #subTitle {
+                        font-size: 13px;
+                        color: var(--color-for-subTitle);
+                        width: 100%;
+                        margin-top: 15px;
+                        margin-left: -6px;
+                    }
+                    #policyList {
+                        font-size: 13px;
+                        margin-left: -18px;
+                        color: var(--color-for-policies);
+                        margin-top: 10px;
+                        font-family: roboto;
+                    }
+                    .closeIconAdult {
+                        margin-top: 13%;
+                        margin-left: -25px;
+                        color: #A8A8A8;
+                    }
+                    .closeIconChild {
+                        margin-top: 4%;
+                        margin-left: -22px;
+                        color: #A8A8A8;
+                    }
+                    .closeIconChooseGuest {
+                        float: left;
+                        position: absolute;
+                        margin-top: -39px;
+                        margin-left: 205px;
+                        color: #A8A8A8;
+                        visibility: hidden;
+                    }
+                }
+                
+                @media (min-width: 380px) and (max-width:767px) {
+                    #toolbarRoom {
+                        background-color: var(--toolbar-background-color);
+                        width: 95%;
+                        height: 50px;
+                        margin-left: -14px;
+                        padding-right: 5px;
+                    }
+                    #productPassengers {
+                        width: 100%;
+                        margin-left: 10px;
+                    }
+                    #title {
+                        font-size: 14px;
+                        width: 100%;
+                        margin-top: -12px;
+                        position: absolute;
+                        margin-left: -5px;
+                    }
+                    #subTitle {
+                        font-size: 13px;
+                        color: var(--color-for-subTitle);
+                        width: 100%;
+                        margin-top: 15px;
+                        margin-left: -6px;
+                    }
+                    #policyList {
+                        font-size: 13px;
+                        margin-left: -18px;
+                        color: var(--color-for-policies);
+                        margin-top: 10px;
+                        font-family: roboto;
+                    }
+                    .closeIconAdult {
+                        margin-top: 3%;
+                        margin-left: -26px;
+                        color: #A8A8A8;
+                    }
+                    .closeIconChild {
+                        margin-top: 4%;
+                        margin-left: -14px;
+                        color: #A8A8A8;
+                    }
+                    .closeIconChooseGuest {
+                        float: left;
+                        position: absolute;
+                        margin-top: -39px;
+                        margin-left: 205px;
+                        color: #A8A8A8;
+                        visibility: hidden;
+                    }
+                }
+                
+                @media (min-width: 768px) and (max-width:1023px) {
+                    #toolbarRoom {
+                        background-color: var(--toolbar-background-color);
+                        width: 100%;
+                        height: 50px;
+                        margin-left: -6px;
+                    }
+                    #productPassengers {
+                        width: 100%;
+                    }
+                    #title {
+                        font-size: 14px;
+                        padding: 5px;
+                    }
+                    #subTitle {
+                        font-size: 13px;
+                        color: var(--color-for-subTitle);
+                    }
+                    #policyList {
+                        font-size: 14px;
+                        margin-left: -13px;
+                        width: 100%;
+                        color: var(--color-for-policies);
+                        margin-top: 10px;
+                        font-family: roboto;
+                    }
+                    .closeIconAdult {
+                        margin-top: 4%;
+                        margin-left: -15px;
+                        color: #A8A8A8;
+                    }
+                    .closeIconChild {
+                        margin-top: 4%;
+                        margin-left: -15px;
+                        color: #A8A8A8;
+                    }
+                    .closeIconChooseGuest {
+                        float: left;
+                        position: absolute;
+                        margin-top: -39px;
+                        margin-left: 205px;
+                        color: #A8A8A8;
+                        visibility: hidden;
+                    }
+                }
+                
+                @media (min-width: 1024px) {
+                    #toolbarRoom {
+                        background-color: var(--toolbar-background-color);
+                        width: 100%;
+                        margin-left: 10px;
+                        margin-top: 20px;
+                        height: 50px;
+                        clear: both;
+                    }
+                    #productPassengers {
+                        width: 100%;
+                    }
+                    #subTitle {
+                        color: var(--color-for-subTitle);
+                        font-size: 14px;
+                        padding: 5px;
+                    }
+                    #title {
+                        font-size: 16px;
+                        padding: 5px;
+                    }
+                    #policyList {
+                        color: var(--color-for-policies);
+                        margin-top: 10px;
+                        font-family: roboto;
+                    }
+                    /*#paxInfo, #closeIcon{
+                            float: left;
+                        }*/
+                    .closeIconAdult,
+                    .closeIconChild {
+                        margin-top: 3%;
+                        margin-left: 6px;
+                        color: #A8A8A8;
+                    }
+                    .closeIconChooseGuest {
+                        float: left;
+                        position: absolute;
+                        margin-top: -39px;
+                        margin-left: 420px;
+                        color: #A8A8A8;
+                        visibility: hidden;
+                    }
+                }
+                
+                #paxInfoTemp {
+                    padding-bottom: 15px;
+                    float: left;
+                    width: 108%;
+                }
+                
+                #checkIcon {
+                    margin-left: 10px;
+                }
+        </style>
+        <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
         <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
         <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{tabletView}}"></iron-media-query>
         <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
@@ -317,7 +317,7 @@
                     <div id="paxInfoTemp">
                         <pax-info id="adultPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{_paxListAdult}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{_indexArray}}" index="{{_increaseIndex(index)}}" traveler-info="{{travelerInfo}}" adult-pax-count="{{adultPaxCount}}"
-                            pax-list-available="{{paxListAvailable}}" type="{{adultPax}}"room-number="{{roomNumber}}"></pax-info>
+                            pax-list-available="{{paxListAvailable}}" type="{{_adultPax}}"room-number="{{roomNumber}}"></pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
                             <paper-icon-button icon="close" id="closeIconAdult{{_increaseIndex(index)}}" class="closeIconAdult" on-tap="_closePaxAdultInfo"></paper-icon-button>
                         </div>
@@ -327,7 +327,7 @@
     <template is="dom-repeat" items="{{_childPaxCountArray}}" id="childPaxTemplate">
                     <div id="paxInfoTemp">
                         <pax-info id="childPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{_paxListChild}}" adult-pax-list="" option="[[option]]" resources="{{resources}}"
-                            index-array="{{_indexArrayChild}}" type="{{childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
+                            index-array="{{_indexArrayChild}}" type="{{_childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
                             index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}" pax-list-available="{{paxListAvailable}}"></pax-info>
                         <div hidden$=[[_isCloseButtonChildHidden]]>
                             <paper-icon-button icon="close" id="closeIconChild{{_increaseIndex(index)}}" class="closeIconChild" on-tap="_closePaxChildInfo"></paper-icon-button>
@@ -354,20 +354,6 @@
             static get properties() {
                     return {
                         /**
-                         *To set the type adult for pax-info.
-                         **/
-                        adultPax: {
-                            type: String,
-                            value: 'Adult'
-                        },
-                        /**
-                         *To set the type child for pax-info.
-                         **/
-                        childPax: {
-                            type: String,
-                            value: 'Child'
-                        },
-                        /**
                          *Object to get t-traveler-info component.
                          **/
                         travelerInfo: {
@@ -378,24 +364,6 @@
                          **/
                         guestInfo: {
                             type: Object,
-                        },
-                        /**
-                         *@private
-                         *Array to get indexes of selected adult paxList.
-                         *used for duplicate pax selected error message purpose.
-                         **/
-                        _indexArray: {
-                            type: Array,
-                            value: []
-                        },
-                        /**
-                         *@private
-                         *Array to get indexes of selected child paxlist.
-                         *used for duplicate pax selected error message purpose.
-                         **/
-                        _indexArrayChild: {
-                            type: Array,
-                            value: []
                         },
                         /**
                          *Pass the current roomNumber to pax-info.
@@ -415,6 +383,54 @@
                          **/
                         subTitle: {
                             type: String,
+                        },
+                        /**
+                         *To set the option property.
+                         **/
+                        option: {
+                            type: Object,
+                            value: {
+                                "requiredField": [],
+                                "requiredFieldForLeadPax": []
+                            }
+                        },
+                        /**
+                         *Adult pax count set for room.
+                         **/
+                        adultPaxCount: {
+                            type: Number,
+                            value: ''
+                        },
+                        /**
+                         *Child pax count set for room.
+                         **/
+                        childPaxCount: {
+                            type: Number,
+                            value: ''
+                        },
+                        /**
+                         *To set the paxlist.
+                         **/
+                        paxlist: {
+                            type: Array,
+                        },
+                        /**
+                         *Set the flag where paxlist is available or not.
+                         **/
+                        paxListAvailable: {
+                            type: Boolean,
+                        },
+                        /**
+                         *To set policy list for a room.
+                         **/
+                        policyList: {
+                            type: Array,
+                        },
+                        /**
+                         *To set the resources.
+                         **/
+                        resources: {
+                            type: Object
                         },
                         /**
                          *@private
@@ -457,6 +473,38 @@
                             value: false
                         },
                         /**
+                         *To set the type adult for pax-info.
+                         **/
+                        _adultPax: {
+                            type: String,
+                            value: 'Adult'
+                        },
+                        /**
+                         *To set the type child for pax-info.
+                         **/
+                        _childPax: {
+                            type: String,
+                            value: 'Child'
+                        },
+                        /**
+                         *@private
+                         *Array to get indexes of selected adult paxList.
+                         *used for duplicate pax selected error message purpose.
+                         **/
+                        _indexArray: {
+                            type: Array,
+                            value: []
+                        },
+                        /**
+                         *@private
+                         *Array to get indexes of selected child paxlist.
+                         *used for duplicate pax selected error message purpose.
+                         **/
+                        _indexArrayChild: {
+                            type: Array,
+                            value: []
+                        },
+                        /**
                          *@private
                          *Boolean property to hide dash for mobile view.
                          * which is present in between title and subtitle.
@@ -464,23 +512,6 @@
                         _hideDashForMobileView: {
                             type: Boolean,
                             value: false
-                        },
-                        /**
-                         *To set the option property.
-                         **/
-                        option: {
-                            type: Object,
-                            value: {
-                                "requiredField": [],
-                                "requiredFieldForLeadPax": []
-                            }
-                        },
-                        /**
-                         *Adult pax count set for room.
-                         **/
-                        adultPaxCount: {
-                            type: Number,
-                            value: ''
                         },
                         /**
                          *@private
@@ -491,25 +522,12 @@
                             value: ''
                         },
                         /**
-                         *Child pax count set for room.
-                         **/
-                        childPaxCount: {
-                            type: Number,
-                            value: ''
-                        },
-                        /**
                          *@private
                          *Array used for child pax info.
                          **/
                         _childPaxCountArray: {
                             type: Array,
                             value: ''
-                        },
-                        /**
-                         *To set the paxlist.
-                         **/
-                        paxlist: {
-                            type: Array,
                         },
                         /**
                          *@private
@@ -526,30 +544,12 @@
                             type: Array,
                         },
                         /**
-                         *Set the flag where paxlist is available or not.
-                         **/
-                        paxListAvailable: {
-                            type: Boolean,
-                        },
-                        /**
-                         *To set policy list for a room.
-                         **/
-                        policyList: {
-                            type: Array,
-                        },
-                        /**
-                         *To set the resources.
-                         **/
-                        resources: {
-                            type: Object
-                        },
-                        /**
                          *@private
                          *Computed property to hide and show close button for adult.
                          **/
                         _isCloseButtonHidden: {
                             type: Boolean,
-                            computed: '_lte(_adultPaxCountArray.length , 1)'
+                            computed: '_lessThanEqualToOne(_adultPaxCountArray.length , 1)'
                         },
                         /**
                          *@private
@@ -557,7 +557,7 @@
                          **/
                         _isCloseButtonChildHidden: {
                             type: Boolean,
-                            computed: '_lteChild()'
+                            computed: '_lessThanEqualToOneChild()'
                         }
                     };
                 }
@@ -696,7 +696,7 @@
                 /**
                  *To hide the close button if adult is only one.
                  **/
-            _lte(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
+            _lessThanEqualToOne(adultPaxCountArrayLength, hiddenButtonAdultNumber) {
                     if (this.roomNumber === 1 && this.paxList.length === 0) {
                         return true;
                     } else {
@@ -706,7 +706,7 @@
                 /**
                  *To hide the close button for child pax.
                  **/
-            _lteChild() {
+            _lessThanEqualToOneChild() {
                     if (this.roomNumber === 1 && this.paxList.length === 0) {
                         return true;
                     } else {

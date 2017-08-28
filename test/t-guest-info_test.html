@@ -302,25 +302,25 @@
             //   assert.equal(result, element.paxList);
             // });
 
-            test('_lte- if', function() {
+            test('_lessThanEqualToOne- if', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
                 var traveler = element.shadowRoot.querySelector("#travelerInfo11");
                 traveler.roomNumber = 1;
                 traveler.paxList.length = 0;
-                var result = traveler._lte(1, 1);
+                var result = traveler._lessThanEqualToOne(1, 1);
                 assert.equal(result, true);
             });
 
-            test('_lte- else', function() {
+            test('_lessThanEqualToOne- else', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
                 var traveler = element.shadowRoot.querySelector("#travelerInfo11");
                 traveler.roomNumber = 2;
                 traveler.paxList.length = 0;
-                var result = traveler._lte(2, 1);
+                var result = traveler._lessThanEqualToOne(2, 1);
                 assert.equal(result, false);
             });
 
@@ -798,12 +798,12 @@
              *
              **/
 
-            test('_lte ', function() {
+            test('_lessThanEqualToOne ', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 var loyalty = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
                 loyalty.shadowRoot.querySelector("#loyaltyTemp").render();
-                res = loyalty._lte(1, 1);
+                res = loyalty._lessThanEqualToOne(1, 1);
                 assert.equal(res, true);
             });
             // test('_showGuestProgramDetails ', function () {

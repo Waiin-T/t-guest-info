@@ -256,7 +256,7 @@
                      * */
                     _isRemoveButtonHidden: {
                         type: Boolean,
-                        computed: '_lte(_loyaltyProgramsCount , 1)'
+                        computed: '_lessThanEqualToOne(_loyaltyProgramsCount , 1)'
                     },
                     /**
                      * @private
@@ -324,7 +324,6 @@
                      * */
                     _loyaltyProgramsCount: {
                         type: Number,
-                        value: ''
                     },
                     /**
                      * This property set to false if paxlist is not available.
@@ -386,7 +385,7 @@
             /**
              * To set hidden property of remove button.
              * */
-            _lte(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
+            _lessThanEqualToOne(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
                     return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
                 }
                 /**
@@ -540,7 +539,7 @@
                     gName.innerText = gName.innerText.substring(0, l) + "..."
                 }
             }
-            _defaultRsourcesValue() {
+            _setDefaultRsourcesValue() {
                 if (this.resources.loyaltyProgram.remove) {
                     this._remove = this.resources.loyaltyProgram.remove;
                 }
@@ -593,7 +592,7 @@
                 // }
             ready() {
                 super.ready();
-                this._defaultRsourcesValue();
+                this._setDefaultRsourcesValue();
                 this._showProgramName();
                 this._loyaltyPrograms = [];
                 this._addProgramForOtherGuest();

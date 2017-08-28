@@ -1527,7 +1527,7 @@
                 /**
                  *To set the default option value.
                  **/
-            _defaultOptionValue() {
+            _setDefaultOptionValue() {
                     if (this.option.allowTitleForLeadPax) {
                         this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
                     }
@@ -1556,7 +1556,7 @@
                 /**
                  *To set the default reasources.
                  **/
-            _defaultResourcesValue() {
+            _setDefaultResourcesValue() {
                     if (this.resources.icons.terms) {
                         this._terms = this.resources.icons.terms;
                     }
@@ -1738,8 +1738,8 @@
                     this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
                         "closeIconChooseGuest");
                 }
-                this._defaultOptionValue();
-                this._defaultResourcesValue();
+                this._setDefaultOptionValue();
+                this._setDefaultResourcesValue();
                 this._showAllowFieldsForLeadPax();
                 this._showAllowFields();
                 this._dynamicStyle();

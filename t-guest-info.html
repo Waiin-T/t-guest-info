@@ -529,7 +529,7 @@
                     var loyaltyTotalData = [];
                     for (var i = 0; i < prodLen; i++) {
                         if (this.product[i].allowLoyalty === true) {
-                            loyaltyTotalData[i] = this._loyaltyProgramData(i);
+                            loyaltyTotalData[i] = this._getLoyaltyProgramData(i);
                         }
                     }
                     // console.log(loyaltyTotalData);
@@ -538,10 +538,10 @@
                 /**
                  *Function to collect loyalty program data for all products.
                  **/
-            _loyaltyProgramData(ind) {
+            _getLoyaltyProgramData(index) {
                 var loyaltyProgramObject = {};
                 var loyaltyProgramArrayData = [];
-                var loyaltyProgramEle = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (ind + 1))
+                var loyaltyProgramEle = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (index + 1))
                 for (var i = 0; i < loyaltyProgramEle._loyaltyPrograms.length; i++) {
                     var loyaltyProgram = {};
                     if (loyaltyProgramEle.shadowRoot.querySelector("#guestName" + i) != null) {
@@ -559,7 +559,7 @@
                 console.log(loyaltyProgramArrayData);
                 return loyaltyProgramArrayData;
             }
-            _defaultResourcesvalue() {
+            _setDefaultResourcesvalue() {
                 if (this.resources.labels.adult.title) {
                     this._adultTitle = this.resources.labels.adult.title;
                 }
@@ -578,7 +578,7 @@
             }
             ready() {
                 super.ready();
-                this._defaultResourcesvalue();
+                this._setDefaultResourcesvalue();
                 if (this.paxlist.length === 0) {
                     this.paxlistAvailable = false;
                     this.paxList = [];
