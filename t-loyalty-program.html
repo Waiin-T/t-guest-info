@@ -237,40 +237,17 @@
             }
             static get properties() {
                 return {
-                    _showGuestNameError: {
-                        type: Boolean,
-                        value: true
-                    },
                     /**
-                     * @private
-                     *Array for Loyalty Program. 
-                     **/
-                    _loyaltyPrograms: {
-                        type: Array,
-                        notify: true,
-                        value: []
-                    },
-                    /**
-                     * @private
-                     * Property to hide remove button when loyalty program is only one.
+                     * Used for paxlist
                      * */
-                    _isRemoveButtonHidden: {
-                        type: Boolean,
-                        computed: '_lessThanEqualToOne(_loyaltyProgramsCount , 1)'
+                    paxList: {
+                        type: Object,
                     },
                     /**
-                     * @private
-                     * Selected value for guest name dropdown.
+                     * This property set to false if paxlist is not available.
                      * */
-                    _guestNameValue: {
-                        type: String
-                    },
-                    /**
-                     * @private
-                     * Selected value for program name
-                     * */
-                    _programNameValue: {
-                        type: String
+                    paxListAvailable: {
+                        type: Boolean
                     },
                     /**
                      * @private
@@ -312,11 +289,40 @@
                         type: Boolean,
                         value: false
                     },
+                    _showGuestNameError: {
+                        type: Boolean,
+                        value: true
+                    },
                     /**
-                     * Used for paxlist
+                     * @private
+                     *Array for Loyalty Program. 
+                     **/
+                    _loyaltyPrograms: {
+                        type: Array,
+                        notify: true,
+                        value: []
+                    },
+                    /**
+                     * @private
+                     * Property to hide remove button when loyalty program is only one.
                      * */
-                    paxList: {
-                        type: Object,
+                    _isRemoveButtonHidden: {
+                        type: Boolean,
+                        computed: '_lessThanEqualToOne(_loyaltyProgramsCount , 1)'
+                    },
+                    /**
+                     * @private
+                     * Selected value for guest name dropdown.
+                     * */
+                    _guestNameValue: {
+                        type: String
+                    },
+                    /**
+                     * @private
+                     * Selected value for program name
+                     * */
+                    _programNameValue: {
+                        type: String
                     },
                     /**
                      * @private
@@ -324,12 +330,6 @@
                      * */
                     _loyaltyProgramsCount: {
                         type: Number,
-                    },
-                    /**
-                     * This property set to false if paxlist is not available.
-                     * */
-                    paxListAvailable: {
-                        type: Boolean
                     },
                     /**
                      * @private
@@ -381,10 +381,17 @@
                     },
                 };
             }
+            ready() {
+                    super.ready();
+                    this._setDefaultRsourcesValue();
+                    this._showProgramName();
+                    this._loyaltyPrograms = [];
+                    this._addProgramForOtherGuest();
 
-            /**
-             * To set hidden property of remove button.
-             * */
+                }
+                /**
+                 * To set hidden property of remove button.
+                 * */
             _lessThanEqualToOne(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
                     return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
                 }
@@ -560,44 +567,29 @@
                 }
             }
             _isValid(e) {
-                    // alert('hi');
-                    var ind = e.currentTarget.id.replace("programNumber", "");
-                    var guest = this.shadowRoot.querySelector("#guestName" + ind);
-                    var programNumber = e.currentTarget;
-                    if (this.paxListAvailable === false) {
-                        var programName = this.shadowRoot.querySelector("#programName" + ind);
-                    } else {
-                        var programName = this.shadowRoot.querySelector("#programNameInput" + ind);
-                    }
-                    for (var i = 0; i < this._loyaltyPrograms.length; i++) {
-                        var loyaltyGuest = this.shadowRoot.querySelector("#guestName" + i);
-                        var loyaltyProgramName = this.shadowRoot.querySelector("#programName" + i);
-                        var loyaltyProgramNumber = this.shadowRoot.querySelector("#programNumber" + i);
-                        if (guest.value === loyaltyGuest.value && programName.value === loyaltyProgramName.value &&
-                            programNumber.value === loyaltyProgramNumber.value && ind != i) {
-                            guest.invalid = true;
-                            programName.invalid = true;
-                            programNumber.invalid = true;
-                            guest.errorMessage = "duplicate record";
-                        }
+                // alert('hi');
+                var ind = e.currentTarget.id.replace("programNumber", "");
+                var guest = this.shadowRoot.querySelector("#guestName" + ind);
+                var programNumber = e.currentTarget;
+                if (this.paxListAvailable === false) {
+                    var programName = this.shadowRoot.querySelector("#programName" + ind);
+                } else {
+                    var programName = this.shadowRoot.querySelector("#programNameInput" + ind);
+                }
+                for (var i = 0; i < this._loyaltyPrograms.length; i++) {
+                    var loyaltyGuest = this.shadowRoot.querySelector("#guestName" + i);
+                    var loyaltyProgramName = this.shadowRoot.querySelector("#programName" + i);
+                    var loyaltyProgramNumber = this.shadowRoot.querySelector("#programNumber" + i);
+                    if (guest.value === loyaltyGuest.value && programName.value === loyaltyProgramName.value &&
+                        programNumber.value === loyaltyProgramNumber.value && ind != i) {
+                        guest.invalid = true;
+                        programName.invalid = true;
+                        programNumber.invalid = true;
+                        guest.errorMessage = "duplicate record";
                     }
                 }
-                // connectedCallback() {
-                //     super.connectedCallback();
-                //     for (var i = 0; i < this._loyaltyPrograms.length; i++) {
-                //         this.shadowRoot.querySelector("#programNumber" + i).addEventListener('blur', (event) => {
-                //             this._updateValidation(event);
-                //         });
-                //     }
-                // }
-            ready() {
-                super.ready();
-                this._setDefaultRsourcesValue();
-                this._showProgramName();
-                this._loyaltyPrograms = [];
-                this._addProgramForOtherGuest();
-
             }
+
         }
         window.customElements.define(TLoyaltyProgram.is, TLoyaltyProgram);
     </script>

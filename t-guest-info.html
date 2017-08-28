@@ -303,44 +303,18 @@
                             value: true
                         },
                         /**
-                         *@private
-                         *iron media query properties.
+                         *To set the product property.
                          **/
-                        smallMobileView: {
-                            type: Boolean,
-                            value: false
+                        product: {
+                            type: Object,
+                            value: {}
                         },
                         /**
-                         *@private
-                         *iron media query properties.
+                         *Set the flag wheather paxList is available or not.
                          **/
-                        mobileView: {
+                        paxlistAvailable: {
                             type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        tabletView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        desktopView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        largeDesktopView: {
-                            type: Boolean,
-                            value: false
+                            value: true
                         },
                         /**
                          *To set title property for room.
@@ -399,6 +373,46 @@
                         },
                         /**
                          *@private
+                         *iron media query properties.
+                         **/
+                        smallMobileView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        mobileView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        tabletView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        desktopView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
+                         *iron media query properties.
+                         **/
+                        largeDesktopView: {
+                            type: Boolean,
+                            value: false
+                        },
+                        /**
+                         *@private
                          **/
                         _adultTitle: {
                             type: String,
@@ -432,48 +446,17 @@
                             type: String,
                             value: "Loyalty program"
                         },
-                        /**
-                         *To set the product property.
-                         **/
-                        product: {
-                            type: Object,
-                            value: {}
-                        },
-                        /**
-                         *Set the flag wheather paxList is available or not.
-                         **/
-                        paxlistAvailable: {
-                            type: Boolean,
-                            value: true
-                        },
                     };
                 } //End of Properties.
-                /**
-                 *To handle puralization for subtitle.
-                 **/
-            _adultLabel(count) {
-                    if (count === 1) {
-                        return this._adultTitle;
-                    } else {
-                        return this._adultPluralTitle;
+
+            ready() {
+                    super.ready();
+                    this._setDefaultResourcesvalue();
+                    if (this.paxlist.length === 0) {
+                        this.paxlistAvailable = false;
+                        this.paxList = [];
                     }
-                }
-                /**
-                 *To handle the puralization for subtitle.
-                 **/
-            _childLabel(count) {
-                    if (count === 1) {
-                        return this._childTitle;
-                    } else {
-                        return this._childPluralTitle;
-                    }
-                }
-                /**
-                 *To increase the index of template by 1.
-                 **/
-            _increaseIndex(index) {
-                    var calIndex = index + 1;
-                    return calIndex;
+                    this.guestInfo = this;
                 }
                 /**
                  *Function to check validation of all fields for all rooms and products.
@@ -525,15 +508,40 @@
                     };
                     console.log(totalProductPaxArray);
                     console.log(totalData);
-
                     var loyaltyTotalData = [];
                     for (var i = 0; i < prodLen; i++) {
                         if (this.product[i].allowLoyalty === true) {
                             loyaltyTotalData[i] = this._getLoyaltyProgramData(i);
                         }
                     }
-                    // console.log(loyaltyTotalData);
                     return totalData;
+                }
+                /**
+                 *To handle puralization for subtitle.
+                 **/
+            _adultLabel(count) {
+                    if (count === 1) {
+                        return this._adultTitle;
+                    } else {
+                        return this._adultPluralTitle;
+                    }
+                }
+                /**
+                 *To handle the puralization for subtitle.
+                 **/
+            _childLabel(count) {
+                    if (count === 1) {
+                        return this._childTitle;
+                    } else {
+                        return this._childPluralTitle;
+                    }
+                }
+                /**
+                 *To increase the index of template by 1.
+                 **/
+            _increaseIndex(index) {
+                    var calIndex = index + 1;
+                    return calIndex;
                 }
                 /**
                  *Function to collect loyalty program data for all products.
@@ -576,15 +584,7 @@
                     this._loyaltyProgram = this.resources.loyaltyProgram.loyaltyProgram;
                 }
             }
-            ready() {
-                super.ready();
-                this._setDefaultResourcesvalue();
-                if (this.paxlist.length === 0) {
-                    this.paxlistAvailable = false;
-                    this.paxList = [];
-                }
-                this.guestInfo = this;
-            }
+
         }
 
         window.customElements.define(TGuestInfo.is, TGuestInfo);

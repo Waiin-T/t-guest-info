@@ -505,496 +505,666 @@
                 return 'pax-info';
             }
             static get properties() {
-                    return {
-                        /**
-                         *@private
-                         **/
-                        _ShowDuplicateGuest: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
-                        _ShowIfPaxListAvailabel: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
-                        _showChooseGuestError: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
-                        _showChooseGuestDuplicateError: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
-                        _showContactNumberInvalidError: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
-                        _showFirstNameError: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
-                        _showLastNameError: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
-                        _showContactNumberError: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
-                        _showEmailError: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         *To set hidden property for choose guest dropdown.
-                         **/
-                        _showChooseGuest: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *To set hidden property for All pax info fields.
-                         **/
-                        _showPaxInfoFields: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         *To set iron media queries.
-                         **/
-                        smallMobileView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        mobileView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        tabletView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        desktopView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        largeDesktopView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *To set adult pax count.
-                         **/
-                        _adultPaxCount: {
-                            type: Number,
-                        },
-                        /**
-                         *@private
-                         *Toset the type for 
-                         **/
-                        type: {
-                            type: String,
-                        },
-                        /**
-                         *Property To set option.
-                         **/
-                        allowTitle: {
-                            type: Boolean,
-                            value: false
-                        },
-                        allowTitleForLeadPax: {
-                            type: Boolean,
-                            value: false
-                        },
-                        allowContactNumber: {
-                            type: Boolean,
-                            value: false
-                        },
-                        allowContactNumberForLeadPax: {
-                            type: Boolean,
-                            value: false
-                        },
-                        allowEmail: {
-                            type: Boolean,
-                            value: false
-                        },
-                        allowEmailForLeadPax: {
-                            type: Boolean,
-                            value: false
-                        },
-                        requiredField: {
-                            type: Array,
-                            value: [
-                                "firstname",
-                                "lastname"
-                            ],
-                        },
-                        requiredFieldForLeadPax: {
-                            type: Array,
-                            value: [
-                                "contactNumber",
-                                "title",
-                                "email"
-                            ]
-                        },
-                        /**
-                         * @private
-                         *Property to set title for pax.
-                         **/
-                        _title: {
-                            type: String,
-                            value: function() {
-                                if (this.type === 'Adult') {
-                                    return 'Adult';
-                                }
-                                if (this.type === 'Child') {
-                                    return 'Child';
-                                }
+                return {
+                    /**
+                     *Property to set paxList.
+                     **/
+                    paxList: {
+                        type: Object,
+                        value: [],
+                        notify: true
+                    },
+                    /**
+                     *Selected value of country code dropdown.
+                     **/
+                    countryCodeValue: {
+                        type: String,
+                        value: '0'
+                    },
+                    /**
+                     *Selected value of title dropdown.
+                     **/
+                    titleValue: {
+                        type: String,
+                        value: '0'
+                    },
+                    /**
+                     *Flag to set wheather paxlist is available or not.
+                     **/
+                    paxListAvailable: {
+                        type: Boolean
+                    },
+                    /**
+                     *Array to store selected value of chooseguest dropdown for perticular room.
+                     *Used for duplicate guest name error message.
+                     **/
+                    indexArray: {
+                        type: Array,
+                        value: []
+                    },
+                    /**
+                     *@private
+                     *To set iron media queries.
+                     **/
+                    smallMobileView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     *@private
+                     *iron media query properties.
+                     **/
+                    mobileView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     *@private
+                     *iron media query properties.
+                     **/
+                    tabletView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     *@private
+                     *iron media query properties.
+                     **/
+                    desktopView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     *@private
+                     *iron media query properties.
+                     **/
+                    largeDesktopView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     *Property To set option.
+                     **/
+                    _allowTitle: {
+                        type: Boolean,
+                        value: false
+                    },
+                    _allowTitleForLeadPax: {
+                        type: Boolean,
+                        value: false
+                    },
+                    _allowContactNumber: {
+                        type: Boolean,
+                        value: false
+                    },
+                    _allowContactNumberForLeadPax: {
+                        type: Boolean,
+                        value: false
+                    },
+                    _allowEmail: {
+                        type: Boolean,
+                        value: false
+                    },
+                    _allowEmailForLeadPax: {
+                        type: Boolean,
+                        value: false
+                    },
+                    _requiredField: {
+                        type: Array,
+                        value: [
+                            "firstname",
+                            "lastname"
+                        ],
+                    },
+                    _requiredFieldForLeadPax: {
+                        type: Array,
+                        value: [
+                            "contactNumber",
+                            "title",
+                            "email"
+                        ]
+                    },
+                    /**
+                     *@private
+                     **/
+                    _ShowDuplicateGuest: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _ShowIfPaxListAvailabel: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _showChooseGuestError: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _showChooseGuestDuplicateError: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _showContactNumberInvalidError: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _showFirstNameError: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _showLastNameError: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _showContactNumberError: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _showEmailError: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     *To set hidden property for choose guest dropdown.
+                     **/
+                    _showChooseGuest: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     *@private
+                     *To set hidden property for All pax info fields.
+                     **/
+                    _showPaxInfoFields: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     *To set adult pax count.
+                     **/
+                    _adultPaxCount: {
+                        type: Number,
+                    },
+                    /**
+                     *@private
+                     *Toset the type for 
+                     **/
+                    type: {
+                        type: String,
+                    },
+                    /**
+                     * @private
+                     *Property to set title for pax.
+                     **/
+                    _title: {
+                        type: String,
+                        value: function() {
+                            if (this.type === 'Adult') {
+                                return 'Adult';
                             }
-                        },
-                        /**
-                         * @private
-                         *Property to set title info.
-                         **/
-                        _titleInfo: {
-                            type: String,
-                            value: function() {
-                                if (this.type === 'Adult') {
-                                    return '(12+ years)';
-                                }
-                                if (this.type === 'Child') {
-                                    return '(upto 11 years)';
-                                }
+                            if (this.type === 'Child') {
+                                return 'Child';
                             }
-                        },
-                        /**
-                         * @private
-                         *Property to set resources default value.
-                         **/
-                        _terms: {
-                            type: String,
-                            value: "terms-ico"
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _titleValues: {
-                            type: Array,
-                            value: [{
-                                "key": "Mr"
-                            }, {
-                                "key": "Ms"
-                            }]
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _titleSelected: {
-                            type: String,
-                            value: 'Mr'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _titleLabel: {
-                            type: String,
-                            value: 'Title'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _titleError: {
-                            type: String,
-                            value: 'Please select a title'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _firstNameValue: {
-                            type: String,
-                            value: ''
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _firstNameTitle: {
-                            type: String,
-                            value: 'First name'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _firstNameError: {
-                            type: String,
-                            value: 'Firstname is required'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _lastNameValue: {
-                            type: String,
-                            value: ''
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _lastNameTitle: {
-                            type: String,
-                            value: 'Last name'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _lastNameError: {
-                            type: String,
-                            value: 'Lastname is required'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _emailValue: {
-                            type: String,
-                            value: ''
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _emailTitle: {
-                            type: String,
-                            value: 'Email address'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _emailInfo: {
-                            type: String,
-                            value: 'We will send you email confirmation on this address'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _emailError: {
-                            type: String,
-                            value: 'Please enter a valid email address'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _countryCodeValues: {
-                            type: Array,
-                            value: [{
-                                "key": "India +91",
-                                "value": "+91"
-                            }, {
-                                "key": "USA +1",
-                                "value": "+1"
-                            }]
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _countryCodeTitle: {
-                            type: String,
-                            value: 'Country code'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _countryCodeError: {
-                            type: String,
-                            value: 'Countrycode is required'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _contactNumberValue: {
-                            type: String,
-                            value: ''
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _contactNumberTitle: {
-                            type: String,
-                            value: 'Contact number'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _contactNumberInfo: {
-                            type: String,
-                            value: 'In case of any notifications our agent will reach you on this number'
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _contactNumberError: {
-                            type: String,
-                            value: 'Contact number is required'
-                        },
-                        _contactNumberInvalidError: {
-                            type: String,
-                            value: "Contact number is invalid"
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _newGuest: {
-                            type: String,
-                            value: "New Guest"
-                        },
-                        /**
-                         * @private
-                         * To set default resources.
-                         * */
-                        _chooseGuestLabel: {
-                            type: String,
-                            value: "Choose guest"
-                        },
-                        /**
-                         *Property to set paxList.
-                         **/
-                        paxList: {
-                            type: Object,
-                            value: [],
-                            notify: true
-                        },
-                        /**
-                         *Selected value of country code dropdown.
-                         **/
-                        countryCodeValue: {
-                            type: String,
-                            value: '0'
-                        },
-                        /**
-                         *Selected value of title dropdown.
-                         **/
-                        titleValue: {
-                            type: String,
-                            value: '0'
-                        },
-                        /**
-                         *@private
-                         *Hidden values if user sets validity of following fields to false.
-                         **/
-                        _showTitle: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
+                        }
+                    },
+                    /**
+                     * @private
+                     *Property to set title info.
+                     **/
+                    _titleInfo: {
+                        type: String,
+                        value: function() {
+                            if (this.type === 'Adult') {
+                                return '(12+ years)';
+                            }
+                            if (this.type === 'Child') {
+                                return '(upto 11 years)';
+                            }
+                        }
+                    },
+                    /**
+                     * @private
+                     *Property to set resources default value.
+                     **/
+                    _terms: {
+                        type: String,
+                        value: "terms-ico"
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _titleValues: {
+                        type: Array,
+                        value: [{
+                            "key": "Mr"
+                        }, {
+                            "key": "Ms"
+                        }]
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _titleSelected: {
+                        type: String,
+                        value: 'Mr'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _titleLabel: {
+                        type: String,
+                        value: 'Title'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _titleError: {
+                        type: String,
+                        value: 'Please select a title'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _firstNameValue: {
+                        type: String,
+                        value: ''
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _firstNameTitle: {
+                        type: String,
+                        value: 'First name'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _firstNameError: {
+                        type: String,
+                        value: 'Firstname is required'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _lastNameValue: {
+                        type: String,
+                        value: ''
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _lastNameTitle: {
+                        type: String,
+                        value: 'Last name'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _lastNameError: {
+                        type: String,
+                        value: 'Lastname is required'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _emailValue: {
+                        type: String,
+                        value: ''
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _emailTitle: {
+                        type: String,
+                        value: 'Email address'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _emailInfo: {
+                        type: String,
+                        value: 'We will send you email confirmation on this address'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _emailError: {
+                        type: String,
+                        value: 'Please enter a valid email address'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _countryCodeValues: {
+                        type: Array,
+                        value: [{
+                            "key": "India +91",
+                            "value": "+91"
+                        }, {
+                            "key": "USA +1",
+                            "value": "+1"
+                        }]
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _countryCodeTitle: {
+                        type: String,
+                        value: 'Country code'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _countryCodeError: {
+                        type: String,
+                        value: 'Countrycode is required'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _contactNumberValue: {
+                        type: String,
+                        value: ''
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _contactNumberTitle: {
+                        type: String,
+                        value: 'Contact number'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _contactNumberInfo: {
+                        type: String,
+                        value: 'In case of any notifications our agent will reach you on this number'
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _contactNumberError: {
+                        type: String,
+                        value: 'Contact number is required'
+                    },
+                    _contactNumberInvalidError: {
+                        type: String,
+                        value: "Contact number is invalid"
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _newGuest: {
+                        type: String,
+                        value: "New Guest"
+                    },
+                    /**
+                     * @private
+                     * To set default resources.
+                     * */
+                    _chooseGuestLabel: {
+                        type: String,
+                        value: "Choose guest"
+                    },
 
-                        _showContactNumber: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
-                        _showEmailAddress: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *@private
-                         **/
-                        _showEmailAddressInfo: {
-                            type: Boolean,
-                            value: true
-                        },
-                        /**
-                         *Flag to set wheather paxlist is available or not.
-                         **/
-                        paxListAvailable: {
-                            type: Boolean
-                        },
-                        /**
-                         *@private
-                         *Array to store selected value of chooseguest dropdown for perticular room.
-                         *Used for duplicate guest name error message.
-                         **/
-                        indexArray: {
-                            type: Array,
-                            value: []
-                        },
-                        /**
-                         *@private
-                         **/
-                        _tempPaxArray: {
-                            type: Array,
-                            value: []
-                        },
-                        _paxTempArray: {
-                            type: Array,
-                            value: []
-                        },
+                    /**
+                     *@private
+                     *Hidden values if user sets validity of following fields to false.
+                     **/
+                    _showTitle: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+
+                    _showContactNumber: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _showEmailAddress: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _showEmailAddressInfo: {
+                        type: Boolean,
+                        value: true
+                    },
+                    /**
+                     *@private
+                     **/
+                    _tempPaxArray: {
+                        type: Array,
+                        value: []
+                    },
+                    _paxTempArray: {
+                        type: Array,
+                        value: []
+                    },
+                }
+            }
+            ready() {
+                super.ready();
+                if (this.roomNumber === 1 && this.paxList.length === 0) {
+                    this._showChooseGuest = true;
+                    this._showPaxInfoFields = false;
+                }
+                if (this._showChooseGuest === false && this.type === 'Adult') {
+                    this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
+                        "closeIconAdult");
+                    this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
+                        "closeIconChooseGuest");
+                }
+                if (this._showChooseGuest === false && this.type === 'Child') {
+                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
+                        "closeIconChild");
+                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
+                        "closeIconChooseGuest");
+                }
+                this._setDefaultOptionValue();
+                this._setDefaultResourcesValue();
+                this._showAllowFieldsForLeadPax();
+                this._showAllowFields();
+                this._dynamicStyle();
+            }
+            connectedCallback() {
+                super.connectedCallback();
+                this.shadowRoot.querySelector("#adultEmail").addEventListener('blur', (event) => {
+                    this._updateValidation(event);
+                });
+                this.shadowRoot.querySelector("#adultFirstName").addEventListener('blur', (event) => {
+                    this._updateValidation(event);
+                });
+                this.shadowRoot.querySelector("#adultLastName").addEventListener('blur', (event) => {
+                    this._updateValidation(event);
+                });
+                this.shadowRoot.querySelector("#adultContactNo").addEventListener('blur', (event) => {
+                    this._updateValidation(event);
+                });
+            }
+            isValidPaxInfo() {
+                    var chooseGuest = this.shadowRoot.querySelector("#chooseGuest");
+                    if (chooseGuest.contentElement.selected = -1) {
+                        this.shadowRoot.querySelector("#chooseGuest").invalid = true;
+                        this._showChooseGuestError = false;
+                        this._showChooseGuestDuplicateError = true;
+                    }
+                    var adultFirstNameValidation = this.$.adultFirstName;
+                    var adultLastNameValiadtion = this.$.adultLastName;
+                    var adultTitleValidation = this.$.adultPaxTitle;
+                    var adultEmailValidation = this.$.adultEmail;
+                    var adultCountryCodeValidation = this.$.adultCountryCode;
+                    var adultContactNumberValidation = this.$.adultContactNo;
+                    if (adultTitleValidation.value === undefined) {
+                        adultTitleValidation.invalid = true;
+                        adultTitleValidation.errorMessage = this._titleError;
+                    }
+                    if ((adultFirstNameValidation.value === undefined || adultFirstNameValidation.value === "") &&
+                        this.requiredField.includes("firstname") === true) {
+                        adultFirstNameValidation.invalid = true;
+                        this._showFirstNameError = false;
+                        // adultFirstNameValidation.errorMessage = this._firstNameError;
+                    }
+                    if ((adultLastNameValiadtion.value === undefined || adultLastNameValiadtion.value === "") &&
+                        this.requiredField.includes("lastname") === true) {
+                        adultLastNameValiadtion.invalid = true;
+                        this._showLastNameError = false;
+                        // adultLastNameValiadtion.errorMessage = this._lastNameError;
+                    }
+                    if ((adultEmailValidation.value === undefined || adultEmailValidation.value === "") && (this.requiredField.includes("email") === true ||
+                            (this.requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
+                        if (this.type != "Child") {
+                            adultEmailValidation.invalid = true;
+                            // adultEmailValidation.errorMessage = this._emailError;
+                            this._showEmailError = false;
+                            if (this._showEmailAddress === true) {
+                                this._showEmailError = true;
+                            }
+                        }
+                    }
+                    if (adultCountryCodeValidation.value === undefined) {
+                        adultCountryCodeValidation.invalid = true;
+                        adultCountryCodeValidation.errorMessage = this._countryCodeError;
+                    }
+                    if ((adultContactNumberValidation.value === undefined || adultContactNumberValidation.value === "") && (this.requiredField.includes("contactNumber") === true ||
+                            (this.requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
+                        if (this.type != "Child") {
+                            adultContactNumberValidation.invalid = true;
+                            // adultContactNumberValidation.errorMessage = this._contactNumberError;
+                            this._showContactNumberError = false;
+                            if (this._showContactNumber === true) {
+                                this._showContactNumberError = true;
+                            }
+                        }
+                    }
+                    if (this.index === 1 && this.type === 'Adult') {
+                        if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid ||
+                            adultContactNumberValidation.invalid || adultEmailValidation.invalid ||
+                            adultCountryCodeValidation.invalid || adultTitleValidation.invalid) {
+                            return true;
+                        }
+                    } else {
+                        if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid) {
+                            return true;
+                        }
+                    }
+                }
+                /**
+                 *To collect data of a pax on fire of final button.
+                 **/
+            collectData() {
+                    var firstNameData = this.$.adultFirstName;
+                    var lastNameData = this.$.adultLastName;
+                    var titleData = this.$.adultPaxTitle;
+                    var emailData = this.$.adultEmail;
+                    var countryCodeData = this.$.adultCountryCode;
+                    var contactNumberData = this.$.adultContactNo;
+                    if (this.type === 'Adult') {
+                        var adultData = {};
+                        adultData.type = "Adult";
+                        if (this.index === 1) {
+                            if (this._allowTitleForLeadPax === true && titleData.selectedItem != null) {
+                                adultData.title = titleData.selectedItem.innerText;
+                            }
+                            if (this._allowEmailForLeadPax === true) {
+                                adultData.email = emailData.value;
+                            }
+                            if (this._allowContactNumberForLeadPax === true) {
+                                if (countryCodeData.selectedItem != null) {
+                                    adultData.countrycode = countryCodeData.selectedItem.innerText;
+                                }
+                                adultData.contact = contactNumberData.value;
+                            }
+                        } else {
+                            if (this.allowTitle === true && titleData.selectedItem != null) {
+                                adultData.title = titleData.selectedItem.innerText;
+                            }
+                            if (this.allowEmail === true) {
+                                adultData.email = emailData.value;
+                            }
+                            if (this.allowContactNumber === true) {
+                                if (countryCodeData.selectedItem != null) {
+                                    adultData.countrycode = countryCodeData.selectedItem.innerText;
+                                }
+                                adultData.contact = contactNumberData.value;
+                            }
+                        }
+                        adultData.firstName = firstNameData.value;
+                        adultData.lastName = lastNameData.value;
+                        return adultData;
+                    }
+                    if (this.type === 'Child') {
+                        var childData = {};
+                        childData.type = "Child";
+                        childData.firstName = firstNameData.value;
+                        childData.lastName = lastNameData.value;
+                        if (this.allowTitle === true && titleData.selectedItem != null) {
+                            childData.title = titleData.selectedItem.innerText;
+                        }
+                        if (this.allowEmail === true) {
+                            childData.email = emailData.value;
+                        }
+                        if (this.allowContactNumber === true) {
+                            if (countryCodeData.selectedItem != null) {
+                                childData.countrycode = countryCodeData.selectedItem.innerText;
+                            }
+                            childData.contact = contactNumberData.value;
+                        }
+                        return childData;
                     }
                 }
                 /*
@@ -1127,140 +1297,10 @@
                 /*
                  **To check validation of a pax on fire of final validation.
                  */
-            isValidPaxInfo() {
-                    var chooseGuest = this.shadowRoot.querySelector("#chooseGuest");
-                    if (chooseGuest.contentElement.selected = -1) {
-                        this.shadowRoot.querySelector("#chooseGuest").invalid = true;
-                        this._showChooseGuestError = false;
-                        this._showChooseGuestDuplicateError = true;
-                    }
-                    var adultFirstNameValidation = this.$.adultFirstName;
-                    var adultLastNameValiadtion = this.$.adultLastName;
-                    var adultTitleValidation = this.$.adultPaxTitle;
-                    var adultEmailValidation = this.$.adultEmail;
-                    var adultCountryCodeValidation = this.$.adultCountryCode;
-                    var adultContactNumberValidation = this.$.adultContactNo;
-                    if (adultTitleValidation.value === undefined) {
-                        adultTitleValidation.invalid = true;
-                        adultTitleValidation.errorMessage = this._titleError;
-                    }
-                    if ((adultFirstNameValidation.value === undefined || adultFirstNameValidation.value === "") &&
-                        this.requiredField.includes("firstname") === true) {
-                        adultFirstNameValidation.invalid = true;
-                        this._showFirstNameError = false;
-                        // adultFirstNameValidation.errorMessage = this._firstNameError;
-                    }
-                    if ((adultLastNameValiadtion.value === undefined || adultLastNameValiadtion.value === "") &&
-                        this.requiredField.includes("lastname") === true) {
-                        adultLastNameValiadtion.invalid = true;
-                        this._showLastNameError = false;
-                        // adultLastNameValiadtion.errorMessage = this._lastNameError;
-                    }
-                    if ((adultEmailValidation.value === undefined || adultEmailValidation.value === "") && (this.requiredField.includes("email") === true ||
-                            (this.requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
-                        if (this.type != "Child") {
-                            adultEmailValidation.invalid = true;
-                            // adultEmailValidation.errorMessage = this._emailError;
-                            this._showEmailError = false;
-                            if (this._showEmailAddress === true) {
-                                this._showEmailError = true;
-                            }
-                        }
-                    }
-                    if (adultCountryCodeValidation.value === undefined) {
-                        adultCountryCodeValidation.invalid = true;
-                        adultCountryCodeValidation.errorMessage = this._countryCodeError;
-                    }
-                    if ((adultContactNumberValidation.value === undefined || adultContactNumberValidation.value === "") && (this.requiredField.includes("contactNumber") === true ||
-                            (this.requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
-                        if (this.type != "Child") {
-                            adultContactNumberValidation.invalid = true;
-                            // adultContactNumberValidation.errorMessage = this._contactNumberError;
-                            this._showContactNumberError = false;
-                            if (this._showContactNumber === true) {
-                                this._showContactNumberError = true;
-                            }
-                        }
-                    }
-                    if (this.index === 1 && this.type === 'Adult') {
-                        if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid ||
-                            adultContactNumberValidation.invalid || adultEmailValidation.invalid ||
-                            adultCountryCodeValidation.invalid || adultTitleValidation.invalid) {
-                            return true;
-                        }
-                    } else {
-                        if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid) {
-                            return true;
-                        }
-                    }
-                }
-                /**
-                 *To collect data of a pax on fire of final button.
-                 **/
-            collectData() {
-                    var firstNameData = this.$.adultFirstName;
-                    var lastNameData = this.$.adultLastName;
-                    var titleData = this.$.adultPaxTitle;
-                    var emailData = this.$.adultEmail;
-                    var countryCodeData = this.$.adultCountryCode;
-                    var contactNumberData = this.$.adultContactNo;
-                    if (this.type === 'Adult') {
-                        var adultData = {};
-                        adultData.type = "Adult";
-                        if (this.index === 1) {
-                            if (this.allowTitleForLeadPax === true && titleData.selectedItem != null) {
-                                adultData.title = titleData.selectedItem.innerText;
-                            }
-                            if (this.allowEmailForLeadPax === true) {
-                                adultData.email = emailData.value;
-                            }
-                            if (this.allowContactNumberForLeadPax === true) {
-                                if (countryCodeData.selectedItem != null) {
-                                    adultData.countrycode = countryCodeData.selectedItem.innerText;
-                                }
-                                adultData.contact = contactNumberData.value;
-                            }
-                        } else {
-                            if (this.allowTitle === true && titleData.selectedItem != null) {
-                                adultData.title = titleData.selectedItem.innerText;
-                            }
-                            if (this.allowEmail === true) {
-                                adultData.email = emailData.value;
-                            }
-                            if (this.allowContactNumber === true) {
-                                if (countryCodeData.selectedItem != null) {
-                                    adultData.countrycode = countryCodeData.selectedItem.innerText;
-                                }
-                                adultData.contact = contactNumberData.value;
-                            }
-                        }
-                        adultData.firstName = firstNameData.value;
-                        adultData.lastName = lastNameData.value;
-                        return adultData;
-                    }
-                    if (this.type === 'Child') {
-                        var childData = {};
-                        childData.type = "Child";
-                        childData.firstName = firstNameData.value;
-                        childData.lastName = lastNameData.value;
-                        if (this.allowTitle === true && titleData.selectedItem != null) {
-                            childData.title = titleData.selectedItem.innerText;
-                        }
-                        if (this.allowEmail === true) {
-                            childData.email = emailData.value;
-                        }
-                        if (this.allowContactNumber === true) {
-                            if (countryCodeData.selectedItem != null) {
-                                childData.countrycode = countryCodeData.selectedItem.innerText;
-                            }
-                            childData.contact = contactNumberData.value;
-                        }
-                        return childData;
-                    }
-                }
-                /**
-                 *To show the pax Info input fields on click of element of choose guest dropdown.
-                 **/
+
+            /**
+             *To show the pax Info input fields on click of element of choose guest dropdown.
+             **/
             _showPaxInfoFieldsMethod(e) {
                 var paxIndex = e.model.index;
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
@@ -1400,36 +1440,36 @@
                  **/
             _showAllowFieldsForLeadPax() {
                     if (this.index === 1 && this.type === 'Adult') {
-                        var checkLeadPax = this.option.allowContactNumberForLeadPax;
+                        var checkLeadPax = this._allowContactNumberForLeadPax;
                         if (checkLeadPax === true) {
                             this._showContactNumber = false;
                             this._showContactNumberError = true;
                         }
-                        var checkLeadPax = this.option.allowEmailForLeadPax;
+                        var checkLeadPax = this._allowEmailForLeadPax;
                         if (checkLeadPax === true) {
                             this._showEmailAddress = false;
                             this._showEmailAddressInfo = false;
                             this._showEmailError = true;
                         }
-                        var checkLeadPax = this.option.allowTitleForLeadPax;
+                        var checkLeadPax = this._allowTitleForLeadPax;
                         if (checkLeadPax === true) {
                             this._showTitle = false;
                         }
                         this._dynamicStyle();
                     }
                     if (this.index === 1 && this.type === 'Child') {
-                        var check = this.option.allowContactNumber;
+                        var check = this._allowContactNumber;
                         if (check === true) {
                             this._showContactNumber = false;
                             this._showContactNumberError = true;
                         }
-                        var check = this.option.allowEmail;
+                        var check = this._allowEmail;
                         if (check === true) {
                             this._showEmailAddress = false;
                             this._showEmailAddressInfo = false;
                             this._showEmailError = true;
                         }
-                        var check = this.option.allowTitle;
+                        var check = this._allowTitle;
                         if (check === true) {
                             this._showTitle = false;
                         }
@@ -1439,18 +1479,18 @@
                  *To show input fields for other than lead pax.
                  **/
             _showAllowFields() {
-                    var check = this.option.allowContactNumber;
+                    var check = this._allowContactNumber;
                     if (check === true && this.index != 1) {
                         this._showContactNumber = false;
                         this._showContactNumberError = true;
                     }
-                    var check = this.option.allowEmail;
+                    var check = this._allowEmail;
                     if (check === true && this.index != 1) {
                         this._showEmailAddress = false;
                         this._showEmailAddressInfo = false;
                         this._showEmailError = true;
                     }
-                    var check = this.option.allowTitle;
+                    var check = this._allowTitle;
                     if (check === true && this.index != 1) {
                         this._showTitle = false;
                     }
@@ -1529,28 +1569,28 @@
                  **/
             _setDefaultOptionValue() {
                     if (this.option.allowTitleForLeadPax) {
-                        this.allowTitleForLeadPax = this.option.allowTitleForLeadPax;
+                        this._allowTitleForLeadPax = this.option.allowTitleForLeadPax;
                     }
                     if (this.option.allowTitle) {
-                        this.allowTitle = this.option.allowTitle;
+                        this._allowTitle = this.option.allowTitle;
                     }
                     if (this.option.allowContactNumber) {
-                        this.allowContactNumber = this.option.allowContactNumber;
+                        this._allowContactNumber = this.option.allowContactNumber;
                     }
                     if (this.option.allowContactNumberForLeadPax) {
-                        this.allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
+                        this._allowContactNumberForLeadPax = this.option.allowContactNumberForLeadPax;
                     }
                     if (this.option.allowEmail) {
-                        this.allowEmail = this.option.allowEmail;
+                        this._allowEmail = this.option.allowEmail;
                     }
                     if (this.option.allowEmailForLeadPax) {
-                        this.allowEmailForLeadPax = this.option.allowEmailForLeadPax;
+                        this._allowEmailForLeadPax = this.option.allowEmailForLeadPax;
                     }
                     if (this.option.requiredField) {
-                        this.requiredField = this.option.requiredField;
+                        this._requiredField = this.option.requiredField;
                     }
                     if (this.option.requiredFieldForLeadPax) {
-                        this.requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
+                        this._requiredFieldForLeadPax = this.option.requiredFieldForLeadPax;
                     }
                 }
                 /**
@@ -1705,45 +1745,8 @@
                     }
                 }
             }
-            connectedCallback() {
-                super.connectedCallback();
-                this.shadowRoot.querySelector("#adultEmail").addEventListener('blur', (event) => {
-                    this._updateValidation(event);
-                });
-                this.shadowRoot.querySelector("#adultFirstName").addEventListener('blur', (event) => {
-                    this._updateValidation(event);
-                });
-                this.shadowRoot.querySelector("#adultLastName").addEventListener('blur', (event) => {
-                    this._updateValidation(event);
-                });
-                this.shadowRoot.querySelector("#adultContactNo").addEventListener('blur', (event) => {
-                    this._updateValidation(event);
-                });
-            }
-            ready() {
-                super.ready();
-                if (this.roomNumber === 1 && this.paxList.length === 0) {
-                    this._showChooseGuest = true;
-                    this._showPaxInfoFields = false;
-                }
-                if (this._showChooseGuest === false && this.type === 'Adult') {
-                    this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
-                        "closeIconAdult");
-                    this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
-                        "closeIconChooseGuest");
-                }
-                if (this._showChooseGuest === false && this.type === 'Child') {
-                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
-                        "closeIconChild");
-                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
-                        "closeIconChooseGuest");
-                }
-                this._setDefaultOptionValue();
-                this._setDefaultResourcesValue();
-                this._showAllowFieldsForLeadPax();
-                this._showAllowFields();
-                this._dynamicStyle();
-            }
+
+
         }
         window.customElements.define(PaxInfo.is, PaxInfo);
     </script>
