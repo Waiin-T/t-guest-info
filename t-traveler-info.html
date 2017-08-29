@@ -609,11 +609,10 @@
                     for (var j = i + 1; j < adultPaxDataArray.length; j++) {
                         var adult = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (j +
                             1));
-                        if (adultPaxDataArray[i].firstName.toLowerCase() === adultPaxDataArray[j].firstName.toLowerCase() &&
-                            adultPaxDataArray[i].lastName.toLowerCase() === adultPaxDataArray[j].lastName.toLowerCase() &&
-                            adultPaxDataArray[i].firstName != undefined && adultPaxDataArray[i].firstName != "" &&
-                            adultPaxDataArray[i].lastName != undefined && adultPaxDataArray[i].lastName != "") {
-
+                        // if (adultPaxDataArray[i].firstName != undefined || adultPaxDataArray[i].firstName != "" &&
+                        //     adultPaxDataArray[i].lastName != undefined || adultPaxDataArray[i].lastName != "") {
+                        if (this.compareCaseInsensitive(adultPaxDataArray[i].firstName, adultPaxDataArray[j].firstName) &&
+                            this.compareCaseInsensitive(adultPaxDataArray[i].lastName, adultPaxDataArray[j].lastName)) {
                             adult.shadowRoot.querySelector("#adultFirstName").invalid = true;
                             adult.shadowRoot.querySelector("#adultFirstName").errorMessage =
                                 "Duplicate guest name";
@@ -621,6 +620,7 @@
                             adult.shadowRoot.querySelector("#adultFirstName").value != "") {
                             adult.shadowRoot.querySelector("#adultFirstName").invalid = false;
                         }
+                        // }
                     }
                 }
                 var childPaxDataArray = [];
@@ -639,10 +639,10 @@
                     for (var j = i + 1; j < childPaxDataArray.length; j++) {
                         var child = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (j +
                             1));
-                        if (childPaxDataArray[i].firstName.toLowerCase() === childPaxDataArray[j].firstName.toLowerCase() &&
-                            childPaxDataArray[i].lastName.toLowerCase() === childPaxDataArray[j].lastName.toLowerCase() &&
-                            childPaxDataArray[i].firstName != undefined && childPaxDataArray[i].firstName != "" &&
-                            childPaxDataArray[i].lastName != undefined && childPaxDataArray[i].lastName != "") {
+                        // if (childPaxDataArray[i].firstName != undefined || childPaxDataArray[i].firstName != "" &&
+                        //     childPaxDataArray[i].lastName != undefined || childPaxDataArray[i].lastName != "") {
+                        if (this.compareCaseInsensitive(childPaxDataArray[i].firstName, childPaxDataArray[j].firstName) &&
+                            this.compareCaseInsensitive(childPaxDataArray[i].lastName, childPaxDataArray[j].lastName)) {
                             child.shadowRoot.querySelector("#adultFirstName").invalid = true;
                             child.shadowRoot.querySelector("#adultFirstName").errorMessage =
                                 "Duplicate guest name";
@@ -651,11 +651,22 @@
                             .querySelector("#adultFirstName").value != "") {
                             child.shadowRoot.querySelector("#adultFirstName").invalid = false;
                         }
+                        // }
                     }
                 }
                 var paxListArray = adultPaxDataArray.concat(childPaxDataArray);
                 this.paxList = JSON.parse(JSON.stringify(paxListArray));
                 return this.paxList;
+            }
+            compareCaseInsensitive(s1, s2) {
+                if (s1 == undefined || s2 == undefined) {
+                    return false;
+                }
+                if (s1.toLowerCase() === s2.toLowerCase()) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
             setState(paxList) {
                     var count = this.adultPaxCount + this.childPaxCount;

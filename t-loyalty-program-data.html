@@ -312,9 +312,16 @@
                     this.tLoyaltyProgram.splice('_loyaltyPrograms', index, 0);
                 }
                 this.tLoyaltyProgram._loyaltyProgramsCount = this.tLoyaltyProgram._loyaltyProgramsCount - 1;
-                // var ele = this.shadowRoot.querySelector("#div" + index);
                 var parent = this.parentElement.parentElement;
                 parent.removeChild(this.parentElement);
+                for (var i = index; i < this.tLoyaltyProgram._loyaltyProgramsCount; i++) {
+                    this.tLoyaltyProgram.shadowRoot.querySelector("#div" + (+i + +1)).id = "div" + i;
+                    // this.shadowRoot.querySelector("#guestName" + (+i + +1)).id = "guestName" + i;
+                    // this.shadowRoot.querySelector("#programName" + (+i + +1)).id = "programName" + i;
+                    // this.shadowRoot.querySelector("#programNameInput" + (+i + +1)).id = "programNameInput" + i;
+                    // this.shadowRoot.querySelector("#programNumber" + (+i + +1)).id = "programNumber" + i;
+                    // this.shadowRoot.querySelector(".c" + (+i + +1)).className = "c" + i;
+                }
             }
             _isValid(e) {
                     var ind = this.loyaltyProgramNumber;
@@ -329,7 +336,6 @@
                     for (var i = 0; i < this.tLoyaltyProgram._loyaltyPrograms.length; i++) {
                         var parent = this.parentElement.parentElement.querySelector("#div" + i);
                         var tLoyalty = parent.querySelector("#tLoyaltyProgramDataID");
-
                         var loyaltyGuest = tLoyalty.shadowRoot.querySelector("#guestName" + i);
                         var loyaltyProgramName = tLoyalty.shadowRoot.querySelector("#programName" + i);
                         var loyaltyProgramNumber = tLoyalty.shadowRoot.querySelector("#programNumber" + i);
