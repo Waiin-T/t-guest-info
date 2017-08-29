@@ -180,7 +180,7 @@
         <div id="contentDiv">
             
         <template is="dom-repeat" items="{{_loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
-        <div style="clear:both" id="div{{loyaltyProgramNumber}}">
+        <div style="clear:both" id="div{{loyaltyProgramNumber}}" class="div">
             <t-loyalty-program-data id="tLoyaltyProgramDataID" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}" 
             t-loyalty-program="{{tLoyaltyProgram}}" pax-list="{{paxlist}}" loyalty-program-number="{{loyaltyProgramNumber}}"></t-loyalty-program-data>
         </div>

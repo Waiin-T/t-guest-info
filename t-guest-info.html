@@ -414,38 +414,23 @@
                         /**
                          *@private
                          **/
-                        _adultTitle: {
-                            type: String,
-                            value: 'Adult'
-                        },
+                        _adultTitle: String,
                         /**
                          *@private
                          **/
-                        _adultPluralTitle: {
-                            type: String,
-                            value: 'Adults'
-                        },
+                        _adultPluralTitle: String,
                         /**
                          *@private
                          **/
-                        _childTitle: {
-                            type: String,
-                            value: 'Child'
-                        },
+                        _childTitle: String,
                         /**
                          *@private
                          **/
-                        _childPluralTitle: {
-                            type: String,
-                            value: 'Children'
-                        },
+                        _childPluralTitle: String,
                         /**
                          *@private
                          **/
-                        _loyaltyProgram: {
-                            type: String,
-                            value: "Loyalty program"
-                        },
+                        _loyaltyProgram: String,
                     };
                 } //End of Properties.
 
@@ -570,21 +555,11 @@
                 return loyaltyProgramArrayData;
             }
             _setDefaultResourcesvalue() {
-                if (this.resources.labels.adult.title) {
-                    this._adultTitle = this.resources.labels.adult.title;
-                }
-                if (this.resources.labels.adult.titlep) {
-                    this._adultPluralTitle = this.resources.labels.adult.titlep;
-                }
-                if (this.resources.labels.child.title) {
-                    this._childTitle = this.resources.labels.child.title;
-                }
-                if (this.resources.labels.child.titlep) {
-                    this._childPluralTitle = this.resources.labels.child.titlep;
-                }
-                if (this.resources.loyaltyProgram.loyaltyProgram) {
-                    this._loyaltyProgram = this.resources.loyaltyProgram.loyaltyProgram;
-                }
+                this._adultTitle = this.resources.labels.adult.title ? this.resources.labels.adult.title : "Adult";
+                this._adultPluralTitle = this.resources.labels.adult.titlep ? this.resources.labels.adult.titlep : "Adults";
+                this._childTitle = this.resources.labels.child.title ? this.resources.labels.child.title : "Child";
+                this._childPluralTitle = this.resources.labels.child.titlep ? this.resources.labels.child.titlep : "Children";
+                this._loyaltyProgram = this.resources.loyaltyProgram.loyaltyProgram ? this.resources.loyaltyProgram.loyaltyProgram : "Loyalty program";
             }
 
         }
