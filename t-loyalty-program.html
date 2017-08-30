@@ -170,13 +170,13 @@
         clear: both;
       }
     </style>
-     <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
-    <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
-    <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{tabletView}}"></iron-media-query>
-    <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
+     <iron-media-query query="(max-width: 380px)" query-matches="{{_smallMobileView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{_mobileView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{_tabletView}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{_desktopView}}"></iron-media-query>
     <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query> 
 
-    <!-- <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"> -->
+    <!-- <div class="item" smallMobileView$="{{_smallMobileView}}" desktopView$="{{_desktopView}}" tabletView$="{{_tabletView}}" mobileView$="{{_mobileView}}"> -->
         <div id="contentDiv">
             
         <template is="dom-repeat" items="{{_loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
@@ -233,7 +233,7 @@
                      * @private
                      * used for iron media query
                      * */
-                    smallMobileView: {
+                    _smallMobileView: {
                         type: Boolean,
                         value: false
                     },
@@ -241,7 +241,7 @@
                      * @private
                      * used for iron media query
                      * */
-                    mobileView: {
+                    _mobileView: {
                         type: Boolean,
                         value: false
                     },
@@ -249,7 +249,7 @@
                      * @private
                      * used for iron media query
                      * */
-                    tabletView: {
+                    _tabletView: {
                         type: Boolean,
                         value: false
                     },
@@ -257,7 +257,7 @@
                      * @private
                      * used for iron media query
                      * */
-                    desktopView: {
+                    _desktopView: {
                         type: Boolean,
                         value: false
                     },
@@ -265,7 +265,7 @@
                      * @private
                      * used for iron media query
                      * */
-                    largeDesktopView: {
+                    _largeDesktopView: {
                         type: Boolean,
                         value: false
                     },

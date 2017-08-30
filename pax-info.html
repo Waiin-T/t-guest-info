@@ -411,14 +411,14 @@
         margin-left: 12px;
     }
 </style>
-         <iron-media-query query="(min-width: 320px) and (max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
-        <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
-        <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{tabletView}}"></iron-media-query>
-        <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
-        <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query> 
+         <iron-media-query query="(min-width: 320px) and (max-width: 380px)" query-matches="{{_smallMobileView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{_mobileView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{_tabletView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{_desktopView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 1200px)" query-matches="{{_largeDesktopView}}"></iron-media-query> 
 
-         <!-- <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"
-            largeDesktopView$="{{_largeDesktopViewOther(largeDesktopView)}}" largeDesktopViewIE$="{{_largeDesktopViewIE(largeDesktopView)}}">  -->
+         <!-- <div class="item" smallMobileView$="{{_smallMobileView}}" desktopView$="{{_desktopView}}" tabletView$="{{_tabletView}}" mobileView$="{{_mobileView}}"
+            largeDesktopView$="{{_largeDesktopViewOther(_largeDesktopView)}}" largeDesktopViewIE$="{{_largeDesktopViewIE(_largeDesktopView)}}">  -->
 
 
             <form is="iron-form" id="form" method="post" action="/form/handler">
@@ -546,7 +546,7 @@
                      *@private
                      *To set iron media queries.
                      **/
-                    smallMobileView: {
+                    _smallMobileView: {
                         type: Boolean,
                         value: false
                     },
@@ -554,7 +554,7 @@
                      *@private
                      *iron media query properties.
                      **/
-                    mobileView: {
+                    _mobileView: {
                         type: Boolean,
                         value: false
                     },
@@ -562,7 +562,7 @@
                      *@private
                      *iron media query properties.
                      **/
-                    tabletView: {
+                    _tabletView: {
                         type: Boolean,
                         value: false
                     },
@@ -570,7 +570,7 @@
                      *@private
                      *iron media query properties.
                      **/
-                    desktopView: {
+                    _desktopView: {
                         type: Boolean,
                         value: false
                     },
@@ -578,7 +578,7 @@
                      *@private
                      *iron media query properties.
                      **/
-                    largeDesktopView: {
+                    _largeDesktopView: {
                         type: Boolean,
                         value: false
                     },
@@ -693,7 +693,6 @@
                         type: Number,
                     },
                     /**
-                     *@private
                      *Toset the type for 
                      **/
                     type: {
@@ -1411,18 +1410,18 @@
                 /**
                  * Function to set view of internet explorer.       
                  * */
-            _largeDesktopViewIE(largeDesktopView) {
+            _largeDesktopViewIE(_largeDesktopView) {
                     // Internet Explorer 6-11
                     var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-                    return isIE && largeDesktopView;
+                    return isIE && _largeDesktopView;
                 }
                 /**
                  * Function for desktop view for browsers other than internet explorer.
                  * */
-            _largeDesktopViewOther(largeDesktopView) {
+            _largeDesktopViewOther(_largeDesktopView) {
                 // Internet Explorer 6-11
                 var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-                return !isIE && largeDesktopView;
+                return !isIE && _largeDesktopView;
             }
             _showReadMoreDots(len) {
                     var l = (screen.width / 100 * len) / 6.7;
@@ -1447,7 +1446,7 @@
                     }
                     var len = 100 / divLen - 4;
                     var lenTab = 100 / divLen - 5;
-                    if (this.smallMobileView || this.mobileView) {
+                    if (this._smallMobileView || this._mobileView) {
                         this._showReadMoreDots(len);
                         this.shadowRoot.querySelector("#adultFirstNamediv").style.width = len + "%";
                         this.shadowRoot.querySelector("#adultLastNamediv").style.width = len + "%";
@@ -1463,7 +1462,7 @@
                         }
                     }
                     var mqTab = window.matchMedia("(min-width: 768px)" && "(max-width: 1023px)");
-                    if (this.tabletView) {
+                    if (this._tabletView) {
                         this.shadowRoot.querySelector("#adultFirstNamediv").style.width = lenTab + "%";
                         this.shadowRoot.querySelector("#adultLastNamediv").style.width = lenTab + "%";
                         if (this._showTitle === true) {

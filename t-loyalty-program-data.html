@@ -233,6 +233,46 @@
                     loyaltyProgramNumber: Number,
                     /**
                      * @private
+                     * used for iron media query
+                     * */
+                    _smallMobileView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
+                     * used for iron media query
+                     * */
+                    _mobileView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
+                     * used for iron media query
+                     * */
+                    _tabletView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
+                     * used for iron media query
+                     * */
+                    _desktopView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
+                     * used for iron media query
+                     * */
+                    _largeDesktopView: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
                      * To store temporary paxlist for dropdown.
                      * */
                     _tempPaxArray: {
@@ -407,11 +447,11 @@
                     this._showGuestNameError = false;
                     var len = this.tLoyaltyProgram._loyaltyPrograms.length;
                     for (var i = 0; i < len; i++) {
-                        if (this.smallMobileView === true || this.mobileView === true) {
+                        if (this._smallMobileView === true || this._mobileView === true) {
                             this.shadowRoot.querySelector("#programNumber" + i).style.clear = "both";
                         }
                     }
-                    if (this.largeDesktopView === true || this.desktopView === true || this.tabletView === true) {
+                    if (this._largeDesktopView === true || this._desktopView === true || this._tabletView === true) {
                         this.shadowRoot.querySelector("#addProgramForOtherGuestButton").style.clear = "both";
                     }
                 } else {
