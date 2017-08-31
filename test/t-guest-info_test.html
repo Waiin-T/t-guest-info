@@ -66,70 +66,85 @@
                       "email"
                       ]
                 }' resources='{
-                  "icons": {
-                    "terms": "terms-ico"
+                    "icons": {
+                        "terms": "terms-ico"
                     },
-                  "labels": {
-                    "adult": {
-                      "title": "Adult",
-                      "info": "(12+ years)"
-                      },
-                    "child": {
-                      "title": "Child",
-                      "info": "(upto 11 years)"
-                      }
+                    "labels": {
+                        "adult": {
+                            "title": "Adult",
+                            "titlep": "Adults",
+                            "info": "(12+ years)"
+                        },
+                        "child": {
+                            "title": "Child",
+                            "titlep": "Children",
+                            "info": "(upto 11 years)"
+                        }
                     },
-                  "fields": {
-                    "title": {
-                      "values": [{
-                          "key": "Mr"
-                          },
-                          {
-                          "key": "Ms"
-                          }
-                          ],
-                      "selected": "Mr",
-                      "title": "Title",
-                      "errors": "Please select a title"
-                      },
-                    "firstName": {
-                      "value": "",
-                      "title": "First name",
-                      "errors": "Firstname is required"
-                      },
-                    "lastName": {
-                      "value": "",
-                      "title": "Last name",
-                      "errors": "Lastname is required"
-                      },
-                    "email": {
-                      "value": "",
-                      "info": "We will send you email confirmation on this address",
-                      "errors": "Please enter a valid email address"
-                      },
-                    "countryCode": {
-                      "values": [{
-                          "key": "India +91",
-                          "value": "+91"
-                          },
-                          {
-                          "key": "USA +1",
-                          "value": "+1"
-                          }
-                      ],
-                      "title": "Country code",
-                      "errors": "Countrycode is required"
-                      },
-                    "contactNumber": {
-                      "value": "",
-                      "title": "Contact number",
-                      "info": "In case of any notifications our agent will reach you on this number",
-                      "errors": "Contact number is required"
-                      }                     
-                   },
-                      "newGuest" : "Add New",
-                      "chooseGuest" : "Choose guest" 
-                  }' product=' [{
+                    "fields": {
+                        "title": {
+                            "values": [{
+                                    "key": "Mr"
+                                },
+                                {
+                                    "key": "Ms"
+                                }
+                            ],
+                            "selected": "Mr",
+                            "title": "Title",
+                            "errors": "Please select a title"
+                        },
+                        "firstName": {
+                            "value": "",
+                            "title": "First name",
+                            "errors": "Firstname is required"
+                        },
+                        "lastName": {
+                            "value": "",
+                            "title": "Last name",
+                            "errors": "Lastname is required"
+                        },
+                        "email": {
+                            "value": "",
+                            "info": "We will send you email confirmation on this address",
+                            "errors": "Please enter a valid email address"
+                        },
+                        "countryCode": {
+                            "values": [{
+                                    "key": "India +91",
+                                    "value": "+91"
+                                },
+                                {
+                                    "key": "USA +1",
+                                    "value": "+1"
+                                }
+                            ],
+                            "title": "Country code",
+                            "errors": "Countrycode is required"
+                        },
+                        "contactNumber": {
+                            "value": "",
+                            "title": "Contact number",
+                            "info": "In case of any notifications our agent will reach you on this number",
+                            "errors": "Contact number is required",
+                            "invalidError": "Contact number is invalid"
+                        }
+                    },
+                    "loyaltyProgram": {
+                        "loyaltyProgram" : "Loyalty program",
+                        "remove": "Remove",
+                        "addNewGuest": "Add program for other guest",
+                        "guestNameError": "Please enter guest details first",
+                        "label": {
+                            "guestName": "Guest name",
+                            "programName": "Program name",
+                            "programNumber": "Program number"
+                        }
+                    },
+                    "newGuest": "Add New",
+                    "chooseGuest": "Choose guest"
+                }'
+                product=' [{
         "id": "123123",
         "name": "El Cortez Hotel &; Casino",
         "type" : "hotel",
@@ -230,14 +245,14 @@
              **/
 
             test('Increased Index', function() {
-                var element = fixture('BasicTestFixture');
+                var element = fixture('ChangedPropertyTestFixture');
                 var elementShadowRoot = element.shadowRoot;
                 var elementHeader = element._increaseIndex(1);
                 assert.equal(elementHeader, 2);
             });
 
             test('isValidGuest', function() {
-                var element = fixture('BasicTestFixture');
+                var element = fixture('ChangedPropertyTestFixture');
                 var elementShadowRoot = element.shadowRoot;
                 var elementHeader = element.isValidGuest();
                 assert.equal(elementHeader, undefined);
@@ -324,36 +339,26 @@
                 assert.equal(result, false);
             });
 
-            test('_hideDashForMobileView - if', function() {
+            test('_hideDashForMobileViewMethod - if', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
                 var traveler = element.shadowRoot.querySelector("#travelerInfo11");
                 traveler.smallMobileView = true;
-                traveler._hideDashForMobileView();
-                assert.equal(traveler.hideDashForMobileView, true);
+                traveler._hideDashForMobileViewMethod();
+                assert.equal(traveler._hideDashForMobileView, true);
             });
 
-            // test('_hideDashForMobileView - else', function () {
+            // test('_hideDashForMobileViewMethod - else', function () {
             //   var element = fixture('ChangedPropertyTestFixture');
             //   element.shadowRoot.querySelector("#productTemplate").render();
             //   element.shadowRoot.querySelector("#travelerTemplate").render();
             //   var traveler = element.shadowRoot.querySelector("#travelerInfo11");
             //   traveler.smallMobileView = false;
             //   traveler.tabletView = false;
-            //   traveler._hideDashForMobileView();
-            //   assert.equal(traveler.hideDashForMobileView, false);
+            //   traveler._hideDashForMobileViewMethod();
+            //   assert.equal(traveler._hideDashForMobileView, false);
             // });
-
-            test('_closeIconIfAdultIsOnlyOne', function() {
-                var element = fixture('ChangedPropertyTestFixture');
-                element.shadowRoot.querySelector("#productTemplate").render();
-                element.shadowRoot.querySelector("#travelerTemplate").render();
-                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
-                traveler.adultPaxCount = 1;
-                traveler._closeIconIfAdultIsOnlyOne();
-                assert.equal(traveler.showCloseButton, true);
-            });
 
             test('_closePaxAdultInfo', function() {
                 var element = fixture('ChangedPropertyTestFixture');
@@ -368,7 +373,7 @@
                 }
                 var adultPax = traveler.shadowRoot.querySelector("#adultPaxInfo11");
                 traveler._closePaxAdultInfo(e);
-                assert.equal(adultPax.showChooseGuest, false);
+                assert.equal(adultPax._showChooseGuest, false);
             });
 
             test('_closePaxChildInfo', function() {
@@ -384,7 +389,7 @@
                 }
                 var childPax = traveler.shadowRoot.querySelector("#childPaxInfo11");
                 traveler._closePaxChildInfo(e);
-                assert.equal(childPax.showChooseGuest, false);
+                assert.equal(childPax._showChooseGuest, false);
             });
 
             test('_getAdultPaxList', function() {
@@ -407,7 +412,7 @@
                         "number": "1"
                     }
                 }]
-                assert.equal(JSON.stringify(traveler.paxListAdult), JSON.stringify(adultPax));
+                assert.equal(JSON.stringify(traveler._paxListAdult), JSON.stringify(adultPax));
             });
             test('_getChildPaxList', function() {
                 var element = fixture('ChangedPropertyTestFixture');
@@ -429,7 +434,7 @@
                         "number": "2"
                     }
                 }]
-                assert.equal(JSON.stringify(traveler.paxListChild), JSON.stringify(adultPax));
+                assert.equal(JSON.stringify(traveler._paxListChild), JSON.stringify(adultPax));
             });
 
             /**
@@ -471,7 +476,7 @@
                 assert.equal(result, true);
             });
 
-            test('_showPaxInfoFields type=Adult', function() {
+            test('_showPaxInfoFieldsMethod type=Adult', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -483,10 +488,10 @@
                         "index": 0
                     }
                 }
-                adultPaxInfo._showPaxInfoFields(e);
-                assert.equal(adultPaxInfo.showChooseGuest, true);
+                adultPaxInfo._showPaxInfoFieldsMethod(e);
+                assert.equal(adultPaxInfo._showChooseGuest, true);
             });
-            test('_showPaxInfoFields type=Child', function() {
+            test('_showPaxInfoFieldsMethod type=Child', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -498,8 +503,8 @@
                         "index": 0
                     }
                 }
-                childPaxInfo._showPaxInfoFields(e);
-                assert.equal(childPaxInfo.showChooseGuest, true);
+                childPaxInfo._showPaxInfoFieldsMethod(e);
+                assert.equal(childPaxInfo._showChooseGuest, true);
             });
 
             test('_addNewGuest type=Adult', function() {
@@ -510,7 +515,7 @@
                 traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
                 var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
                 adultPaxInfo._addNewGuest();
-                assert.equal(adultPaxInfo.showChooseGuest, true);
+                assert.equal(adultPaxInfo._showChooseGuest, true);
             });
             test('_addNewGuest type=Child', function() {
                 var element = fixture('ChangedPropertyTestFixture');
@@ -520,7 +525,7 @@
                 traveler.shadowRoot.querySelector("#childPaxTemplate").render();
                 var childPaxInfo = traveler.shadowRoot.querySelector("#childPaxInfo11");
                 childPaxInfo._addNewGuest();
-                assert.equal(childPaxInfo.showChooseGuest, true);
+                assert.equal(childPaxInfo._showChooseGuest, true);
             });
             test('_showAllowFieldsForLeadPax type=Adult', function() {
                 var element = fixture('ChangedPropertyTestFixture');
@@ -530,7 +535,7 @@
                 traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
                 var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
                 adultPaxInfo._showAllowFieldsForLeadPax();
-                assert.equal(adultPaxInfo.showTitle, false);
+                assert.equal(adultPaxInfo._showTitle, false);
             });
             test('_showAllowFieldsForLeadPax type=Child', function() {
                 var element = fixture('ChangedPropertyTestFixture');
@@ -540,7 +545,7 @@
                 traveler.shadowRoot.querySelector("#childPaxTemplate").render();
                 var childPaxInfo = traveler.shadowRoot.querySelector("#childPaxInfo11");
                 childPaxInfo._showAllowFieldsForLeadPax();
-                assert.equal(childPaxInfo.showTitle, false);
+                assert.equal(childPaxInfo._showTitle, false);
             });
             test('_showAllowFields', function() {
                 var element = fixture('ChangedPropertyTestFixture');
@@ -550,9 +555,9 @@
                 traveler.shadowRoot.querySelector("#childPaxTemplate").render();
                 var childPaxInfo = traveler.shadowRoot.querySelector("#childPaxInfo11");
                 childPaxInfo._showAllowFieldsForLeadPax();
-                assert.equal(childPaxInfo.showTitle, false);
+                assert.equal(childPaxInfo._showTitle, false);
             });
-            test('_defaultOptionValue- if ', function() {
+            test('_setDefaultOptionValue- if ', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -560,19 +565,19 @@
                 traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
                 var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
                 adultPaxInfo.option = undefined;
-                adultPaxInfo._defaultOptionValue();
+                adultPaxInfo._setDefaultOptionValue();
                 assert.equal(adultPaxInfo.allowEmailForLeadPax, true);
             });
-            test('_defaultOptionValue- else ', function() {
-                var element = fixture('ChangedPropertyTestFixture');
-                element.shadowRoot.querySelector("#productTemplate").render();
-                element.shadowRoot.querySelector("#travelerTemplate").render();
-                var traveler = element.shadowRoot.querySelector("#travelerInfo11");
-                traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
-                var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
-                adultPaxInfo._defaultOptionValue();
-                assert.equal(adultPaxInfo.allowEmailForLeadPax, true);
-            });
+            // test('_setDefaultOptionValue- else ', function() {
+            //     var element = fixture('ChangedPropertyTestFixture');
+            //     element.shadowRoot.querySelector("#productTemplate").render();
+            //     element.shadowRoot.querySelector("#travelerTemplate").render();
+            //     var traveler = element.shadowRoot.querySelector("#travelerInfo11");
+            //     traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
+            //     var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
+            //     adultPaxInfo._setDefaultOptionValue();
+            //     assert.equal(adultPaxInfo.allowEmailForLeadPax, true);
+            // });
 
             // test('_defaultResourcesValue- if ', function () {
             //   var element = fixture('ChangedPropertyTestFixture');
@@ -801,8 +806,9 @@
             test('_lessThanEqualToOne ', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
-                var loyalty = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
-                loyalty.shadowRoot.querySelector("#loyaltyTemp").render();
+                var loyaltyPg = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
+                loyaltyPg.shadowRoot.querySelector("#loyaltyTemp").render();
+                loyalty = loyaltyPg.shadowRoot.querySelector("#tLoyaltyProgramDataID");
                 res = loyalty._lessThanEqualToOne(1, 1);
                 assert.equal(res, true);
             });
