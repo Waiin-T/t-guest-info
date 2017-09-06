@@ -19,29 +19,6 @@
       }
 
       @media (min-width: 320px) and (max-width:380px) {
-       .guestName {
-        width: 45%;
-        margin-left: -5px;
-      }
-
-      .programName {
-        width: 45%;
-        margin-left: 11px;
-      }
-
-      .programNumber {
-        width: 45%;
-        margin-left: -5px;
-      }
-
-      #buttonRemove {
-        margin-left: 10px;
-        margin-top: 20px;
-        width: 60px;
-        color: var(--color-for-button-labels);
-        font-weight: 450;
-        text-transform: capitalize;
-      }
        #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
         margin-left: -13px;
@@ -53,30 +30,6 @@
       }
       
       @media (min-width: 380px) and (max-width:767px) {
-      .guestName {
-        width: 45%;
-        margin-left: -5px;
-      }
-
-      .programName {
-        width: 45%;
-        margin-left: 11px;
-      }
-
-      .programNumber {
-        width: 45%;
-        margin-left: -5px;
-      }
-
-       #buttonRemove {
-        margin-left: 15px;
-        margin-top: 6%;
-        width: 60px;
-        color: var(--color-for-button-labels);
-        font-weight: 450;
-        text-transform: capitalize;
-      }
-
       #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
         margin-left: -8px;
@@ -88,27 +41,6 @@
       }
 
       @media (min-width: 768px) and (max-width:1023px) {
-      .guestName {
-        width: 22%;
-      }
-
-      .programName {
-        width: 22%;
-        margin-left: 10px;
-      }
-
-      .programNumber {
-        width: 22%;
-        margin-left: 10px;
-      }
-      #buttonRemove {
-        margin-top: 5%;
-        margin-left: 20px;
-        width: 60px;
-        color: var(--color-for-button-labels);
-        font-weight: 450;
-        text-transform: capitalize;
-      }
       #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
         float: left;
@@ -120,20 +52,6 @@
       }
 
       @media (min-width: 1024px){
-      .guestName {
-        width: 21%;
-        margin-left: 10px;
-      }
-
-      .programName {
-        width: 21%;
-        margin-left: 25px;
-      }
-
-      .programNumber {
-        width: 21%;
-        margin-left: 25px;
-      }
        #addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
         margin-left: 40px;
@@ -143,28 +61,6 @@
         text-transform: capitalize;
         clear: both;
       }
-       #buttonRemove {
-        margin-top: 4%;
-        margin-left: 65px;
-        width: 60px;
-        color: var(--color-for-button-labels);
-        font-weight: 450;
-        text-transform: capitalize;
-      }
-      }
-      .guestName,
-      .programName,
-      .programNumber,
-      #buttonRemove {
-        float: left;
-      }
-
-      #guestNameError {
-      font-size: var(--paper-font-caption_-_font-size);
-                /* margin-top: -6px;
-                margin-left: 1px;
-                position: absolute; */
-                color: var(--paper-deep-orange-a700);
       }
       .item {
         clear: both;
@@ -182,7 +78,7 @@
         <template is="dom-repeat" items="{{_loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
         <div style="clear:both" id="div{{loyaltyProgramNumber}}" class="div">
             <t-loyalty-program-data id="tLoyaltyProgramDataID" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}" 
-            t-loyalty-program="{{tLoyaltyProgram}}" pax-list="{{paxlist}}" loyalty-program-number="{{loyaltyProgramNumber}}"></t-loyalty-program-data>
+            t-loyalty-program="{{tLoyaltyProgram}}" pax-list="{{paxList}}" loyalty-program-number="{{loyaltyProgramNumber}}"></t-loyalty-program-data>
         </div>
         </template>
 
@@ -326,31 +222,10 @@
                 });
             }
 
-
             /**
-             * To show validation on click of program number.
+             * To update the paxlist according to rooms.
+             * If paxList is not given.
              * */
-            _showValidation(e) {
-                    var id = e.currentTarget.id;
-                    id = id.replace("programNumber", "");
-                    var guestName = this.shadowRoot.querySelector("#guestName" + id);
-                    var programName = this.shadowRoot.querySelector("#programName" + id);
-                    var programName = this.shadowRoot.querySelector("#programNameInput" + id);
-                    if (guestName.value === undefined || guestName.value === "") {
-                        guestName.invalid = true;
-                    } else {
-                        guestName.invalid = false;
-                    }
-                    if (programName.value === undefined || programName.value === "") {
-                        programName.invalid = true;
-                    } else {
-                        programName.invalid = false;
-                    }
-                }
-                /**
-                 * To update the paxlist according to rooms.
-                 * If paxList is not given.
-                 * */
 
             _showReadMoreDots() {
                 var len = this.shadowRoot.querySelector("#guestNameDiv").offsetWidth;

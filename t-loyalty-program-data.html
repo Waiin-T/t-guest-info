@@ -43,14 +43,6 @@
         font-weight: 450;
         text-transform: capitalize;
       }
-       #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: -13px;
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-        text-transform: capitalize;
-      }
       }
       
       @media (min-width: 380px) and (max-width:767px) {
@@ -77,15 +69,6 @@
         font-weight: 450;
         text-transform: capitalize;
       }
-
-      #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: -8px;
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-        text-transform: capitalize;
-      }
       }
 
       @media (min-width: 768px) and (max-width:1023px) {
@@ -110,14 +93,6 @@
         font-weight: 450;
         text-transform: capitalize;
       }
-      #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        float: left;
-        margin-top: 0%;
-        padding-bottom: 30px;
-        text-transform: capitalize;
-        margin-left: 14px;
-      }
       }
 
       @media (min-width: 1024px){
@@ -134,14 +109,6 @@
       .programNumber {
         width: 21%;
         margin-left: 25px;
-      }
-       #addProgramForOtherGuestButton {
-        color: var(--color-for-button-labels);
-        margin-left: 40px;
-        float: left;
-        margin-top: 3%;
-        padding-bottom: 30px;
-        text-transform: capitalize;
       }
        #buttonRemove {
         margin-top: 2%;
@@ -172,7 +139,7 @@
     </style>
 
 <div class="guestName" id="guestNameDiv">
-    <paper-dropdown-menu label="{{_guestName}}" id="guestName{{loyaltyProgramNumber}}" on-blur="_isValid" on-tap="_updatePaxList" required auto-validate>
+    <paper-dropdown-menu label="{{_guestName}}" id="guestName{{loyaltyProgramNumber}}" on-blur="_isValid" on-tap="_updatePaxList" required auto-validate invalid="{{_guestNameInvalid}}">
         <paper-listbox slot="dropdown-content" selected="{{_guestNameValue}}">
             <template is="dom-repeat" items={{_tempPaxArray}}>
                 <paper-item id="{{loyaltyProgramNumber}}" on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
@@ -183,19 +150,21 @@
     <div id="guestNameError" hidden$="{{_showGuestNameError}}">{{_guestNameError}}</div>
     </div>
     <div hidden$="{{_showProgramNameInput}}">
-        <paper-input label="{{_programName}}" id="programNameInput{{loyaltyProgramNumber}}" value="{{_programNameValue}}" on-blur="_isValid" class="programName" required></paper-input>
+        <paper-input label="{{_programName}}" id="programNameInput{{loyaltyProgramNumber}}" value="{{_programNameValue}}" invalid="{{_programNameInvalid}}" on-blur="_isValid" class="programName" required></paper-input>
     </div>
     <div hidden$="{{_showProgramNameDropdown}}">
-        <paper-dropdown-menu label="{{_programName}}" id="programName{{loyaltyProgramNumber}}" value="{{_programNameValue}}" on-blur="_isValid" class="programName" required auto-validate>
-            <paper-listbox slot="dropdown-content">
+        <paper-dropdown-menu label="{{_programName}}" id="programName{{loyaltyProgramNumber}}" invalid="{{_programNameInvalid}}" on-blur="_isValid" class="programName" required auto-validate>
+            <paper-listbox slot="dropdown-content" selected="{{_programNameValue}}">
                 <template is="dom-repeat" items={{paxList}}>
           <paper-item>{{item.membership.programName}}</paper-item>
         </template>
             </paper-listbox>
         </paper-dropdown-menu>
+        <input is="iron-input" type="hidden" bind-value="[[_programNameValue]]">
+
     </div>
     <div>
-        <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" value="{{_programNumberValue}}" class="programNumber" on-blur="_isValid" on-click="_showValidation" required auto-validate></paper-input>
+        <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" value="{{_programNumberValue}}" invalid="{{_programNumberInvalid}}" class="programNumber" on-blur="_isValid" on-click="_showValidation" required auto-validate></paper-input>
     </div>
     <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
         <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">{{_remove}}</paper-button>
@@ -319,7 +288,27 @@
                         type: Boolean,
                         value: true
                     },
-
+                    /**
+                     * @private
+                     * */
+                    _guestNameInvalid: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
+                     * */
+                    _programNameInvalid: {
+                        type: Boolean,
+                        value: false
+                    },
+                    /**
+                     * @private
+                     * */
+                    _programNumberInvalid: {
+                        type: Boolean,
+                        value: false
+                    },
                     _remove: String,
                     _guestNameError: String,
                     _guestName: String,
@@ -382,18 +371,17 @@
                 if (this.paxListAvailable != false) {
                     var paxIndex = e.model.index;
                     var paxListArray = this.paxList;
-                    var guestName = this.shadowRoot.querySelector("#guestName" + e.currentTarget.id);
-                    var programName = this.shadowRoot.querySelector("#programName" + e.currentTarget.id);
                     var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
-                    programName.contentElement.selected = programNameIndex;
+                    this._programNameValue = programNameIndex;
                     var programNumber = this.shadowRoot.querySelector("#programNumber" + e.currentTarget.id);
-                    programNumber.value = paxListArray[paxIndex].membership.number;
-                    guestName.invalid = false;
-                    programName.invalid = false;
+                    this._programNumberValue = paxListArray[paxIndex].membership.number;
+                    this._guestNameInvalid = false;
+                    this._programNameInvalid = false;
+                    this._programNumberInvalid = false;
                 } else {
                     var paxListArray = this._updatePaxList();
                 }
-                var ind = e.currentTarget.parentElement.parentElement.id.replace("guestName", "");
+                var ind = this.loyaltyProgramNumber;
                 this.tLoyaltyProgram._loyaltyPrograms[ind].loyaltyProgram.guestName = paxListArray[e.model.index].firstName + ' ' + paxListArray[e.model.index].lastName;
 
             }
@@ -429,17 +417,11 @@
                 if (this._tempPaxArray.length === 0) {
 
                     this._showGuestNameError = false;
+                    this._guestNameInvalid = true;
                     var len = this.tLoyaltyProgram._loyaltyPrograms.length;
-                    for (var i = 0; i < len; i++) {
-                        if (this._smallMobileView === true || this._mobileView === true) {
-                            this.shadowRoot.querySelector("#programNumber" + i).style.clear = "both";
-                        }
-                    }
-                    if (this._largeDesktopView === true || this._desktopView === true || this._tabletView === true) {
-                        this.shadowRoot.querySelector("#addProgramForOtherGuestButton").style.clear = "both";
-                    }
                 } else {
                     this._showGuestNameError = true;
+                    this._guestNameInvalid = false;
                 }
                 return this._tempPaxArray;
             }
