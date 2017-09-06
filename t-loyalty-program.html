@@ -212,6 +212,7 @@
             }
             static get properties() {
                 return {
+                    loyaltyProgramNumber: Number,
                     tLoyaltyProgram: Object,
                     guestInfo: Object,
                     /**
@@ -292,16 +293,15 @@
                     _programNameValue: {
                         type: String
                     },
+
+                    _addNewGuest: String,
                     /**
-                     * @private
-                     * This property is used for Loyalty program count.
-                     * */
-                    _loyaltyProgramsCount: {
+                     *@private
+                     **/
+                    _deleteCount: {
                         type: Number,
                         value: 0
                     },
-
-                    _addNewGuest: String,
 
                 };
             }
@@ -324,7 +324,6 @@
                 this.push('_loyaltyPrograms', {
                     loyaltyProgram
                 });
-                this._loyaltyProgramsCount = +this._loyaltyProgramsCount + +1;
             }
 
 
@@ -363,6 +362,26 @@
             }
             _setDefaultRsourcesValue() {
                 this._addNewGuest = this.resources.loyaltyProgram.addNewGuest ? this.resources.loyaltyProgram.addNewGuest : "Add program for other guest";
+            }
+            _isValidLoyalty(index, e, guestNameValue, programNameValue, programNumberValue) {
+                var count = this._deleteCount + this._loyaltyPrograms.length;
+                for (var i = 0; i < count; i++) {
+                    var parent = this.shadowRoot.querySelector("#div" + i);
+                    var tLoyalty = parent.querySelector("#tLoyaltyProgramDataID");
+                    tLoyalty._tempPaxArray[guestNameValue];
+                    if (parent != null || parent != undefined) {
+                        var loyaltyGuest = tLoyalty._guestNameValue;
+                        var loyaltyProgramName = tLoyalty._programNameValue;
+                        var loyaltyProgramNumber = tLoyalty._programNumberValue;
+                        if (loyaltyGuest != undefined) {
+                            if (guestNameValue === loyaltyGuest && programNameValue === loyaltyProgramName &&
+                                programNumberValue === loyaltyProgramNumber && index != i) {
+                                e.currentTarget.invalid = true;
+                                e.currentTarget.errorMessage = "duplicate record";
+                            }
+                        }
+                    }
+                }
             }
 
 
