@@ -430,8 +430,8 @@
 
 
                 <div hidden$="{{_showChooseGuest}}" id="chooseGuestPaxInfoDiv">
-                    <paper-dropdown-menu label="{{_chooseGuestLabel}}" id="chooseGuest" required on-tap="_loadPaxList">
-                        <paper-listbox slot="dropdown-content">
+                    <paper-dropdown-menu label="{{_chooseGuestLabel}}" id="chooseGuest" required on-tap="_loadPaxList" invalid="{{_chooseGuestInvalid}}" >
+                        <paper-listbox slot="dropdown-content" selected="{{chooseGuestValue}}">
                             <template is="dom-repeat" items="{{_tempPaxArray}}" id="paxListDomTemp">
                                 <paper-item on-tap="_showPaxInfoFieldsMethod">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
                             </template>
@@ -439,13 +439,14 @@
     <paper-item on-tap="_addNewGuest">{{_newGuest}}</paper-item>
     </paper-listbox>
     </paper-dropdown-menu>
+    <input is="iron-input" type="hidden" bind-value="[[chooseGuestValue]]">
     <div id="chooseGuestError" hidden$="{{_showChooseGuestError}}">choose guest is required </div>
     <div id="chooseGuestError" hidden$="{{_showChooseGuestDuplicateError}}">Duplicate guest name</div>
 
     </div>
     <div id="paxInfoDiv{{index}}" hidden="{{_showPaxInfoFields}}">
         <div hidden$="{{_showTitle}}">
-            <paper-dropdown-menu label="{{_titleLabel}}" id="adultPaxTitle" on-blur="_updateValidation" required errorMessage="{{_titleError}}">
+            <paper-dropdown-menu label="{{_titleLabel}}" id="adultPaxTitle" on-blur="_updateValidation" required errorMessage="{{_titleError}}" invalid="{{_titleInvalid}}">
                 <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
                     <template is="dom-repeat" items={{_titleValues}}>
                                     <paper-item on-tap="_resizeWindow">{{item.key}}</paper-item>
@@ -456,22 +457,22 @@
         </div>
 
         <div id="adultFirstNamediv">
-            <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}"></paper-input>
+            <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}" value="{{firstNameValue}}" invalid="{{_firstNameInvalid}}"></paper-input>
             <div id="adultFirstNameError" hidden$="{{_showFirstNameError}}">{{_firstNameError}}</div>
             <div id="adultFirstNameError" hidden$="{{_ShowDuplicateGuest}}">Duplicate guest name</div>
         </div>
         <div id="adultLastNamediv">
-            <paper-input label="{{_lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_lastNameError}}"></paper-input>
+            <paper-input label="{{_lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_lastNameError}}" value="{{lastNameValue}}" invalid="{{_lastNameInvalid}}"></paper-input>
             <div id="adultLastNameError" hidden$="{{_showLastNameError}}">{{_lastNameError}}</div>
         </div>
 
         <div id="adultEmailAndLabel">
-            <paper-input label="{{_emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{_showEmailAddress}}" required errorMessage="{{_emailError}}"></paper-input>
+            <paper-input label="{{_emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{_showEmailAddress}}" required errorMessage="{{_emailError}}" value="{{emailValue}}" invalid="{{_emailInvalid}}"></paper-input>
             <div id="adultEmailLabel" hidden$="{{_showEmailAddressInfo}}">{{_emailInfo}}</div>
             <div id="adultEmailError" hidden$="{{_showEmailError}}">{{_emailError}}</div>
         </div>
         <div hidden$="{{_showContactNumber}}">
-            <paper-dropdown-menu label="{{_countryCodeTitle}}" id="adultCountryCode" on-blur="_updateValidation" required errorMessage="{{_countryCodeError}}">
+            <paper-dropdown-menu label="{{_countryCodeTitle}}" id="adultCountryCode" on-blur="_updateValidation" required errorMessage="{{_countryCodeError}}" invalid="{{_countryCodeInvalid}}">
                 <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
                     <template is="dom-repeat" items={{_countryCodeValues}}>
                                     <paper-item value="{{item.value}}" on-tap="_resizeWindow">{{item.key}}</paper-item>
@@ -481,7 +482,7 @@
             <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
         </div>
         <div id="adultContactNumberDiv">
-            <paper-input label="{{_contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{_showContactNumber}}" required errorMessage="{{contactNumberError}}"></paper-input>
+            <paper-input label="{{_contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{_showContactNumber}}" required errorMessage="{{contactNumberError}}" value="{{contactNumberValue}}" invalid="{{_contactNumberInvalid}}"></paper-input>
             <div id="adultContactNumberError" hidden$="{{_showContactNumberError}}">{{_contactNumberError}}</div>
             <div id="adultContactNumberError" hidden$="{{_showContactNumberInvalidError}}">{{_contactNumberInvalidError}}</div>
         </div>
@@ -528,6 +529,10 @@
                         type: String,
                         value: '0'
                     },
+                    firstNameValue: String,
+                    lastNameValue: String,
+                    emailValue: String,
+                    contactNumberValue: String,
                     /**
                      *Flag to set wheather paxlist is available or not.
                      **/
@@ -542,6 +547,14 @@
                         type: Array,
                         value: []
                     },
+                    _chooseGuestInvalid: String,
+                    _titleInvalid: String,
+                    _firstNameInvalid: String,
+                    _lastNameInvalid: String,
+                    _emailInvalid: String,
+                    _countryCodeInvalid: String,
+                    _contactNumberInvalid: String,
+
                     /**
                      *@private
                      *To set iron media queries.
@@ -1539,7 +1552,7 @@
                  *To hide show email info while showing error message.
                  **/
             _showEmailInfo() {
-                    this.shadowRoot.querySelector("#adultEmailLabel").hidden = false;
+                    this._showEmailAddressInfo = false;
                     this.shadowRoot.querySelector("#adultEmail").invalid = false;
                     this._showEmailError = true;
                 }
@@ -1556,9 +1569,7 @@
                                 emailElement.invalid = true;
                                 this._showEmailError = false;
                                 if (emailElement.invalid === true) {
-                                    var PaxInfoEmailLabel = this.shadowRoot.querySelector(
-                                        "#adultEmailLabel");
-                                    PaxInfoEmailLabel.hidden = true;
+                                    this._showEmailAddressInfo = true;
                                     this._showEmailAddressInfo = true;
                                 }
                             } else {

@@ -78,7 +78,8 @@
         <template is="dom-repeat" items="{{_loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
         <div style="clear:both" id="div{{loyaltyProgramNumber}}" class="div">
             <t-loyalty-program-data id="tLoyaltyProgramDataID" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}" 
-            t-loyalty-program="{{tLoyaltyProgram}}" pax-list="{{paxList}}" loyalty-program-number="{{loyaltyProgramNumber}}"></t-loyalty-program-data>
+            t-loyalty-program="{{tLoyaltyProgram}}" pax-list="{{paxList}}" loyalty-program-number="{{loyaltyProgramNumber}}"
+            guest-name-value="{{guestNameValue}}" program-name-value="{{programNameValue}}" program-number-value="{{programNumberValue}}"></t-loyalty-program-data>
         </div>
         </template>
 
@@ -108,6 +109,15 @@
             }
             static get properties() {
                 return {
+                    /**
+                     **/
+                    guestNameValue: String,
+                    /**
+                     **/
+                    programNameValue: String,
+                    /**
+                     **/
+                    programNumberValue: String,
                     loyaltyProgramNumber: Number,
                     tLoyaltyProgram: Object,
                     guestInfo: Object,
@@ -245,9 +255,9 @@
                     var tLoyalty = parent.querySelector("#tLoyaltyProgramDataID");
                     tLoyalty._tempPaxArray[guestNameValue];
                     if (parent != null || parent != undefined) {
-                        var loyaltyGuest = tLoyalty._guestNameValue;
-                        var loyaltyProgramName = tLoyalty._programNameValue;
-                        var loyaltyProgramNumber = tLoyalty._programNumberValue;
+                        var loyaltyGuest = tLoyalty.guestNameValue;
+                        var loyaltyProgramName = tLoyalty.programNameValue;
+                        var loyaltyProgramNumber = tLoyalty.programNumberValue;
                         if (loyaltyGuest != undefined) {
                             if (guestNameValue === loyaltyGuest && programNameValue === loyaltyProgramName &&
                                 programNumberValue === loyaltyProgramNumber && index != i) {

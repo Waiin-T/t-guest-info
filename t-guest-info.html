@@ -250,7 +250,7 @@
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} {{_adultLabel(room.criteria.traveler.adult)}}, {{room.criteria.traveler.child}} {{_childLabel(room.criteria.traveler.child)}}" policy-List="{{room.policies}}"
             room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]"
             child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}" only-lead-pax-info="{{room.onlyLeadPaxInfo}}"
-            pax-list-available="{{paxlistAvailable}}">
+            pax-list-available="{{paxListAvailable}}">
           </t-traveler-info>
           <br>
         </template>
@@ -263,7 +263,7 @@
     <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
         <app-toolbar id="toolbarLotalty">{{_loyaltyProgram}}</app-toolbar>
         <div id="tLoyaltyProgram">
-            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" resources="{{resources}}" pax-list-available="{{paxlistAvailable}}" guest-info="{{guestInfo}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
+            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
         </div>
     </div>
     <hr id="lineBreakBetweenProduct">
@@ -312,7 +312,7 @@
                         /**
                          *Set the flag wheather paxList is available or not.
                          **/
-                        paxlistAvailable: {
+                        paxListAvailable: {
                             type: Boolean,
                             value: true
                         },
@@ -438,7 +438,7 @@
                     super.ready();
                     this._setDefaultResourcesvalue();
                     if (this.paxlist.length === 0) {
-                        this.paxlistAvailable = false;
+                        this.paxListAvailable = false;
                         this.paxList = [];
                     }
                     this.guestInfo = this;
@@ -537,18 +537,18 @@
                 var loyaltyProgramEle = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (index + 1))
                 var count = loyaltyProgramEle._deleteCount + loyaltyProgramEle._loyaltyPrograms.length;
                 for (var i = 0; i < count; i++) {
-                    if (loyaltyProgramEle.shadowRoot.querySelector("#div" + i) != null || loyaltyProgramEle.shadowRoot.querySelector("#div" + i) != undefined) {
-                        var tLoyalty = loyaltyProgramEle.shadowRoot.querySelector("#div" + i).querySelector("#tLoyaltyProgramDataID");
+                    var loyaltyDiv = loyaltyProgramEle.shadowRoot.querySelector("#div" + i);
+                    if (loyaltyDiv != null || loyaltyDiv != undefined) {
+                        var tLoyalty = loyaltyDiv.querySelector("#tLoyaltyProgramDataID");
                         var loyaltyProgram = {};
                         if (tLoyalty.shadowRoot.querySelector("#guestName" + i) != null) {
-                            loyaltyProgram.GuestName = tLoyalty.shadowRoot.querySelector("#guestName" + i).value;
-
-                            if (this.paxlistAvailable === false) {
-                                loyaltyProgram.ProgramName = tLoyalty.shadowRoot.querySelector("#programNameInput" + i).value;
+                            loyaltyProgram.GuestName = tLoyalty.guestNameValue;
+                            if (this.paxListAvailable === false) {
+                                loyaltyProgram.ProgramName = tLoyalty.programNameValue;
                             } else {
-                                loyaltyProgram.ProgramName = tLoyalty.shadowRoot.querySelector("#programName" + i).value;
+                                loyaltyProgram.ProgramName = tLoyalty.programNameValue;
                             }
-                            loyaltyProgram.ProgramNumber = tLoyalty.shadowRoot.querySelector("#programNumber" + i).value;
+                            loyaltyProgram.ProgramNumber = tLoyalty.programNumberValue;
                         }
                         loyaltyProgramArrayData[i] = loyaltyProgram;
                     }
