@@ -27,6 +27,14 @@
         padding-bottom: 30px;
         text-transform: capitalize;
       }
+      #buttonRemove {
+        margin-left: 10px;
+        margin-top: 20px;
+        width: 60px;
+        color: var(--color-for-button-labels);
+        font-weight: 450;
+        text-transform: capitalize;
+      }
       }
       
       @media (min-width: 380px) and (max-width:767px) {
@@ -36,6 +44,14 @@
         float: left;
         margin-top: 3%;
         padding-bottom: 30px;
+        text-transform: capitalize;
+      }
+      #buttonRemove {
+        margin-left: 15px;
+        margin-top: 6%;
+        width: 60px;
+        color: var(--color-for-button-labels);
+        font-weight: 450;
         text-transform: capitalize;
       }
       }
@@ -49,6 +65,14 @@
         text-transform: capitalize;
         margin-left: 14px;
       }
+      #buttonRemove {
+        margin-top: 5%;
+        margin-left: 20px;
+        width: 60px;
+        color: var(--color-for-button-labels);
+        font-weight: 450;
+        text-transform: capitalize;
+      }
       }
 
       @media (min-width: 1024px){
@@ -60,6 +84,14 @@
         padding-bottom: 30px;
         text-transform: capitalize;
         clear: both;
+      }
+      #buttonRemove {
+        margin-top: 2%;
+        margin-left: 65px;
+        width: 60px;
+        color: var(--color-for-button-labels);
+        font-weight: 450;
+        text-transform: capitalize;
       }
       }
       .item {
@@ -75,11 +107,14 @@
     <!-- <div class="item" smallMobileView$="{{_smallMobileView}}" desktopView$="{{_desktopView}}" tabletView$="{{_tabletView}}" mobileView$="{{_mobileView}}"> -->
         <div id="contentDiv">
             
-        <template is="dom-repeat" items="{{_loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
+        <template is="dom-repeat" items="{{loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
         <div style="clear:both" id="div{{loyaltyProgramNumber}}" class="div">
-            <t-loyalty-program-data id="tLoyaltyProgramDataID" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}" 
+            <t-loyalty-program-data id="tLoyaltyProgramDataID{{loyaltyProgramNumber}}" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}" 
             t-loyalty-program="{{tLoyaltyProgram}}" pax-list="{{paxList}}" loyalty-program-number="{{loyaltyProgramNumber}}"
             guest-name-value="{{guestNameValue}}" program-name-value="{{programNameValue}}" program-number-value="{{programNumberValue}}"></t-loyalty-program-data>
+        </div>
+        <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
+            <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">Remove</paper-button>
         </div>
         </template>
 
@@ -109,6 +144,14 @@
             }
             static get properties() {
                 return {
+                    /**
+                     *Array for Loyalty Program. 
+                     **/
+                    loyaltyPrograms: {
+                        type: Array,
+                        notify: true,
+                        value: []
+                    },
                     /**
                      **/
                     guestNameValue: String,
@@ -176,15 +219,7 @@
                         type: Boolean,
                         value: false
                     },
-                    /**
-                     * @private
-                     *Array for Loyalty Program. 
-                     **/
-                    _loyaltyPrograms: {
-                        type: Array,
-                        notify: true,
-                        value: []
-                    },
+
                     /**
                      * @private
                      * Selected value for guest name dropdown.
@@ -208,13 +243,21 @@
                         type: Number,
                         value: 0
                     },
+                    /**
+                     * @private
+                     * Property to hide remove button when loyalty program is only one.
+                     * */
+                    _isRemoveButtonHidden: {
+                        type: Boolean,
+                        computed: '_lessThanEqualToOne(loyaltyPrograms.length , 1)'
+                    },
 
                 };
             }
             ready() {
                 super.ready();
                 this._setDefaultRsourcesValue();
-                this._loyaltyPrograms = [];
+                this.loyaltyPrograms = [];
                 this._addProgramForOtherGuest();
                 this.tLoyaltyProgram = this;
             }
@@ -227,15 +270,23 @@
                 loyaltyProgram.guestName = "";
                 loyaltyProgram.programName = "";
                 loyaltyProgram.programNumber = "";
-                this.push('_loyaltyPrograms', {
+                this.push('loyaltyPrograms', {
                     loyaltyProgram
                 });
             }
+            _deleteLoyaltyProgram(e) {
+                    // var tempArray = this.loyaltyPrograms;
+                    // var temp = this.slice('loyaltyPrograms', e.model.itemsIndex, 1);
 
-            /**
-             * To update the paxlist according to rooms.
-             * If paxList is not given.
-             * */
+                    this.loyaltyPrograms.splice(e.model.itemsIndex, 1);
+                    var arr = this.loyaltyPrograms.slice(0);
+                    this.loyaltyPrograms = [];
+                    this.loyaltyPrograms = arr;
+                }
+                /**
+                 * To update the paxlist according to rooms.
+                 * If paxList is not given.
+                 * */
 
             _showReadMoreDots() {
                 var len = this.shadowRoot.querySelector("#guestNameDiv").offsetWidth;
@@ -246,14 +297,19 @@
                 }
             }
             _setDefaultRsourcesValue() {
-                this._addNewGuest = this.resources.loyaltyProgram.addNewGuest ? this.resources.loyaltyProgram.addNewGuest : "Add program for other guest";
+                    this._addNewGuest = this.resources.loyaltyProgram.addNewGuest ? this.resources.loyaltyProgram.addNewGuest : "Add program for other guest";
+                }
+                /**
+                 * To set hidden property of remove button.
+                 * */
+            _lessThanEqualToOne(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
+                return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
             }
             _isValidLoyalty(index, e, guestNameValue, programNameValue, programNumberValue) {
-                var count = this._deleteCount + this._loyaltyPrograms.length;
+                var count = this.loyaltyPrograms.length;
                 for (var i = 0; i < count; i++) {
                     var parent = this.shadowRoot.querySelector("#div" + i);
-                    var tLoyalty = parent.querySelector("#tLoyaltyProgramDataID");
-                    tLoyalty._tempPaxArray[guestNameValue];
+                    var tLoyalty = parent.querySelector("#tLoyaltyProgramDataID" + i);
                     if (parent != null || parent != undefined) {
                         var loyaltyGuest = tLoyalty.guestNameValue;
                         var loyaltyProgramName = tLoyalty.programNameValue;

@@ -440,8 +440,8 @@
     </paper-listbox>
     </paper-dropdown-menu>
     <input is="iron-input" type="hidden" bind-value="[[chooseGuestValue]]">
-    <div id="chooseGuestError" hidden$="{{_showChooseGuestError}}">choose guest is required </div>
-    <div id="chooseGuestError" hidden$="{{_showChooseGuestDuplicateError}}">Duplicate guest name</div>
+    <div id="chooseGuestError" hidden$="{{_showChooseGuestError}}">{{_chooseGuestError}} </div>
+    <div id="chooseGuestError" hidden$="{{_showChooseGuestDuplicateError}}">{{_duplicateError}}</div>
 
     </div>
     <div id="paxInfoDiv{{index}}" hidden="{{_showPaxInfoFields}}">
@@ -459,7 +459,7 @@
         <div id="adultFirstNamediv">
             <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}" value="{{firstNameValue}}" invalid="{{_firstNameInvalid}}"></paper-input>
             <div id="adultFirstNameError" hidden$="{{_showFirstNameError}}">{{_firstNameError}}</div>
-            <div id="adultFirstNameError" hidden$="{{_ShowDuplicateGuest}}">Duplicate guest name</div>
+            <div id="adultFirstNameError" hidden$="{{_ShowDuplicateGuest}}">{{_duplicateError}}</div>
         </div>
         <div id="adultLastNamediv">
             <paper-input label="{{_lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_lastNameError}}" value="{{lastNameValue}}" invalid="{{_lastNameInvalid}}"></paper-input>
@@ -920,6 +920,15 @@
                         type: Array,
                         value: []
                     },
+                    _duplicateError: {
+                        type: String,
+                        value: 'Duplicate guest name'
+                    },
+                    _chooseGuestError: {
+                        type: String,
+                        value: 'choose guest is required'
+                    },
+
                 }
             }
             ready() {
@@ -928,17 +937,31 @@
                     this._showChooseGuest = true;
                     this._showPaxInfoFields = false;
                 }
+                // if (this._showChooseGuest === false && this.type === 'Adult') {
+                //     this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
+                //         "closeIconAdult");
+                //     this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
+                //         "closeIconChooseGuest");
+                // }
+                // if (this._showChooseGuest === false && this.type === 'Child') {
+                //     this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
+                //         "closeIconChild");
+                //     this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
+                //         "closeIconChooseGuest");
+                // }
                 if (this._showChooseGuest === false && this.type === 'Adult') {
-                    this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
-                        "closeIconAdult");
-                    this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
-                        "closeIconChooseGuest");
+                    var arrind = this.travelerInfo._classesForAdult.indexOf("closeIconAdult");
+                    if (arrind != -1) {
+                        this.travelerInfo._classesForAdult.splice(arrind, 1);
+                    }
+                    this.travelerInfo._classesForAdult.push("closeIconChooseGuest");
                 }
                 if (this._showChooseGuest === false && this.type === 'Child') {
-                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
-                        "closeIconChild");
-                    this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
-                        "closeIconChooseGuest");
+                    var arrind = this.travelerInfo._classesForChild.indexOf("closeIconChild");
+                    if (arrind != -1) {
+                        this.travelerInfo._classesForChild.splice(arrind, 1);
+                    }
+                    this.travelerInfo._classesForChild.push("closeIconChooseGuest");
                 }
                 this._setDefaultOptionValue();
                 this._setDefaultResourcesValue();
@@ -962,54 +985,41 @@
                 });
             }
             isValidPaxInfo() {
-                    var chooseGuest = this.shadowRoot.querySelector("#chooseGuest");
-                    if (chooseGuest.contentElement.selected = -1) {
-                        this.shadowRoot.querySelector("#chooseGuest").invalid = true;
+                    if (this.chooseGuestValue = -1) {
+                        this._chooseGuestInvalid = true;
                         this._showChooseGuestError = false;
                         this._showChooseGuestDuplicateError = true;
                     }
-                    var adultFirstNameValidation = this.$.adultFirstName;
-                    var adultLastNameValiadtion = this.$.adultLastName;
-                    var adultTitleValidation = this.$.adultPaxTitle;
-                    var adultEmailValidation = this.$.adultEmail;
-                    var adultCountryCodeValidation = this.$.adultCountryCode;
-                    var adultContactNumberValidation = this.$.adultContactNo;
-                    if (adultTitleValidation.value === undefined) {
-                        adultTitleValidation.invalid = true;
-                        adultTitleValidation.errorMessage = this._titleError;
+                    if (this.titleValue === -1) {
+                        this._titleInvalid = true;
                     }
-                    if ((adultFirstNameValidation.value === undefined || adultFirstNameValidation.value === "") &&
+                    if ((this.firstNameValue === undefined || this.firstNameValue === "") &&
                         this._requiredField.includes("firstname") === true) {
-                        adultFirstNameValidation.invalid = true;
+                        this._firstNameInvalid = true;
                         this._showFirstNameError = false;
-                        // adultFirstNameValidation.errorMessage = this._firstNameError;
                     }
-                    if ((adultLastNameValiadtion.value === undefined || adultLastNameValiadtion.value === "") &&
+                    if ((this.lastNameValue === undefined || this.lastNameValue === "") &&
                         this._requiredField.includes("lastname") === true) {
-                        adultLastNameValiadtion.invalid = true;
+                        this._lastNameInvalid = true;
                         this._showLastNameError = false;
-                        // adultLastNameValiadtion.errorMessage = this._lastNameError;
                     }
-                    if ((adultEmailValidation.value === undefined || adultEmailValidation.value === "") && (this._requiredField.includes("email") === true ||
+                    if ((this.emailValue === undefined || this.emailValue === "") && (this._requiredField.includes("email") === true ||
                             (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
                         if (this.type != "Child") {
-                            adultEmailValidation.invalid = true;
-                            // adultEmailValidation.errorMessage = this._emailError;
+                            this._emailInvalid = true;
                             this._showEmailError = false;
                             if (this._showEmailAddress === true) {
                                 this._showEmailError = true;
                             }
                         }
                     }
-                    if (adultCountryCodeValidation.value === undefined) {
-                        adultCountryCodeValidation.invalid = true;
-                        adultCountryCodeValidation.errorMessage = this._countryCodeError;
+                    if (this.countryCodeValue === -1) {
+                        this._countryCodeInvalid = true;
                     }
-                    if ((adultContactNumberValidation.value === undefined || adultContactNumberValidation.value === "") && (this._requiredField.includes("contactNumber") === true ||
+                    if ((this.contactNumberValue === undefined || this.contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
                             (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
                         if (this.type != "Child") {
-                            adultContactNumberValidation.invalid = true;
-                            // adultContactNumberValidation.errorMessage = this._contactNumberError;
+                            this._contactNumberInvalid = true;
                             this._showContactNumberError = false;
                             if (this._showContactNumber === true) {
                                 this._showContactNumberError = true;
@@ -1017,13 +1027,13 @@
                         }
                     }
                     if (this.index === 1 && this.type === 'Adult') {
-                        if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid ||
-                            adultContactNumberValidation.invalid || adultEmailValidation.invalid ||
-                            adultCountryCodeValidation.invalid || adultTitleValidation.invalid) {
+                        if (this._firstNameInvalid || this._lastNameInvalid ||
+                            this._contactNumberInvalid || this._emailInvalid ||
+                            this._countryCodeInvalid || this._titleInvalid) {
                             return true;
                         }
                     } else {
-                        if (adultFirstNameValidation.invalid || adultLastNameValiadtion.invalid) {
+                        if (this._firstNameInvalid || this._lastNameInvalid) {
                             return true;
                         }
                     }
@@ -1046,48 +1056,48 @@
                                 adultData.title = titleData.selectedItem.innerText;
                             }
                             if (this._allowEmailForLeadPax === true) {
-                                adultData.email = emailData.value;
+                                adultData.email = this.emailValue;
                             }
                             if (this._allowContactNumberForLeadPax === true) {
                                 if (countryCodeData.selectedItem != null) {
                                     adultData.countrycode = countryCodeData.selectedItem.innerText;
                                 }
-                                adultData.contact = contactNumberData.value;
+                                adultData.contact = this.contactNumberValue;
                             }
                         } else {
                             if (this.allowTitle === true && titleData.selectedItem != null) {
                                 adultData.title = titleData.selectedItem.innerText;
                             }
                             if (this.allowEmail === true) {
-                                adultData.email = emailData.value;
+                                adultData.email = this.emailValue;
                             }
                             if (this.allowContactNumber === true) {
                                 if (countryCodeData.selectedItem != null) {
                                     adultData.countrycode = countryCodeData.selectedItem.innerText;
                                 }
-                                adultData.contact = contactNumberData.value;
+                                adultData.contact = this.contactNumberValue;
                             }
                         }
-                        adultData.firstName = firstNameData.value;
-                        adultData.lastName = lastNameData.value;
+                        adultData.firstName = this.firstNameValue;
+                        adultData.lastName = this.lastNameValue;
                         return adultData;
                     }
                     if (this.type === 'Child') {
                         var childData = {};
                         childData.type = "Child";
-                        childData.firstName = firstNameData.value;
-                        childData.lastName = lastNameData.value;
+                        childData.firstName = this.firstNameValue;
+                        childData.lastName = this.lastNameValue;
                         if (this.allowTitle === true && titleData.selectedItem != null) {
                             childData.title = titleData.selectedItem.innerText;
                         }
                         if (this.allowEmail === true) {
-                            childData.email = emailData.value;
+                            childData.email = this.emailValue;
                         }
                         if (this.allowContactNumber === true) {
                             if (countryCodeData.selectedItem != null) {
                                 childData.countrycode = countryCodeData.selectedItem.innerText;
                             }
-                            childData.contact = contactNumberData.value;
+                            childData.contact = this.contactNumberValue;
                         }
                         return childData;
                     }
@@ -1155,68 +1165,66 @@
                  **/
 
             _updateValidation(event) {
-                    if (event.currentTarget.id === "adultFirstName") {
-                        var firstName = this.shadowRoot.querySelector("#adultFirstName");
-                        if ((firstName.value === undefined || firstName.value === "") && this._requiredField.includes("firstname") === true) {
-                            firstName.invalid = true;
-                            this._showFirstNameError = false;
-                        } else {
-                            firstName.invalid = false;
-                            this._showFirstNameError = true;
-                            this._ShowDuplicateGuest = true;
-                        }
+                    // if (event.currentTarget.id === "adultFirstName") {
+                    if ((this.firstNameValue === undefined || this.firstNameValue === "") && this._requiredField.includes("firstname") === true) {
+                        this._firstNameInvalid = true;
+                        this._showFirstNameError = false;
+                    } else {
+                        this._firstNameInvalid = false;
+                        this._showFirstNameError = true;
+                        this._ShowDuplicateGuest = true;
                     }
-                    if (event.currentTarget.id === "adultLastName") {
-                        var lastName = this.shadowRoot.querySelector("#adultLastName");
-                        if ((lastName.value === undefined || lastName.value === "") && this._requiredField.includes("lastname") === true) {
-                            lastName.invalid = true;
-                            this._showLastNameError = false;
-                        } else {
-                            lastName.invalid = false;
-                            this._showLastNameError = true;
-                        }
-                        // if (this.type === "Child") {
-                        //     var paxList = this._totalPaxList();
-                        //     var totalPaxList = paxList.filter(function(item) {
-                        //         return item.type.toLowerCase() === 'adult';
-                        //     });
-                        //     for (var i = 0; i < totalPaxList.length; i++) {
-                        //         if (totalPaxList[i].firstName.toLowerCase() === this.shadowRoot.querySelector("#adultFirstName").value.toLowerCase() &&
-                        //             totalPaxList[i].lastName.toLowerCase() === this.shadowRoot.querySelector("#adultLastName").value.toLowerCase()) {
-                        //             this.shadowRoot.querySelector("#adultFirstName").invalid = true;
-                        //             this._ShowDuplicateGuest = false;
-                        //         }
-                        //     }
-                        // }
+                    // }
+                    // if (event.currentTarget.id === "adultLastName") {
+                    if ((this.lastNameValue === undefined || this.lastNameValue === "") && this._requiredField.includes("lastname") === true) {
+                        this._lastNameInvalid = true;
+                        this._showLastNameError = false;
+                    } else {
+                        this._lastNameInvalid = false;
+                        this._showLastNameError = true;
                     }
-                    if (event.currentTarget.id === "adultEmail") {
-                        var email = this.shadowRoot.querySelector("#adultEmail");
-                        if ((email.value === undefined || email.value === "") && (this._requiredField.includes("email") === true ||
-                                (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
-                            if (this.type != "Child") {
-                                email.invalid = true;
-                                this._showEmailError = false;
-                                this._showEmailAddressInfo = true;
-                            }
-                        } else {
-                            this._showInvalidEmail();
-                        }
-                        if (email.value === "") {
+                    // }
+                    // if (event.currentTarget.id === "adultEmail") {
+                    if ((this.emailValue === undefined || this.emailValue === "") && (this._requiredField.includes("email") === true ||
+                            (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
+                        if (this.type === "Adult") {
+                            this._emailInvalid = true;
+                            this._showEmailError = false;
                             this._showEmailAddressInfo = true;
                         }
+                    } else {
+                        this._showInvalidEmail();
                     }
-                    if (event.currentTarget.id === "adultContactNo") {
-                        var contactNumber = this.shadowRoot.querySelector("#adultContactNo");
-                        if ((contactNumber.value === undefined || contactNumber.value === "") && (this._requiredField.includes("contactNumber") === true ||
-                                (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
-                            if (this.type != "Child") {
-                                contactNumber.invalid = true;
-                                this._showContactNumberError = false;
-                            }
-                        } else {
-                            this._showInvalidContact();
+                    if (this.emailValue === "") {
+                        this._showEmailAddressInfo = true;
+                    }
+                    // }
+                    // if (event.currentTarget.id === "adultContactNo") {
+                    if ((this.contactNumberValue === undefined || this.contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
+                            (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
+                        if (this.type === "Adult") {
+                            this._contactNumberInvalid = true;
+                            this._showContactNumberError = false;
                         }
-
+                    } else {
+                        this._showInvalidContact();
+                    }
+                    // }
+                    var indexArray = this.index - 1;
+                    if (this.type === "Adult") {
+                        this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.title = this._titleValues[this.titleValue].key;
+                        this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.firstName = this.firstNameValue;
+                        this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.lastName = this.lastNameValue;
+                        this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.email = this.emailValue;
+                        this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
+                        this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.contactNumber = this.contactNumberValue;
+                    } else {
+                        this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.title = this._titleValues[this.titleValue].key;
+                        this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.firstName = this.firstNameValue;
+                        this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.lastName = this.lastNameValue;
+                        this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.email = this.emailValue;
+                        this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
+                        this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.contactNumber = this.contactNumberValue;
                     }
                 }
                 /*
@@ -1241,21 +1249,14 @@
                     this._showEmailError = true;
                     this._showContactNumberError = true;
                     this._showContactNumberInvalidError = true;
-                    var divPax = this.$.form.querySelector(("#paxInfoDiv" + (this.index)));
-                    var adultFirstNameData = divPax.querySelector("#adultFirstName");
-                    var adultLastNameData = divPax.querySelector("#adultLastName");
-                    var adultTitleData = divPax.querySelector("#adultPaxTitle");
-                    var adultEmailData = divPax.querySelector("#adultEmail");
-                    var adultCountryCodeData = divPax.querySelector("#adultCountryCode");
-                    var adultContactNumberData = divPax.querySelector("#adultContactNo");
-                    adultFirstNameData.invalid = false;
-                    adultLastNameData.invalid = false;
-                    adultTitleData.invalid = false;
-                    adultEmailData.invalid = false;
-                    adultCountryCodeData.invalid = false;
-                    adultContactNumberData.invalid = false;
-                    adultFirstNameData.value = paxListArray[paxIndex].firstName;
-                    adultLastNameData.value = paxListArray[paxIndex].lastName;
+                    this._firstNameInvalid = false;
+                    this._lastNameInvalid = false;
+                    this._titleInvalid = false;
+                    this._emailInvalid = false;
+                    this._contactNumberInvalid = false;
+                    this._countryCodeInvalid = false;
+                    this.firstNameValue = paxListArray[paxIndex].firstName;
+                    this.lastNameValue = paxListArray[paxIndex].lastName;
                     if (this.paxListAvailable === false && paxListArray[paxIndex].title != undefined) {
                         var titleIndex = this._titleValues.findIndex(x => x.key == (paxListArray[
                             paxIndex].title).trim());
@@ -1263,8 +1264,8 @@
                         var titleIndex = this._titleValues.findIndex(x => x.key == paxListArray[
                             paxIndex].title);
                     }
-                    adultTitleData.contentElement.selected = titleIndex;
-                    adultEmailData.value = paxListArray[paxIndex].email;
+                    this.titleValue = titleIndex;
+                    this.emailValue = paxListArray[paxIndex].email;
                     if (this.paxListAvailable === false && paxListArray[paxIndex].countrycode != undefined) {
                         var countryCodeIndex = this._countryCodeValues.findIndex(x => x.key ==
                             (paxListArray[paxIndex].countrycode).trim());
@@ -1275,26 +1276,35 @@
                     if (paxListArray[paxIndex].countryCode === undefined) {
                         var countryCodeIndex = 0;
                     }
-                    adultCountryCodeData.contentElement.selected = countryCodeIndex;
-                    adultContactNumberData.value = paxListArray[paxIndex].contact;
-                    this.shadowRoot.querySelector("#adultFirstName").invalid = false;
+                    this.countryCodeValue = countryCodeIndex;
+                    this.contactNumberValue = paxListArray[paxIndex].contact;
+                    this._firstNameInvalid = false;
                     if (this.type === 'Adult') {
-                        var closeIcon = this.parentElement.querySelector("#closeIconAdult" + (this.index));
-                        closeIcon.classList.remove("closeIconChooseGuest");
-                        closeIcon.classList.add("closeIconAdult");
+                        // var closeIcon = this.parentElement.querySelector("#closeIconAdult" + (this.index));
+                        // closeIcon.classList.remove("closeIconChooseGuest");
+                        // closeIcon.classList.add("closeIconAdult");
+                        var arrind = this.travelerInfo._classesForAdult.indexOf("closeIconChooseGuest");
+                        if (arrind != -1) {
+                            this.travelerInfo._classesForAdult.splice(arrind, 1);
+                        }
+                        this.travelerInfo._classesForAdult.push("closeIconAdult");
                     }
                     if (this.type === 'Child') {
-                        var closeIconC = this.parentElement.querySelector("#closeIconChild" + (this.index));
-                        closeIconC.classList.remove("closeIconChooseGuest");
-                        closeIconC.classList.add("closeIconChild");
+                        // var closeIconC = this.parentElement.querySelector("#closeIconChild" + (this.index));
+                        // closeIconC.classList.remove("closeIconChooseGuest");
+                        // closeIconC.classList.add("closeIconChild");
+                        var arrind = this.travelerInfo._classesForChild.indexOf("closeIconChooseGuest");
+                        if (arrind != -1) {
+                            this.travelerInfo._classesForChild.splice(arrind, 1);
+                        }
+                        this.travelerInfo._classesForChild.push("closeIconChild");
                     }
                     this._showChooseGuest = true;
                     this._showPaxInfoFields = false;
                 } else {
-                    this.shadowRoot.querySelector("#chooseGuest").invalid = true;
+                    this._chooseGuestInvalid = true;
                     this._showChooseGuestDuplicateError = false;
                     this._showChooseGuestError = true;
-                    // this.shadowRoot.querySelector("#chooseGuest").errorMessage = "Duplicate guest name"
                 }
                 /**To maintain focus on selected pax */
                 var sc = window.pageYOffset;
@@ -1318,31 +1328,42 @@
                     this._showEmailError = true;
                     this._showContactNumberError = true;
                     this._showContactNumberInvalidError = true;
-                    this.$.adultFirstName.value = '';
-                    this.$.adultLastName.value = '';
-                    this.$.adultPaxTitle.value = '';
-                    this.$.adultEmail.value = '';
-                    this.$.adultCountryCode.value = '';
-                    this.$.adultContactNo.value = '';
-                    this.$.adultFirstName.invalid = false;
-                    this.$.adultLastName.invalid = false;
-                    this.$.adultPaxTitle.invalid = false;
-                    this.$.adultEmail.invalid = false;
-                    this.$.adultCountryCode.invalid = false;
-                    this.$.adultContactNo.invalid = false;
+                    this.firstNameValue = '';
+                    this.lastNameValue = '';
+                    this.titleValue = 0;
+                    this.emailValue = '';
+                    this.countryCodeValue = 0;
+                    this.contactNumberValue = '';
+                    this._firstNameInvalid = false;
+                    this._lastNameInvalid = false;
+                    this._titleInvalid = false;
+                    this._emailInvalid = false;
+                    this._countryCodeInvalid = false;
+                    this._contactNumberInvalid = false;
                     this._showChooseGuest = true;
                     this._showPaxInfoFields = false;
                     if (this.type === 'Adult') {
-                        this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
-                            "closeIconChooseGuest");
-                        this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
-                            "closeIconAdult");
+                        // this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
+                        //     "closeIconChooseGuest");
+                        // this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
+                        //     "closeIconAdult");
+                        var arrind = this.travelerInfo._classesForAdult.indexOf("closeIconChooseGuest");
+                        if (arrind != -1) {
+                            this.travelerInfo._classesForAdult.splice(arrind, 1);
+                        }
+                        this.travelerInfo._classesForAdult.push("closeIconAdult");
                     }
+
                     if (this.type === 'Child') {
-                        this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
-                            "closeIconChooseGuest");
-                        this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
-                            "closeIconAdult");
+                        // this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
+                        //     "closeIconChooseGuest");
+                        // this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
+                        //     "closeIconAdult");
+                        var arrind = this.travelerInfo._classesForChild.indexOf("closeIconChooseGuest");
+                        if (arrind != -1) {
+                            this.travelerInfo._classesForChild.splice(arrind, 1);
+                        }
+                        this.travelerInfo._classesForChild.push("closeIconChild");
                     }
                     var len = this.indexArray.length;
                     var sc = window.pageYOffset;
@@ -1438,13 +1459,12 @@
             }
             _showReadMoreDots(len) {
                     var l = (screen.width / 100 * len) / 6.7;
-                    var fName = this.shadowRoot.querySelector("#adultFirstNameError");
-                    if (fName.innerText.length > l) {
-                        fName.innerText = fName.innerText.substring(0, l) + "..."
+                    if (this._firstNameError.length > l || this._duplicateError.length > l) {
+                        this._firstNameError = this._firstNameError.substring(0, l) + "...";
+                        this._duplicateError = this._duplicateError.substring(0, l) + "...";
                     }
-                    var lName = this.shadowRoot.querySelector("#adultLastNameError");
-                    if (lName.innerText.length > l) {
-                        lName.innerText = lName.innerText.substring(0, l) + "..."
+                    if (this._lastNameError.length > l) {
+                        this._lastNameError = this._lastNameError.substring(0, l) + "..."
                     }
                 }
                 /**
@@ -1553,27 +1573,25 @@
                  **/
             _showEmailInfo() {
                     this._showEmailAddressInfo = false;
-                    this.shadowRoot.querySelector("#adultEmail").invalid = false;
+                    this._emailInvalid = false;
                     this._showEmailError = true;
                 }
                 /**
                  *To show email validation using filter.
                  **/
             _showInvalidEmail() {
-                    var email = this.shadowRoot.querySelector("#adultEmail").value;
-                    if (email != "") {
-                        if (email != undefined) {
+                    if (this.emailValue != "") {
+                        if (this.emailValue != undefined) {
                             var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
-                            var emailElement = this.shadowRoot.querySelector("#adultEmail");
-                            if (!filter.test(email)) {
-                                emailElement.invalid = true;
+                            if (!filter.test(this.emailValue)) {
+                                this._emailInvalid = true;
                                 this._showEmailError = false;
-                                if (emailElement.invalid === true) {
+                                if (this._emailInvalid === true) {
                                     this._showEmailAddressInfo = true;
                                     this._showEmailAddressInfo = true;
                                 }
                             } else {
-                                emailElement.invalid = false;
+                                this._emailInvalid = false;
                                 this._showEmailError = true;
                             }
                         }
@@ -1583,17 +1601,15 @@
                  *TO show contact number using filter.
                  **/
             _showInvalidContact() {
-                var contactNumber = this.shadowRoot.querySelector("#adultContactNo").value;
-                if (contactNumber != "") {
-                    if (contactNumber != undefined) {
+                if (this.contactNumberValue != "") {
+                    if (this.contactNumberValue != undefined) {
                         var filter = /^[0-9]+$/;
-                        if (!filter.test(contactNumber)) {
-                            var contactNoElement = this.shadowRoot.querySelector("#adultContactNo");
-                            contactNoElement.invalid = true;
+                        if (!filter.test(this.contactNumberValue)) {
+                            this._contactNumberInvalid = true;
                             this._showContactNumberError = true;
                             this._showContactNumberInvalidError = false;
                         } else {
-                            this.shadowRoot.querySelector("#adultContactNo").invalid = false;
+                            this._contactNumberInvalid = false;
                             this._showContactNumberError = true;
                             this._showContactNumberInvalidError = true;
                         }

@@ -263,7 +263,7 @@
     <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
         <app-toolbar id="toolbarLotalty">{{_loyaltyProgram}}</app-toolbar>
         <div id="tLoyaltyProgram">
-            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
+            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" loyalty-programs="{{loyaltyPrograms}}" guest-info="{{guestInfo}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
         </div>
     </div>
     <hr id="lineBreakBetweenProduct">
@@ -291,6 +291,14 @@
 
             static get properties() {
                     return {
+                        /**
+                         *Array for Loyalty Program. 
+                         **/
+                        loyaltyPrograms: {
+                            type: Array,
+                            notify: true,
+                            value: []
+                        },
                         /**
                          *Object to get t-guest-info component.
                          **/
@@ -534,26 +542,15 @@
             _getLoyaltyProgramData(index) {
                 var loyaltyProgramObject = {};
                 var loyaltyProgramArrayData = [];
-                var loyaltyProgramEle = this.shadowRoot.querySelector("#tLoyaltyDatabase" + (index + 1))
-                var count = loyaltyProgramEle._deleteCount + loyaltyProgramEle._loyaltyPrograms.length;
+                var count = this.loyaltyPrograms.length;
                 for (var i = 0; i < count; i++) {
-                    var loyaltyDiv = loyaltyProgramEle.shadowRoot.querySelector("#div" + i);
-                    if (loyaltyDiv != null || loyaltyDiv != undefined) {
-                        var tLoyalty = loyaltyDiv.querySelector("#tLoyaltyProgramDataID");
-                        var loyaltyProgram = {};
-                        if (tLoyalty.shadowRoot.querySelector("#guestName" + i) != null) {
-                            loyaltyProgram.GuestName = tLoyalty.guestNameValue;
-                            if (this.paxListAvailable === false) {
-                                loyaltyProgram.ProgramName = tLoyalty.programNameValue;
-                            } else {
-                                loyaltyProgram.ProgramName = tLoyalty.programNameValue;
-                            }
-                            loyaltyProgram.ProgramNumber = tLoyalty.programNumberValue;
-                        }
-                        loyaltyProgramArrayData[i] = loyaltyProgram;
-                    }
+                    var loyaltyProgram = {};
+                    loyaltyProgram.GuestName = this.loyaltyPrograms[i].loyaltyProgram.guestName;
+                    loyaltyProgram.ProgramName = this.loyaltyPrograms[i].loyaltyProgram.programName;
+                    loyaltyProgram.ProgramNumber = this.loyaltyPrograms[i].loyaltyProgram.programNumber;
+                    loyaltyProgramArrayData[i] = loyaltyProgram;
                 }
-                console.log(loyaltyProgramArrayData);
+                // console.log(loyaltyProgramArrayData);
                 return loyaltyProgramArrayData;
             }
             _setDefaultResourcesvalue() {

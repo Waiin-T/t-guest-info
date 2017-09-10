@@ -166,9 +166,9 @@
     <div>
         <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" value="{{programNumberValue}}" invalid="{{_programNumberInvalid}}" class="programNumber" on-blur="_isValid" on-click="_showValidation" required auto-validate></paper-input>
     </div>
-    <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
+    <!-- <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
         <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">{{_remove}}</paper-button>
-    </div>
+    </div> -->
     </template>
 
     <script>
@@ -267,7 +267,7 @@
                      * */
                     _isRemoveButtonHidden: {
                         type: Boolean,
-                        computed: '_lessThanEqualToOne(tLoyaltyProgram._loyaltyPrograms.length , 1)'
+                        computed: '_lessThanEqualToOne(tLoyaltyProgram.loyaltyPrograms.length , 1)'
                     },
                     /**
                      * @private
@@ -346,29 +346,30 @@
                  * To delet loyalty profram on click of button 'Remove'.
                  **/
             _deleteLoyaltyProgram(e) {
-                var index = parseInt(e.currentTarget.className.replace("c", ""));
-                if (index > -1) {
-                    this.tLoyaltyProgram.splice('_loyaltyPrograms', index, 0);
-                }
-                var parent = this.parentElement.parentElement;
-                parent.removeChild(this.parentElement);
-                this.tLoyaltyProgram._deleteCount = this.tLoyaltyProgram._deleteCount + 1;
+                var tempArray = this.tLoyaltyProgram.splice('loyaltyPrograms', this.loyaltyProgramNumber, 1);
+                this.tLoyaltyProgram.loyaltyPrograms = tempArray;
+                // this.tLoyaltyProgram.$.loyaltyTemp.render();
+                // this.tLoyaltyProgram.loyaltyPrograms = this.tLoyaltyProgram.loyaltyPrograms.slice();
+                // var parent = this.parentElement.parentElement;
+                // parent.removeChild(this.parentElement);
+                // this.tLoyaltyProgram._deleteCount = this.tLoyaltyProgram._deleteCount + 1;
 
             }
             _isValid(e) {
-                    var ind = this.loyaltyProgramNumber;
                     e.currentTarget.invalid = false;
                     var paxListArray = this._updatePaxList();
-                    var guestName = paxListArray[this.guestNameValue].firstName + '' + paxListArray[this.guestNameValue].lastName;
-                    if (this.paxListAvailable === true) {
-                        var programName = this.paxList[this.programNameValue].membership.programName;
-                    } else {
-                        var programName = this.programNameValue
+                    if (this.guestNameValue || this.programNameValue) {
+                        var guestName = paxListArray[this.guestNameValue].firstName + ' ' + paxListArray[this.guestNameValue].lastName;
+                        if (this.paxListAvailable === true) {
+                            var programName = this.paxList[this.programNameValue].membership.programName;
+                        } else {
+                            var programName = this.programNameValue
+                        }
                     }
-                    this.tLoyaltyProgram._loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.guestName = guestName;
-                    this.tLoyaltyProgram._loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.programName = programName;
-                    this.tLoyaltyProgram._loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.programNumber = this.programNumberValue;
-                    this.tLoyaltyProgram._isValidLoyalty(ind, e, guestName, programName, this.programNumberValue);
+                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.guestName = guestName;
+                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.programName = programName;
+                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.programNumber = this.programNumberValue;
+                    this.tLoyaltyProgram._isValidLoyalty(this.loyaltyProgramNumber, e, guestName, programName, this.programNumberValue);
                 }
                 /**
                  * Using this function on-tap of guest name.
@@ -386,12 +387,6 @@
                     this._programNameInvalid = false;
                     this._programNumberInvalid = false;
                 }
-                //  else {
-                //     var paxListArray = this._updatePaxList();
-                // }
-                // var ind = this.loyaltyProgramNumber;
-                // this.tLoyaltyProgram._loyaltyPrograms[ind].loyaltyProgram.guestName = paxListArray[e.model.index].firstName + ' ' + paxListArray[e.model.index].lastName;
-
             }
             _updatePaxList() {
                 if (this.paxListAvailable === false) {
@@ -426,7 +421,7 @@
 
                     this._showGuestNameError = false;
                     this._guestNameInvalid = true;
-                    var len = this.tLoyaltyProgram._loyaltyPrograms.length;
+                    var len = this.tLoyaltyProgram.loyaltyPrograms.length;
                 } else {
                     this._showGuestNameError = true;
                     this._guestNameInvalid = false;
