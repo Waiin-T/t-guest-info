@@ -507,6 +507,7 @@
             }
             static get properties() {
                 return {
+                    guestInfo: Object,
                     /**
                      *Property to set paxList.
                      **/
@@ -954,14 +955,18 @@
                     if (arrind != -1) {
                         this.travelerInfo._classesForAdult.splice(arrind, 1);
                     }
-                    this.travelerInfo._classesForAdult.push("closeIconChooseGuest");
+                    if (this.travelerInfo._classesForAdult.indexOf("closeIconChooseGuest") === -1) {
+                        this.travelerInfo._classesForAdult.push("closeIconChooseGuest");
+                    }
                 }
                 if (this._showChooseGuest === false && this.type === 'Child') {
                     var arrind = this.travelerInfo._classesForChild.indexOf("closeIconChild");
                     if (arrind != -1) {
                         this.travelerInfo._classesForChild.splice(arrind, 1);
                     }
-                    this.travelerInfo._classesForChild.push("closeIconChooseGuest");
+                    if (this.travelerInfo._classesForChild.indexOf("closeIconChooseGuest") === -1) {
+                        this.travelerInfo._classesForChild.push("closeIconChooseGuest");
+                    }
                 }
                 this._setDefaultOptionValue();
                 this._setDefaultResourcesValue();
@@ -1042,65 +1047,65 @@
                  *To collect data of a pax on fire of final button.
                  **/
             collectData() {
-                    var firstNameData = this.$.adultFirstName;
-                    var lastNameData = this.$.adultLastName;
-                    var titleData = this.$.adultPaxTitle;
-                    var emailData = this.$.adultEmail;
-                    var countryCodeData = this.$.adultCountryCode;
-                    var contactNumberData = this.$.adultContactNo;
-                    if (this.type === 'Adult') {
-                        var adultData = {};
-                        adultData.type = "Adult";
-                        if (this.index === 1) {
-                            if (this._allowTitleForLeadPax === true && titleData.selectedItem != null) {
-                                adultData.title = titleData.selectedItem.innerText;
-                            }
-                            if (this._allowEmailForLeadPax === true) {
-                                adultData.email = this.emailValue;
-                            }
-                            if (this._allowContactNumberForLeadPax === true) {
-                                if (countryCodeData.selectedItem != null) {
-                                    adultData.countrycode = countryCodeData.selectedItem.innerText;
-                                }
-                                adultData.contact = this.contactNumberValue;
-                            }
-                        } else {
-                            if (this.allowTitle === true && titleData.selectedItem != null) {
-                                adultData.title = titleData.selectedItem.innerText;
-                            }
-                            if (this.allowEmail === true) {
-                                adultData.email = this.emailValue;
-                            }
-                            if (this.allowContactNumber === true) {
-                                if (countryCodeData.selectedItem != null) {
-                                    adultData.countrycode = countryCodeData.selectedItem.innerText;
-                                }
-                                adultData.contact = this.contactNumberValue;
-                            }
-                        }
-                        adultData.firstName = this.firstNameValue;
-                        adultData.lastName = this.lastNameValue;
-                        return adultData;
-                    }
-                    if (this.type === 'Child') {
-                        var childData = {};
-                        childData.type = "Child";
-                        childData.firstName = this.firstNameValue;
-                        childData.lastName = this.lastNameValue;
-                        if (this.allowTitle === true && titleData.selectedItem != null) {
-                            childData.title = titleData.selectedItem.innerText;
-                        }
-                        if (this.allowEmail === true) {
-                            childData.email = this.emailValue;
-                        }
-                        if (this.allowContactNumber === true) {
-                            if (countryCodeData.selectedItem != null) {
-                                childData.countrycode = countryCodeData.selectedItem.innerText;
-                            }
-                            childData.contact = this.contactNumberValue;
-                        }
-                        return childData;
-                    }
+                    // var firstNameData = this.$.adultFirstName;
+                    // var lastNameData = this.$.adultLastName;
+                    // var titleData = this.$.adultPaxTitle;
+                    // var emailData = this.$.adultEmail;
+                    // var countryCodeData = this.$.adultCountryCode;
+                    // var contactNumberData = this.$.adultContactNo;
+                    // if (this.type === 'Adult') {
+                    //     var adultData = {};
+                    //     adultData.type = "Adult";
+                    //     if (this.index === 1) {
+                    //         if (this._allowTitleForLeadPax === true && titleData.selectedItem != null) {
+                    //             adultData.title = titleData.selectedItem.innerText;
+                    //         }
+                    //         if (this._allowEmailForLeadPax === true) {
+                    //             adultData.email = this.emailValue;
+                    //         }
+                    //         if (this._allowContactNumberForLeadPax === true) {
+                    //             if (countryCodeData.selectedItem != null) {
+                    //                 adultData.countryCode = countryCodeData.selectedItem.innerText;
+                    //             }
+                    //             adultData.contact = this.contactNumberValue;
+                    //         }
+                    //     } else {
+                    //         if (this.allowTitle === true && titleData.selectedItem != null) {
+                    //             adultData.title = titleData.selectedItem.innerText;
+                    //         }
+                    //         if (this.allowEmail === true) {
+                    //             adultData.email = this.emailValue;
+                    //         }
+                    //         if (this.allowContactNumber === true) {
+                    //             if (countryCodeData.selectedItem != null) {
+                    //                 adultData.countryCode = countryCodeData.selectedItem.innerText;
+                    //             }
+                    //             adultData.contact = this.contactNumberValue;
+                    //         }
+                    //     }
+                    //     adultData.firstName = this.firstNameValue;
+                    //     adultData.lastName = this.lastNameValue;
+                    //     return adultData;
+                    // }
+                    // if (this.type === 'Child') {
+                    //     var childData = {};
+                    //     childData.type = "Child";
+                    //     childData.firstName = this.firstNameValue;
+                    //     childData.lastName = this.lastNameValue;
+                    //     if (this.allowTitle === true && titleData.selectedItem != null) {
+                    //         childData.title = titleData.selectedItem.innerText;
+                    //     }
+                    //     if (this.allowEmail === true) {
+                    //         childData.email = this.emailValue;
+                    //     }
+                    //     if (this.allowContactNumber === true) {
+                    //         if (countryCodeData.selectedItem != null) {
+                    //             childData.countryCode = countryCodeData.selectedItem.innerText;
+                    //         }
+                    //         childData.contact = this.contactNumberValue;
+                    //     }
+                    //     return childData;
+                    // }
                 }
                 /*
                  **Function to load paxlist for choose guest dropdown when paxlist is not given.
@@ -1117,18 +1122,21 @@
                 }
                 return false;
             }
-            _totalPaxList() {
-                var paxInfo = this.travelerInfo.guestInfo.isData();
+            _totalPaxList(e) {
                 this._paxTempArray = [];
-                var prodLen = paxInfo.length;
+                var prodLen = this.guestInfo._totalPaxListObject.length;
                 for (var i = 0; i < prodLen; i++) {
-                    var roomLen = paxInfo[i].length;
+                    var roomLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj.length;
                     for (var j = 0; j < roomLen; j++) {
-                        var paxLen = paxInfo[i][j].length;
+                        var paxLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj.length;
                         for (var k = 0; k < paxLen; k++) {
-                            if (paxInfo[i][j][k].firstName != null && paxInfo[i][j][k].firstName != "") {
-                                if (!this._isDuplicatePax(this._paxTempArray, paxInfo[i][j][k].firstName, paxInfo[i][j][k].lastName))
-                                    this._paxTempArray.push(paxInfo[i][j][k]);
+                            var pax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].adultPaxDataObject;
+                            if (pax === undefined) {
+                                pax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].childPaxDataObject;
+                            }
+                            if (pax.firstName != null && pax.firstName != "") {
+                                if (!this._isDuplicatePax(this._paxTempArray, pax.firstName, pax.lastName))
+                                    this._paxTempArray.push(pax);
                             }
                         }
                     }
@@ -1137,7 +1145,7 @@
             }
             _loadPaxList(e) {
                     if (this.paxListAvailable === false) {
-                        var paxList = this._totalPaxList();
+                        var paxList = this._totalPaxList(e);
                         if (this.type === 'Adult') {
                             var adults = paxList.filter(function(item) {
                                 return item.type.toLowerCase() === 'adult';
@@ -1212,20 +1220,47 @@
                     // }
                     var indexArray = this.index - 1;
                     if (this.type === "Adult") {
-                        this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.title = this._titleValues[this.titleValue].key;
                         this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.firstName = this.firstNameValue;
                         this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.lastName = this.lastNameValue;
-                        this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.email = this.emailValue;
-                        this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
-                        this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.contactNumber = this.contactNumberValue;
+                        if (this.index === 1) {
+                            if (this._allowTitleForLeadPax === true) {
+                                this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.title = this._titleValues[this.titleValue].key;
+                            }
+                            if (this._allowEmailForLeadPax === true) {
+                                this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.email = this.emailValue;
+                            }
+                            if (this._allowContactNumberForLeadPax === true) {
+                                this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
+                                this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.contactNumber = this.contactNumberValue;
+                            }
+                        } else {
+                            if (this.allowTitle === true) {
+                                this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.title = this._titleValues[this.titleValue].key;
+                            }
+                            if (this.allowEmail === true) {
+                                this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.email = this.emailValue;
+                            }
+                            if (this.allowContactNumber === true) {
+                                this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
+                                this.travelerInfo._adultPaxCountArray[indexArray].adultPaxDataObject.contactNumber = this.contactNumberValue;
+                            }
+                        }
                     } else {
-                        this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.title = this._titleValues[this.titleValue].key;
                         this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.firstName = this.firstNameValue;
                         this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.lastName = this.lastNameValue;
-                        this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.email = this.emailValue;
-                        this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
-                        this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.contactNumber = this.contactNumberValue;
+                        if (this.allowTitle === true) {
+                            this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.title = this._titleValues[this.titleValue].key;
+                        }
+                        if (this.allowEmail === true) {
+                            this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.email = this.emailValue;
+                        }
+                        if (this.allowContactNumber === true) {
+                            this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
+                            this.travelerInfo._childPaxCountArray[indexArray].childPaxDataObject.contactNumber = this.contactNumberValue;
+                        }
                     }
+                    this.travelerInfo._adultPaxCountArray.concat(this.travelerInfo._childPaxCountArray);
+                    this.travelerInfo.getState(event);
                 }
                 /*
                  **To check validation of a pax on fire of final validation.
@@ -1266,12 +1301,12 @@
                     }
                     this.titleValue = titleIndex;
                     this.emailValue = paxListArray[paxIndex].email;
-                    if (this.paxListAvailable === false && paxListArray[paxIndex].countrycode != undefined) {
+                    if (this.paxListAvailable === false && paxListArray[paxIndex].countryCode != undefined) {
                         var countryCodeIndex = this._countryCodeValues.findIndex(x => x.key ==
-                            (paxListArray[paxIndex].countrycode).trim());
+                            (paxListArray[paxIndex].countryCode).trim());
                     } else {
                         var countryCodeIndex = this._countryCodeValues.findIndex(x => x.value ==
-                            paxListArray[paxIndex].countrycode);
+                            paxListArray[paxIndex].countryCode);
                     }
                     if (paxListArray[paxIndex].countryCode === undefined) {
                         var countryCodeIndex = 0;
@@ -1287,7 +1322,9 @@
                         if (arrind != -1) {
                             this.travelerInfo._classesForAdult.splice(arrind, 1);
                         }
-                        this.travelerInfo._classesForAdult.push("closeIconAdult");
+                        if (this.travelerInfo._classesForAdult.indexOf("closeIconAdult") === -1) {
+                            this.travelerInfo._classesForAdult.push("closeIconAdult");
+                        }
                     }
                     if (this.type === 'Child') {
                         // var closeIconC = this.parentElement.querySelector("#closeIconChild" + (this.index));
@@ -1297,7 +1334,9 @@
                         if (arrind != -1) {
                             this.travelerInfo._classesForChild.splice(arrind, 1);
                         }
-                        this.travelerInfo._classesForChild.push("closeIconChild");
+                        if (this.travelerInfo._classesForChild.indexOf("closeIconChild") === -1) {
+                            this.travelerInfo._classesForChild.push("closeIconChild");
+                        }
                     }
                     this._showChooseGuest = true;
                     this._showPaxInfoFields = false;
@@ -1351,7 +1390,9 @@
                         if (arrind != -1) {
                             this.travelerInfo._classesForAdult.splice(arrind, 1);
                         }
-                        this.travelerInfo._classesForAdult.push("closeIconAdult");
+                        if (this.travelerInfo._classesForAdult.indexOf("closeIconAdult") === -1) {
+                            this.travelerInfo._classesForAdult.push("closeIconAdult");
+                        }
                     }
 
                     if (this.type === 'Child') {
@@ -1363,7 +1404,9 @@
                         if (arrind != -1) {
                             this.travelerInfo._classesForChild.splice(arrind, 1);
                         }
-                        this.travelerInfo._classesForChild.push("closeIconChild");
+                        if (this.travelerInfo._classesForChild.indexOf("closeIconChild") === -1) {
+                            this.travelerInfo._classesForChild.push("closeIconChild");
+                        }
                     }
                     var len = this.indexArray.length;
                     var sc = window.pageYOffset;

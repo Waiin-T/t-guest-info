@@ -250,7 +250,7 @@
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} {{_adultLabel(room.criteria.traveler.adult)}}, {{room.criteria.traveler.child}} {{_childLabel(room.criteria.traveler.child)}}" policy-List="{{room.policies}}"
             room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]"
             child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}" only-lead-pax-info="{{room.onlyLeadPaxInfo}}"
-            pax-list-available="{{paxListAvailable}}">
+            pax-list-available="{{paxListAvailable}}" product-no={{productNo}}>
           </t-traveler-info>
           <br>
         </template>
@@ -291,6 +291,7 @@
 
             static get properties() {
                     return {
+
                         /**
                          *Array for Loyalty Program. 
                          **/
@@ -381,6 +382,18 @@
                         },
                         /**
                          *@private
+                         **/
+                        _totalPaxListObject: {
+                            type: Array,
+                        },
+                        /**
+                         *@private
+                         **/
+                        _roomPaxListObject: {
+                            type: Array,
+                        },
+                        /**
+                         *@private
                          *iron media query properties.
                          **/
                         _smallMobileView: {
@@ -445,11 +458,33 @@
             ready() {
                     super.ready();
                     this._setDefaultResourcesvalue();
+                    this._totalPaxListObject = [];
                     if (this.paxlist.length === 0) {
                         this.paxListAvailable = false;
                         this.paxList = [];
                     }
                     this.guestInfo = this;
+                    this._totalPaxListObject = [];
+                    for (var i = 0; i < this.product.length; i++) {
+                        this._roomPaxListObject = [];
+                        var room = this.product[i].rooms;
+                        for (var j = 0; j < room.length; j++) {
+                            var roomDataObject = {
+                                "Id": room[j].id,
+                                "paxListObj": [],
+                            };
+                            this.push('_roomPaxListObject', {
+                                roomDataObject
+                            });
+                        }
+                        var totalPaxObject = {
+                            "Id": this.product[i].id,
+                            "paxListObj": this._roomPaxListObject,
+                        };
+                        this.push('_totalPaxListObject', {
+                            totalPaxObject
+                        });
+                    }
                 }
                 /**
                  *Function to check validation of all fields for all rooms and products.
@@ -479,6 +514,15 @@
                  *Function to collect data for all rooms and products.
                  **/
             isData() {
+                    var prodLen = this._totalPaxListObject.length;
+                    for (var i = 0; i < prodLen; i++) {
+                        var roomLen = this._totalPaxListObject[i].totalPaxObject.paxListObj.length;
+                        for (var j = 0; j < roomLen; j++) {
+                            var paxLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj.length;
+
+                        }
+                    }
+
                     var totalData = [];
                     var totalProductPaxArray = [];
                     var prodLen = this.product.length;
@@ -491,7 +535,6 @@
                             productPax.ProductId = this.product[i].id;
                             productPax.subProductId = this.product[i].rooms[j].id;
                             data[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).getState(event);
-                            // console.log(data[j]);
                             productPax.paxList = data[j];
                             var productPax1 = productPax;
                             productPaxArray[j] = productPax1;
