@@ -457,9 +457,9 @@
         </div>
 
         <div id="adultFirstNamediv">
-            <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}" value="{{firstNameValue}}" invalid="{{_firstNameInvalid}}"></paper-input>
+            <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}" value="{{firstNameValue}}" invalid="{{firstNameInvalid}}"></paper-input>
             <div id="adultFirstNameError" hidden$="{{_showFirstNameError}}">{{_firstNameError}}</div>
-            <div id="adultFirstNameError" hidden$="{{_ShowDuplicateGuest}}">{{_duplicateError}}</div>
+            <div id="adultFirstNameError" hidden$="{{ShowDuplicateGuest}}">{{_duplicateError}}</div>
         </div>
         <div id="adultLastNamediv">
             <paper-input label="{{_lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_lastNameError}}" value="{{lastNameValue}}" invalid="{{_lastNameInvalid}}"></paper-input>
@@ -550,7 +550,7 @@
                     },
                     _chooseGuestInvalid: String,
                     _titleInvalid: String,
-                    _firstNameInvalid: String,
+                    firstNameInvalid: Boolean,
                     _lastNameInvalid: String,
                     _emailInvalid: String,
                     _countryCodeInvalid: String,
@@ -623,7 +623,7 @@
                     /**
                      *@private
                      **/
-                    _ShowDuplicateGuest: {
+                    ShowDuplicateGuest: {
                         type: Boolean,
                         value: true
                     },
@@ -938,36 +938,7 @@
                     this._showChooseGuest = true;
                     this._showPaxInfoFields = false;
                 }
-                // if (this._showChooseGuest === false && this.type === 'Adult') {
-                //     this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
-                //         "closeIconAdult");
-                //     this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
-                //         "closeIconChooseGuest");
-                // }
-                // if (this._showChooseGuest === false && this.type === 'Child') {
-                //     this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
-                //         "closeIconChild");
-                //     this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
-                //         "closeIconChooseGuest");
-                // }
-                if (this._showChooseGuest === false && this.type === 'Adult') {
-                    var arrind = this.travelerInfo._classesForAdult.indexOf("closeIconAdult");
-                    if (arrind != -1) {
-                        this.travelerInfo._classesForAdult.splice(arrind, 1);
-                    }
-                    if (this.travelerInfo._classesForAdult.indexOf("closeIconChooseGuest") === -1) {
-                        this.travelerInfo._classesForAdult.push("closeIconChooseGuest");
-                    }
-                }
-                if (this._showChooseGuest === false && this.type === 'Child') {
-                    var arrind = this.travelerInfo._classesForChild.indexOf("closeIconChild");
-                    if (arrind != -1) {
-                        this.travelerInfo._classesForChild.splice(arrind, 1);
-                    }
-                    if (this.travelerInfo._classesForChild.indexOf("closeIconChooseGuest") === -1) {
-                        this.travelerInfo._classesForChild.push("closeIconChooseGuest");
-                    }
-                }
+                this.travelerInfo.getState();
                 this._setDefaultOptionValue();
                 this._setDefaultResourcesValue();
                 this._showAllowFieldsForLeadPax();
@@ -1000,7 +971,7 @@
                     }
                     if ((this.firstNameValue === undefined || this.firstNameValue === "") &&
                         this._requiredField.includes("firstname") === true) {
-                        this._firstNameInvalid = true;
+                        this.firstNameInvalid = true;
                         this._showFirstNameError = false;
                     }
                     if ((this.lastNameValue === undefined || this.lastNameValue === "") &&
@@ -1032,80 +1003,16 @@
                         }
                     }
                     if (this.index === 1 && this.type === 'Adult') {
-                        if (this._firstNameInvalid || this._lastNameInvalid ||
+                        if (this.firstNameInvalid || this._lastNameInvalid ||
                             this._contactNumberInvalid || this._emailInvalid ||
                             this._countryCodeInvalid || this._titleInvalid) {
                             return true;
                         }
                     } else {
-                        if (this._firstNameInvalid || this._lastNameInvalid) {
+                        if (this.firstNameInvalid || this._lastNameInvalid) {
                             return true;
                         }
                     }
-                }
-                /**
-                 *To collect data of a pax on fire of final button.
-                 **/
-            collectData() {
-                    // var firstNameData = this.$.adultFirstName;
-                    // var lastNameData = this.$.adultLastName;
-                    // var titleData = this.$.adultPaxTitle;
-                    // var emailData = this.$.adultEmail;
-                    // var countryCodeData = this.$.adultCountryCode;
-                    // var contactNumberData = this.$.adultContactNo;
-                    // if (this.type === 'Adult') {
-                    //     var adultData = {};
-                    //     adultData.type = "Adult";
-                    //     if (this.index === 1) {
-                    //         if (this._allowTitleForLeadPax === true && titleData.selectedItem != null) {
-                    //             adultData.title = titleData.selectedItem.innerText;
-                    //         }
-                    //         if (this._allowEmailForLeadPax === true) {
-                    //             adultData.email = this.emailValue;
-                    //         }
-                    //         if (this._allowContactNumberForLeadPax === true) {
-                    //             if (countryCodeData.selectedItem != null) {
-                    //                 adultData.countryCode = countryCodeData.selectedItem.innerText;
-                    //             }
-                    //             adultData.contact = this.contactNumberValue;
-                    //         }
-                    //     } else {
-                    //         if (this.allowTitle === true && titleData.selectedItem != null) {
-                    //             adultData.title = titleData.selectedItem.innerText;
-                    //         }
-                    //         if (this.allowEmail === true) {
-                    //             adultData.email = this.emailValue;
-                    //         }
-                    //         if (this.allowContactNumber === true) {
-                    //             if (countryCodeData.selectedItem != null) {
-                    //                 adultData.countryCode = countryCodeData.selectedItem.innerText;
-                    //             }
-                    //             adultData.contact = this.contactNumberValue;
-                    //         }
-                    //     }
-                    //     adultData.firstName = this.firstNameValue;
-                    //     adultData.lastName = this.lastNameValue;
-                    //     return adultData;
-                    // }
-                    // if (this.type === 'Child') {
-                    //     var childData = {};
-                    //     childData.type = "Child";
-                    //     childData.firstName = this.firstNameValue;
-                    //     childData.lastName = this.lastNameValue;
-                    //     if (this.allowTitle === true && titleData.selectedItem != null) {
-                    //         childData.title = titleData.selectedItem.innerText;
-                    //     }
-                    //     if (this.allowEmail === true) {
-                    //         childData.email = this.emailValue;
-                    //     }
-                    //     if (this.allowContactNumber === true) {
-                    //         if (countryCodeData.selectedItem != null) {
-                    //             childData.countryCode = countryCodeData.selectedItem.innerText;
-                    //         }
-                    //         childData.contact = this.contactNumberValue;
-                    //     }
-                    //     return childData;
-                    // }
                 }
                 /*
                  **Function to load paxlist for choose guest dropdown when paxlist is not given.
@@ -1173,14 +1080,15 @@
                  **/
 
             _updateValidation(event) {
+                    this.travelerInfo.getState();
                     // if (event.currentTarget.id === "adultFirstName") {
                     if ((this.firstNameValue === undefined || this.firstNameValue === "") && this._requiredField.includes("firstname") === true) {
-                        this._firstNameInvalid = true;
+                        this.firstNameInvalid = true;
                         this._showFirstNameError = false;
                     } else {
-                        this._firstNameInvalid = false;
+                        this.firstNameInvalid = false;
                         this._showFirstNameError = true;
-                        this._ShowDuplicateGuest = true;
+                        this.ShowDuplicateGuest = true;
                     }
                     // }
                     // if (event.currentTarget.id === "adultLastName") {
@@ -1260,7 +1168,38 @@
                         }
                     }
                     this.travelerInfo._adultPaxCountArray.concat(this.travelerInfo._childPaxCountArray);
-                    this.travelerInfo.getState(event);
+                    var adultPaxDataArray = this.travelerInfo._adultPaxCountArray
+                    for (var i = 0; i < this.adultPaxCount; i++) {
+                        this.firstNameInvalid = false;
+                    }
+                    for (var j = 0; j < adultPaxDataArray.length; j++) {
+                        if (this.travelerInfo._compareCaseInsensitive(adultPaxDataArray[indexArray].adultPaxDataObject.firstName, adultPaxDataArray[j].adultPaxDataObject.firstName) &&
+                            this.travelerInfo._compareCaseInsensitive(adultPaxDataArray[indexArray].adultPaxDataObject.lastName, adultPaxDataArray[j].adultPaxDataObject.lastName) &&
+                            indexArray != j) {
+                            this.firstNameInvalid = true;
+                            this.ShowDuplicateGuest = false;
+                        } else if (adultPaxDataArray[j].firstName != undefined &&
+                            adultPaxDataArray[j].firstName != "") {
+                            this.firstNameInvalid = false;
+                        }
+                    }
+                    if (this.type === "Child") {
+                        var childPaxDataArray = this.travelerInfo._childPaxCountArray;
+                        for (var i = 0; i < this.travelerInfo._childPaxCountArray.length; i++) {
+                            this.firstNameInvalid = false;
+                        }
+                        for (var j = 0; j < childPaxDataArray.length; j++) {
+                            if (this.travelerInfo._compareCaseInsensitive(childPaxDataArray[indexArray].childPaxDataObject.firstName, childPaxDataArray[j].childPaxDataObject.firstName) &&
+                                this.travelerInfo._compareCaseInsensitive(childPaxDataArray[indexArray].childPaxDataObject.lastName, childPaxDataArray[j].childPaxDataObject.lastName) &&
+                                indexArray != j) {
+                                this.firstNameInvalid = true;
+                                this.ShowDuplicateGuest = false;
+                            } else if (childPaxDataArray[j].firstName != undefined &&
+                                childPaxDataArray[j].firstName != "") {
+                                this.firstNameInvalid = false;
+                            }
+                        }
+                    }
                 }
                 /*
                  **To check validation of a pax on fire of final validation.
@@ -1270,6 +1209,8 @@
              *To show the pax Info input fields on click of element of choose guest dropdown.
              **/
             _showPaxInfoFieldsMethod(e) {
+                this.travelerInfo.getState()
+                ''
                 var paxIndex = e.model.index;
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
                 if (flag == false) {
@@ -1284,7 +1225,7 @@
                     this._showEmailError = true;
                     this._showContactNumberError = true;
                     this._showContactNumberInvalidError = true;
-                    this._firstNameInvalid = false;
+                    this.firstNameInvalid = false;
                     this._lastNameInvalid = false;
                     this._titleInvalid = false;
                     this._emailInvalid = false;
@@ -1313,30 +1254,12 @@
                     }
                     this.countryCodeValue = countryCodeIndex;
                     this.contactNumberValue = paxListArray[paxIndex].contact;
-                    this._firstNameInvalid = false;
+                    this.firstNameInvalid = false;
                     if (this.type === 'Adult') {
-                        // var closeIcon = this.parentElement.querySelector("#closeIconAdult" + (this.index));
-                        // closeIcon.classList.remove("closeIconChooseGuest");
-                        // closeIcon.classList.add("closeIconAdult");
-                        var arrind = this.travelerInfo._classesForAdult.indexOf("closeIconChooseGuest");
-                        if (arrind != -1) {
-                            this.travelerInfo._classesForAdult.splice(arrind, 1);
-                        }
-                        if (this.travelerInfo._classesForAdult.indexOf("closeIconAdult") === -1) {
-                            this.travelerInfo._classesForAdult.push("closeIconAdult");
-                        }
+                        this.travelerInfo._isCloseButtonHidden = false;
                     }
                     if (this.type === 'Child') {
-                        // var closeIconC = this.parentElement.querySelector("#closeIconChild" + (this.index));
-                        // closeIconC.classList.remove("closeIconChooseGuest");
-                        // closeIconC.classList.add("closeIconChild");
-                        var arrind = this.travelerInfo._classesForChild.indexOf("closeIconChooseGuest");
-                        if (arrind != -1) {
-                            this.travelerInfo._classesForChild.splice(arrind, 1);
-                        }
-                        if (this.travelerInfo._classesForChild.indexOf("closeIconChild") === -1) {
-                            this.travelerInfo._classesForChild.push("closeIconChild");
-                        }
+                        this.travelerInfo._isCloseButtonChildHidden = false;
                     }
                     this._showChooseGuest = true;
                     this._showPaxInfoFields = false;
@@ -1373,7 +1296,7 @@
                     this.emailValue = '';
                     this.countryCodeValue = 0;
                     this.contactNumberValue = '';
-                    this._firstNameInvalid = false;
+                    this.firstNameInvalid = false;
                     this._lastNameInvalid = false;
                     this._titleInvalid = false;
                     this._emailInvalid = false;
@@ -1382,31 +1305,11 @@
                     this._showChooseGuest = true;
                     this._showPaxInfoFields = false;
                     if (this.type === 'Adult') {
-                        // this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.remove(
-                        //     "closeIconChooseGuest");
-                        // this.parentElement.querySelector("#closeIconAdult" + (this.index)).classList.add(
-                        //     "closeIconAdult");
-                        var arrind = this.travelerInfo._classesForAdult.indexOf("closeIconChooseGuest");
-                        if (arrind != -1) {
-                            this.travelerInfo._classesForAdult.splice(arrind, 1);
-                        }
-                        if (this.travelerInfo._classesForAdult.indexOf("closeIconAdult") === -1) {
-                            this.travelerInfo._classesForAdult.push("closeIconAdult");
-                        }
-                    }
 
+                        this.travelerInfo._isCloseButtonHidden = false;
+                    }
                     if (this.type === 'Child') {
-                        // this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.remove(
-                        //     "closeIconChooseGuest");
-                        // this.parentElement.querySelector("#closeIconChild" + (this.index)).classList.add(
-                        //     "closeIconAdult");
-                        var arrind = this.travelerInfo._classesForChild.indexOf("closeIconChooseGuest");
-                        if (arrind != -1) {
-                            this.travelerInfo._classesForChild.splice(arrind, 1);
-                        }
-                        if (this.travelerInfo._classesForChild.indexOf("closeIconChild") === -1) {
-                            this.travelerInfo._classesForChild.push("closeIconChild");
-                        }
+                        this.travelerInfo._isCloseButtonChildHidden = false;
                     }
                     var len = this.indexArray.length;
                     var sc = window.pageYOffset;
@@ -1659,8 +1562,6 @@
                     }
                 }
             }
-
-
         }
         window.customElements.define(PaxInfo.is, PaxInfo);
     </script>

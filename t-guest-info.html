@@ -458,7 +458,6 @@
             ready() {
                     super.ready();
                     this._setDefaultResourcesvalue();
-                    this._totalPaxListObject = [];
                     if (this.paxlist.length === 0) {
                         this.paxListAvailable = false;
                         this.paxList = [];
@@ -490,61 +489,32 @@
                  *Function to check validation of all fields for all rooms and products.
                  **/
             isValidGuest() {
-                    var validRoomData = [];
                     var valid;
+                    var validData = [];
                     var productLength = this.product.length;
+                    var roomsLength = 0;
                     for (var i = 0; i < productLength; i++) {
-                        var roomsLength = this.product[i].rooms.length;
-                        var validData = [];
-                        for (var j = 0; j < roomsLength; j++) {
-                            validData[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).isValid();
+                        roomsLength = this.product[i].rooms.length + roomsLength;
+                    }
+                    for (var j = 0; j < roomsLength; j++) {
+                        validData[j] = this.shadowRoot.querySelectorAll('t-traveler-info')[j].isValid();
+                    }
+                    for (var j = 0; j < roomsLength; j++) {
+                        if (validData[j] === false) {
+                            valid = false;
+                        } else {
+                            valid = true;
                         }
-                        for (var j = 0; j < roomsLength; j++) {
-                            if (validData[j] === false) {
-                                valid = false;
-                            } else {
-                                valid = true;
-                            }
-                        }
-                        validRoomData[i] = validData;
                     }
                     return valid;
                 }
                 /**
                  *Function to collect data for all rooms and products.
                  **/
-            isData() {
-                    var prodLen = this._totalPaxListObject.length;
-                    for (var i = 0; i < prodLen; i++) {
-                        var roomLen = this._totalPaxListObject[i].totalPaxObject.paxListObj.length;
-                        for (var j = 0; j < roomLen; j++) {
-                            var paxLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj.length;
-
-                        }
-                    }
-
-                    var totalData = [];
-                    var totalProductPaxArray = [];
-                    var prodLen = this.product.length;
-                    for (var i = 0; i < prodLen; i++) {
-                        var data = [];
-                        var productPaxArray = [];
-                        var roomLen = this.product[i].rooms.length;
-                        for (var j = 0; j < roomLen; j++) {
-                            var productPax = {};
-                            productPax.ProductId = this.product[i].id;
-                            productPax.subProductId = this.product[i].rooms[j].id;
-                            data[j] = this.shadowRoot.querySelector("#travelerInfo" + (i + 1) + (j + 1)).getState(event);
-                            productPax.paxList = data[j];
-                            var productPax1 = productPax;
-                            productPaxArray[j] = productPax1;
-                        }
-                        totalProductPaxArray[i] = productPaxArray;
-                        totalData[i] = data;
-                    };
-                    console.log(totalProductPaxArray);
-                    console.log(totalData);
+            getData() {
+                    var totalData = this._totalPaxListObject;
                     var loyaltyTotalData = [];
+                    var prodLen = this.product.length;
                     for (var i = 0; i < prodLen; i++) {
                         if (this.product[i].allowLoyalty === true) {
                             loyaltyTotalData[i] = this._getLoyaltyProgramData(i);

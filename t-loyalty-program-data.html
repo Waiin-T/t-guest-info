@@ -381,7 +381,6 @@
                     var paxListArray = this.paxList;
                     var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
                     this.programNameValue = programNameIndex;
-                    var programNumber = this.shadowRoot.querySelector("#programNumber" + e.currentTarget.id);
                     this.programNumberValue = paxListArray[paxIndex].membership.number;
                     this._guestNameInvalid = false;
                     this._programNameInvalid = false;
@@ -390,16 +389,23 @@
             }
             _updatePaxList() {
                 if (this.paxListAvailable === false) {
-                    var paxInfo = this.guestInfo.isData();
                     var paxTempArray = [];
-                    var prodLen = paxInfo.length;
+                    var prodLen = this.guestInfo._totalPaxListObject.length;
                     for (var i = 0; i < prodLen; i++) {
-                        var roomLen = paxInfo[i].length;
+                        var roomLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj.length;
                         for (var j = 0; j < roomLen; j++) {
-                            var paxLen = paxInfo[i][j].length;
+                            var paxLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj.length;
                             for (var k = 0; k < paxLen; k++) {
-                                if (paxInfo[i][j][k].firstName != null) {
-                                    paxTempArray.push(paxInfo[i][j][k]);
+                                var aPax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].adultPaxDataObject
+                                var cPax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].childPaxDataObject;
+                                if (aPax === undefined) {
+                                    if (cPax.firstName != "") {
+                                        paxTempArray.push(cPax);
+                                    }
+                                } else {
+                                    if (aPax.firstName != "") {
+                                        paxTempArray.push(aPax);
+                                    }
                                 }
                             }
                         }

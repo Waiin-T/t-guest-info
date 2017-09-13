@@ -269,10 +269,8 @@
                     .closeIconChooseGuest {
                         float: left;
                         position: absolute;
-                        margin-top: -39px;
-                        margin-left: 420px;
+                        margin-top: 23px;
                         color: #A8A8A8;
-                        visibility: hidden;
                     }
                 }
                 
@@ -317,9 +315,10 @@
                     <div id="paxInfoTemp">
                         <pax-info id="adultPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{_paxListAdult}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{_indexArray}}" index="{{_increaseIndex(index)}}" traveler-info="{{travelerInfo}}" adult-pax-count="{{adultPaxCount}}"
-                            pax-list-available="{{paxListAvailable}}" type="{{_adultPax}}"room-number="{{roomNumber}}" guest-info="{{guestInfo}}"></pax-info>
+                            pax-list-available="{{paxListAvailable}}" type="{{_adultPax}}"room-number="{{roomNumber}}" guest-info="{{guestInfo}}" 
+                            ></pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
-                            <paper-icon-button icon="close" id="closeIcon{{_increaseIndex(index)}}" class$="{{_classesForAdultMethod()}}" on-tap="_closePaxAdultInfo"></paper-icon-button>
+                            <paper-icon-button icon="close" id="closeIcon{{_increaseIndex(index)}}" class="closeIconAdult closeIconChooseGuest" on-tap="_closePaxAdultInfo"></paper-icon-button>
                         </div>
                     </div>
                 </template>
@@ -330,7 +329,7 @@
                             index-array="{{_indexArrayChild}}" type="{{_childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
                             index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}"></pax-info>
                         <div hidden$=[[_isCloseButtonChildHidden]]>
-                            <paper-icon-button icon="close" id="closeIconChild{{_increaseIndex(index)}}" class$="{{_classesForChildMethod()}}" on-tap="_closePaxChildInfo"></paper-icon-button>
+                            <paper-icon-button icon="close" id="closeIconChild{{_increaseIndex(index)}}" class="closeIconAdult closeIconChooseGuest" on-tap="_closePaxChildInfo"></paper-icon-button>
                         </div>
                     </div>
                 </template>
@@ -552,7 +551,6 @@
                      **/
                     _isCloseButtonHidden: {
                         type: Boolean,
-                        computed: '_lessThanEqualToOne(_adultPaxCountArray.length , 1)'
                     },
                     /**
                      *@private
@@ -560,29 +558,12 @@
                      **/
                     _isCloseButtonChildHidden: {
                         type: Boolean,
-                        computed: '_lessThanEqualToOneChild()'
                     },
-                    /**
-                     *@private
-                     **/
-                    _classesForChild: {
-                        type: Array,
-                        value: ['closeIconChild']
-                    },
-                    /**
-                     *@private
-                     **/
-                    _classesForAdult: {
-                        type: Array,
-                        value: ['closeIconAdult']
-                    }
                 };
             }
             ready() {
                     super.ready();
                     var leadPaxInfo = this.onlyLeadPaxInfo;
-                    // this._classesForChild = ['closeIconChild'];
-                    // this._classesForAdult = ['closeIconAdult'];
                     if (leadPaxInfo === true) {
                         this.adultPaxCount = 1;
                         this.childPaxCount = 0;
@@ -622,6 +603,8 @@
                     this._hideDashForMobileViewMethod();
                     this._getAdultPaxList();
                     this._getChildPaxList();
+                    this._isCloseButtonHidden = this._lessThanEqualToOne(this._adultPaxCountArray.length, 1);
+                    this._isCloseButtonChildHidden = this._lessThanEqualToOneChild();
                     this.travelerInfo = this;
                     this._indexArray = [];
                     this._indexArrayChild = [];
@@ -629,60 +612,14 @@
                 /**
                  *TO collect data from a room.
                  **/
-            getState(event) {
+            getState() {
                 var tempArray = this._adultPaxCountArray.concat(this._childPaxCountArray);
                 this.guestInfo._totalPaxListObject[this.productNo].totalPaxObject.paxListObj[this.roomNumber - 1].roomDataObject.paxListObj = tempArray;
-                var adultPaxDataArray = this._adultPaxCountArray;
-                for (var i = 0; i < this.adultPaxCount; i++) {
-                    var adultPax = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i + 1));
-                    // adultPaxDataArray[i] = adultPax.collectData();
-                    if (adultPax.shadowRoot.querySelector("#adultFirstName") === undefined) {
-                        aduadultPaxlt._firstNameInvalid = false;
-                    }
-                }
-                for (var i = 0; i < adultPaxDataArray.length; i++) {
-                    for (var j = i + 1; j < adultPaxDataArray.length; j++) {
-                        var adult = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (j +
-                            1));
-                        if (this._compareCaseInsensitive(adultPaxDataArray[i].firstName, adultPaxDataArray[j].firstName) &&
-                            this._compareCaseInsensitive(adultPaxDataArray[i].lastName, adultPaxDataArray[j].lastName)) {
-                            adult._firstNameInvalid = true;
-                            adult._ShowDuplicateGuest = false;
-                        } else if (adult.firstNameValue != undefined &&
-                            adult.firstNameValue != "") {
-                            adult._firstNameInvalid = false;
-                        }
-                    }
-                }
-                var childPaxDataArray = this._childPaxCountArray;
-                for (var i = 0; i < this.childPaxCount; i++) {
-                    var child = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (i +
-                        1));
-                    // childPaxDataArray[i] = child.collectData();
-                    if (child.shadowRoot.querySelector("#adultFirstName") === undefined) {
-                        child._firstNameInvalid = false;
-                    }
-                }
-                for (var i = 0; i < childPaxDataArray.length; i++) {
-                    for (var j = i + 1; j < childPaxDataArray.length; j++) {
-                        var child = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (j +
-                            1));
-                        if (this._compareCaseInsensitive(childPaxDataArray[i].firstName, childPaxDataArray[j].firstName) &&
-                            this._compareCaseInsensitive(childPaxDataArray[i].lastName, childPaxDataArray[j].lastName)) {
-                            child._firstNameInvalid = true;
-                            child._ShowDuplicateGuest = false;
-                        } else
-                        if (child.firstNameValue != undefined && firstNameValue != "") {
-                            child._firstNameInvalid = false;
-                        }
-                    }
-                }
-                var paxListArray = adultPaxDataArray.concat(childPaxDataArray);
-                this.paxList = JSON.parse(JSON.stringify(paxListArray));
-                return this.paxList;
+
+                // return this.paxList;
             }
             _compareCaseInsensitive(s1, s2) {
-                if (s1 == undefined || s2 == undefined) {
+                if (s1 == undefined || s2 == undefined || s1 === "" || s2 === "") {
                     return false;
                 }
                 if (s1.toLowerCase() === s2.toLowerCase()) {
@@ -690,16 +627,6 @@
                 } else {
                     return false;
                 }
-            }
-            _classesForAdultMethod() {
-                var arr = this._classesForAdult.toString();
-                arr.replace(",", " ");
-                return arr;
-            }
-            _classesForChildMethod() {
-                var arr = this._classesForChild.toString();
-                arr.replace(",", " ");
-                return arr;
             }
             setState(paxList) {
                     var count = this.adultPaxCount + this.childPaxCount;
@@ -728,8 +655,10 @@
                     var adultPaxInfoArray = [];
                     var validData = true;
                     for (var i = 1; i <= this.adultPaxCount; i++) {
-                        adultPaxInfoArray[i] = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (i))
-                            .isValidPaxInfo();
+                        if (this.shadowRoot.querySelectorAll('pax-info')[i].type = "Adult") {
+                            adultPaxInfoArray[i] = this.shadowRoot.querySelectorAll('pax-info')[i]
+                                .isValidPaxInfo();
+                        }
                     }
                     for (var i = 1; i <= this.adultPaxCount; i++) {
                         if (adultPaxInfoArray[i] === true) {
@@ -749,8 +678,10 @@
                 var childPaxInfoArray = [];
                 var validData = true;
                 for (var i = 1; i <= this.childPaxCount; i++) {
-                    childPaxInfoArray[i] = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (i))
-                        .isValidPaxInfo();
+                    if (this.shadowRoot.querySelectorAll('pax-info')[i].type = "Child") {
+                        childPaxInfoArray[i] = this.shadowRoot.querySelectorAll('pax-info')[i]
+                            .isValidPaxInfo();
+                    }
                 }
                 for (var i = 1; i <= this.childPaxCount; i++) {
                     if (childPaxInfoArray[i] === true) {
@@ -788,18 +719,37 @@
                  *To hide dash in between title and subtitle at mobileview.
                  **/
             _hideDashForMobileViewMethod() {
-                    if (this.smallMobileView === true || this.mobileView === true) {
-                        this._hideDashForMobileView = true;
-                    } else {
-                        this._hideDashForMobileView = false;
+                if (this.smallMobileView === true || this.mobileView === true) {
+                    this._hideDashForMobileView = true;
+                } else {
+                    this._hideDashForMobileView = false;
+                }
+            }
+            _checkReferenceforAdult(e) {
+                var count = this.adultPaxCount + this.childPaxCount;
+                for (var i = 0; i < count; i++) {
+                    if (this.shadowRoot.querySelectorAll('pax-info')[i].type === "Adult") {
+                        if (this.shadowRoot.querySelectorAll('pax-info')[i].index === e.model.index + 1) {
+                            return this.shadowRoot.querySelectorAll('pax-info')[i];
+                        }
+                    }
+                }
+            }
+            _checkReferenceforChild(e) {
+                    var count = this.adultPaxCount + this.childPaxCount;
+                    for (var i = 0; i < count; i++) {
+                        if (this.shadowRoot.querySelectorAll('pax-info')[i].type === "Child") {
+                            if (this.shadowRoot.querySelectorAll('pax-info')[i].index === e.model.index + 1) {
+                                return this.shadowRoot.querySelectorAll('pax-info')[i];
+                            }
+                        }
                     }
                 }
                 /**
                  *on click of close button for adult pax.
                  **/
             _closePaxAdultInfo(e) {
-                    var adultPaxInfoVar = this.shadowRoot.querySelector("#adultPaxInfo" + this.roomNumber + (e.model
-                        .index + 1));
+                    var adultPaxInfoVar = this._checkReferenceforAdult(e);
                     var firstName = adultPaxInfoVar.firstNameValue;
                     if (this.paxListAvailable === false) {
                         var paxL = adultPaxInfoVar._loadPaxList(e);
@@ -815,24 +765,14 @@
                     adultPaxInfoVar._showChooseGuestDuplicateError = true;
                     adultPaxInfoVar._showPaxInfoFields = true;
                     adultPaxInfoVar._chooseGuestInvalid = false;
-                    // var closeIconAdultVar = this.shadowRoot.querySelector("#closeIconAdult" + (e.model.index + 1))
-                    // closeIconAdultVar.classList.add("closeIconChooseGuest");
-                    // closeIconAdultVar.classList.remove("closeIconAdult");
-
-                    var arrind = this._classesForAdult.indexOf("closeIconAdult");
-                    if (arrind != -1) {
-                        this._classesForAdult.splice(arrind, 1);
-                    }
-                    this._classesForAdult.push("closeIconChooseGuest");
-
+                    this._isCloseButtonHidden = true;
                     adultPaxInfoVar.chooseGuestValue = -1;
                 }
                 /**
                  *On click of close button of child pax.
                  **/
             _closePaxChildInfo(e) {
-                    var childPaxInfoVar = this.shadowRoot.querySelector("#childPaxInfo" + this.roomNumber + (e.model
-                        .index + 1));
+                    var childPaxInfoVar = this._checkReferenceforChild(e);
                     var firstName = childPaxInfoVar.firstNameValue;
                     if (this.paxListAvailable === false) {
                         var paxL = childPaxInfoVar._loadPaxList(e);
@@ -848,16 +788,7 @@
                     childPaxInfoVar._showChooseGuestDuplicateError = true;
                     childPaxInfoVar._showPaxInfoFields = true;
                     childPaxInfoVar._chooseGuestInvalid = false;
-                    // var closeIconchildVar = this.shadowRoot.querySelector("#closeIconChild" + (e.model.index +
-                    //     1))
-                    // closeIconchildVar.classList.add("closeIconChooseGuest");
-                    // closeIconchildVar.classList.remove("closeIconChild");
-
-                    var arrind = this._classesForChild.indexOf("closeIconChild");
-                    if (arrind != -1) {
-                        this._classesForChild.splice(arrind, 1);
-                    }
-                    this._classesForChild.push("closeIconChooseGuest");
+                    this._isCloseButtonChildHidden = true;
                     childPaxInfoVar.chooseGuestValue = -1;
                 }
                 /**
