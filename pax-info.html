@@ -961,62 +961,63 @@
                 });
             }
             isValidPaxInfo() {
-                    if (this.chooseGuestValue = -1) {
-                        this._chooseGuestInvalid = true;
-                        this._showChooseGuestError = false;
-                        this._showChooseGuestDuplicateError = true;
-                    }
-                    if (this.titleValue === -1) {
-                        this._titleInvalid = true;
-                    }
-                    if ((this.firstNameValue === undefined || this.firstNameValue === "") &&
-                        this._requiredField.includes("firstname") === true) {
-                        this._firstNameInvalid = true;
-                        this._showFirstNameError = false;
-                    }
-                    if ((this.lastNameValue === undefined || this.lastNameValue === "") &&
-                        this._requiredField.includes("lastname") === true) {
-                        this._lastNameInvalid = true;
-                        this._showLastNameError = false;
-                    }
-                    if ((this.emailValue === undefined || this.emailValue === "") && (this._requiredField.includes("email") === true ||
-                            (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
-                        if (this.type != "Child") {
-                            this._emailInvalid = true;
-                            this._showEmailError = false;
-                            if (this._showEmailAddress === true) {
-                                this._showEmailError = true;
-                            }
-                        }
-                    }
-                    if (this.countryCodeValue === -1) {
-                        this._countryCodeInvalid = true;
-                    }
-                    if ((this.contactNumberValue === undefined || this.contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
-                            (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
-                        if (this.type != "Child") {
-                            this._contactNumberInvalid = true;
-                            this._showContactNumberError = false;
-                            if (this._showContactNumber === true) {
-                                this._showContactNumberError = true;
-                            }
-                        }
-                    }
-                    if (this.index === 1 && this.type === 'Adult') {
-                        if (this._firstNameInvalid || this._lastNameInvalid ||
-                            this._contactNumberInvalid || this._emailInvalid ||
-                            this._countryCodeInvalid || this._titleInvalid) {
-                            return true;
-                        }
-                    } else {
-                        if (this._firstNameInvalid || this._lastNameInvalid) {
-                            return true;
+                if (this.chooseGuestValue = -1) {
+                    this._chooseGuestInvalid = true;
+                    this._showChooseGuestError = false;
+                    this._showChooseGuestDuplicateError = true;
+                }
+                if (this.titleValue === -1) {
+                    this._titleInvalid = true;
+                }
+                if ((this.firstNameValue === undefined || this.firstNameValue === "") &&
+                    this._requiredField.includes("firstname") === true) {
+                    this._firstNameInvalid = true;
+                    this._showFirstNameError = false;
+                }
+                if ((this.lastNameValue === undefined || this.lastNameValue === "") &&
+                    this._requiredField.includes("lastname") === true) {
+                    this._lastNameInvalid = true;
+                    this._showLastNameError = false;
+                }
+                if ((this.emailValue === undefined || this.emailValue === "") && (this._requiredField.includes("email") === true ||
+                        (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
+                    if (this.type != "Child") {
+                        this._emailInvalid = true;
+                        this._showEmailError = false;
+                        if (this._showEmailAddress === true) {
+                            this._showEmailError = true;
                         }
                     }
                 }
-                /*
-                 **Function to load paxlist for choose guest dropdown when paxlist is not given.
-                 */
+                if (this.countryCodeValue === -1) {
+                    this._countryCodeInvalid = true;
+                }
+                if ((this.contactNumberValue === undefined || this.contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
+                        (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
+                    if (this.type != "Child") {
+                        this._contactNumberInvalid = true;
+                        this._showContactNumberError = false;
+                        if (this._showContactNumber === true) {
+                            this._showContactNumberError = true;
+                        }
+                    }
+                }
+                if (this.index === 1 && this.type === 'Adult') {
+                    if (this._firstNameInvalid || this._lastNameInvalid ||
+                        this._contactNumberInvalid || this._emailInvalid ||
+                        this._countryCodeInvalid || this._titleInvalid) {
+                        return true;
+                    }
+                } else {
+                    if (this._firstNameInvalid || this._lastNameInvalid) {
+                        return true;
+                    }
+                }
+            }
+
+            /*
+             **Function to load paxlist for choose guest dropdown when paxlist is not given.
+             */
             _isDuplicatePax(paxList, firstName, lastName) {
                 if (paxList.length == 0) {
                     return false;
@@ -1051,39 +1052,41 @@
                 return this._paxTempArray;
             }
             _loadPaxList(e) {
-                    if (this.paxListAvailable === false) {
-                        var paxList = this._totalPaxList(e);
-                        if (this.type === 'Adult') {
-                            var adults = paxList.filter(function(item) {
-                                return item.type.toLowerCase() === 'adult';
-                            });
-                            this._tempPaxArray = adults;
-                        } else if (this.type === 'Child') {
-                            var child = paxList.filter(function(item) {
-                                return item.type.toLowerCase() === 'child';
-                            });
-                            this._tempPaxArray = child;
-                        }
-                    } else {
-                        this._tempPaxArray = this.paxList;
+                if (this.paxListAvailable === false) {
+                    var paxList = this._totalPaxList(e);
+                    if (this.type === 'Adult') {
+                        var adults = paxList.filter(function(item) {
+                            return item.type.toLowerCase() === 'adult';
+                        });
+                        this._tempPaxArray = adults;
+                    } else if (this.type === 'Child') {
+                        var child = paxList.filter(function(item) {
+                            return item.type.toLowerCase() === 'child';
+                        });
+                        this._tempPaxArray = child;
                     }
-                    if (this._tempPaxArray.length === 0) {
-                        this._ShowIfPaxListAvailabel = true;
-                    } else {
-                        this._ShowIfPaxListAvailabel = false;
-                    }
-                    console.log(this._tempPaxArray);
-                    return this._tempPaxArray;
+                } else {
+                    this._tempPaxArray = this.paxList;
                 }
-                /**
-                 *To do validation on blur of each input fields.
-                 **/
+                if (this._tempPaxArray.length === 0) {
+                    this._ShowIfPaxListAvailabel = true;
+                } else {
+                    this._ShowIfPaxListAvailabel = false;
+                }
+                console.log(this._tempPaxArray);
+                return this._tempPaxArray;
+            }
+
+            /**
+             *To do validation on blur of each input fields.
+             **/
 
             _validationOnBlur(idString) {
                 if (idString === "adultFirstName") {
                     if ((this.firstNameValue === undefined || this.firstNameValue === "") && this._requiredField.includes("firstname") === true) {
                         this._firstNameInvalid = true;
                         this._showFirstNameError = false;
+                        this._ShowDuplicateGuest = true;
                     } else {
                         this._firstNameInvalid = false;
                         this._showFirstNameError = true;
@@ -1186,17 +1189,14 @@
             }
 
             _updateValidation(event) {
-                    this.travelerInfo.getState();
-                    this._validationOnBlur(event.currentTarget.id);
-                    this._collectDataOnBlur();
-                    this._duplicateGuestValidation(this.travelerInfo._adultPaxCountArray);
-                    if (this.type === "Child") {
-                        this._duplicateGuestValidation(this.travelerInfo._childPaxCountArray);
-                    }
+                this.travelerInfo.getState();
+                this._validationOnBlur(event.currentTarget.id);
+                this._collectDataOnBlur();
+                this._duplicateGuestValidation(this.travelerInfo._adultPaxCountArray);
+                if (this.type === "Child") {
+                    this._duplicateGuestValidation(this.travelerInfo._childPaxCountArray);
                 }
-                /*
-                 **To check validation of a pax on fire of final validation.
-                 */
+            }
 
             /**
              *To show the pax Info input fields on click of element of choose guest dropdown.
