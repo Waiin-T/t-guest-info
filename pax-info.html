@@ -457,9 +457,9 @@
         </div>
 
         <div id="adultFirstNamediv">
-            <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}" value="{{firstNameValue}}" invalid="{{firstNameInvalid}}"></paper-input>
+            <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}" value="{{firstNameValue}}" invalid="{{_firstNameInvalid}}"></paper-input>
             <div id="adultFirstNameError" hidden$="{{_showFirstNameError}}">{{_firstNameError}}</div>
-            <div id="adultFirstNameError" hidden$="{{ShowDuplicateGuest}}">{{_duplicateError}}</div>
+            <div id="adultFirstNameError" hidden$="{{_ShowDuplicateGuest}}">{{_duplicateError}}</div>
         </div>
         <div id="adultLastNamediv">
             <paper-input label="{{_lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_lastNameError}}" value="{{lastNameValue}}" invalid="{{_lastNameInvalid}}"></paper-input>
@@ -550,7 +550,7 @@
                     },
                     _chooseGuestInvalid: String,
                     _titleInvalid: String,
-                    firstNameInvalid: Boolean,
+                    _firstNameInvalid: Boolean,
                     _lastNameInvalid: String,
                     _emailInvalid: String,
                     _countryCodeInvalid: String,
@@ -623,7 +623,7 @@
                     /**
                      *@private
                      **/
-                    ShowDuplicateGuest: {
+                    _ShowDuplicateGuest: {
                         type: Boolean,
                         value: true
                     },
@@ -971,7 +971,7 @@
                     }
                     if ((this.firstNameValue === undefined || this.firstNameValue === "") &&
                         this._requiredField.includes("firstname") === true) {
-                        this.firstNameInvalid = true;
+                        this._firstNameInvalid = true;
                         this._showFirstNameError = false;
                     }
                     if ((this.lastNameValue === undefined || this.lastNameValue === "") &&
@@ -1003,13 +1003,13 @@
                         }
                     }
                     if (this.index === 1 && this.type === 'Adult') {
-                        if (this.firstNameInvalid || this._lastNameInvalid ||
+                        if (this._firstNameInvalid || this._lastNameInvalid ||
                             this._contactNumberInvalid || this._emailInvalid ||
                             this._countryCodeInvalid || this._titleInvalid) {
                             return true;
                         }
                     } else {
-                        if (this.firstNameInvalid || this._lastNameInvalid) {
+                        if (this._firstNameInvalid || this._lastNameInvalid) {
                             return true;
                         }
                     }
@@ -1079,126 +1079,119 @@
                  *To do validation on blur of each input fields.
                  **/
 
-            _updateValidation(event) {
-                    this.travelerInfo.getState();
-                    if (event.currentTarget.id === "adultFirstName") {
-                        if ((this.firstNameValue === undefined || this.firstNameValue === "") && this._requiredField.includes("firstname") === true) {
-                            this.firstNameInvalid = true;
-                            this._showFirstNameError = false;
-                        } else {
-                            this.firstNameInvalid = false;
-                            this._showFirstNameError = true;
-                            this.ShowDuplicateGuest = true;
-                        }
+            _validationOnBlur(idString) {
+                if (idString === "adultFirstName") {
+                    if ((this.firstNameValue === undefined || this.firstNameValue === "") && this._requiredField.includes("firstname") === true) {
+                        this._firstNameInvalid = true;
+                        this._showFirstNameError = false;
+                    } else {
+                        this._firstNameInvalid = false;
+                        this._showFirstNameError = true;
+                        this._ShowDuplicateGuest = true;
                     }
-                    if (event.currentTarget.id === "adultLastName") {
-                        if ((this.lastNameValue === undefined || this.lastNameValue === "") && this._requiredField.includes("lastname") === true) {
-                            this._lastNameInvalid = true;
-                            this._showLastNameError = false;
-                        } else {
-                            this._lastNameInvalid = false;
-                            this._showLastNameError = true;
-                        }
+                }
+                if (idString === "adultLastName") {
+                    if ((this.lastNameValue === undefined || this.lastNameValue === "") && this._requiredField.includes("lastname") === true) {
+                        this._lastNameInvalid = true;
+                        this._showLastNameError = false;
+                    } else {
+                        this._lastNameInvalid = false;
+                        this._showLastNameError = true;
                     }
-                    if (event.currentTarget.id === "adultEmail") {
-                        if ((this.emailValue === undefined || this.emailValue === "") && (this._requiredField.includes("email") === true ||
-                                (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
-                            if (this.type === "Adult") {
-                                this._emailInvalid = true;
-                                this._showEmailError = false;
-                                this._showEmailAddressInfo = true;
-                            }
-                        } else {
-                            this._showInvalidEmail();
-                        }
-                        if (this.emailValue === "") {
+                }
+                if (idString === "adultEmail") {
+                    if ((this.emailValue === undefined || this.emailValue === "") && (this._requiredField.includes("email") === true ||
+                            (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
+                        if (this.type === "Adult") {
+                            this._emailInvalid = true;
+                            this._showEmailError = false;
                             this._showEmailAddressInfo = true;
                         }
+                    } else {
+                        this._showInvalidEmail();
                     }
-                    if (event.currentTarget.id === "adultContactNo") {
-                        if ((this.contactNumberValue === undefined || this.contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
-                                (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
-                            if (this.type === "Adult") {
-                                this._contactNumberInvalid = true;
-                                this._showContactNumberError = false;
-                            }
-                        } else {
-                            this._showInvalidContact();
-                        }
+                    if (this.emailValue === "") {
+                        this._showEmailAddressInfo = true;
                     }
-                    var indexArray = this.index - 1;
-                    if (this.type === "Adult") {
-                        this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.firstName = this.firstNameValue;
-                        this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.lastName = this.lastNameValue;
-                        if (this.index === 1) {
-                            if (this._allowTitleForLeadPax === true) {
-                                this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.title = this._titleValues[this.titleValue].key;
-                            }
-                            if (this._allowEmailForLeadPax === true) {
-                                this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.email = this.emailValue;
-                            }
-                            if (this._allowContactNumberForLeadPax === true) {
-                                this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
-                                this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.contactNumber = this.contactNumberValue;
-                            }
-                        } else {
-                            if (this.allowTitle === true) {
-                                this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.title = this._titleValues[this.titleValue].key;
-                            }
-                            if (this.allowEmail === true) {
-                                this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.email = this.emailValue;
-                            }
-                            if (this.allowContactNumber === true) {
-                                this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
-                                this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.contactNumber = this.contactNumberValue;
-                            }
+                }
+                if (idString === "adultContactNo") {
+                    if ((this.contactNumberValue === undefined || this.contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
+                            (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
+                        if (this.type === "Adult") {
+                            this._contactNumberInvalid = true;
+                            this._showContactNumberError = false;
                         }
                     } else {
-                        this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.firstName = this.firstNameValue;
-                        this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.lastName = this.lastNameValue;
-                        if (this.allowTitle === true) {
-                            this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.title = this._titleValues[this.titleValue].key;
+                        this._showInvalidContact();
+                    }
+                }
+            }
+            _collectDataOnBlur() {
+                var indexArray = this.index - 1;
+                if (this.type === "Adult") {
+                    this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.firstName = this.firstNameValue;
+                    this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.lastName = this.lastNameValue;
+                    if (this.index === 1) {
+                        if (this._allowTitleForLeadPax === true) {
+                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.title = this._titleValues[this.titleValue].key;
                         }
-                        if (this.allowEmail === true) {
-                            this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.email = this.emailValue;
+                        if (this._allowEmailForLeadPax === true) {
+                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.email = this.emailValue;
                         }
-                        if (this.allowContactNumber === true) {
-                            this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
-                            this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.contactNumber = this.contactNumberValue;
+                        if (this._allowContactNumberForLeadPax === true) {
+                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
+                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.contact = this.contactNumberValue;
+                        }
+                    } else {
+                        if (this._allowTitle === true) {
+                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.title = this._titleValues[this.titleValue].key;
+                        }
+                        if (this._allowEmail === true) {
+                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.email = this.emailValue;
+                        }
+                        if (this._allowContactNumber === true) {
+                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
+                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.contact = this.contactNumberValue;
                         }
                     }
-                    this.travelerInfo._adultPaxCountArray.concat(this.travelerInfo._childPaxCountArray);
-                    var adultPaxDataArray = this.travelerInfo._adultPaxCountArray
-                    for (var i = 0; i < this.adultPaxCount; i++) {
-                        this.firstNameInvalid = false;
+                } else {
+                    this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.firstName = this.firstNameValue;
+                    this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.lastName = this.lastNameValue;
+                    if (this._allowTitle === true) {
+                        this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.title = this._titleValues[this.titleValue].key;
                     }
-                    for (var j = 0; j < adultPaxDataArray.length; j++) {
-                        if (this.travelerInfo._compareCaseInsensitive(adultPaxDataArray[indexArray].paxDataObject.firstName, adultPaxDataArray[j].paxDataObject.firstName) &&
-                            this.travelerInfo._compareCaseInsensitive(adultPaxDataArray[indexArray].paxDataObject.lastName, adultPaxDataArray[j].paxDataObject.lastName) &&
-                            indexArray != j) {
-                            this.firstNameInvalid = true;
-                            this.ShowDuplicateGuest = false;
-                        } else if (adultPaxDataArray[j].firstName != undefined &&
-                            adultPaxDataArray[j].firstName != "") {
-                            this.firstNameInvalid = false;
-                        }
+                    if (this._allowEmail === true) {
+                        this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.email = this.emailValue;
                     }
+                    if (this._allowContactNumber === true) {
+                        this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
+                        this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.contact = this.contactNumberValue;
+                    }
+                }
+                this.travelerInfo._adultPaxCountArray.concat(this.travelerInfo._childPaxCountArray);
+            }
+            _duplicateGuestValidation(arrForPax) {
+                var indexArray = this.index - 1;
+                for (var j = 0; j < arrForPax.length; j++) {
+                    if (this.travelerInfo._compareCaseInsensitive(arrForPax[indexArray].paxDataObject.firstName, arrForPax[j].paxDataObject.firstName) &&
+                        this.travelerInfo._compareCaseInsensitive(arrForPax[indexArray].paxDataObject.lastName, arrForPax[j].paxDataObject.lastName) &&
+                        indexArray != j) {
+                        this._firstNameInvalid = true;
+                        this._ShowDuplicateGuest = false;
+                    } else if (arrForPax[j].firstName != undefined &&
+                        arrForPax[j].firstName != "") {
+                        this._firstNameInvalid = false;
+                    }
+                }
+            }
+
+            _updateValidation(event) {
+                    this.travelerInfo.getState();
+                    this._validationOnBlur(event.currentTarget.id);
+                    this._collectDataOnBlur();
+                    this._duplicateGuestValidation(this.travelerInfo._adultPaxCountArray);
                     if (this.type === "Child") {
-                        var childPaxDataArray = this.travelerInfo._childPaxCountArray;
-                        for (var i = 0; i < this.travelerInfo._childPaxCountArray.length; i++) {
-                            this.firstNameInvalid = false;
-                        }
-                        for (var j = 0; j < childPaxDataArray.length; j++) {
-                            if (this.travelerInfo._compareCaseInsensitive(childPaxDataArray[indexArray].paxDataObject.firstName, childPaxDataArray[j].paxDataObject.firstName) &&
-                                this.travelerInfo._compareCaseInsensitive(childPaxDataArray[indexArray].paxDataObject.lastName, childPaxDataArray[j].paxDataObject.lastName) &&
-                                indexArray != j) {
-                                this.firstNameInvalid = true;
-                                this.ShowDuplicateGuest = false;
-                            } else if (childPaxDataArray[j].firstName != undefined &&
-                                childPaxDataArray[j].firstName != "") {
-                                this.firstNameInvalid = false;
-                            }
-                        }
+                        this._duplicateGuestValidation(this.travelerInfo._childPaxCountArray);
                     }
                 }
                 /*
@@ -1209,8 +1202,7 @@
              *To show the pax Info input fields on click of element of choose guest dropdown.
              **/
             _showPaxInfoFieldsMethod(e) {
-                this.travelerInfo.getState()
-                ''
+                this.travelerInfo.getState();
                 var paxIndex = e.model.index;
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
                 if (flag == false) {
@@ -1225,7 +1217,7 @@
                     this._showEmailError = true;
                     this._showContactNumberError = true;
                     this._showContactNumberInvalidError = true;
-                    this.firstNameInvalid = false;
+                    this._firstNameInvalid = false;
                     this._lastNameInvalid = false;
                     this._titleInvalid = false;
                     this._emailInvalid = false;
@@ -1254,7 +1246,7 @@
                     }
                     this.countryCodeValue = countryCodeIndex;
                     this.contactNumberValue = paxListArray[paxIndex].contact;
-                    this.firstNameInvalid = false;
+                    this._firstNameInvalid = false;
                     this.travelerInfo._toggleCloseButtonClass(this.index, this.type);
                     this._showChooseGuest = true;
                     this._showPaxInfoFields = false;
@@ -1291,7 +1283,7 @@
                     this.emailValue = '';
                     this.countryCodeValue = 0;
                     this.contactNumberValue = '';
-                    this.firstNameInvalid = false;
+                    this._firstNameInvalid = false;
                     this._lastNameInvalid = false;
                     this._titleInvalid = false;
                     this._emailInvalid = false;
