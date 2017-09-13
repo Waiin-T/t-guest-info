@@ -308,18 +308,14 @@
             _isValidLoyalty(index, e, guestNameValue, programNameValue, programNumberValue) {
                 var count = this.loyaltyPrograms.length;
                 for (var i = 0; i < count; i++) {
-                    var parent = this.shadowRoot.querySelector("#div" + i);
-                    var tLoyalty = parent.querySelector("#tLoyaltyProgramDataID" + i);
-                    if (parent != null || parent != undefined) {
-                        var loyaltyGuest = tLoyalty.guestNameValue;
-                        var loyaltyProgramName = tLoyalty.programNameValue;
-                        var loyaltyProgramNumber = tLoyalty.programNumberValue;
-                        if (loyaltyGuest != undefined) {
-                            if (guestNameValue === loyaltyGuest && programNameValue === loyaltyProgramName &&
-                                programNumberValue === loyaltyProgramNumber && index != i) {
-                                e.currentTarget.invalid = true;
-                                e.currentTarget.errorMessage = "duplicate record";
-                            }
+                    var loyaltyGuest = this.loyaltyPrograms[i].loyaltyProgram.guestName;
+                    var loyaltyProgramName = this.loyaltyPrograms[i].loyaltyProgram.programName;
+                    var loyaltyProgramNumber = this.loyaltyPrograms[i].loyaltyProgram.programNumber;
+                    if (loyaltyGuest != undefined) {
+                        if (guestNameValue === loyaltyGuest && programNameValue === loyaltyProgramName &&
+                            programNumberValue === loyaltyProgramNumber && index != i) {
+                            e.currentTarget.invalid = true;
+                            e.currentTarget.errorMessage = "duplicate record";
                         }
                     }
                 }
