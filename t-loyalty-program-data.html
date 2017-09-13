@@ -396,8 +396,8 @@
                         for (var j = 0; j < roomLen; j++) {
                             var paxLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj.length;
                             for (var k = 0; k < paxLen; k++) {
-                                var aPax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].adultPaxDataObject
-                                var cPax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].childPaxDataObject;
+                                var aPax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].paxDataObject
+                                var cPax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].paxDataObject;
                                 if (aPax === undefined) {
                                     if (cPax.firstName != "") {
                                         paxTempArray.push(cPax);

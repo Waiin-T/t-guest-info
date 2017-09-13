@@ -260,18 +260,20 @@
                     /*#paxInfo, #closeIcon{
                             float: left;
                         }*/
-                    .closeIconAdult,
-                    .closeIconChild {
-                        margin-top: 3%;
-                        margin-left: 6px;
-                        color: #A8A8A8;
-                    }
-                    .closeIconChooseGuest {
-                        float: left;
-                        position: absolute;
-                        margin-top: 23px;
-                        color: #A8A8A8;
-                    }
+                        .closeIconAdult,
+                        .closeIconChild {
+                            margin-top: 3%;
+                            margin-left: 6px;
+                            color: #A8A8A8;
+                        }
+                        .closeIconChooseGuest {
+                            float: left;
+                            position: absolute;
+                            margin-top: -39px;
+                            margin-left: 420px;
+                            color: #A8A8A8;
+                            visibility: hidden;
+                        }
                 }
                 
                 #paxInfoTemp {
@@ -318,7 +320,7 @@
                             pax-list-available="{{paxListAvailable}}" type="{{_adultPax}}"room-number="{{roomNumber}}" guest-info="{{guestInfo}}" 
                             ></pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
-                            <paper-icon-button icon="close" id="closeIcon{{_increaseIndex(index)}}" class="closeIconAdult closeIconChooseGuest" on-tap="_closePaxAdultInfo"></paper-icon-button>
+                            <paper-icon-button icon="close" id="closeIconAdult{{_increaseIndex(index)}}" class="closeIconChooseGuest" on-tap="_closePaxAdultInfo"></paper-icon-button>
                         </div>
                     </div>
                 </template>
@@ -329,7 +331,7 @@
                             index-array="{{_indexArrayChild}}" type="{{_childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
                             index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}"></pax-info>
                         <div hidden$=[[_isCloseButtonChildHidden]]>
-                            <paper-icon-button icon="close" id="closeIconChild{{_increaseIndex(index)}}" class="closeIconAdult closeIconChooseGuest" on-tap="_closePaxChildInfo"></paper-icon-button>
+                            <paper-icon-button icon="close" id="closeIconChild{{_increaseIndex(index)}}" class="closeIconChooseGuest" on-tap="_closePaxChildInfo"></paper-icon-button>
                         </div>
                     </div>
                 </template>
@@ -551,6 +553,7 @@
                      **/
                     _isCloseButtonHidden: {
                         type: Boolean,
+                        computed: '_lessThanEqualToOne(_adultPaxCountArray.length, 1)'
                     },
                     /**
                      *@private
@@ -558,6 +561,7 @@
                      **/
                     _isCloseButtonChildHidden: {
                         type: Boolean,
+                        computed: '_lessThanEqualToOneChild()'
                     },
                 };
             }
@@ -572,7 +576,7 @@
                     var childPax = this.childPaxCount;
                     this._adultPaxCountArray = [];
                     for (var i = 0; i < adultPax; i++) {
-                        var adultPaxDataObject = {
+                        var paxDataObject = {
                             "type": 'Adult',
                             "title": '',
                             "firstName": '',
@@ -582,12 +586,12 @@
                             "contactNumber": '',
                         };
                         this.push('_adultPaxCountArray', {
-                            adultPaxDataObject
+                            paxDataObject
                         });
                     }
                     this._childPaxCountArray = [];
                     for (var i = 0; i < childPax; i++) {
-                        var childPaxDataObject = {
+                        var paxDataObject = {
                             "type": 'Child',
                             "title": '',
                             "firstName": '',
@@ -597,14 +601,15 @@
                             "contactNumber": '',
                         };
                         this.push('_childPaxCountArray', {
-                            childPaxDataObject
+                            paxDataObject
                         });
                     }
                     this._hideDashForMobileViewMethod();
                     this._getAdultPaxList();
                     this._getChildPaxList();
-                    this._isCloseButtonHidden = this._lessThanEqualToOne(this._adultPaxCountArray.length, 1);
-                    this._isCloseButtonChildHidden = this._lessThanEqualToOneChild();
+                    // this._isCloseButtonHidden = this._lessThanEqualToOne(this._adultPaxCountArray.length, 1);
+                    // this._isCloseButtonHidden = true;
+                    // this._isCloseButtonChildHidden = this._lessThanEqualToOneChild();
                     this.travelerInfo = this;
                     this._indexArray = [];
                     this._indexArrayChild = [];
@@ -736,13 +741,23 @@
                 }
             }
             _checkReferenceforChild(e) {
-                    var count = this.adultPaxCount + this.childPaxCount;
-                    for (var i = 0; i < count; i++) {
-                        if (this.shadowRoot.querySelectorAll('pax-info')[i].type === "Child") {
-                            if (this.shadowRoot.querySelectorAll('pax-info')[i].index === e.model.index + 1) {
-                                return this.shadowRoot.querySelectorAll('pax-info')[i];
-                            }
+                var count = this.adultPaxCount + this.childPaxCount;
+                for (var i = 0; i < count; i++) {
+                    if (this.shadowRoot.querySelectorAll('pax-info')[i].type === "Child") {
+                        if (this.shadowRoot.querySelectorAll('pax-info')[i].index === e.model.index + 1) {
+                            return this.shadowRoot.querySelectorAll('pax-info')[i];
                         }
+                    }
+                }
+            }
+            _toggleCloseButtonClass(ind, paxType) {
+                    if (paxType === "Adult") {
+                        this.shadowRoot.querySelector("#closeIconAdult" + ind).classList.remove("closeIconChooseGuest");
+                        this.shadowRoot.querySelector("#closeIconAdult" + ind).classList.add("closeIconAdult");
+                    }
+                    if (paxType === "Child") {
+                        this.shadowRoot.querySelector("#closeIconChild" + ind).classList.remove("closeIconChooseGuest");
+                        this.shadowRoot.querySelector("#closeIconChild" + ind).classList.add("closeIconChild");
                     }
                 }
                 /**
@@ -765,7 +780,8 @@
                     adultPaxInfoVar._showChooseGuestDuplicateError = true;
                     adultPaxInfoVar._showPaxInfoFields = true;
                     adultPaxInfoVar._chooseGuestInvalid = false;
-                    this._isCloseButtonHidden = true;
+                    e.currentTarget.classList.add("closeIconChooseGuest");
+                    e.currentTarget.classList.remove("closeIconAdult");
                     adultPaxInfoVar.chooseGuestValue = -1;
                 }
                 /**
@@ -788,7 +804,8 @@
                     childPaxInfoVar._showChooseGuestDuplicateError = true;
                     childPaxInfoVar._showPaxInfoFields = true;
                     childPaxInfoVar._chooseGuestInvalid = false;
-                    this._isCloseButtonChildHidden = true;
+                    e.currentTarget.classList.add("closeIconChooseGuest");
+                    e.currentTarget.classList.remove("closeIconChild");
                     childPaxInfoVar.chooseGuestValue = -1;
                 }
                 /**
