@@ -317,7 +317,7 @@
                     <div id="paxInfoTemp">
                         <pax-info id="adultPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{_paxListAdult}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{_indexArray}}" index="{{_increaseIndex(index)}}" traveler-info="{{travelerInfo}}" adult-pax-count="{{adultPaxCount}}"
-                            pax-list-available="{{paxListAvailable}}" type="{{_adultPax}}"room-number="{{roomNumber}}" guest-info="{{guestInfo}}" 
+                            pax-list-available="{{paxListAvailable}}" type="{{_adultPax}}" pax-data="{{item}}" room-number="{{roomNumber}}" guest-info="{{guestInfo}}" 
                             ></pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
                             <paper-icon-button icon="close" id="closeIconAdult{{_increaseIndex(index)}}" class="closeIconChooseGuest" on-tap="_closePaxAdultInfo"></paper-icon-button>
@@ -329,7 +329,7 @@
                     <div id="paxInfoTemp">
                         <pax-info id="childPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{_paxListChild}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{_indexArrayChild}}" type="{{_childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
-                            index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}"></pax-info>
+                            index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}" pax-data="{{item}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}"></pax-info>
                         <div hidden$=[[_isCloseButtonChildHidden]]>
                             <paper-icon-button icon="close" id="closeIconChild{{_increaseIndex(index)}}" class="closeIconChooseGuest" on-tap="_closePaxChildInfo"></paper-icon-button>
                         </div>
@@ -578,11 +578,11 @@
                     for (var i = 0; i < adultPax; i++) {
                         var paxDataObject = {
                             "type": 'Adult',
-                            "title": '',
+                            "title": 0,
                             "firstName": '',
                             "lastName": '',
                             "email": '',
-                            "countryCode": '',
+                            "countryCode": 0,
                             "contactNumber": '',
                         };
                         this.push('_adultPaxCountArray', {
@@ -593,11 +593,11 @@
                     for (var i = 0; i < childPax; i++) {
                         var paxDataObject = {
                             "type": 'Child',
-                            "title": '',
+                            "title": 0,
                             "firstName": '',
                             "lastName": '',
                             "email": '',
-                            "countryCode": '',
+                            "countryCode": 0,
                             "contactNumber": '',
                         };
                         this.push('_childPaxCountArray', {
@@ -640,47 +640,24 @@
                  *To fire valiadtion for a room.
                  **/
             isValid() {
-                    var paxInfoArray = [];
-                    var validData = true;
-                    var count = this.adultPaxCount + this.childPaxCount;
-                    for (var i = 0; i < count; i++) {
-                        paxInfoArray[i] = this.shadowRoot.querySelectorAll('pax-info')[i]
-                            .isValidPaxInfo();
-                    }
-                    for (var i = 0; i < count; i++) {
-                        if (paxInfoArray[i] === true) {
-                            validData = false;
-                        }
-                    }
-                    if (validData === true) {
-                        return true;
-                    } else {
-                        return false;
+                var paxInfoArray = [];
+                var validData = true;
+                var count = this.adultPaxCount + this.childPaxCount;
+                for (var i = 0; i < count; i++) {
+                    paxInfoArray[i] = this.shadowRoot.querySelectorAll('pax-info')[i]
+                        .isValidPaxInfo();
+                }
+                for (var i = 0; i < count; i++) {
+                    if (paxInfoArray[i] === true) {
+                        validData = false;
                     }
                 }
-                /**
-                 *To fire validation for child in a room.
-                 **/
-                // _isValidChild() {
-                //     var childPaxInfoArray = [];
-                //     var validData = true;
-                //     for (var i = 0; i <= this.childPaxCount; i++) {
-                //         if (this.shadowRoot.querySelectorAll('pax-info')[i].type === "Child") {
-                //             childPaxInfoArray[i] = this.shadowRoot.querySelectorAll('pax-info')[i]
-                //                 .isValidPaxInfo();
-                //         }
-                //     }
-                //     for (var i = 0; i <= this.childPaxCount; i++) {
-                //         if (childPaxInfoArray[i] === true) {
-                //             validData = false;
-                //         }
-                //     }
-                //     if (validData === true) {
-                //         return true;
-                //     } else {
-                //         return false;
-                //     }
-                // }
+                if (validData === true) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
 
             /**
              *To hide the close button if adult is only one.
@@ -747,7 +724,7 @@
                  **/
             _closePaxAdultInfo(e) {
                     var adultPaxInfoVar = this._checkReferenceforAdult(e);
-                    var firstName = adultPaxInfoVar.firstNameValue;
+                    var firstName = adultPaxInfoVar.paxData.paxDataObject.firstName;
                     if (this.paxListAvailable === false) {
                         var paxL = adultPaxInfoVar._loadPaxList(e);
                         var paxIndex = paxL.findIndex(x => x.firstName == firstName);
@@ -771,7 +748,7 @@
                  **/
             _closePaxChildInfo(e) {
                     var childPaxInfoVar = this._checkReferenceforChild(e);
-                    var firstName = childPaxInfoVar.firstNameValue;
+                    var firstName = childPaxInfoVar.paxData.paxDataObject.firstName;
                     if (this.paxListAvailable === false) {
                         var paxL = childPaxInfoVar._loadPaxList(e);
                         var paxIndex = paxL.findIndex(x => x.firstName == firstName);

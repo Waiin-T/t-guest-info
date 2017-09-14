@@ -455,42 +455,42 @@
     <div id="paxInfoDiv{{index}}" hidden="{{_showPaxInfoFields}}">
         <div hidden$="{{_showTitle}}">
             <paper-dropdown-menu label="{{_titleLabel}}" id="adultPaxTitle" on-blur="_updateValidation" required errorMessage="{{_titleError}}" invalid="{{_titleInvalid}}">
-                <paper-listbox slot="dropdown-content" selected="{{titleValue}}">
+                <paper-listbox slot="dropdown-content" selected="{{paxData.paxDataObject.title}}">
                     <template is="dom-repeat" items={{_titleValues}}>
                                     <paper-item on-tap="_resizeWindow">{{item.key}}</paper-item>
                                 </template>
                 </paper-listbox>
             </paper-dropdown-menu>
-            <input is="iron-input" type="hidden" bind-value="[[titleValue]]">
+            <input is="iron-input" type="hidden" bind-value="[[paxData.paxDataObject.title]]">
         </div>
 
         <div id="adultFirstNamediv">
-            <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}" value="{{firstNameValue}}" invalid="{{_firstNameInvalid}}"></paper-input>
+            <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}" value="{{paxData.paxDataObject.firstName::input}}" invalid="{{_firstNameInvalid}}"></paper-input>
             <div id="adultFirstNameError" hidden$="{{_showFirstNameError}}">{{_firstNameError}}</div>
             <div id="adultFirstNameError" hidden$="{{_ShowDuplicateGuest}}">{{_duplicateError}}</div>
         </div>
         <div id="adultLastNamediv">
-            <paper-input label="{{_lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_lastNameError}}" value="{{lastNameValue}}" invalid="{{_lastNameInvalid}}"></paper-input>
+            <paper-input label="{{_lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_lastNameError}}" value="{{paxData.paxDataObject.lastName}}" invalid="{{_lastNameInvalid}}"></paper-input>
             <div id="adultLastNameError" hidden$="{{_showLastNameError}}">{{_lastNameError}}</div>
         </div>
 
         <div id="adultEmailAndLabel">
-            <paper-input label="{{_emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{_showEmailAddress}}" required errorMessage="{{_emailError}}" value="{{emailValue}}" invalid="{{_emailInvalid}}"></paper-input>
+            <paper-input label="{{_emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{_showEmailAddress}}" required errorMessage="{{_emailError}}" value="{{paxData.paxDataObject.email}}" invalid="{{_emailInvalid}}"></paper-input>
             <div id="adultEmailLabel" hidden$="{{_showEmailAddressInfo}}">{{_emailInfo}}</div>
             <div id="adultEmailError" hidden$="{{_showEmailError}}">{{_emailError}}</div>
         </div>
         <div hidden$="{{_showContactNumber}}">
             <paper-dropdown-menu label="{{_countryCodeTitle}}" id="adultCountryCode" on-blur="_updateValidation" required errorMessage="{{_countryCodeError}}" invalid="{{_countryCodeInvalid}}">
-                <paper-listbox slot="dropdown-content" selected="{{countryCodeValue}}">
+                <paper-listbox slot="dropdown-content" selected="{{paxData.paxDataObject.countryCode}}">
                     <template is="dom-repeat" items={{_countryCodeValues}}>
                                     <paper-item value="{{item.value}}" on-tap="_resizeWindow">{{item.key}}</paper-item>
                                 </template>
                 </paper-listbox>
             </paper-dropdown-menu>
-            <input is="iron-input" type="hidden" bind-value="[[countryCodeValue]]">
+            <input is="iron-input" type="hidden" bind-value="[[paxData.paxDataObject.countryCode]]">
         </div>
         <div id="adultContactNumberDiv">
-            <paper-input label="{{_contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{_showContactNumber}}" required errorMessage="{{contactNumberError}}" value="{{contactNumberValue}}" invalid="{{_contactNumberInvalid}}"></paper-input>
+            <paper-input label="{{_contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{_showContactNumber}}" required errorMessage="{{contactNumberError}}" value="{{paxData.paxDataObject.contactNumber}}" invalid="{{_contactNumberInvalid}}"></paper-input>
             <div id="adultContactNumberError" hidden$="{{_showContactNumberError}}">{{_contactNumberError}}</div>
             <div id="adultContactNumberError" hidden$="{{_showContactNumberInvalidError}}">{{_contactNumberInvalidError}}</div>
         </div>
@@ -515,6 +515,7 @@
             }
             static get properties() {
                 return {
+                    paxData: Object,
                     guestInfo: Object,
                     /**
                      *Property to set paxList.
@@ -977,17 +978,20 @@
                 if (this.titleValue === -1) {
                     this._titleInvalid = true;
                 }
-                if ((this.firstNameValue === undefined || this.firstNameValue === "") &&
+                var firstNameValue = this.paxData.paxDataObject.firstName;
+                if ((firstNameValue === undefined || firstNameValue === "") &&
                     this._requiredField.includes("firstname") === true) {
                     this._firstNameInvalid = true;
                     this._showFirstNameError = false;
                 }
-                if ((this.lastNameValue === undefined || this.lastNameValue === "") &&
+                var lastNameValue = this.paxData.paxDataObject.lastName;
+                if ((lastNameValue === undefined || lastNameValue === "") &&
                     this._requiredField.includes("lastname") === true) {
                     this._lastNameInvalid = true;
                     this._showLastNameError = false;
                 }
-                if ((this.emailValue === undefined || this.emailValue === "") && (this._requiredField.includes("email") === true ||
+                var emailValue = this.paxData.paxDataObject.email;
+                if ((emailValue === undefined || emailValue === "") && (this._requiredField.includes("email") === true ||
                         (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
                     if (this.type != "Child") {
                         this._emailInvalid = true;
@@ -1000,7 +1004,8 @@
                 if (this.countryCodeValue === -1) {
                     this._countryCodeInvalid = true;
                 }
-                if ((this.contactNumberValue === undefined || this.contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
+                var contactNumberValue = this.paxData.paxDataObject.contactNumber;
+                if ((contactNumberValue === undefined || contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
                         (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
                     if (this.type != "Child") {
                         this._contactNumberInvalid = true;
@@ -1091,7 +1096,8 @@
 
             _validationOnBlur(idString) {
                 if (idString === "adultFirstName") {
-                    if ((this.firstNameValue === undefined || this.firstNameValue === "") && this._requiredField.includes("firstname") === true) {
+                    var firstNameValue = this.paxData.paxDataObject.firstName;
+                    if ((firstNameValue === undefined || firstNameValue === "") && this._requiredField.includes("firstname") === true) {
                         this._firstNameInvalid = true;
                         this._showFirstNameError = false;
                         this._ShowDuplicateGuest = true;
@@ -1102,7 +1108,8 @@
                     }
                 }
                 if (idString === "adultLastName") {
-                    if ((this.lastNameValue === undefined || this.lastNameValue === "") && this._requiredField.includes("lastname") === true) {
+                    var lastNameValue = this.paxData.paxDataObject.lastName;
+                    if ((lastNameValue === undefined || lastNameValue === "") && this._requiredField.includes("lastname") === true) {
                         this._lastNameInvalid = true;
                         this._showLastNameError = false;
                     } else {
@@ -1111,7 +1118,8 @@
                     }
                 }
                 if (idString === "adultEmail") {
-                    if ((this.emailValue === undefined || this.emailValue === "") && (this._requiredField.includes("email") === true ||
+                    var emailValue = this.paxData.paxDataObject.email;
+                    if ((emailValue === undefined || emailValue === "") && (this._requiredField.includes("email") === true ||
                             (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
                         if (this.type === "Adult") {
                             this._emailInvalid = true;
@@ -1119,68 +1127,26 @@
                             this._showEmailAddressInfo = true;
                         }
                     } else {
-                        this._showInvalidEmail();
+                        this._validationOfEmail();
                     }
                     if (this.emailValue === "") {
                         this._showEmailAddressInfo = true;
                     }
                 }
                 if (idString === "adultContactNo") {
-                    if ((this.contactNumberValue === undefined || this.contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
+                    var contactNumberValue = this.paxData.paxDataObject.contactNumber;
+                    if ((contactNumberValue === undefined || contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
                             (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
                         if (this.type === "Adult") {
                             this._contactNumberInvalid = true;
                             this._showContactNumberError = false;
                         }
                     } else {
-                        this._showInvalidContact();
+                        this._ValidationOfContact();
                     }
                 }
             }
-            _collectDataOnBlur() {
-                var indexArray = this.index - 1;
-                if (this.type === "Adult") {
-                    this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.firstName = this.firstNameValue;
-                    this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.lastName = this.lastNameValue;
-                    if (this.index === 1) {
-                        if (this._allowTitleForLeadPax === true) {
-                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.title = this._titleValues[this.titleValue].key;
-                        }
-                        if (this._allowEmailForLeadPax === true) {
-                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.email = this.emailValue;
-                        }
-                        if (this._allowContactNumberForLeadPax === true) {
-                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
-                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.contact = this.contactNumberValue;
-                        }
-                    } else {
-                        if (this._allowTitle === true) {
-                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.title = this._titleValues[this.titleValue].key;
-                        }
-                        if (this._allowEmail === true) {
-                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.email = this.emailValue;
-                        }
-                        if (this._allowContactNumber === true) {
-                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
-                            this.travelerInfo._adultPaxCountArray[indexArray].paxDataObject.contact = this.contactNumberValue;
-                        }
-                    }
-                } else {
-                    this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.firstName = this.firstNameValue;
-                    this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.lastName = this.lastNameValue;
-                    if (this._allowTitle === true) {
-                        this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.title = this._titleValues[this.titleValue].key;
-                    }
-                    if (this._allowEmail === true) {
-                        this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.email = this.emailValue;
-                    }
-                    if (this._allowContactNumber === true) {
-                        this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.countryCode = this._countryCodeValues[this.countryCodeValue].key;
-                        this.travelerInfo._childPaxCountArray[indexArray].paxDataObject.contact = this.contactNumberValue;
-                    }
-                }
-                this.travelerInfo._adultPaxCountArray.concat(this.travelerInfo._childPaxCountArray);
-            }
+
             _duplicateGuestValidation(arrForPax) {
                 var indexArray = this.index - 1;
                 for (var j = 0; j < arrForPax.length; j++) {
@@ -1199,8 +1165,9 @@
             _updateValidation(event) {
                 this.travelerInfo.getState();
                 this._validationOnBlur(event.currentTarget.id);
-                this._collectDataOnBlur();
-                this._duplicateGuestValidation(this.travelerInfo._adultPaxCountArray);
+                if (this.type === "Adult") {
+                    this._duplicateGuestValidation(this.travelerInfo._adultPaxCountArray);
+                }
                 if (this.type === "Child") {
                     this._duplicateGuestValidation(this.travelerInfo._childPaxCountArray);
                 }
@@ -1220,44 +1187,34 @@
                     } else {
                         var paxListArray = this.paxList
                     }
+                    this._showChooseGuest = true;
+                    this._showPaxInfoFields = false;
                     this._showFirstNameError = true;
                     this._showLastNameError = true;
                     this._showEmailError = true;
                     this._showContactNumberError = true;
                     this._showContactNumberInvalidError = true;
+                    this._ShowDuplicateGuest = true;
                     this._firstNameInvalid = false;
                     this._lastNameInvalid = false;
                     this._titleInvalid = false;
                     this._emailInvalid = false;
                     this._contactNumberInvalid = false;
                     this._countryCodeInvalid = false;
-                    this.firstNameValue = paxListArray[paxIndex].firstName;
-                    this.lastNameValue = paxListArray[paxIndex].lastName;
-                    if (this.paxListAvailable === false && paxListArray[paxIndex].title != undefined) {
-                        var titleIndex = this._titleValues.findIndex(x => x.key == (paxListArray[
-                            paxIndex].title).trim());
-                    } else {
-                        var titleIndex = this._titleValues.findIndex(x => x.key == paxListArray[
-                            paxIndex].title);
-                    }
-                    this.titleValue = titleIndex;
-                    this.emailValue = paxListArray[paxIndex].email;
-                    if (this.paxListAvailable === false && paxListArray[paxIndex].countryCode != undefined) {
-                        var countryCodeIndex = this._countryCodeValues.findIndex(x => x.key ==
-                            (paxListArray[paxIndex].countryCode).trim());
-                    } else {
-                        var countryCodeIndex = this._countryCodeValues.findIndex(x => x.value ==
-                            paxListArray[paxIndex].countryCode);
-                    }
-                    if (paxListArray[paxIndex].countryCode === undefined) {
+                    this.paxData.paxDataObject.firstName = paxListArray[paxIndex].firstName;
+                    this.paxData.paxDataObject.lastName = paxListArray[paxIndex].lastName;
+                    this.paxData.paxDataObject.title = paxListArray[paxIndex].title;
+                    this.paxData.paxDataObject.email = paxListArray[paxIndex].email;
+                    var countryCodeIndex = paxListArray[paxIndex].countryCode;
+                    if (paxListArray[paxIndex].countryCode === undefined || paxListArray[paxIndex].countryCode === "") {
                         var countryCodeIndex = 0;
                     }
-                    this.countryCodeValue = countryCodeIndex;
-                    this.contactNumberValue = paxListArray[paxIndex].contact;
+                    this.paxData.paxDataObject.countryCode = countryCodeIndex;
+                    this.paxData.paxDataObject.contactNumber = paxListArray[paxIndex].contactNumber;
+                    this.notifyPath('paxData.paxDataObject');
                     this._firstNameInvalid = false;
                     this.travelerInfo._toggleCloseButtonClass(this.index, this.type);
-                    this._showChooseGuest = true;
-                    this._showPaxInfoFields = false;
+
                 } else {
                     this._chooseGuestInvalid = true;
                     this._showChooseGuestDuplicateError = false;
@@ -1285,12 +1242,12 @@
                     this._showEmailError = true;
                     this._showContactNumberError = true;
                     this._showContactNumberInvalidError = true;
-                    this.firstNameValue = '';
-                    this.lastNameValue = '';
-                    this.titleValue = 0;
-                    this.emailValue = '';
-                    this.countryCodeValue = 0;
-                    this.contactNumberValue = '';
+                    this.paxData.paxDataObject.firstName = '';
+                    this.paxData.paxDataObject.lastName = '';
+                    this.paxData.paxDataObject.title = 0;
+                    this.paxData.paxDataObject.email = '';
+                    this.paxData.paxDataObject.countryCode = 0;
+                    this.paxData.paxDataObject.contactNumber = '';
                     this._firstNameInvalid = false;
                     this._lastNameInvalid = false;
                     this._titleInvalid = false;
@@ -1517,7 +1474,7 @@
                 /**
                  *To show email validation using filter.
                  **/
-            _showInvalidEmail() {
+            _validationOfEmail() {
                     if (this.emailValue != "") {
                         if (this.emailValue != undefined) {
                             var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
@@ -1538,7 +1495,7 @@
                 /**
                  *TO show contact number using filter.
                  **/
-            _showInvalidContact() {
+            _ValidationOfContact() {
                 if (this.contactNumberValue != "") {
                     if (this.contactNumberValue != undefined) {
                         var filter = /^[0-9]+$/;
