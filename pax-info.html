@@ -21,6 +21,10 @@
         --paper-input-container-label-focus: lightgray;
         /* --paper-input-container-invalid-color: #4CB050;      */
     }
+
+    .firstNameDiv{
+        border: solid 1px red;
+    }
     /****************************************************************************************************************************/
     @media (min-width: 320px) and (max-width: 380px) {
          :host {
@@ -71,6 +75,10 @@
         #adultLastNamediv {
             margin-left: 10px;
             float: left;
+        }
+        #adultFirstNamediv {
+            float: left;
+            margin-left: -10px;
         }
         #adultCountryCode,
         #adultContactNo {
@@ -127,8 +135,8 @@
             float: left;
         }
         .inputForm #adultPaxTitle,
-        #adultFirstNameDiv,
-        #adultLastNameDiv {
+        #adultFirstNamediv,
+        #adultLastNamediv {
             float: left;
             margin-left: -10px;
         }
@@ -534,6 +542,7 @@
                     lastNameValue: String,
                     emailValue: String,
                     contactNumberValue: String,
+                    chooseGuestValue: String,
                     /**
                      *Flag to set wheather paxlist is available or not.
                      **/
@@ -929,7 +938,6 @@
                         type: String,
                         value: 'choose guest is required'
                     },
-
                 }
             }
             ready() {
@@ -961,7 +969,7 @@
                 });
             }
             isValidPaxInfo() {
-                if (this.chooseGuestValue = -1) {
+                if (this.chooseGuestValue === -1 || this.chooseGuestValue === undefined) {
                     this._chooseGuestInvalid = true;
                     this._showChooseGuestError = false;
                     this._showChooseGuestDuplicateError = true;
@@ -1385,19 +1393,20 @@
                 return !isIE && _largeDesktopView;
             }
             _showReadMoreDots(len) {
-                    var l = (screen.width / 100 * len) / 6.7;
-                    if (this._firstNameError.length > l || this._duplicateError.length > l) {
-                        this._firstNameError = this._firstNameError.substring(0, l) + "...";
-                        this._duplicateError = this._duplicateError.substring(0, l) + "...";
-                    }
-                    if (this._lastNameError.length > l) {
-                        this._lastNameError = this._lastNameError.substring(0, l) + "..."
-                    }
+                var l = (screen.width / 100 * len) / 6.7;
+                if (this._firstNameError.length > l || this._duplicateError.length > l) {
+                    this._firstNameError = this._firstNameError.substring(0, l) + "...";
+                    this._duplicateError = this._duplicateError.substring(0, l) + "...";
                 }
-                /**
-                 *To set the style for mobile and tablet view
-                 *if user hide title field then firstname and lastname should equally distribute the space.
-                 **/
+                if (this._lastNameError.length > l) {
+                    this._lastNameError = this._lastNameError.substring(0, l) + "..."
+                }
+            }
+
+            /**
+             *To set the style for mobile and tablet view
+             *if user hide title field then firstname and lastname should equally distribute the space.
+             **/
             _dynamicStyle() {
                     if (this._showTitle === false) {
                         var divLen = 2 + 1;
@@ -1406,33 +1415,35 @@
                     }
                     var len = 100 / divLen - 4;
                     var lenTab = 100 / divLen - 5;
+                    var firstNameDiv = this.shadowRoot.querySelector("#adultFirstNamediv");
+                    var lastNameDiv = this.shadowRoot.querySelector("#adultLastNamediv");
+                    var paxTitle = this.shadowRoot.querySelector("#adultPaxTitle");
                     if (this._smallMobileView || this._mobileView) {
                         this._showReadMoreDots(len);
-                        this.shadowRoot.querySelector("#adultFirstNamediv").style.width = len + "%";
-                        this.shadowRoot.querySelector("#adultLastNamediv").style.width = len + "%";
+                        firstNameDiv.style.width = len + "%";
+                        lastNameDiv.style.width = len + "%";
                         if (this._showTitle === true) {
-                            this.shadowRoot.querySelector("#adultFirstNamediv").style.marginLeft = "-10px";
+                            firstNameDiv.style.marginLeft = "-10px";
                         } else {
-                            this.shadowRoot.querySelector("#adultFirstNamediv").style.marginLeft = "12px";
-                            this.shadowRoot.querySelector("#adultFirstNamediv").style.float = "left";
+                            firstNameDiv.style.marginLeft = "12px";
                         }
                         if (this._showTitle === false) {
-                            this.shadowRoot.querySelector("#adultPaxTitle").style.width = len + "%";
-                            this.shadowRoot.querySelector("#adultPaxTitle").style.marginLeft = "-10px";
+                            paxTitle.style.width = len + "%";
+                            paxTitle.style.marginLeft = "-10px";
                         }
                     }
                     var mqTab = window.matchMedia("(min-width: 768px)" && "(max-width: 1023px)");
                     if (this._tabletView) {
-                        this.shadowRoot.querySelector("#adultFirstNamediv").style.width = lenTab + "%";
-                        this.shadowRoot.querySelector("#adultLastNamediv").style.width = lenTab + "%";
+                        firstNameDiv.style.width = lenTab + "%";
+                        firstNameDiv.style.width = lenTab + "%";
                         if (this._showTitle === true) {
-                            this.shadowRoot.querySelector("#adultFirstName").style.marginLeft = "-7px";
+                            firstNameDiv.style.marginLeft = "-7px";
                         } else {
-                            this.shadowRoot.querySelector("#adultFirstName").style.marginLeft = "-1px";
+                            firstNameDiv.style.marginLeft = "-1px";
                         }
                         if (this._showTitle === false) {
-                            this.shadowRoot.querySelector("#adultPaxTitle").style.width = lenTab + "%";
-                            this.shadowRoot.querySelector("#adultPaxTitle").style.marginLeft = "-5px";
+                            paxTitle.style.width = lenTab + "%";
+                            paxTitle.style.marginLeft = "-5px";
                         }
                     }
                 }

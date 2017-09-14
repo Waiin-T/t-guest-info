@@ -640,28 +640,15 @@
                  *To fire valiadtion for a room.
                  **/
             isValid() {
-                    var adultValidation = this._isValidAdult();
-                    var childValidation = this._isValidChild();
-                    if (!(adultValidation && childValidation)) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-                /**
-                 *To fire validation for adult in a room.
-                 **/
-            _isValidAdult() {
-                    var adultPaxInfoArray = [];
+                    var paxInfoArray = [];
                     var validData = true;
-                    for (var i = 1; i <= this.adultPaxCount; i++) {
-                        if (this.shadowRoot.querySelectorAll('pax-info')[i].type === "Adult") {
-                            adultPaxInfoArray[i] = this.shadowRoot.querySelectorAll('pax-info')[i]
-                                .isValidPaxInfo();
-                        }
+                    var count = this.adultPaxCount + this.childPaxCount;
+                    for (var i = 0; i < count; i++) {
+                        paxInfoArray[i] = this.shadowRoot.querySelectorAll('pax-info')[i]
+                            .isValidPaxInfo();
                     }
-                    for (var i = 1; i <= this.adultPaxCount; i++) {
-                        if (adultPaxInfoArray[i] === true) {
+                    for (var i = 0; i < count; i++) {
+                        if (paxInfoArray[i] === true) {
                             validData = false;
                         }
                     }
@@ -674,26 +661,26 @@
                 /**
                  *To fire validation for child in a room.
                  **/
-            _isValidChild() {
-                var childPaxInfoArray = [];
-                var validData = true;
-                for (var i = 1; i <= this.childPaxCount; i++) {
-                    if (this.shadowRoot.querySelectorAll('pax-info')[i].type === "Child") {
-                        childPaxInfoArray[i] = this.shadowRoot.querySelectorAll('pax-info')[i]
-                            .isValidPaxInfo();
-                    }
-                }
-                for (var i = 1; i <= this.childPaxCount; i++) {
-                    if (childPaxInfoArray[i] === true) {
-                        validData = false;
-                    }
-                }
-                if (validData === true) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+                // _isValidChild() {
+                //     var childPaxInfoArray = [];
+                //     var validData = true;
+                //     for (var i = 0; i <= this.childPaxCount; i++) {
+                //         if (this.shadowRoot.querySelectorAll('pax-info')[i].type === "Child") {
+                //             childPaxInfoArray[i] = this.shadowRoot.querySelectorAll('pax-info')[i]
+                //                 .isValidPaxInfo();
+                //         }
+                //     }
+                //     for (var i = 0; i <= this.childPaxCount; i++) {
+                //         if (childPaxInfoArray[i] === true) {
+                //             validData = false;
+                //         }
+                //     }
+                //     if (validData === true) {
+                //         return true;
+                //     } else {
+                //         return false;
+                //     }
+                // }
 
             /**
              *To hide the close button if adult is only one.
