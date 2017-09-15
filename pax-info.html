@@ -1475,10 +1475,10 @@
                  *To show email validation using filter.
                  **/
             _validationOfEmail() {
-                    if (this.emailValue != "") {
-                        if (this.emailValue != undefined) {
+                    if (this.paxData.paxDataObject.email != "") {
+                        if (this.paxData.paxDataObject.email != undefined) {
                             var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
-                            if (!filter.test(this.emailValue)) {
+                            if (!filter.test(this.paxData.paxDataObject.email)) {
                                 this._emailInvalid = true;
                                 this._showEmailError = false;
                                 if (this._emailInvalid === true) {
@@ -1496,10 +1496,10 @@
                  *TO show contact number using filter.
                  **/
             _ValidationOfContact() {
-                if (this.contactNumberValue != "") {
-                    if (this.contactNumberValue != undefined) {
+                if (this.paxData.paxDataObject.contactNumber != "") {
+                    if (this.paxData.paxDataObject.contactNumber != undefined) {
                         var filter = /^[0-9]+$/;
-                        if (!filter.test(this.contactNumberValue)) {
+                        if (!filter.test(this.paxData.paxDataObject.contactNumber)) {
                             this._contactNumberInvalid = true;
                             this._showContactNumberError = true;
                             this._showContactNumberInvalidError = false;
