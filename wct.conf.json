@@ -1,21 +1,21 @@
 {
-  "suites": [
-    "test/t-guest-info_test.html"
-  ],
+    "suites": [
+        "test/t-guest-info_test.html"
+    ],
     "verbose": true,
     "plugins": {
-      "istanbul": {
-          "dir": "./coverage",
-          "reporters": ["text-summary", "lcov"],
-          "include": [
-              "/t-guest-info.html",
-              "/t-traveler-info.html",
-              "/pax-info.html"
-          ],
-            "exclude":[]
-      },
-      "local": {
-        "browsers": ["chrome", "firefox"]
+        "istanbul": {
+            "dir": "./coverage",
+            "reporters": ["text-summary", "lcov"],
+            "include": [
+                "/t-guest-info.html",
+                "/t-traveler-info.html",
+                "/pax-info.html"
+            ],
+            "exclude": []
+        },
+        "local": {
+            "browsers": ["chrome"]
+        }
     }
-  }
 }

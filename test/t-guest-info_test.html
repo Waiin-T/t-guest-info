@@ -254,8 +254,9 @@
             test('isValidGuest', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 var elementShadowRoot = element.shadowRoot;
+                element.shadowRoot.querySelector("#productTemplate").render();
                 var elementHeader = element.isValidGuest();
-                assert.equal(elementHeader, undefined);
+                assert.equal(elementHeader, false);
             });
 
             test('_adultLabel -if', function() {
@@ -369,7 +370,8 @@
                 var e = {
                     "model": {
                         "index": 0
-                    }
+                    },
+                    "currentTarget": traveler.shadowRoot.querySelector("#closeIconAdult1")
                 }
                 var adultPax = traveler.shadowRoot.querySelector("#adultPaxInfo11");
                 traveler._closePaxAdultInfo(e);
@@ -385,9 +387,11 @@
                 var e = {
                     "model": {
                         "index": 0
-                    }
+                    },
+                    "currentTarget": traveler.shadowRoot.querySelector("#closeIconAdult1")
                 }
                 var childPax = traveler.shadowRoot.querySelector("#childPaxInfo11");
+                traveler.childPaxCount = 3;
                 traveler._closePaxChildInfo(e);
                 assert.equal(childPax._showChooseGuest, false);
             });
@@ -564,9 +568,8 @@
                 var traveler = element.shadowRoot.querySelector("#travelerInfo11");
                 traveler.shadowRoot.querySelector("#adultPaxTemplate").render();
                 var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
-                adultPaxInfo.option = undefined;
                 adultPaxInfo._setDefaultOptionValue();
-                assert.equal(adultPaxInfo.allowEmailForLeadPax, true);
+                assert.equal(adultPaxInfo._allowEmailForLeadPax, true);
             });
             // test('_setDefaultOptionValue- else ', function() {
             //     var element = fixture('ChangedPropertyTestFixture');
@@ -613,7 +616,7 @@
                 assert.equal(email.hidden, false);
             });
 
-            test('_showInvalidEmail Valid', function() {
+            test('_validationOfEmail Valid', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -622,11 +625,11 @@
                 var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
                 var email = adultPaxInfo.shadowRoot.querySelector("#adultEmail");
                 email.value = "john@example.com"
-                adultPaxInfo._showInvalidEmail();
+                adultPaxInfo._validationOfEmail();
                 assert.equal(email.invalid, false);
             });
 
-            test('_showInvalidEmail Invalid', function() {
+            test('_validationOfEmail Invalid', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -635,11 +638,11 @@
                 var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
                 var email = adultPaxInfo.shadowRoot.querySelector("#adultEmail");
                 email.value = "john@examplecom"
-                adultPaxInfo._showInvalidEmail();
+                adultPaxInfo._validationOfEmail();
                 assert.equal(email.invalid, true);
             });
 
-            test('_showInvalidContact Valid', function() {
+            test('_ValidationOfContact Valid', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -648,10 +651,10 @@
                 var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
                 var contact = adultPaxInfo.shadowRoot.querySelector("#adultContactNo");
                 contact.value = "9856327425"
-                adultPaxInfo._showInvalidContact();
+                adultPaxInfo._ValidationOfContact();
                 assert.equal(contact.invalid, false);
             });
-            test('_showInvalidContact Invalid', function() {
+            test('_ValidationOfContact Invalid', function() {
                 var element = fixture('ChangedPropertyTestFixture');
                 element.shadowRoot.querySelector("#productTemplate").render();
                 element.shadowRoot.querySelector("#travelerTemplate").render();
@@ -660,7 +663,7 @@
                 var adultPaxInfo = traveler.shadowRoot.querySelector("#adultPaxInfo11");
                 var contact = adultPaxInfo.shadowRoot.querySelector("#adultContactNo");
                 contact.value = "asdsf"
-                adultPaxInfo._showInvalidContact();
+                adultPaxInfo._ValidationOfContact();
                 assert.equal(contact.invalid, true);
             });
             test('_updateValidation firstname invalid', function() {
@@ -693,6 +696,7 @@
                 }
                 var firstName = adultPaxInfo.shadowRoot.querySelector("#adultFirstName");
                 firstName.value = "John";
+                adultPaxInfo.paxData.paxDataObject.firstName = "John";
                 adultPaxInfo._updateValidation(e);
                 assert.equal(firstName.invalid, false);
             });
@@ -803,31 +807,31 @@
              *
              **/
 
-            test('_lessThanEqualToOne ', function() {
-                var element = fixture('ChangedPropertyTestFixture');
-                element.shadowRoot.querySelector("#productTemplate").render();
-                var loyaltyPg = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
-                loyaltyPg.shadowRoot.querySelector("#loyaltyTemp").render();
-                loyalty = loyaltyPg.shadowRoot.querySelector("#tLoyaltyProgramDataID");
-                res = loyalty._lessThanEqualToOne(1, 1);
-                assert.equal(res, true);
-            });
-            // test('_showGuestProgramDetails ', function () {
-            //   var element = fixture('ChangedPropertyTestFixture');
-            //   element.shadowRoot.querySelector("#productTemplate").render();
-            //   var loyalty = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
-            //   loyalty.shadowRoot.querySelector("#loyaltyTemp").render();
-            //   // loyalty.paxListAvailable = false;
-            //   var e = {
-            //     "currentTarget" : {
-            //       "id" : 1
-            //     },
-            //     "model": {
-            //       "index" : 1
+            // test('_lessThanEqualToOne ', function() {
+            //     var element = fixture('ChangedPropertyTestFixture');
+            //     element.shadowRoot.querySelector("#productTemplate").render();
+            //     var loyaltyPg = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
+            //     loyaltyPg.shadowRoot.querySelector("#loyaltyTemp").render();
+            //     loyalty = loyaltyPg.shadowRoot.querySelector("#tLoyaltyProgramDataID");
+            //     res = loyalty._lessThanEqualToOne(1, 1);
+            //     assert.equal(res, true);
+            // });
+            // test('_showGuestProgramDetails ', function() {
+            //     var element = fixture('ChangedPropertyTestFixture');
+            //     element.shadowRoot.querySelector("#productTemplate").render();
+            //     var loyalty = element.shadowRoot.querySelector("#tLoyaltyDatabase1");
+            //     loyalty.shadowRoot.querySelector("#loyaltyTemp").render();
+            //     // loyalty.paxListAvailable = false;
+            //     var e = {
+            //         "currentTarget": {
+            //             "id": 1
+            //         },
+            //         "model": {
+            //             "index": 1
+            //         }
             //     }
-            //   }
-            //  loyalty._showGuestProgramDetails(e);
-            //   assert.equal(loyalty.guestName, false);
+            //     loyalty._showGuestProgramDetails(e);
+            //     assert.equal(loyalty.guestName, false);
             // });
             // test('_showValidation', function() {
             //     var element = fixture('ChangedPropertyTestFixture');
