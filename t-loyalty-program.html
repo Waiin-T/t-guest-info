@@ -111,7 +111,7 @@
         <div style="clear:both" id="div{{loyaltyProgramNumber}}" class="div">
             <t-loyalty-program-data id="tLoyaltyProgramDataID{{loyaltyProgramNumber}}" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}" 
             t-loyalty-program="{{tLoyaltyProgram}}" pax-list="{{paxList}}" loyalty-program-number="{{loyaltyProgramNumber}}"
-            guest-name-value="{{guestNameValue}}" program-name-value="{{programNameValue}}" program-number-value="{{programNumberValue}}"></t-loyalty-program-data>
+            loyalty-program-data="{{item}}"></t-loyalty-program-data>
         </div>
         <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
             <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">Remove</paper-button>
@@ -152,14 +152,6 @@
                         notify: true,
                         value: []
                     },
-                    /**
-                     **/
-                    guestNameValue: String,
-                    /**
-                     **/
-                    programNameValue: String,
-                    /**
-                     **/
                     programNumberValue: String,
                     loyaltyProgramNumber: Number,
                     tLoyaltyProgram: Object,
@@ -257,9 +249,19 @@
             ready() {
                 super.ready();
                 this._setDefaultRsourcesValue();
-                this.loyaltyPrograms = [];
-                this._addProgramForOtherGuest();
                 this.tLoyaltyProgram = this;
+                this.loyaltyPrograms = [];
+                // setTimeout(function() {
+                var loyaltyProgram = {};
+                loyaltyProgram.guestName;
+                loyaltyProgram.programName;
+                loyaltyProgram.programNumber;
+                this.push('loyaltyPrograms', {
+                    loyaltyProgram
+                });
+                this.notifyPath('loyaltyPrograms')
+                    // }, 1000);
+
             }
 
             /**
@@ -267,21 +269,17 @@
              * */
             _addProgramForOtherGuest(e) {
                 var loyaltyProgram = {};
-                loyaltyProgram.guestName = "";
-                loyaltyProgram.programName = "";
-                loyaltyProgram.programNumber = "";
+                loyaltyProgram.guestName;
+                loyaltyProgram.programName;
+                loyaltyProgram.programNumber;
                 this.push('loyaltyPrograms', {
                     loyaltyProgram
                 });
             }
-            _deleteLoyaltyProgram(e) {
-                    // var tempArray = this.loyaltyPrograms;
-                    // var temp = this.slice('loyaltyPrograms', e.model.itemsIndex, 1);
 
-                    this.loyaltyPrograms.splice(e.model.itemsIndex, 1);
-                    var arr = this.loyaltyPrograms.slice(0);
-                    this.loyaltyPrograms = [];
-                    this.loyaltyPrograms = arr;
+            _deleteLoyaltyProgram(e) {
+                    this.splice("loyaltyPrograms", e.model.itemsIndex, 1);
+                    this.notifyPath('loyaltyPrograms');
                 }
                 /**
                  * To update the paxlist according to rooms.

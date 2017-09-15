@@ -139,32 +139,32 @@
     </style>
 
 <div class="guestName" id="guestNameDiv">
-    <paper-dropdown-menu label="{{_guestName}}" id="guestName{{loyaltyProgramNumber}}" on-blur="_isValid" on-tap="_updatePaxList" required auto-validate invalid="{{_guestNameInvalid}}">
-        <paper-listbox slot="dropdown-content" selected="{{guestNameValue}}">
+    <paper-dropdown-menu label="{{_guestName}}" id="guestName{{loyaltyProgramNumber}}" on-blur="_isValid" on-tap="_updatePaxList"invalid="{{_guestNameInvalid}}">
+        <paper-listbox slot="dropdown-content" selected="{{loyaltyProgramData.loyaltyProgram.guestName}}">
             <template is="dom-repeat" items={{_tempPaxArray}}>
                 <paper-item id="{{loyaltyProgramNumber}}" on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
             </template>
     </paper-listbox>
     </paper-dropdown-menu>
-    <input is="iron-input" type="hidden" bind-value="[[guestNameValue]]">
+    <input is="iron-input" type="hidden" bind-value="[[loyaltyProgramData.loyaltyProgram.guestName]]">
     <div id="guestNameError" hidden$="{{_showGuestNameError}}">{{_guestNameError}}</div>
     </div>
     <div hidden$="{{_showProgramNameInput}}">
-        <paper-input label="{{_programName}}" id="programNameInput{{loyaltyProgramNumber}}" value="{{programNameValue}}" invalid="{{_programNameInvalid}}" on-blur="_isValid" class="programName" required></paper-input>
+        <paper-input label="{{_programName}}" id="programNameInput{{loyaltyProgramNumber}}" value="{{loyaltyProgramData.loyaltyProgram.programName}}" invalid="{{_programNameInvalid}}" on-blur="_isValid" class="programName"></paper-input>
     </div>
     <div hidden$="{{_showProgramNameDropdown}}">
-        <paper-dropdown-menu label="{{_programName}}" id="programName{{loyaltyProgramNumber}}" invalid="{{programNameInvalid}}" on-blur="_isValid" class="programName" required auto-validate>
-            <paper-listbox slot="dropdown-content" selected="{{programNameValue}}">
+        <paper-dropdown-menu label="{{_programName}}" id="programName{{loyaltyProgramNumber}}" invalid="{{programNameInvalid}}" on-blur="_isValid" class="programName">
+            <paper-listbox slot="dropdown-content" selected="{{loyaltyProgramData.loyaltyProgram.programName}}">
                 <template is="dom-repeat" items={{paxList}}>
           <paper-item>{{item.membership.programName}}</paper-item>
         </template>
             </paper-listbox>
         </paper-dropdown-menu>
-        <input is="iron-input" type="hidden" bind-value="[[programNameValue]]">
+        <input is="iron-input" type="hidden" bind-value="[[loyaltyProgramData.loyaltyProgram.programName]]">
 
     </div>
     <div>
-        <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" value="{{programNumberValue}}" invalid="{{_programNumberInvalid}}" class="programNumber" on-blur="_isValid" on-click="_showValidation" required auto-validate></paper-input>
+        <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" value="{{loyaltyProgramData.loyaltyProgram.programNumber}}" invalid="{{_programNumberInvalid}}" class="programNumber" on-blur="_isValid"></paper-input>
     </div>
     <!-- <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
         <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">{{_remove}}</paper-button>
@@ -186,6 +186,7 @@
             }
             static get properties() {
                 return {
+                    loyaltyProgramData: Object,
                     /**
                      **/
                     guestNameValue: String,
@@ -358,18 +359,16 @@
             _isValid(e) {
                     e.currentTarget.invalid = false;
                     var paxListArray = this._updatePaxList();
-                    if (this.guestNameValue || this.programNameValue) {
-                        var guestName = paxListArray[this.guestNameValue].firstName + ' ' + paxListArray[this.guestNameValue].lastName;
-                        if (this.paxListAvailable === true) {
-                            var programName = this.paxList[this.programNameValue].membership.programName;
-                        } else {
-                            var programName = this.programNameValue
-                        }
+                    if (this.loyaltyProgramData.loyaltyProgram.guestName) {
+                        var guestName = this.loyaltyProgramData.loyaltyProgram.guestName;
+                    }
+                    if (this.loyaltyProgramData.loyaltyProgram.programName) {
+                        var programName = this.loyaltyProgramData.loyaltyProgram.programName
                     }
                     this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.guestName = guestName;
                     this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.programName = programName;
-                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.programNumber = this.programNumberValue;
-                    this.tLoyaltyProgram._isValidLoyalty(this.loyaltyProgramNumber, e, guestName, programName, this.programNumberValue);
+                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.programNumber = this.loyaltyProgramData.loyaltyProgram.programNumber;
+                    this.tLoyaltyProgram._isValidLoyalty(this.loyaltyProgramNumber, e, guestName, programName, this.loyaltyProgramData.loyaltyProgram.programNumber);
                 }
                 /**
                  * Using this function on-tap of guest name.
@@ -377,11 +376,12 @@
                  * */
             _showGuestProgramDetails(e) {
                 if (this.paxListAvailable === true) {
-                    var paxIndex = e.model.index;
+                    var paxIndex = e.model.itemsIndex;
                     var paxListArray = this.paxList;
                     var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
-                    this.programNameValue = programNameIndex;
-                    this.programNumberValue = paxListArray[paxIndex].membership.number;
+                    this.loyaltyProgramData.loyaltyProgram.programName = programNameIndex;
+                    this.loyaltyProgramData.loyaltyProgram.programNumber = paxListArray[paxIndex].membership.number;
+                    this.notifyPath('loyaltyProgramData.loyaltyProgram');
                     this._guestNameInvalid = false;
                     this._programNameInvalid = false;
                     this._programNumberInvalid = false;
