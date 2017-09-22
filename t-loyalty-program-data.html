@@ -140,31 +140,31 @@
 
 <div class="guestName" id="guestNameDiv">
     <paper-dropdown-menu label="{{_guestName}}" id="guestName{{loyaltyProgramNumber}}" on-blur="_isValid" on-tap="_updatePaxList"invalid="{{_guestNameInvalid}}">
-        <paper-listbox slot="dropdown-content" selected="{{loyaltyProgramData.loyaltyProgram.guestName}}">
+        <paper-listbox slot="dropdown-content" selected="{{loyaltyProgramData.guestName}}">
             <template is="dom-repeat" items={{_tempPaxArray}}>
                 <paper-item id="{{loyaltyProgramNumber}}" on-tap="_showGuestProgramDetails">{{item.firstName}}&nbsp{{item.lastName}}</paper-item>
             </template>
     </paper-listbox>
     </paper-dropdown-menu>
-    <input is="iron-input" type="hidden" bind-value="[[loyaltyProgramData.loyaltyProgram.guestName]]">
+    <input is="iron-input" type="hidden" bind-value="[[loyaltyProgramData.guestName]]">
     <div id="guestNameError" hidden$="{{_showGuestNameError}}">{{_guestNameError}}</div>
     </div>
     <div hidden$="{{_showProgramNameInput}}">
-        <paper-input label="{{_programName}}" id="programNameInput{{loyaltyProgramNumber}}" value="{{loyaltyProgramData.loyaltyProgram.programName}}" invalid="{{_programNameInvalid}}" on-blur="_isValid" class="programName"></paper-input>
+        <paper-input label="{{_programName}}" id="programNameInput{{loyaltyProgramNumber}}" value="{{loyaltyProgramData.programName}}" invalid="{{_programNameInvalid}}" on-blur="_isValid" class="programName"></paper-input>
     </div>
     <div hidden$="{{_showProgramNameDropdown}}">
         <paper-dropdown-menu label="{{_programName}}" id="programName{{loyaltyProgramNumber}}" invalid="{{programNameInvalid}}" on-blur="_isValid" class="programName">
-            <paper-listbox slot="dropdown-content" selected="{{loyaltyProgramData.loyaltyProgram.programName}}">
+            <paper-listbox slot="dropdown-content" selected="{{loyaltyProgramData.programName}}">
                 <template is="dom-repeat" items={{paxList}}>
           <paper-item>{{item.membership.programName}}</paper-item>
         </template>
             </paper-listbox>
         </paper-dropdown-menu>
-        <input is="iron-input" type="hidden" bind-value="[[loyaltyProgramData.loyaltyProgram.programName]]">
+        <input is="iron-input" type="hidden" bind-value="[[loyaltyProgramData.programName]]">
 
     </div>
     <div>
-        <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" value="{{loyaltyProgramData.loyaltyProgram.programNumber}}" invalid="{{_programNumberInvalid}}" class="programNumber" on-blur="_isValid"></paper-input>
+        <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" value="{{loyaltyProgramData.programNumber}}" invalid="{{_programNumberInvalid}}" class="programNumber" on-blur="_isValid"></paper-input>
     </div>
     <!-- <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
         <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">{{_remove}}</paper-button>
@@ -186,16 +186,9 @@
             }
             static get properties() {
                 return {
+                    index: Number,
+                    totalPaxList: Array,
                     loyaltyProgramData: Object,
-                    /**
-                     **/
-                    guestNameValue: String,
-                    /**
-                     **/
-                    programNameValue: String,
-                    /**
-                     **/
-                    programNumberValue: String,
                     /**
                      * Used for paxlist
                      * */
@@ -349,26 +342,20 @@
             _deleteLoyaltyProgram(e) {
                 var tempArray = this.tLoyaltyProgram.splice('loyaltyPrograms', this.loyaltyProgramNumber, 1);
                 this.tLoyaltyProgram.loyaltyPrograms = tempArray;
-                // this.tLoyaltyProgram.$.loyaltyTemp.render();
-                // this.tLoyaltyProgram.loyaltyPrograms = this.tLoyaltyProgram.loyaltyPrograms.slice();
-                // var parent = this.parentElement.parentElement;
-                // parent.removeChild(this.parentElement);
-                // this.tLoyaltyProgram._deleteCount = this.tLoyaltyProgram._deleteCount + 1;
-
             }
             _isValid(e) {
                     e.currentTarget.invalid = false;
                     var paxListArray = this._updatePaxList();
-                    if (this.loyaltyProgramData.loyaltyProgram.guestName) {
-                        var guestName = this.loyaltyProgramData.loyaltyProgram.guestName;
+                    if (this.loyaltyProgramData.guestName) {
+                        var guestName = this.loyaltyProgramData.guestName;
                     }
-                    if (this.loyaltyProgramData.loyaltyProgram.programName) {
-                        var programName = this.loyaltyProgramData.loyaltyProgram.programName
+                    if (this.loyaltyProgramData.programName) {
+                        var programName = this.loyaltyProgramData.programName
                     }
-                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.guestName = guestName;
-                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.programName = programName;
-                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].loyaltyProgram.programNumber = this.loyaltyProgramData.loyaltyProgram.programNumber;
-                    this.tLoyaltyProgram._isValidLoyalty(this.loyaltyProgramNumber, e, guestName, programName, this.loyaltyProgramData.loyaltyProgram.programNumber);
+                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].guestName = guestName;
+                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].programName = programName;
+                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].programNumber = this.loyaltyProgramData.programNumber;
+                    this.tLoyaltyProgram._isValidLoyalty(this.loyaltyProgramNumber, e, guestName, programName, this.loyaltyProgramData.programNumber);
                 }
                 /**
                  * Using this function on-tap of guest name.
@@ -379,8 +366,8 @@
                     var paxIndex = e.model.itemsIndex;
                     var paxListArray = this.paxList;
                     var programNameIndex = this.paxList.findIndex(x => x.membership == paxListArray[paxIndex].membership);
-                    this.loyaltyProgramData.loyaltyProgram.programName = programNameIndex;
-                    this.loyaltyProgramData.loyaltyProgram.programNumber = paxListArray[paxIndex].membership.number;
+                    this.loyaltyProgramData.programName = programNameIndex;
+                    this.loyaltyProgramData.programNumber = paxListArray[paxIndex].membership.number;
                     this.notifyPath('loyaltyProgramData.loyaltyProgram');
                     this._guestNameInvalid = false;
                     this._programNameInvalid = false;
@@ -390,21 +377,23 @@
             _updatePaxList() {
                 if (this.paxListAvailable === false) {
                     var paxTempArray = [];
-                    var prodLen = this.guestInfo._totalPaxListObject.length;
+                    var prodLen = this.totalPaxList.length;
                     for (var i = 0; i < prodLen; i++) {
-                        var roomLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj.length;
-                        for (var j = 0; j < roomLen; j++) {
-                            var paxLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj.length;
-                            for (var k = 0; k < paxLen; k++) {
-                                var aPax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].paxDataObject
-                                var cPax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].paxDataObject;
-                                if (aPax === undefined) {
-                                    if (cPax.firstName != "") {
-                                        paxTempArray.push(cPax);
-                                    }
-                                } else {
-                                    if (aPax.firstName != "") {
-                                        paxTempArray.push(aPax);
+                        if ((this.index - 1) === i) {
+                            var roomLen = this.totalPaxList[i].paxListObj.length;
+                            for (var j = 0; j < roomLen; j++) {
+                                var paxLen = this.totalPaxList[i].paxListObj[j].paxListObj.length;
+                                for (var k = 0; k < paxLen; k++) {
+                                    var aPax = this.totalPaxList[i].paxListObj[j].paxListObj[k]
+                                    var cPax = this.totalPaxList[i].paxListObj[j].paxListObj[k];
+                                    if (aPax === undefined) {
+                                        if (cPax.firstName != "") {
+                                            paxTempArray.push(cPax);
+                                        }
+                                    } else {
+                                        if (aPax.firstName != "") {
+                                            paxTempArray.push(aPax);
+                                        }
                                     }
                                 }
                             }

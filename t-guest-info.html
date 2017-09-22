@@ -230,15 +230,6 @@
         }
     }
 </style>
-    <!-- <iron-media-query query="(max-width: 380px)" query-matches="{{_smallMobileView}}"></iron-media-query>
-    <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{_mobileView}}"></iron-media-query>
-    <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{_tabletView}}"></iron-media-query>
-    <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{_desktopView}}"></iron-media-query>
-    <iron-media-query query="(min-width: 1200px)" query-matches="{{_largeDesktopView}}"></iron-media-query>
-    <iron-media-query query="(max-width: 600px)" query-matches="{{mediumTablet}}"></iron-media-query>
-    <iron-media-query query="(max-width: 767px)" query-matches="{{mobilePhone}}"></iron-media-query> -->
-    <!-- <div class="item" smallMobileView$="{{_smallMobileView}}" desktopView$="{{_desktopView}}" tabletView$="{{_tabletView}}" mobileView$="{{_mobileView}}"> -->
-      
       <app-toolbar id="toolbar1"><a href="#" id="signInLink">Sign in to make booking faster</a></app-toolbar>
       <br />
 
@@ -249,8 +240,8 @@
           <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" product-title="{{product.title}} {{_increaseIndex(index)}}"
             sub-title="{{room.name}} | {{room.criteria.traveler.adult}} {{_adultLabel(room.criteria.traveler.adult)}}, {{room.criteria.traveler.child}} {{_childLabel(room.criteria.traveler.child)}}" policy-List="{{room.policies}}"
             room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]"
-            child-pax-count="[[room.criteria.traveler.child]]" guest-info="{{guestInfo}}" only-lead-pax-info="{{room.onlyLeadPaxInfo}}"
-            pax-list-available="{{paxListAvailable}}" product-no={{productNo}}>
+            child-pax-count="[[room.criteria.traveler.child]]" only-lead-pax-info="{{room.onlyLeadPaxInfo}}"
+            pax-list-available="{{paxListAvailable}}" product-no={{productNo}} total-pax-list="{{_totalPaxListObject}}">
           </t-traveler-info>
           <br>
         </template>
@@ -263,7 +254,7 @@
     <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
         <app-toolbar id="toolbarLotalty">{{_loyaltyProgram}}</app-toolbar>
         <div id="tLoyaltyProgram">
-            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" loyalty-programs="{{loyaltyPrograms}}" guest-info="{{guestInfo}}" pax-list="{{paxlist}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
+            <t-loyalty-program id="tLoyaltyDatabase{{_increaseIndex(productNo)}}" resources="{{resources}}" pax-list-available="{{paxListAvailable}}" loyalty-programs="{{loyaltyPrograms}}" pax-list="{{paxlist}}" total-pax-list="{{_totalPaxListObject}}" index="{{_increaseIndex(productNo)}}">{{ item.loyaltyProgram }}</t-loyalty-program>
         </div>
     </div>
     <hr id="lineBreakBetweenProduct">
@@ -300,10 +291,6 @@
                             notify: true,
                             value: []
                         },
-                        /**
-                         *Object to get t-guest-info component.
-                         **/
-                        guestInfo: Object,
                         /**
                          *Set the property for only lead pax info flag.
                          **/
@@ -394,46 +381,6 @@
                         },
                         /**
                          *@private
-                         *iron media query properties.
-                         **/
-                        _smallMobileView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        _mobileView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        _tabletView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        _desktopView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
-                         *iron media query properties.
-                         **/
-                        _largeDesktopView: {
-                            type: Boolean,
-                            value: false
-                        },
-                        /**
-                         *@private
                          **/
                         _adultTitle: String,
                         /**
@@ -462,7 +409,6 @@
                         this.paxListAvailable = false;
                         this.paxList = [];
                     }
-                    this.guestInfo = this;
                     this._totalPaxListObject = [];
                     for (var i = 0; i < this.product.length; i++) {
                         this._roomPaxListObject = [];
@@ -472,17 +418,13 @@
                                 "Id": room[j].id,
                                 "paxListObj": [],
                             };
-                            this.push('_roomPaxListObject', {
-                                roomDataObject
-                            });
+                            this.push('_roomPaxListObject', roomDataObject);
                         }
                         var totalPaxObject = {
                             "Id": this.product[i].id,
                             "paxListObj": this._roomPaxListObject,
                         };
-                        this.push('_totalPaxListObject', {
-                            totalPaxObject
-                        });
+                        this.push('_totalPaxListObject', totalPaxObject);
                     }
                 }
                 /**

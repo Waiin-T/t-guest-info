@@ -289,11 +289,11 @@
         <iron-media-query query="(max-width: 380px)" query-matches="{{smallMobileView}}"></iron-media-query>
         <iron-media-query query="(min-width: 380px) and (max-width:767px)" query-matches="{{mobileView}}"></iron-media-query>
         <iron-media-query query="(min-width: 768px) and (max-width:1023px)" query-matches="{{tabletView}}"></iron-media-query>
-        <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{_desktopView}}"></iron-media-query>
-        <iron-media-query query="(min-width: 1200px)" query-matches="{{_largeDesktopView}}"></iron-media-query> 
+        <iron-media-query query="(min-width: 1024px) and (max-width: 1200px)" query-matches="{{desktopView}}"></iron-media-query>
+        <iron-media-query query="(min-width: 1200px)" query-matches="{{largeDesktopView}}"></iron-media-query> 
 
-        <!-- <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{_desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"
-            largeDesktopView$="{{_largeDesktopViewOther(_largeDesktopView)}}" largeDesktopViewIE$="{{_largeDesktopViewIE(_largeDesktopView)}}"> -->
+        <!-- <div class="item" smallMobileView$="{{smallMobileView}}" desktopView$="{{desktopView}}" tabletView$="{{tabletView}}" mobileView$="{{mobileView}}"
+            largeDesktopView$="{{_largeDesktopViewOther(largeDesktopView)}}" _largeDesktopViewIE$="{{_largeDesktopViewIE(largeDesktopView)}}"> -->
 
             <div id="productPassengers">
                 <app-toolbar id="toolbarRoom">
@@ -317,8 +317,8 @@
                     <div id="paxInfoTemp">
                         <pax-info id="adultPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{_paxListAdult}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{_indexArray}}" index="{{_increaseIndex(index)}}" traveler-info="{{travelerInfo}}" adult-pax-count="{{adultPaxCount}}"
-                            pax-list-available="{{paxListAvailable}}" type="{{_adultPax}}" pax-data="{{item}}" room-number="{{roomNumber}}" guest-info="{{guestInfo}}" 
-                            ></pax-info>
+                            pax-list-available="{{paxListAvailable}}" type="{{_adultPax}}" pax-data="{{item}}" room-number="{{roomNumber}}" product-no="{{productNo}}" 
+                            room-adult-pax-count-array="{{_adultPaxCountArray}}" room-child-pax-count-array="{{_childPaxCountArray}}" total-pax-list-array="{{totalPaxList}}"></pax-info>
                         <div hidden$=[[_isCloseButtonHidden]]>
                             <paper-icon-button icon="close" id="closeIconAdult{{_increaseIndex(index)}}" class="closeIconChooseGuest" on-tap="_closePaxAdultInfo"></paper-icon-button>
                         </div>
@@ -329,7 +329,8 @@
                     <div id="paxInfoTemp">
                         <pax-info id="childPaxInfo{{roomNumber}}{{_increaseIndex(index)}}" pax-list="{{_paxListChild}}" option="[[option]]" resources="{{resources}}"
                             index-array="{{_indexArrayChild}}" type="{{_childPax}}" traveler-info="{{travelerInfo}}" child-pax-count="{{childPaxCount}}"
-                            index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}" pax-data="{{item}}" pax-list-available="{{paxListAvailable}}" guest-info="{{guestInfo}}"></pax-info>
+                            index="{{_increaseIndex(index)}}" room-number="{{roomNumber}}" pax-data="{{item}}" pax-list-available="{{paxListAvailable}}" product-no="{{productNo}}"
+                            room-child-pax-count-array="{{_childPaxCountArray}}" room-adult-pax-count-array="{{_adultPaxCountArray}}" total-pax-list-array="{{totalPaxList}}"></pax-info>
                         <div hidden$=[[_isCloseButtonChildHidden]]>
                             <paper-icon-button icon="close" id="closeIconChild{{_increaseIndex(index)}}" class="closeIconChooseGuest" on-tap="_closePaxChildInfo"></paper-icon-button>
                         </div>
@@ -354,16 +355,11 @@
             }
             static get properties() {
                 return {
+                    totalPaxList: Array,
                     /**
                      *Object to get t-traveler-info component.
                      **/
                     travelerInfo: {
-                        type: Object,
-                    },
-                    /**
-                     *Object to get t-guest-info component.
-                     **/
-                    guestInfo: {
                         type: Object,
                     },
                     /**
@@ -462,7 +458,7 @@
                      *@private
                      *iron media query properties.
                      **/
-                    _desktopView: {
+                    desktopView: {
                         type: Boolean,
                         value: false
                     },
@@ -470,7 +466,7 @@
                      *@private
                      *iron media query properties.
                      **/
-                    _largeDesktopView: {
+                    largeDesktopView: {
                         type: Boolean,
                         value: false
                     },
@@ -585,9 +581,7 @@
                             "countryCode": 0,
                             "contactNumber": '',
                         };
-                        this.push('_adultPaxCountArray', {
-                            paxDataObject
-                        });
+                        this.push('_adultPaxCountArray', paxDataObject);
                     }
                     this._childPaxCountArray = [];
                     for (var i = 0; i < childPax; i++) {
@@ -600,9 +594,7 @@
                             "countryCode": 0,
                             "contactNumber": '',
                         };
-                        this.push('_childPaxCountArray', {
-                            paxDataObject
-                        });
+                        this.push('_childPaxCountArray', paxDataObject);
                     }
                     this._hideDashForMobileViewMethod();
                     this._getAdultPaxList();
@@ -616,18 +608,9 @@
                  **/
             getState() {
                 var tempArray = this._adultPaxCountArray.concat(this._childPaxCountArray);
-                this.guestInfo._totalPaxListObject[this.productNo].totalPaxObject.paxListObj[this.roomNumber - 1].roomDataObject.paxListObj = tempArray;
+                this.totalPaxList[this.productNo].paxListObj[this.roomNumber - 1].paxListObj = tempArray;
             }
-            _compareCaseInsensitive(s1, s2) {
-                if (s1 == undefined || s2 == undefined || s1 === "" || s2 === "") {
-                    return false;
-                }
-                if (s1.toLowerCase() === s2.toLowerCase()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+
             setState(paxList) {
                     var count = this.adultPaxCount + this.childPaxCount;
                     var finalData = [];
@@ -724,7 +707,7 @@
                  **/
             _closePaxAdultInfo(e) {
                     var adultPaxInfoVar = this._checkReferenceforAdult(e);
-                    var firstName = adultPaxInfoVar.paxData.paxDataObject.firstName;
+                    var firstName = adultPaxInfoVar.paxData.firstName;
                     if (this.paxListAvailable === false) {
                         var paxL = adultPaxInfoVar._loadPaxList(e);
                         var paxIndex = paxL.findIndex(x => x.firstName == firstName);
@@ -748,7 +731,7 @@
                  **/
             _closePaxChildInfo(e) {
                     var childPaxInfoVar = this._checkReferenceforChild(e);
-                    var firstName = childPaxInfoVar.paxData.paxDataObject.firstName;
+                    var firstName = childPaxInfoVar.paxData.firstName;
                     if (this.paxListAvailable === false) {
                         var paxL = childPaxInfoVar._loadPaxList(e);
                         var paxIndex = paxL.findIndex(x => x.firstName == firstName);
@@ -801,18 +784,18 @@
                 /**
                  * Function to set view of internet explorer.       
                  * */
-            _largeDesktopViewIE(_largeDesktopView) {
+            _largeDesktopViewIE(largeDesktopView) {
                     // Internet Explorer 6-11
                     var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-                    return isIE && _largeDesktopView;
+                    return isIE && largeDesktopView;
                 }
                 /**
                  * Function for desktop view for browsers other than internet explorer.
                  * */
-            _largeDesktopViewOther(_largeDesktopView) {
+            _largeDesktopViewOther(largeDesktopView) {
                 // Internet Explorer 6-11
                 var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-                return !isIE && _largeDesktopView;
+                return !isIE && largeDesktopView;
             }
         }
 

@@ -455,42 +455,42 @@
     <div id="paxInfoDiv{{index}}" hidden="{{_showPaxInfoFields}}">
         <div hidden$="{{_showTitle}}">
             <paper-dropdown-menu label="{{_titleLabel}}" id="adultPaxTitle" on-blur="_updateValidation" required errorMessage="{{_titleError}}" invalid="{{_titleInvalid}}">
-                <paper-listbox slot="dropdown-content" selected="{{paxData.paxDataObject.title}}">
+                <paper-listbox slot="dropdown-content" selected="{{paxData.title}}">
                     <template is="dom-repeat" items={{_titleValues}}>
                                     <paper-item on-tap="_resizeWindow">{{item.key}}</paper-item>
                                 </template>
                 </paper-listbox>
             </paper-dropdown-menu>
-            <input is="iron-input" type="hidden" bind-value="[[paxData.paxDataObject.title]]">
+            <input is="iron-input" type="hidden" bind-value="[[paxData.title]]">
         </div>
 
         <div id="adultFirstNamediv">
-            <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}" value="{{paxData.paxDataObject.firstName::input}}" invalid="{{_firstNameInvalid}}"></paper-input>
+            <paper-input label="{{_firstNameTitle}}" on-blur="_updateValidation" class="inputAdultCount" id="adultFirstName" required errorMessage="{{_firstNameError}}" value="{{paxData.firstName::input}}" invalid="{{_firstNameInvalid}}"></paper-input>
             <div id="adultFirstNameError" hidden$="{{_showFirstNameError}}">{{_firstNameError}}</div>
             <div id="adultFirstNameError" hidden$="{{_ShowDuplicateGuest}}">{{_duplicateError}}</div>
         </div>
         <div id="adultLastNamediv">
-            <paper-input label="{{_lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_lastNameError}}" value="{{paxData.paxDataObject.lastName}}" invalid="{{_lastNameInvalid}}"></paper-input>
+            <paper-input label="{{_lastNameTitle}}" on-blur="_updateValidation" id="adultLastName" required errorMessage="{{_lastNameError}}" value="{{paxData.lastName}}" invalid="{{_lastNameInvalid}}"></paper-input>
             <div id="adultLastNameError" hidden$="{{_showLastNameError}}">{{_lastNameError}}</div>
         </div>
 
         <div id="adultEmailAndLabel">
-            <paper-input label="{{_emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{_showEmailAddress}}" required errorMessage="{{_emailError}}" value="{{paxData.paxDataObject.email}}" invalid="{{_emailInvalid}}"></paper-input>
+            <paper-input label="{{_emailTitle}}" on-keydown="_showEmailInfo" id="adultEmail" hidden$="{{_showEmailAddress}}" required errorMessage="{{_emailError}}" value="{{paxData.email}}" invalid="{{_emailInvalid}}"></paper-input>
             <div id="adultEmailLabel" hidden$="{{_showEmailAddressInfo}}">{{_emailInfo}}</div>
             <div id="adultEmailError" hidden$="{{_showEmailError}}">{{_emailError}}</div>
         </div>
         <div hidden$="{{_showContactNumber}}">
             <paper-dropdown-menu label="{{_countryCodeTitle}}" id="adultCountryCode" on-blur="_updateValidation" required errorMessage="{{_countryCodeError}}" invalid="{{_countryCodeInvalid}}">
-                <paper-listbox slot="dropdown-content" selected="{{paxData.paxDataObject.countryCode}}">
+                <paper-listbox slot="dropdown-content" selected="{{paxData.countryCode}}">
                     <template is="dom-repeat" items={{_countryCodeValues}}>
                                     <paper-item value="{{item.value}}" on-tap="_resizeWindow">{{item.key}}</paper-item>
                                 </template>
                 </paper-listbox>
             </paper-dropdown-menu>
-            <input is="iron-input" type="hidden" bind-value="[[paxData.paxDataObject.countryCode]]">
+            <input is="iron-input" type="hidden" bind-value="[[paxData.countryCode]]">
         </div>
         <div id="adultContactNumberDiv">
-            <paper-input label="{{_contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{_showContactNumber}}" required errorMessage="{{contactNumberError}}" value="{{paxData.paxDataObject.contactNumber}}" invalid="{{_contactNumberInvalid}}"></paper-input>
+            <paper-input label="{{_contactNumberTitle}}" id="adultContactNo" on-blur="_updateValidation" hidden$="{{_showContactNumber}}" required errorMessage="{{contactNumberError}}" value="{{paxData.contactNumber}}" invalid="{{_contactNumberInvalid}}"></paper-input>
             <div id="adultContactNumberError" hidden$="{{_showContactNumberError}}">{{_contactNumberError}}</div>
             <div id="adultContactNumberError" hidden$="{{_showContactNumberInvalidError}}">{{_contactNumberInvalidError}}</div>
         </div>
@@ -515,8 +515,9 @@
             }
             static get properties() {
                 return {
+                    totalPaxListArray: Array,
+                    productNo: Number,
                     paxData: Object,
-                    guestInfo: Object,
                     /**
                      *Property to set paxList.
                      **/
@@ -525,6 +526,8 @@
                         value: [],
                         notify: true
                     },
+                    roomAdultPaxCountArray: Array,
+                    roomChildPaxCountArray: Array,
                     /**
                      *Selected value of country code dropdown.
                      **/
@@ -947,7 +950,8 @@
                     this._showChooseGuest = true;
                     this._showPaxInfoFields = false;
                 }
-                this.travelerInfo.getState();
+                var tempArray = this.roomAdultPaxCountArray.concat(this.roomChildPaxCountArray);
+                this.totalPaxListArray[this.productNo].paxListObj[this.roomNumber - 1].paxListObj = tempArray;
                 this._setDefaultOptionValue();
                 this._setDefaultResourcesValue();
                 this._showAllowFieldsForLeadPax();
@@ -978,19 +982,19 @@
                 if (this.titleValue === -1) {
                     this._titleInvalid = true;
                 }
-                var firstNameValue = this.paxData.paxDataObject.firstName;
+                var firstNameValue = this.paxData.firstName;
                 if ((firstNameValue === undefined || firstNameValue === "") &&
                     this._requiredField.includes("firstname") === true) {
                     this._firstNameInvalid = true;
                     this._showFirstNameError = false;
                 }
-                var lastNameValue = this.paxData.paxDataObject.lastName;
+                var lastNameValue = this.paxData.lastName;
                 if ((lastNameValue === undefined || lastNameValue === "") &&
                     this._requiredField.includes("lastname") === true) {
                     this._lastNameInvalid = true;
                     this._showLastNameError = false;
                 }
-                var emailValue = this.paxData.paxDataObject.email;
+                var emailValue = this.paxData.email;
                 if ((emailValue === undefined || emailValue === "") && (this._requiredField.includes("email") === true ||
                         (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
                     if (this.type != "Child") {
@@ -1004,7 +1008,7 @@
                 if (this.countryCodeValue === -1) {
                     this._countryCodeInvalid = true;
                 }
-                var contactNumberValue = this.paxData.paxDataObject.contactNumber;
+                var contactNumberValue = this.paxData.contactNumber;
                 if ((contactNumberValue === undefined || contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
                         (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
                     if (this.type != "Child") {
@@ -1045,15 +1049,15 @@
             }
             _totalPaxList(e) {
                 this._paxTempArray = [];
-                var prodLen = this.guestInfo._totalPaxListObject.length;
+                var prodLen = this.totalPaxListArray.length;
                 for (var i = 0; i < prodLen; i++) {
-                    var roomLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj.length;
+                    var roomLen = this.totalPaxListArray[i].paxListObj.length;
                     for (var j = 0; j < roomLen; j++) {
-                        var paxLen = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj.length;
+                        var paxLen = this.totalPaxListArray[i].paxListObj[j].paxListObj.length;
                         for (var k = 0; k < paxLen; k++) {
-                            var pax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].paxDataObject;
+                            var pax = this.totalPaxListArray[i].paxListObj[j].paxListObj[k];
                             if (pax === undefined) {
-                                pax = this.guestInfo._totalPaxListObject[i].totalPaxObject.paxListObj[j].roomDataObject.paxListObj[k].paxDataObject;
+                                pax = this.totalPaxListArray[i].paxListObj[j].paxListObj[k];
                             }
                             if (pax.firstName != null && pax.firstName != "") {
                                 if (!this._isDuplicatePax(this._paxTempArray, pax.firstName, pax.lastName))
@@ -1096,7 +1100,7 @@
 
             _validationOnBlur(idString) {
                 if (idString === "adultFirstName") {
-                    var firstNameValue = this.paxData.paxDataObject.firstName;
+                    var firstNameValue = this.paxData.firstName;
                     if ((firstNameValue === undefined || firstNameValue === "") && this._requiredField.includes("firstname") === true) {
                         this._firstNameInvalid = true;
                         this._showFirstNameError = false;
@@ -1108,7 +1112,7 @@
                     }
                 }
                 if (idString === "adultLastName") {
-                    var lastNameValue = this.paxData.paxDataObject.lastName;
+                    var lastNameValue = this.paxData.lastName;
                     if ((lastNameValue === undefined || lastNameValue === "") && this._requiredField.includes("lastname") === true) {
                         this._lastNameInvalid = true;
                         this._showLastNameError = false;
@@ -1118,7 +1122,7 @@
                     }
                 }
                 if (idString === "adultEmail") {
-                    var emailValue = this.paxData.paxDataObject.email;
+                    var emailValue = this.paxData.email;
                     if ((emailValue === undefined || emailValue === "") && (this._requiredField.includes("email") === true ||
                             (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
                         if (this.type === "Adult") {
@@ -1134,7 +1138,7 @@
                     }
                 }
                 if (idString === "adultContactNo") {
-                    var contactNumberValue = this.paxData.paxDataObject.contactNumber;
+                    var contactNumberValue = this.paxData.contactNumber;
                     if ((contactNumberValue === undefined || contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
                             (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
                         if (this.type === "Adult") {
@@ -1150,26 +1154,38 @@
             _duplicateGuestValidation(arrForPax) {
                 var indexArray = this.index - 1;
                 for (var j = 0; j < arrForPax.length; j++) {
-                    if (this.travelerInfo._compareCaseInsensitive(arrForPax[indexArray].paxDataObject.firstName, arrForPax[j].paxDataObject.firstName) &&
-                        this.travelerInfo._compareCaseInsensitive(arrForPax[indexArray].paxDataObject.lastName, arrForPax[j].paxDataObject.lastName) &&
+                    if (this._compareCaseInsensitive(arrForPax[indexArray].firstName, arrForPax[j].firstName) &&
+                        this._compareCaseInsensitive(arrForPax[indexArray].lastName, arrForPax[j].lastName) &&
                         indexArray != j) {
                         this._firstNameInvalid = true;
                         this._ShowDuplicateGuest = false;
                     } else if (arrForPax[j].firstName != undefined &&
                         arrForPax[j].firstName != "") {
-                        this._firstNameInvalid = false;
+                        if (this._ShowDuplicateGuest === true) {
+                            this._firstNameInvalid = false;
+                        }
                     }
                 }
             }
-
+            _compareCaseInsensitive(s1, s2) {
+                if (s1 == undefined || s2 == undefined || s1 === "" || s2 === "") {
+                    return false;
+                }
+                if (s1.toLowerCase() === s2.toLowerCase()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
             _updateValidation(event) {
-                this.travelerInfo.getState();
+                var tempArray = this.roomAdultPaxCountArray.concat(this.roomChildPaxCountArray);
+                this.totalPaxListArray[this.productNo].paxListObj[this.roomNumber - 1].paxListObj = tempArray;
                 this._validationOnBlur(event.currentTarget.id);
                 if (this.type === "Adult") {
-                    this._duplicateGuestValidation(this.travelerInfo._adultPaxCountArray);
+                    this._duplicateGuestValidation(this.roomAdultPaxCountArray);
                 }
                 if (this.type === "Child") {
-                    this._duplicateGuestValidation(this.travelerInfo._childPaxCountArray);
+                    this._duplicateGuestValidation(this.roomChildPaxCountArray);
                 }
             }
 
@@ -1177,7 +1193,8 @@
              *To show the pax Info input fields on click of element of choose guest dropdown.
              **/
             _showPaxInfoFieldsMethod(e) {
-                this.travelerInfo.getState();
+                var tempArray = this.roomAdultPaxCountArray.concat(this.roomChildPaxCountArray);
+                this.totalPaxListArray[this.productNo].paxListObj[this.roomNumber - 1].paxListObj = tempArray;
                 var paxIndex = e.model.index;
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
                 if (flag == false) {
@@ -1201,17 +1218,17 @@
                     this._emailInvalid = false;
                     this._contactNumberInvalid = false;
                     this._countryCodeInvalid = false;
-                    this.paxData.paxDataObject.firstName = paxListArray[paxIndex].firstName;
-                    this.paxData.paxDataObject.lastName = paxListArray[paxIndex].lastName;
-                    this.paxData.paxDataObject.title = paxListArray[paxIndex].title;
-                    this.paxData.paxDataObject.email = paxListArray[paxIndex].email;
+                    this.paxData.firstName = paxListArray[paxIndex].firstName;
+                    this.paxData.lastName = paxListArray[paxIndex].lastName;
+                    this.paxData.title = paxListArray[paxIndex].title;
+                    this.paxData.email = paxListArray[paxIndex].email;
                     var countryCodeIndex = paxListArray[paxIndex].countryCode;
                     if (paxListArray[paxIndex].countryCode === undefined || paxListArray[paxIndex].countryCode === "") {
                         var countryCodeIndex = 0;
                     }
-                    this.paxData.paxDataObject.countryCode = countryCodeIndex;
-                    this.paxData.paxDataObject.contactNumber = paxListArray[paxIndex].contactNumber;
-                    this.notifyPath('paxData.paxDataObject');
+                    this.paxData.countryCode = countryCodeIndex;
+                    this.paxData.contactNumber = paxListArray[paxIndex].contactNumber;
+                    this.notifyPath('paxData');
                     this._firstNameInvalid = false;
                     this.travelerInfo._toggleCloseButtonClass(this.index, this.type);
 
@@ -1242,12 +1259,12 @@
                     this._showEmailError = true;
                     this._showContactNumberError = true;
                     this._showContactNumberInvalidError = true;
-                    this.paxData.paxDataObject.firstName = '';
-                    this.paxData.paxDataObject.lastName = '';
-                    this.paxData.paxDataObject.title = 0;
-                    this.paxData.paxDataObject.email = '';
-                    this.paxData.paxDataObject.countryCode = 0;
-                    this.paxData.paxDataObject.contactNumber = '';
+                    this.paxData.firstName = '';
+                    this.paxData.lastName = '';
+                    this.paxData.title = 0;
+                    this.paxData.email = '';
+                    this.paxData.countryCode = 0;
+                    this.paxData.contactNumber = '';
                     this._firstNameInvalid = false;
                     this._lastNameInvalid = false;
                     this._titleInvalid = false;
@@ -1475,10 +1492,10 @@
                  *To show email validation using filter.
                  **/
             _validationOfEmail() {
-                    if (this.paxData.paxDataObject.email != "") {
-                        if (this.paxData.paxDataObject.email != undefined) {
+                    if (this.paxData.email != "") {
+                        if (this.paxData.email != undefined) {
                             var filter = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
-                            if (!filter.test(this.paxData.paxDataObject.email)) {
+                            if (!filter.test(this.paxData.email)) {
                                 this._emailInvalid = true;
                                 this._showEmailError = false;
                                 if (this._emailInvalid === true) {
@@ -1496,10 +1513,10 @@
                  *TO show contact number using filter.
                  **/
             _ValidationOfContact() {
-                if (this.paxData.paxDataObject.contactNumber != "") {
-                    if (this.paxData.paxDataObject.contactNumber != undefined) {
+                if (this.paxData.contactNumber != "") {
+                    if (this.paxData.contactNumber != undefined) {
                         var filter = /^[0-9]+$/;
-                        if (!filter.test(this.paxData.paxDataObject.contactNumber)) {
+                        if (!filter.test(this.paxData.contactNumber)) {
                             this._contactNumberInvalid = true;
                             this._showContactNumberError = true;
                             this._showContactNumberInvalidError = false;
