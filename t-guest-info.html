@@ -234,21 +234,31 @@
       <br />
 
       <template is="dom-repeat" items="{{product}}" as="product" index-as="productNo" id="productTemplate">
-          <div style="float:left;" class="both">
-        <div id="roomTemplateDiv">
-        <template is="dom-repeat" items="{{product.rooms}}" as="room" id="travelerTemplate">
-          <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" class="travelerInfo" product-title="{{product.title}} {{_increaseIndex(index)}}"
-            sub-title="{{room.name}} | {{room.criteria.traveler.adult}} {{_adultLabel(room.criteria.traveler.adult)}}, {{room.criteria.traveler.child}} {{_childLabel(room.criteria.traveler.child)}}" policy-List="{{room.policies}}"
-            room-number="{{_increaseIndex(index)}}" pax-list="{{paxlist}}" option="[[option]]" resources="{{resources}}" adult-pax-count="[[room.criteria.traveler.adult]]"
-            child-pax-count="[[room.criteria.traveler.child]]" only-lead-pax-info="{{room.onlyLeadPaxInfo}}"
-            pax-list-available="{{paxListAvailable}}" product-no={{productNo}} total-pax-list="{{_totalPaxListObject}}">
-          </t-traveler-info>
-          <br>
-        </template>
+        <div style="float:left;" class="both">
+            <div id="roomTemplateDiv">
+                <template is="dom-repeat" items="{{product.rooms}}" as="room" id="travelerTemplate">
+                    <t-traveler-info id="travelerInfo{{_increaseIndex(productNo)}}{{_increaseIndex(index)}}" 
+                    class="travelerInfo" 
+                    product-title="{{product.title}} {{_increaseIndex(index)}}"
+                    sub-title="{{room.name}} | {{room.criteria.traveler.adult}} {{_adultLabel(room.criteria.traveler.adult)}}, {{room.criteria.traveler.child}} {{_childLabel(room.criteria.traveler.child)}}" 
+                    policy-List="{{room.policies}}"
+                    r-number="{{_increaseIndex(index)}}"
+                    pax-list="{{paxlist}}" 
+                    option="[[option]]"
+                    resources="{{resources}}"
+                    ad-pax-count="[[room.criteria.traveler.adult]]"
+                    ch-pax-count="[[room.criteria.traveler.child]]" 
+                    only-lead-pax-info="{{room.onlyLeadPaxInfo}}"
+                    pax-list-available="{{paxListAvailable}}" 
+                    product-no={{productNo}} 
+                    total-pax-list="{{_totalPaxListObject}}" 
+                    on-listcategorize="_handleDuplicateRecordForPaxList">
+                    </t-traveler-info>
+                    <br>
+                </template>
     </div>
     <div id="productSummaryDiv">
         <slot name="tripSummary"></slot>
-        </t-product-summary>
     </div>
     </div>
     <div id="loyaltyDiv{{productNo}}" class="loyaltyDiv" hidden$={{!product.allowLoyalty}}>
@@ -403,66 +413,100 @@
                 } //End of Properties.
 
             ready() {
-                    super.ready();
-                    this._setDefaultResourcesvalue();
-                    if (this.paxlist.length === 0) {
-                        this.paxListAvailable = false;
-                        this.paxList = [];
-                    }
-                    this._totalPaxListObject = [];
-                    for (var i = 0; i < this.product.length; i++) {
-                        this._roomPaxListObject = [];
-                        var room = this.product[i].rooms;
-                        for (var j = 0; j < room.length; j++) {
-                            var roomDataObject = {
-                                "Id": room[j].id,
-                                "paxListObj": [],
-                            };
-                            this.push('_roomPaxListObject', roomDataObject);
-                        }
-                        var totalPaxObject = {
-                            "Id": this.product[i].id,
-                            "paxListObj": this._roomPaxListObject,
+                super.ready();
+                this._setDefaultResourcesvalue();
+                if (this.paxlist.length === 0) {
+                    this.paxListAvailable = false;
+                    this.paxList = [];
+                }
+                this._totalPaxListObject = [];
+                for (var i = 0; i < this.product.length; i++) {
+                    this._roomPaxListObject = [];
+                    var room = this.product[i].rooms;
+                    for (var j = 0; j < room.length; j++) {
+                        var roomDataObject = {
+                            "Id": room[j].id,
+                            "paxListObj": [],
                         };
-                        this.push('_totalPaxListObject', totalPaxObject);
+                        this.push('_roomPaxListObject', roomDataObject);
                     }
+                    var totalPaxObject = {
+                        "Id": this.product[i].id,
+                        "paxListObj": this._roomPaxListObject,
+                    };
+                    this.push('_totalPaxListObject', totalPaxObject);
                 }
-                /**
-                 *Function to check validation of all fields for all rooms and products.
-                 **/
+            }
+
+            /**
+             *Function to check validation of all fields for all rooms and products.
+             **/
             isValidGuest() {
-                    var valid;
-                    var validData = [];
-                    var productLength = this.product.length;
-                    var roomsLength = 0;
-                    for (var i = 0; i < productLength; i++) {
-                        roomsLength = this.product[i].rooms.length + roomsLength;
-                    }
-                    for (var j = 0; j < roomsLength; j++) {
-                        validData[j] = this.shadowRoot.querySelectorAll('t-traveler-info')[j].isValid();
-                    }
-                    for (var j = 0; j < roomsLength; j++) {
-                        if (validData[j] === false) {
-                            valid = false;
-                        } else {
-                            valid = true;
-                        }
-                    }
-                    return valid;
+                var valid;
+                var validData = [];
+                var productLength = this.product.length;
+                var roomsLength = 0;
+                for (var i = 0; i < productLength; i++) {
+                    roomsLength = this.product[i].rooms.length + roomsLength;
                 }
-                /**
-                 *Function to collect data for all rooms and products.
-                 **/
+                for (var j = 0; j < roomsLength; j++) {
+                    validData[j] = this.shadowRoot.querySelectorAll('t-traveler-info')[j].isValid();
+                }
+                for (var j = 0; j < roomsLength; j++) {
+                    if (validData[j] === false) {
+                        valid = false;
+                    } else {
+                        valid = true;
+                    }
+                }
+                return valid;
+            }
+
+            /**
+             *Function to collect data for all rooms and products.
+             **/
             getData() {
-                    var totalData = this._totalPaxListObject;
-                    var loyaltyTotalData = [];
-                    var prodLen = this.product.length;
-                    for (var i = 0; i < prodLen; i++) {
-                        if (this.product[i].allowLoyalty === true) {
-                            loyaltyTotalData[i] = this._getLoyaltyProgramData(i);
+                var totalData = this._totalPaxListObject;
+                var loyaltyTotalData = [];
+                var prodLen = this.product.length;
+                for (var i = 0; i < prodLen; i++) {
+                    if (this.product[i].allowLoyalty === true) {
+                        loyaltyTotalData[i] = this._getLoyaltyProgramData(i);
+                    }
+                }
+                return totalData;
+            }
+            _handleDuplicateRecordForPaxList(e) {
+                var prodLen = this._totalPaxListObject.length;
+                for (var i = 0; i < prodLen; i++) {
+                    var roomLen = this._totalPaxListObject[i].paxListObj.length;
+                    for (var j = 0; j < roomLen; j++) {
+                        var paxLen = this._totalPaxListObject[i].paxListObj[j].paxListObj.length;
+                        for (var k = 0; k < paxLen; k++) {
+                            var pax = this._totalPaxListObject[i].paxListObj[j].paxListObj[k];
+                            if (pax === undefined) {
+                                pax = this._totalPaxListObject[i].paxListObj[j].paxListObj[k];
+                            }
+                            if (pax.firstName != null && pax.firstName != "") {
+                                if (!this._isDuplicatePax(e.detail.listcategorized, pax.firstName, pax.lastName))
+                                    e.detail.listcategorized.push(pax);
+                            }
                         }
                     }
-                    return totalData;
+                }
+            }
+
+            _isDuplicatePax(paxList, firstName, lastName) {
+                    if (paxList.length == 0) {
+                        return false;
+                    }
+                    for (var i = 0; i < paxList.length; i++) {
+                        if ((paxList[i].firstName === firstName &&
+                                paxList[i].lastName === lastName)) {
+                            return true;
+                        }
+                    }
+                    return false;
                 }
                 /**
                  *To handle puralization for subtitle.
@@ -500,9 +544,9 @@
                 var count = this.loyaltyPrograms.length;
                 for (var i = 0; i < count; i++) {
                     var loyaltyProgram = {};
-                    loyaltyProgram.GuestName = this.loyaltyPrograms[i].loyaltyProgram.guestName;
-                    loyaltyProgram.ProgramName = this.loyaltyPrograms[i].loyaltyProgram.programName;
-                    loyaltyProgram.ProgramNumber = this.loyaltyPrograms[i].loyaltyProgram.programNumber;
+                    loyaltyProgram.GuestName = this.loyaltyPrograms[i].guestName;
+                    loyaltyProgram.ProgramName = this.loyaltyPrograms[i].programName;
+                    loyaltyProgram.ProgramNumber = this.loyaltyPrograms[i].programNumber;
                     loyaltyProgramArrayData[i] = loyaltyProgram;
                 }
                 // console.log(loyaltyProgramArrayData);

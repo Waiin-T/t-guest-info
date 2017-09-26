@@ -166,9 +166,7 @@
     <div>
         <paper-input label="{{_programNumber}}" id="programNumber{{loyaltyProgramNumber}}" value="{{loyaltyProgramData.programNumber}}" invalid="{{_programNumberInvalid}}" class="programNumber" on-blur="_isValid"></paper-input>
     </div>
-    <!-- <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
-        <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">{{_remove}}</paper-button>
-    </div> -->
+
     </template>
 
     <script>
@@ -188,6 +186,9 @@
                 return {
                     index: Number,
                     totalPaxList: Array,
+                    loyaltyProgramsArray: {
+                        type: Array,
+                    },
                     loyaltyProgramData: Object,
                     /**
                      * Used for paxlist
@@ -261,7 +262,7 @@
                      * */
                     _isRemoveButtonHidden: {
                         type: Boolean,
-                        computed: '_lessThanEqualToOne(tLoyaltyProgram.loyaltyPrograms.length , 1)'
+                        computed: '_lessThanEqualToOne(loyaltyProgramsArray.length , 1)'
                     },
                     /**
                      * @private
@@ -330,32 +331,25 @@
                  * Program name field if paxlist is given then paper-dropdown-menu.
                  * */
             _showProgramName() {
-                    if (this.paxListAvailable === false) {
-                        this._showProgramNameInput = false;
-                    } else {
-                        this._showProgramNameDropdown = false;
-                    }
+                if (this.paxListAvailable === false) {
+                    this._showProgramNameInput = false;
+                } else {
+                    this._showProgramNameDropdown = false;
                 }
-                /**
-                 * To delet loyalty profram on click of button 'Remove'.
-                 **/
-            _deleteLoyaltyProgram(e) {
-                var tempArray = this.tLoyaltyProgram.splice('loyaltyPrograms', this.loyaltyProgramNumber, 1);
-                this.tLoyaltyProgram.loyaltyPrograms = tempArray;
             }
             _isValid(e) {
                     e.currentTarget.invalid = false;
                     var paxListArray = this._updatePaxList();
-                    if (this.loyaltyProgramData.guestName) {
-                        var guestName = this.loyaltyProgramData.guestName;
-                    }
-                    if (this.loyaltyProgramData.programName) {
-                        var programName = this.loyaltyProgramData.programName
-                    }
-                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].guestName = guestName;
-                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].programName = programName;
-                    this.tLoyaltyProgram.loyaltyPrograms[this.loyaltyProgramNumber].programNumber = this.loyaltyProgramData.programNumber;
-                    this.tLoyaltyProgram._isValidLoyalty(this.loyaltyProgramNumber, e, guestName, programName, this.loyaltyProgramData.programNumber);
+                    // if (this.loyaltyProgramData.guestName) {
+                    var guestName = this.loyaltyProgramData.guestName;
+                    // }
+                    // if (this.loyaltyProgramData.programName) {
+                    var programName = this.loyaltyProgramData.programName
+                        // }
+                    this.loyaltyProgramsArray[this.loyaltyProgramNumber].guestName = guestName;
+                    this.loyaltyProgramsArray[this.loyaltyProgramNumber].programName = programName;
+                    this.loyaltyProgramsArray[this.loyaltyProgramNumber].programNumber = this.loyaltyProgramData.programNumber;
+                    this._isValidLoyalty(this.loyaltyProgramNumber, e, guestName, programName, this.loyaltyProgramData.programNumber);
                 }
                 /**
                  * Using this function on-tap of guest name.
@@ -416,12 +410,28 @@
 
                     this._showGuestNameError = false;
                     this._guestNameInvalid = true;
-                    var len = this.tLoyaltyProgram.loyaltyPrograms.length;
+                    var len = this.loyaltyProgramsArray.length;
                 } else {
                     this._showGuestNameError = true;
                     this._guestNameInvalid = false;
                 }
                 return this._tempPaxArray;
+            }
+
+            _isValidLoyalty(index, e, guestNameValue, programNameValue, programNumberValue) {
+                var count = this.loyaltyProgramsArray.length;
+                for (var i = 0; i < count; i++) {
+                    var loyaltyGuest = this.loyaltyProgramsArray[i].guestName;
+                    var loyaltyProgramName = this.loyaltyProgramsArray[i].programName;
+                    var loyaltyProgramNumber = this.loyaltyProgramsArray[i].programNumber;
+                    if (loyaltyGuest != undefined) {
+                        if (guestNameValue === loyaltyGuest && programNameValue === loyaltyProgramName &&
+                            programNumberValue === loyaltyProgramNumber && index != i) {
+                            e.currentTarget.invalid = true;
+                            e.currentTarget.errorMessage = "duplicate record";
+                        }
+                    }
+                }
             }
 
         }

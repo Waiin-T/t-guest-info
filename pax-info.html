@@ -526,8 +526,8 @@
                         value: [],
                         notify: true
                     },
-                    roomAdultPaxCountArray: Array,
-                    roomChildPaxCountArray: Array,
+                    rAdPaxCountArray: Array,
+                    rChPaxCountArray: Array,
                     /**
                      *Selected value of country code dropdown.
                      **/
@@ -930,10 +930,6 @@
                         type: Array,
                         value: []
                     },
-                    _paxTempArray: {
-                        type: Array,
-                        value: []
-                    },
                     _duplicateError: {
                         type: String,
                         value: 'Duplicate guest name'
@@ -944,14 +940,15 @@
                     },
                 }
             }
+
             ready() {
                 super.ready();
-                if (this.roomNumber === 1 && this.paxList.length === 0) {
+                if (this.rNumber === 1 && this.paxList.length === 0) {
                     this._showChooseGuest = true;
                     this._showPaxInfoFields = false;
                 }
-                var tempArray = this.roomAdultPaxCountArray.concat(this.roomChildPaxCountArray);
-                this.totalPaxListArray[this.productNo].paxListObj[this.roomNumber - 1].paxListObj = tempArray;
+                // var tempArray = this.rAdPaxCountArray.concat(this.rChPaxCountArray);
+                // this.totalPaxListArray[this.productNo].paxListObj[this.rNumber - 1].paxListObj = tempArray;
                 this._setDefaultOptionValue();
                 this._setDefaultResourcesValue();
                 this._showAllowFieldsForLeadPax();
@@ -997,9 +994,10 @@
                 var emailValue = this.paxData.email;
                 if ((emailValue === undefined || emailValue === "") && (this._requiredField.includes("email") === true ||
                         (this._requiredFieldForLeadPax.includes("email") === true && this.index === 1))) {
-                    if (this.type != "Child") {
+                    if (this.type === "Adult") {
                         this._emailInvalid = true;
                         this._showEmailError = false;
+                        this._showEmailAddressInfo = true;
                         if (this._showEmailAddress === true) {
                             this._showEmailError = true;
                         }
@@ -1011,7 +1009,7 @@
                 var contactNumberValue = this.paxData.contactNumber;
                 if ((contactNumberValue === undefined || contactNumberValue === "") && (this._requiredField.includes("contactNumber") === true ||
                         (this._requiredFieldForLeadPax.includes("contactNumber") === true && this.index === 1))) {
-                    if (this.type != "Child") {
+                    if (this.type === "Adult") {
                         this._contactNumberInvalid = true;
                         this._showContactNumberError = false;
                         if (this._showContactNumber === true) {
@@ -1035,42 +1033,15 @@
             /*
              **Function to load paxlist for choose guest dropdown when paxlist is not given.
              */
-            _isDuplicatePax(paxList, firstName, lastName) {
-                if (paxList.length == 0) {
-                    return false;
-                }
-                for (var i = 0; i < paxList.length; i++) {
-                    if ((paxList[i].firstName === firstName &&
-                            paxList[i].lastName === lastName)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            _totalPaxList(e) {
-                this._paxTempArray = [];
-                var prodLen = this.totalPaxListArray.length;
-                for (var i = 0; i < prodLen; i++) {
-                    var roomLen = this.totalPaxListArray[i].paxListObj.length;
-                    for (var j = 0; j < roomLen; j++) {
-                        var paxLen = this.totalPaxListArray[i].paxListObj[j].paxListObj.length;
-                        for (var k = 0; k < paxLen; k++) {
-                            var pax = this.totalPaxListArray[i].paxListObj[j].paxListObj[k];
-                            if (pax === undefined) {
-                                pax = this.totalPaxListArray[i].paxListObj[j].paxListObj[k];
-                            }
-                            if (pax.firstName != null && pax.firstName != "") {
-                                if (!this._isDuplicatePax(this._paxTempArray, pax.firstName, pax.lastName))
-                                    this._paxTempArray.push(pax);
-                            }
-                        }
-                    }
-                }
-                return this._paxTempArray;
-            }
             _loadPaxList(e) {
                 if (this.paxListAvailable === false) {
-                    var paxList = this._totalPaxList(e);
+                    var array = [];
+                    this.dispatchEvent(new CustomEvent('categorize', {
+                        detail: {
+                            categorized: array
+                        }
+                    }));
+                    var paxList = array;
                     if (this.type === 'Adult') {
                         var adults = paxList.filter(function(item) {
                             return item.type.toLowerCase() === 'adult';
@@ -1178,23 +1149,39 @@
                 }
             }
             _updateValidation(event) {
-                var tempArray = this.roomAdultPaxCountArray.concat(this.roomChildPaxCountArray);
-                this.totalPaxListArray[this.productNo].paxListObj[this.roomNumber - 1].paxListObj = tempArray;
+                var tempArray = this.rAdPaxCountArray.concat(this.rChPaxCountArray);
+                this.totalPaxListArray[this.productNo].paxListObj[this.rNumber - 1].paxListObj = tempArray;
+
+                // this.dispatchEvent(new CustomEvent('update', {
+                //     detail: {
+                //         updated: tempArray,
+                //         prNo: productNo,
+                //         rNo: rNumber
+                //     }
+                // }));
+
                 this._validationOnBlur(event.currentTarget.id);
                 if (this.type === "Adult") {
-                    this._duplicateGuestValidation(this.roomAdultPaxCountArray);
+                    this._duplicateGuestValidation(this.rAdPaxCountArray);
                 }
                 if (this.type === "Child") {
-                    this._duplicateGuestValidation(this.roomChildPaxCountArray);
+                    this._duplicateGuestValidation(this.rChPaxCountArray);
                 }
             }
-
-            /**
-             *To show the pax Info input fields on click of element of choose guest dropdown.
-             **/
+            _callNotifyPath(paxData) {
+                    this.notifyPath('paxData.firstName');
+                    this.notifyPath('paxData.lastName');
+                    this.notifyPath('paxData.title');
+                    this.notifyPath('paxData.email');
+                    this.notifyPath('paxData.countryCode');
+                    this.notifyPath('paxData.contactNumber');
+                }
+                /**
+                 *To show the pax Info input fields on click of element of choose guest dropdown.
+                 **/
             _showPaxInfoFieldsMethod(e) {
-                var tempArray = this.roomAdultPaxCountArray.concat(this.roomChildPaxCountArray);
-                this.totalPaxListArray[this.productNo].paxListObj[this.roomNumber - 1].paxListObj = tempArray;
+                // var tempArray = this.rAdPaxCountArray.concat(this.rChPaxCountArray);
+                // this.totalPaxListArray[this.productNo].paxListObj[this.rNumber - 1].paxListObj = tempArray;
                 var paxIndex = e.model.index;
                 var flag = this.indexArray.indexOf(paxIndex) > -1;
                 if (flag == false) {
@@ -1228,7 +1215,7 @@
                     }
                     this.paxData.countryCode = countryCodeIndex;
                     this.paxData.contactNumber = paxListArray[paxIndex].contactNumber;
-                    this.notifyPath('paxData');
+                    this._callNotifyPath(this.paxData);
                     this._firstNameInvalid = false;
                     this.travelerInfo._toggleCloseButtonClass(this.index, this.type);
 
@@ -1265,6 +1252,7 @@
                     this.paxData.email = '';
                     this.paxData.countryCode = 0;
                     this.paxData.contactNumber = '';
+                    this._callNotifyPath(this.paxData);
                     this._firstNameInvalid = false;
                     this._lastNameInvalid = false;
                     this._titleInvalid = false;

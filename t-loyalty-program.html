@@ -110,8 +110,8 @@
         <template is="dom-repeat" items="{{loyaltyPrograms}}" index-as="loyaltyProgramNumber" id="loyaltyTemp">
         <div style="clear:both" id="div{{loyaltyProgramNumber}}" class="div">
             <t-loyalty-program-data id="tLoyaltyProgramDataID{{loyaltyProgramNumber}}" resources="{{resources}}" pax-list-available="{{paxListAvailable}}"
-            t-loyalty-program="{{tLoyaltyProgram}}" pax-list="{{paxList}}" loyalty-program-number="{{loyaltyProgramNumber}}"
-            loyalty-program-data="{{item}}" total-pax-list="{{totalPaxList}}" index="{{index}}"></t-loyalty-program-data>
+           pax-list="{{paxList}}" loyalty-program-number="{{loyaltyProgramNumber}}" loyalty-program-data="{{item}}" 
+           total-pax-list="{{totalPaxList}}" index="{{index}}" loyalty-programs-array="{{loyaltyPrograms}}"></t-loyalty-program-data>
         </div>
         <div id="buttonRemoveDiv" hidden$=[[_isRemoveButtonHidden]]>
             <paper-button id="buttonRemove" on-tap="_deleteLoyaltyProgram" class$="c{{loyaltyProgramNumber}}">Remove</paper-button>
@@ -156,7 +156,6 @@
                     },
                     programNumberValue: String,
                     loyaltyProgramNumber: Number,
-                    tLoyaltyProgram: Object,
                     /**
                      * Used for paxlist
                      * */
@@ -227,7 +226,6 @@
             ready() {
                 super.ready();
                 this._setDefaultRsourcesValue();
-                this.tLoyaltyProgram = this;
                 this.loyaltyPrograms = [];
                 var loyaltyProgram = {
                     "guestName": -1,
@@ -235,8 +233,6 @@
                     "programNumber": ''
                 };
                 this.push('loyaltyPrograms', loyaltyProgram);
-                this.notifyPath('loyaltyPrograms')
-
             }
 
             /**
@@ -254,7 +250,9 @@
 
             _deleteLoyaltyProgram(e) {
                     this.splice("loyaltyPrograms", e.model.itemsIndex, 1);
-                    this.notifyPath('loyaltyPrograms');
+                    this.notifyPath('loyaltyPrograms.guestName');
+                    this.notifyPath('loyaltyPrograms.programName');
+                    this.notifyPath('loyaltyPrograms.programNumber');
                 }
                 /**
                  * To update the paxlist according to rooms.
@@ -278,21 +276,7 @@
             _lessThanEqualToOne(loyaltyProgramAdultLength, hiddenButtonAdultNumber) {
                 return loyaltyProgramAdultLength <= hiddenButtonAdultNumber;
             }
-            _isValidLoyalty(index, e, guestNameValue, programNameValue, programNumberValue) {
-                var count = this.loyaltyPrograms.length;
-                for (var i = 0; i < count; i++) {
-                    var loyaltyGuest = this.loyaltyPrograms[i].guestName;
-                    var loyaltyProgramName = this.loyaltyPrograms[i].programName;
-                    var loyaltyProgramNumber = this.loyaltyPrograms[i].programNumber;
-                    if (loyaltyGuest != undefined) {
-                        if (guestNameValue === loyaltyGuest && programNameValue === loyaltyProgramName &&
-                            programNumberValue === loyaltyProgramNumber && index != i) {
-                            e.currentTarget.invalid = true;
-                            e.currentTarget.errorMessage = "duplicate record";
-                        }
-                    }
-                }
-            }
+
 
 
         }
