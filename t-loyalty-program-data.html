@@ -426,7 +426,8 @@
                     var loyaltyProgramNumber = this.loyaltyProgramsArray[i].programNumber;
                     if (loyaltyGuest != undefined) {
                         if (guestNameValue === loyaltyGuest && programNameValue === loyaltyProgramName &&
-                            programNumberValue === loyaltyProgramNumber && index != i) {
+                            programNumberValue === loyaltyProgramNumber && index != i && (guestNameValue != -1 || programNameValue != "" ||
+                                programNumberValue != "")) {
                             e.currentTarget.invalid = true;
                             e.currentTarget.errorMessage = "duplicate record";
                         }

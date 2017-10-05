@@ -4,8 +4,18 @@
             "polymer-2"
         ]
     },
-    "builds": [
-        { "preset": "es6-unbundled" },
-        { "preset": "es5-bundled" }
-    ]
+    "builds": [{
+        "preset": "es5-bundled",
+        "bundle": false,
+        "js": {
+            "minify": false,
+            "compile": true
+        },
+        "css": {
+            "minify": false
+        },
+        "html": {
+            "minify": false
+        }
+    }]
 }

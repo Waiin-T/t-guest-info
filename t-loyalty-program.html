@@ -19,7 +19,7 @@
       }
 
       @media (min-width: 320px) and (max-width:380px) {
-       #addProgramForOtherGuestButton {
+       .addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
         margin-left: -13px;
         float: left;
@@ -38,7 +38,7 @@
       }
       
       @media (min-width: 380px) and (max-width:767px) {
-      #addProgramForOtherGuestButton {
+      .addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
         margin-left: -8px;
         float: left;
@@ -57,7 +57,7 @@
       }
 
       @media (min-width: 768px) and (max-width:1023px) {
-      #addProgramForOtherGuestButton {
+      .addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
         float: left;
         margin-top: 0%;
@@ -76,7 +76,7 @@
       }
 
       @media (min-width: 1024px){
-       #addProgramForOtherGuestButton {
+       .addProgramForOtherGuestButton {
         color: var(--color-for-button-labels);
         margin-left: 40px;
         float: left;
@@ -122,7 +122,7 @@
     <br />
     <!-- <div> -->
 
-    <paper-button id="addProgramForOtherGuestButton" on-tap="_addProgramForOtherGuest">{{_addNewGuest}}</paper-button>
+    <paper-button class="addProgramForOtherGuestButton" on-tap="_addProgramForOtherGuest" id="addProgramForOtherGuestButton{{index}}">{{_addNewGuest}}</paper-button>
 
     <!-- </div> -->
     <!-- </div> -->
@@ -226,13 +226,14 @@
             ready() {
                 super.ready();
                 this._setDefaultRsourcesValue();
-                this.loyaltyPrograms = [];
+
                 var loyaltyProgram = {
                     "guestName": -1,
                     "programName": '',
                     "programNumber": ''
                 };
                 this.push('loyaltyPrograms', loyaltyProgram);
+                this.loyaltyPrograms = [];
             }
 
             /**
@@ -246,6 +247,9 @@
                     "programNumber": ''
                 };
                 this.push('loyaltyPrograms', loyaltyProgram);
+                this.notifyPath('loyaltyPrograms.guestName');
+                this.notifyPath('loyaltyPrograms.programName');
+                this.notifyPath('loyaltyPrograms.programNumber');
             }
 
             _deleteLoyaltyProgram(e) {
