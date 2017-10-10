@@ -4,18 +4,31 @@
             "polymer-2"
         ]
     },
+    "entrypoint": "demo/index.html",
+    "shell": "t-guest-info.html",
+    "sources": [
+        "checkImage.svg",
+        "t-loyalty-program.html",
+        "t-loyalty-program-data.html",
+        "t-product-summary.html",
+        "t-traveler-info.html",
+        "bower.json"
+    ],
+    "extraDependencies": [
+        "bower_components/webcomponentsjs/*.js"
+    ],
     "builds": [{
         "preset": "es5-bundled",
         "bundle": false,
         "js": {
-            "minify": false,
+            "minify": true,
             "compile": true
         },
         "css": {
-            "minify": false
+            "minify": true
         },
         "html": {
-            "minify": false
+            "minify": true
         }
     }]
 }

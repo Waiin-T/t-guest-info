@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,user-scalable=yes"><title>t-guest-info demo</title>
+
+<script>!function(e){var r=e.babelHelpers={};r.typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},r.classCallCheck=function(e,r){if(!(e instanceof r))throw new TypeError("Cannot call a class as a function")},r.createClass=function(){function e(e,r){for(var t=0;t<r.length;t++){var n=r[t];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(r,t,n){return t&&e(r.prototype,t),n&&e(r,n),r}}(),r.defineEnumerableProperties=function(e,r){for(var t in r){var n=r[t];n.configurable=n.enumerable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,t,n)}return e},r.defaults=function(e,r){for(var t=Object.getOwnPropertyNames(r),n=0;n<t.length;n++){var o=t[n],i=Object.getOwnPropertyDescriptor(r,o);i&&i.configurable&&void 0===e[o]&&Object.defineProperty(e,o,i)}return e},r.defineProperty=function(e,r,t){return r in e?Object.defineProperty(e,r,{value:t,enumerable:!0,configurable:!0,writable:!0}):e[r]=t,e},r.extends=Object.assign||function(e){for(var r=1;r<arguments.length;r++){var t=arguments[r];for(var n in t)Object.prototype.hasOwnProperty.call(t,n)&&(e[n]=t[n])}return e},r.get=function e(r,t,n){null===r&&(r=Function.prototype);var o=Object.getOwnPropertyDescriptor(r,t);if(void 0===o){var i=Object.getPrototypeOf(r);return null===i?void 0:e(i,t,n)}if("value"in o)return o.value;var a=o.get;if(void 0!==a)return a.call(n)},r.inherits=function(e,r){if("function"!=typeof r&&null!==r)throw new TypeError("Super expression must either be null or a function, not "+typeof r);e.prototype=Object.create(r&&r.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),r&&(Object.setPrototypeOf?Object.setPrototypeOf(e,r):e.__proto__=r)},r.instanceof=function(e,r){return null!=r&&"undefined"!=typeof Symbol&&r[Symbol.hasInstance]?r[Symbol.hasInstance](e):e instanceof r},r.newArrowCheck=function(e,r){if(e!==r)throw new TypeError("Cannot instantiate an arrow function")},r.objectDestructuringEmpty=function(e){if(null==e)throw new TypeError("Cannot destructure undefined")},r.objectWithoutProperties=function(e,r){var t={};for(var n in e)r.indexOf(n)>=0||Object.prototype.hasOwnProperty.call(e,n)&&(t[n]=e[n]);return t},r.possibleConstructorReturn=function(e,r){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!r||"object"!=typeof r&&"function"!=typeof r?e:r},r.set=function e(r,t,n,o){var i=Object.getOwnPropertyDescriptor(r,t);if(void 0===i){var a=Object.getPrototypeOf(r);null!==a&&e(a,t,n,o)}else if("value"in i&&i.writable)i.value=n;else{var u=i.set;void 0!==u&&u.call(o,n)}return n},r.slicedToArray=function(){function e(e,r){var t=[],n=!0,o=!1,i=void 0;try{for(var a,u=e[Symbol.iterator]();!(n=(a=u.next()).done)&&(t.push(a.value),!r||t.length!==r);n=!0);}catch(e){o=!0,i=e}finally{try{!n&&u.return&&u.return()}finally{if(o)throw i}}return t}return function(r,t){if(Array.isArray(r))return r;if(Symbol.iterator in Object(r))return e(r,t);throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),r.taggedTemplateLiteral=function(e,r){return Object.freeze(Object.defineProperties(e,{raw:{value:Object.freeze(r)}}))},r.temporalRef=function(e,r,t){if(e===t)throw new ReferenceError(r+" is not defined - temporal dead zone");return e},r.temporalUndefined={},r.toArray=function(e){return Array.isArray(e)?e:Array.from(e)},r.toConsumableArray=function(e){if(Array.isArray(e)){for(var r=0,t=Array(e.length);r<e.length;r++)t[r]=e[r];return t}return Array.from(e)}}("undefined"==typeof global?self:global);</script>
+
+
+    <script>if (!window.customElements) { document.write('<!--'); }</script>
+    <script type="text/javascript" src="../../webcomponentsjs/custom-elements-es5-adapter.js"></script>
+    <!--! do not remove -->
+<script src="../../webcomponentsjs/webcomponents-lite.js"></script><link rel="import" href="../t-guest-info.html"><link rel="import" href="../t-product-summary.html"><style is="custom-style" include="demo-pages-shared-styles">body{background-color:white;font-family:'Roboto';padding-left:0px;padding-right:0px;}t-guest-info{margin:0px;padding:0px;--toolbar-background-color:#eee;--color-for-subTitle:gray;--color-for-policies:#4CB050;--color-for-button-labels:#478BD7;}</style></head><body unresolved=""><t-guest-info id="guestInfo" option="{
+                  &quot;allowTitle&quot;: true,
+                  &quot;allowTitleForLeadPax&quot; : true,
+                  &quot;allowContactNumber&quot; : false,
+                  &quot;allowContactNumberForLeadPax&quot; : true,
+                  &quot;allowEmail&quot; : false,
+                  &quot;allowEmailForLeadPax&quot; : true,
+                  &quot;requiredField&quot; : [
+                      &quot;firstname&quot;,
+                      &quot;lastname&quot;
+                      ],
+                  &quot;requiredFieldForLeadPax&quot; : [
+                      &quot;contactNumber&quot;,
+                      &quot;title&quot;,
+                      &quot;email&quot;
+                      ]
+                }" resources="{
+	&quot;icons&quot;: {
+		&quot;terms&quot;: &quot;terms-ico&quot;
+	},
+	&quot;labels&quot;: {
+		&quot;adult&quot;: {
+            &quot;title&quot;: &quot;Adult&quot;,
+            &quot;titlep&quot;: &quot;Adults&quot;,
+			&quot;info&quot;: &quot;(12+ years)&quot;
+		},
+		&quot;child&quot;: {
+            &quot;title&quot;: &quot;Child&quot;,
+            &quot;titlep&quot;: &quot;Children&quot;,
+			&quot;info&quot;: &quot;(upto 11 years)&quot;
+		}
+	},
+	&quot;fields&quot;: {
+		&quot;title&quot;: {
+			&quot;values&quot;: [{
+					&quot;key&quot;: &quot;Mr&quot;
+				},
+				{
+					&quot;key&quot;: &quot;Ms&quot;
+				}
+			],
+			&quot;selected&quot;: &quot;Mr&quot;,
+			&quot;title&quot;: &quot;Title&quot;,
+			&quot;errors&quot;: &quot;Please select a title&quot;
+		},
+		&quot;firstName&quot;: {
+			&quot;value&quot;: &quot;&quot;,
+			&quot;title&quot;: &quot;First name&quot;,
+			&quot;errors&quot;: &quot;Firstname is required&quot;
+		},
+		&quot;lastName&quot;: {
+			&quot;value&quot;: &quot;&quot;,
+			&quot;title&quot;: &quot;Last name&quot;,
+			&quot;errors&quot;: &quot;Lastname is required&quot;
+		},
+		&quot;email&quot;: {
+			&quot;value&quot;: &quot;&quot;,
+			&quot;info&quot;: &quot;We will send you email confirmation on this address&quot;,
+			&quot;errors&quot;: &quot;Please enter a valid email address&quot;
+		},
+		&quot;countryCode&quot;: {
+			&quot;values&quot;: [{
+					&quot;key&quot;: &quot;India +91&quot;,
+					&quot;value&quot;: &quot;+91&quot;
+				},
+				{
+					&quot;key&quot;: &quot;USA +1&quot;,
+					&quot;value&quot;: &quot;+1&quot;
+				}
+			],
+			&quot;title&quot;: &quot;Country code&quot;,
+			&quot;errors&quot;: &quot;Countrycode is required&quot;
+		},
+		&quot;contactNumber&quot;: {
+			&quot;value&quot;: &quot;&quot;,
+			&quot;title&quot;: &quot;Contact number&quot;,
+			&quot;info&quot;: &quot;In case of any notifications our agent will reach you on this number&quot;,
+            &quot;errors&quot;: &quot;Contact number is required&quot;,
+            &quot;invalidError&quot;: &quot;Contact number is invalid&quot;
+		}
+	},
+	&quot;loyaltyProgram&quot;: {
+        &quot;loyaltyProgram&quot; : &quot;Loyalty program&quot;,
+		&quot;remove&quot;: &quot;Remove&quot;,
+		&quot;addNewGuest&quot;: &quot;Add program for other guest&quot;,
+		&quot;guestNameError&quot;: &quot;Please enter guest details first&quot;,
+		&quot;label&quot;: {
+			&quot;guestName&quot;: &quot;Guest name&quot;,
+			&quot;programName&quot;: &quot;Program name&quot;,
+			&quot;programNumber&quot;: &quot;Program number&quot;
+		}
+	},
+	&quot;newGuest&quot;: &quot;Add New&quot;,
+	&quot;chooseGuest&quot;: &quot;Choose guest&quot;
+}" product=" [{
+        &quot;id&quot;: &quot;123123&quot;,
+        &quot;name&quot;: &quot;El Cortez Hotel &amp;; Casino&quot;,
+        &quot;type&quot; : &quot;hotel&quot;,
+        &quot;allowLoyalty&quot;: true,
+        &quot;title&quot; : &quot;Room&quot;,
+        &quot;rooms&quot;: [
+            {
+                &quot;id&quot;: &quot;pr1rr1&quot;,
+                &quot;name&quot;: &quot;Strip View, 1 King Bed&quot;,
+                &quot;onlyLeadPaxInfo&quot;: false,
+                &quot;criteria&quot;: {
+                    &quot;checkIn&quot;: &quot;05/22/2017&quot;,
+                    &quot;checkout&quot;: &quot;05/28/2017&quot;,
+                    &quot;stayDuration&quot;: 2,
+                    &quot;traveler&quot;: {
+                        &quot;adult&quot;: 3,
+                        &quot;child&quot;: 1
+                    }
+                }
+                ,
+                 &quot;policies&quot;: [
+                     &quot;FREE cancellation before 11:59PM on April 25, 2017&quot;
+                 ]
+            },
+                {
+                &quot;id&quot;: &quot;pr1rr2&quot;,
+                &quot;name&quot;: &quot;Strip View, 1 King Bed&quot;,
+                &quot;onlyLeadPaxInfo&quot;: false,
+                &quot;criteria&quot;: {
+                    &quot;checkIn&quot;: &quot;05/22/2017&quot;,
+                    &quot;checkout&quot;: &quot;05/28/2017&quot;,
+                    &quot;stayDuration&quot;: 2,
+                    &quot;traveler&quot;: {
+                        &quot;adult&quot;: 4,
+                        &quot;child&quot;: 2
+                    }
+                }
+                ,
+                 &quot;policies&quot;: [
+                     &quot;FREE cancellation before 11:59PM on April 25, 2017&quot;
+                 ]
+            },{
+                &quot;id&quot;: &quot;pr1rr3&quot;,
+                &quot;name&quot;: &quot;Strip View, 1 King Bed&quot;,
+                &quot;onlyLeadPaxInfo&quot;: false,
+                &quot;criteria&quot;: {
+                    &quot;checkIn&quot;: &quot;05/22/2017&quot;,
+                    &quot;checkout&quot;: &quot;05/28/2017&quot;,
+                    &quot;stayDuration&quot;: 2,
+                    &quot;traveler&quot;: {
+                        &quot;adult&quot;: 2,
+                        &quot;child&quot;: 1
+                    }
+                }
+                ,
+                 &quot;policies&quot;: [
+                     &quot;FREE cancellation before 11:59PM on April 25, 2017&quot;
+                 ]
+            }
+        ]
+    },{
+        &quot;id&quot;: &quot;123123&quot;,
+        &quot;name&quot;: &quot;El Cortez Hotel &amp;; Casino&quot;,
+        &quot;type&quot; : &quot;hotel&quot;,
+        &quot;allowLoyalty&quot;: true,
+        &quot;title&quot; : &quot;Room&quot;,
+        &quot;rooms&quot;: [
+            {
+                &quot;id&quot;: &quot;pr2rr1&quot;,
+                &quot;name&quot;: &quot;Strip View, 1 King Bed&quot;,
+                &quot;onlyLeadPaxInfo&quot;: false,
+                &quot;criteria&quot;: {
+                    &quot;checkIn&quot;: &quot;05/22/2017&quot;,
+                    &quot;checkout&quot;: &quot;05/28/2017&quot;,
+                    &quot;stayDuration&quot;: 2,
+                    &quot;traveler&quot;: {
+                        &quot;adult&quot;: 3,
+                        &quot;child&quot;: 1
+                    }
+                }
+                ,
+                 &quot;policies&quot;: [
+                     &quot;FREE cancellation before 11:59PM on April 25, 2017&quot;
+                 ]
+            },{
+                &quot;id&quot;: &quot;pr2rr2&quot;,
+                &quot;name&quot;: &quot;Strip View, 1 King Bed&quot;,
+                &quot;onlyLeadPaxInfo&quot;: false,
+                &quot;criteria&quot;: {
+                    &quot;checkIn&quot;: &quot;05/22/2017&quot;,
+                    &quot;checkout&quot;: &quot;05/28/2017&quot;,
+                    &quot;stayDuration&quot;: 2,
+                    &quot;traveler&quot;: {
+                        &quot;adult&quot;: 3,
+                        &quot;child&quot;: 2
+                    }
+                }
+                ,
+                 &quot;policies&quot;: [
+                     &quot;FREE cancellation before 11:59PM on April 25, 2017&quot;
+                 ]
+            }
+        ]
+    }]"><t-product-summary slot="tripSummary"></t-product-summary></t-guest-info><br><br><br><button id="demoButton" style="color:white; background-color:black" onclick="fireIsValidMethod()">Test Button</button><script>function fireIsValidMethod(){var a=document.getElementById("guestInfo").isValidGuest();document.getElementById("guestInfo").getData();for(var b,c=guestInfo.product.length,d=0;d<c;d++){b=guestInfo.product[d].rooms.length;for(var e=0;e<b;e++)for(var f=Polymer.dom(guestInfo.root).querySelector("#travelerInfo"+(d+1)+(e+1)),g=f.adultPaxCount,h=0;h<g;h++){var i=Polymer.dom(f.root).querySelector("#adultPaxInfo"+(e+1)+(h+1)),j=Polymer.dom(i.root).querySelector("#adultEmail");if(!0===j.invalid){var k=Polymer.dom(i.root).querySelector("#adultEmailLabel");k.hidden=!0}}}alert(a)}</script></body></html>
